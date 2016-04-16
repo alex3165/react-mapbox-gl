@@ -1,8 +1,8 @@
 import MapboxGl from "mapbox-gl/dist/mapbox-gl";
-import React from "react";
+import React, { Component } from "react";
 import { Map, List } from "immutable";
 
-export default class ReactMapboxGl extends React.Component {
+export default class ReactMapboxGl extends Component {
   displayName = "ReactMapboxGl";
 
   static propTypes = {

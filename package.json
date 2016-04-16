@@ -32,7 +32,8 @@
   "homepage": "https://github.com/alex3165/react-mapbox-gl#readme",
   "dependencies": {
     "immutable": "^3.8.0",
-    "mapbox-gl": "^0.17.0"
+    "mapbox-gl": "^0.17.0",
+    "react-mixin": "^3.0.5"
   },
   "devDependencies": {
     "babel": "^6.5.2",
