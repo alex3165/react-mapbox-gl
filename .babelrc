@@ -1,0 +1,11 @@
+{
+  "presets": [
+    "babel-preset-philpl"
+  ],
+  "ignore": [
+    "/node_modules/"
+  ],
+  "plugins": [
+    "babel-plugin-transform-es2015-modules-commonjs"
+  ]
+}
