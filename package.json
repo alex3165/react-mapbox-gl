@@ -8,6 +8,11 @@
     "build": "npm run clean && babel src --out-dir dist",
     "example": "webpack-dev-server --config ./webpack.config.dev.js"
   },
+  "files": [
+    "dist/",
+    "LICENSE",
+    "README.md"
+  ],
   "repository": {
     "type": "git",
     "url": "git+https://github.com/alex3165/react-mapbox-gl.git"
