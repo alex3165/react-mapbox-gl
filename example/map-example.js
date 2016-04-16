@@ -6,13 +6,19 @@ const apiToken = "pk.eyJ1IjoiZmFicmljOCIsImEiOiJjaWc5aTV1ZzUwMDJwdzJrb2w0dXRmc2d
 
 export default class MapExample extends Component {
 
-  state = {
-  };
+  state = {};
 
   render() {
     return (
       <div>
-        <ReactMapboxGl/>
+        <ReactMapboxGl
+          style="mapbox://styles/mapbox/streets-v8"
+          accessToken={apiToken}
+          containerStyle={{
+            height: 500,
+            width: 800
+          }}>
+        </ReactMapboxGl>
       </div>
     );
   }
