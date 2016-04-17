@@ -17,8 +17,8 @@ const defaultStyle = {
 export default class Marker extends Component {
   static propTypes = {
     coordinates: React.PropTypes.instanceOf(List).isRequired,
-    iconImage: React.PropTypes.string,
-    coordinates: React.PropTypes.instanceOf(List)
+    sourceName: React.PropTypes.string.isRequired,
+    iconImage: React.PropTypes.string.isRequired
   };
 
   _onMapStyleLoaded = () => {
@@ -47,6 +47,13 @@ export default class Marker extends Component {
 
     this.setState({ source });
   };
+
+  componentWillUnmount() {
+    const { sourceName } = this.props;
+    const { map } = this.context;
+
+    map.removeSource(sourceName);
+  }
 
   _onCoordinatesUpdated = (coordinates) => {
     this.state.source.setData({
