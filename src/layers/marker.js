@@ -18,11 +18,12 @@ export default class Marker extends Component {
   static propTypes = {
     coordinates: React.PropTypes.instanceOf(List).isRequired,
     sourceName: React.PropTypes.string.isRequired,
-    iconImage: React.PropTypes.string.isRequired
+    iconImage: React.PropTypes.string.isRequired,
+    onClick: React.PropTypes.func
   };
 
   _onMapStyleLoaded = () => {
-    const { sourceName, iconImage, coordinates } = this.props;
+    const { sourceName, iconImage, coordinates, onClick } = this.props;
     const { map } = this.context;
 
     const layer = {
@@ -44,6 +45,20 @@ export default class Marker extends Component {
     map.addSource(sourceName, source);
 
     map.addLayer(layer);
+
+    if(onClick) {
+      map.on("click", (e) => {
+        const features = map.queryRenderedFeatures(e.point, { layers: [sourceName] });
+
+        if (!features.length) {
+            return;
+        }
+
+        const feature = features[0];
+
+        onClick(feature, map);
+      });
+    }
 
     this.setState({ source });
   };

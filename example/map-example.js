@@ -25,17 +25,31 @@ export default class MapExample extends Component {
 
   state = {};
 
+  _onClickMarker(marker) {
+    console.log("Clicked on the marker : ", marker.geometry.coordinates)
+  }
+
+  _onClickMap(map) {
+    console.log("Clicked on the map : ", map);
+  }
+
+  _onStyleLoad(map) {
+    console.log("Style loaded: ", map);
+  }
+
   render() {
     return (
       <div>
         <ReactMapboxGl
           style={style}
-          onClick={() => { console.log("Hello")}}
+          onClick={this._onClickMap}
+          onStyleLoad={this._onStyleLoad}
           accessToken={accessToken}
           containerStyle={containerStyle}>
           <Marker
             coordinates={markerCoord}
             sourceName="marker"
+            onClick={this._onClickMarker}
             iconImage="harbor-15"/>
           <Path
             sourceName="route"

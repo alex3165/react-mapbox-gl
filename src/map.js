@@ -16,7 +16,8 @@ export default class ReactMapboxGl extends Component {
     containerStyle: React.PropTypes.object,
     hash: React.PropTypes.bool,
     preserveDrawingBuffer: React.PropTypes.bool,
-    onClick: React.PropTypes.func
+    onClick: React.PropTypes.func,
+    onStyleLoad: React.PropTypes.func
   };
 
   state = {};
@@ -40,7 +41,7 @@ export default class ReactMapboxGl extends Component {
   });
 
   componentDidMount() {
-    const { style, hash, preserveDrawingBuffer, accessToken, center, zoom, onClick } = this.props;
+    const { style, hash, preserveDrawingBuffer, accessToken, center, zoom, onClick, onStyleLoad } = this.props;
 
     const mapStyle = Map.isMap(style) ? style.toJS() : style;
 
@@ -57,13 +58,20 @@ export default class ReactMapboxGl extends Component {
 
     this.setState({ map });
 
+    if(onStyleLoad) {
+      map.on("style.load", onStyleLoad);
+    }
+
     if(onClick) {
       map.on("click", onClick)
     }
   }
 
   componentWillUnmount() {
-    this.state.map.off("click");
+    const { map } = this.state;
+
+    map.off("click");
+    map.off("style.load");
   }
 
   render() {

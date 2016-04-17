@@ -26,7 +26,8 @@ export default {
   },
 
   componentDidUpdate() {
-    if(this.context.map) {
+    const { map } = this.context;
+    if(map && !map.loaded()) {
       this._checkMapLoaded();
     }
   },
