@@ -6,7 +6,10 @@
   "scripts": {
     "clean": "rimraf dist",
     "build": "npm run clean && babel src --out-dir dist",
-    "example": "webpack-dev-server --config ./webpack.config.dev.js"
+    "example": "webpack-dev-server --config ./webpack.config.dev.js",
+    "release:major": "npm version major && git push --follow-tags",
+    "release:minor": "npm version minor && git push --follow-tags",
+    "release:patch": "npm version patch && git push --follow-tags"
   },
   "files": [
     "dist/",
