@@ -30,6 +30,7 @@ export default class MapExample extends Component {
       <div>
         <ReactMapboxGl
           style={style}
+          onClick={() => { console.log("Hello")}}
           accessToken={accessToken}
           containerStyle={containerStyle}>
           <Marker
