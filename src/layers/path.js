@@ -4,14 +4,6 @@ import { List } from "immutable";
 import MapboxMixin from "./mixin";
 import ReactMixin from "react-mixin";
 
-const defaultStyle = {
-  pointerEvents: "none",
-  position: "absolute",
-  left: 0,
-  top: 0,
-  display: "none"
-};
-
 @ReactMixin.decorate(MapboxMixin)
 export default class Path extends Component {
   static propTypes = {
@@ -78,9 +70,6 @@ export default class Path extends Component {
   };
 
   render() {
-    return (
-      <div style={defaultStyle} className="mapbox-path-layer">
-      </div>
-    )
+    return null;
   }
 }

@@ -23,10 +23,22 @@ const route = fromJS([
 
 export default class MapExample extends Component {
 
-  state = {};
+  state = {
+    popup: null
+  };
 
   _onClickMarker(marker) {
+
     console.log("Clicked on the marker : ", marker.geometry.coordinates)
+
+    // const popup = (
+    //   <Popup
+    //     coordinates={new List(marker.geometry.coordinates)}
+    //     HTMLContent='<div width="100px" height="100px"><h1>Hello this is a popup</h1></div>'
+    //   />
+    // )
+
+    // this.setState({ popup });
   }
 
   _onClickMap(map) {
@@ -37,29 +49,45 @@ export default class MapExample extends Component {
     console.log("Style loaded: ", map);
   }
 
+  _onHover(marker, map) {
+    map.getCanvas().style.cursor = "pointer";
+  }
+
+  _onOutHover(map) {
+    map.getCanvas().style.cursor = "";
+  }
+
+  _onMouseMove(map) {
+    console.log("On mouse move");
+  }
+
   render() {
     return (
-      <div>
-        <ReactMapboxGl
-          style={style}
-          onClick={this._onClickMap}
-          onStyleLoad={this._onStyleLoad}
-          accessToken={accessToken}
-          containerStyle={containerStyle}>
-          <Marker
-            coordinates={markerCoord}
-            sourceName="marker"
-            onClick={this._onClickMarker}
-            iconImage="harbor-15"/>
-          <Path
-            sourceName="route"
-            coordinates={route}
-            lineJoin="round"
-            lineCap="round"
-            lineColor="#4790E5"
-            lineWidth={12}/>
-        </ReactMapboxGl>
-      </div>
+      <ReactMapboxGl
+        style={style}
+        onClick={this._onClickMap}
+        onStyleLoad={this._onStyleLoad}
+        onMouseMove={this._onMouseMove}
+        accessToken={accessToken}
+        containerStyle={containerStyle}>
+        {
+          // this.state.popup
+        }
+        <Marker
+          coordinates={markerCoord}
+          sourceName="marker"
+          onClick={this._onClickMarker.bind(this)}
+          onHover={this._onHover}
+          onOutHover={this._onOutHover}
+          iconImage="harbor-15"/>
+        <Path
+          sourceName="route"
+          coordinates={route}
+          lineJoin="round"
+          lineCap="round"
+          lineColor="#4790E5"
+          lineWidth={12}/>
+      </ReactMapboxGl>
     );
   }
 }
