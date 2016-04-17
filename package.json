@@ -31,11 +31,16 @@
   },
   "homepage": "https://github.com/alex3165/react-mapbox-gl#readme",
   "dependencies": {
+    "mapbox-gl": "^0.17.0"
+  },
+  "peerDependencies": {
+    "react-mixin": "^3.0.5",
     "immutable": "^3.8.0",
-    "mapbox-gl": "^0.17.0",
-    "react-mixin": "^3.0.5"
+    "react": "^15.0.1"
   },
   "devDependencies": {
+    "react-mixin": "^3.0.5",
+    "immutable": "^3.8.0",
     "babel": "^6.5.2",
     "babel-cli": "^6.7.5",
     "babel-core": "^6.7.6",
