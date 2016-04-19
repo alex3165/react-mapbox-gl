@@ -82,7 +82,3 @@ Display a path on the map
 #### Properties
 
 TBD
-
-## TODO :
-
-- re-center the map when changing the center value
