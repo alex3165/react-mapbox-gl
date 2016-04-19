@@ -46,7 +46,7 @@ var Path = ReactMapboxGl.Path;
 
 ## API
 
-### ReactMapboxGl
+### ReactMapboxGl: `React.Component`
 
 Display a mapbox webgl map
 
@@ -62,7 +62,7 @@ Display a mapbox webgl map
 - onStyleLoad: `Function` : Simple listener of mapbox event : `map.on("style.load")`
 - onMouseMove: `Function` : Listen the mouse moving on the map
 
-### Marker
+### Marker: `React.Component`
 
 Display a marker on the map
 
@@ -71,7 +71,7 @@ Display a marker on the map
 TBD
 
 
-### Path
+### Path: `React.Component`
 
 Display a path on the map
 
