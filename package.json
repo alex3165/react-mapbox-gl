@@ -25,7 +25,8 @@
     "react",
     "map",
     "webgl",
-    "mapbox-gl"
+    "mapbox-gl",
+    "react-component"
   ],
   "author": "Alexandre Rieux",
   "license": "MIT",
