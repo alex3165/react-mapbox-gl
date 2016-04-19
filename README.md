@@ -12,9 +12,11 @@ It will include as well:
 - Popup
 - Polygon
 
-## Requirements
+## Peer-dependencies
 
-The library use [immutablejs](https://facebook.github.io/immutable-js/docs/#/) for some properties.
+You need to install the following dependencies to make it work :
+- [immutablejs](https://facebook.github.io/immutable-js/docs/#/) for some properties
+- react-mixin
 
 ## How to start
 
@@ -34,15 +36,18 @@ var Marker = ReactMapboxGl.Marker;
 var Path = ReactMapboxGl.Path;
 ```
 
-[Use it](example/map-example.js)
+[Example](example/map-example.js)
 
 ## Run the example
 
 - Clone the repository
 - Install the dependencies: `npm install`
-- Run the example : `npm run example`.
+- Run the example : `npm run example`
 > Default port: 8080
 
+## Notes
+
+Mapbox throw a warning because react-mapbox-gl is using a compiled version of mapbox-gl which is necessary when using webpack for now as long as the sources files requires the node package `fs` to read the shaders.
 
 ## API
 
