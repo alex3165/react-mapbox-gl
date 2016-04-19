@@ -1,5 +1,7 @@
 import React, { Component } from "react";
 import ReactMapboxGl, { Marker, Path } from "../src/index.js";
+import route from "./route.json";
+
 import { List, fromJS } from "immutable";
 
 const accessToken = "pk.eyJ1IjoiZmFicmljOCIsImEiOiJjaWc5aTV1ZzUwMDJwdzJrb2w0dXRmc2d0In0.p6GGlfyV-WksaDV_KdN27A";
@@ -15,11 +17,7 @@ const markerCoord = new List([
   51.5285582
 ]);
 
-const route = fromJS([
-  [-0.102335, 51.519512],
-  [-0.101037, 51.519939],
-  [-0.101037, 50.519939]
-]);
+const mappedRoute = new List(route.points.map(point => ([point.lat, point.lng])))
 
 export default class MapExample extends Component {
 
@@ -33,7 +31,7 @@ export default class MapExample extends Component {
       this.setState({
         center: new List([-0.120736, 51.5118219])
       });
-    }, 2000);
+    }, 3000);
   }
 
   _onClickMarker(marker) {
@@ -84,7 +82,7 @@ export default class MapExample extends Component {
           iconImage="harbor-15"/>
         <Path
           sourceName="route"
-          coordinates={route}
+          coordinates={mappedRoute}
           lineJoin="round"
           lineCap="round"
           lineColor="#4790E5"
