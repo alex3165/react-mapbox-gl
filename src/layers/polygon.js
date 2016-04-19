@@ -6,11 +6,12 @@ import ReactMixin from "react-mixin";
 import { elementInteracted } from "../helpers/element-interacted";
 
 @ReactMixin.decorate(MapboxMixin)
-export default class Marker extends Component {
+export default class Polygon extends Component {
   static propTypes = {
     coordinates: React.PropTypes.instanceOf(List).isRequired,
     sourceName: React.PropTypes.string.isRequired,
-    iconImage: React.PropTypes.string.isRequired,
+    fillColor: React.PropTypes.string,
+    fillOpacity: React.PropTypes.number,
     onClick: React.PropTypes.func,
     onHover: React.PropTypes.func,
     onOutHover: React.PropTypes.func
@@ -33,28 +34,34 @@ export default class Marker extends Component {
   };
 
   _onMapStyleLoaded = () => {
-    const { sourceName, iconImage, coordinates, onClick, onHover } = this.props;
+    const {
+      sourceName,
+      coordinates,
+      fillColor,
+      fillOpacity,
+      onClick,
+      onHover
+    } = this.props;
+
     const { map } = this.context;
 
     const layer = {
       "id": sourceName,
-      "type": "symbol",
+      "type": "fill",
       "source": sourceName,
-      "layout": {
-        "icon-image": iconImage
+      "layout": {},
+      "paint": {
+        "fill-color": fillColor,
+        "fill-opacity": fillOpacity
       }
-    };
+    }
 
     const source = new MapboxGl.GeoJSONSource({
       data: {
-        type: "Point",
-        coordinates: coordinates.toJS()
+        type: "Polygon",
+        coordinates: [coordinates.toJS()]
       }
     });
-
-    map.addSource(sourceName, source);
-
-    map.addLayer(layer);
 
     if(onClick) {
       map.on("click", elementInteracted.bind(this, {sourceName, interaction: onClick, map}));
@@ -64,7 +71,9 @@ export default class Marker extends Component {
       map.on("mousemove", this._onMouseMove.bind(this, {sourceName, interaction: onHover, map}));
     }
 
-    this.setState({ source });
+    map.addSource(sourceName, source);
+
+    map.addLayer(layer);
   };
 
   componentWillUnmount() {
@@ -72,13 +81,11 @@ export default class Marker extends Component {
     const { map } = this.context;
 
     map.removeSource(sourceName);
-    map.off("mousemove", this._onMouseMove);
-    map.off("click", elementInteracted);
   }
 
   _onCoordinatesUpdated = (coordinates) => {
     this.state.source.setData({
-      type: "Point",
+      type: "Polygon",
       coordinates: coordinates.toJS()
     });
   };

@@ -6,11 +6,11 @@ The library include the following elements :
 - ReactMapboxGl
 - Marker
 - Path
+- Polygon
 
 It will include as well:
 
 - Popup
-- Polygon
 
 ## Peer-dependencies
 
@@ -94,5 +94,18 @@ Display a path on the map
 - sourceName : `String` (required) A unique key to identify the marker
 - lineColor : `String` The color of the line
 - lineWidth : `Number` The width of the line
-- lineCap : `String`
-- lineJoin : `String`
+- lineCap : `String` The shape of the extremity of the path
+- lineJoin : `String` The shape of the edges
+
+### Polygon: `React.Component`
+
+Display a polygon on the map.
+
+#### Properties
+- coordinates : `List<Number>` (required) Display the polygon at the given position
+- sourceName : `String` (required) A unique key to identify the marker
+- onClick : `Function` Triggered when user click on the icon
+- onHover : `Function` Triggered when the user hover the icon
+- onOutHover : `Function` Triggered when the user is not hovering anymore
+- fillColor: `String` The color of the polygon
+- fillOpacity: `String` The opacity of the polygon

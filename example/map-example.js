@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import ReactMapboxGl, { Marker, Path } from "../src/index.js";
+import ReactMapboxGl, { Marker, Path, Polygon } from "../src/index.js";
 import route from "./route.json";
 
 import { List, fromJS } from "immutable";
@@ -11,6 +11,15 @@ const containerStyle = {
   height: "100vh",
   width: "100%"
 };
+
+const polygonCoords = fromJS([
+[-0.13235092163085938,51.518250335096376],
+[-0.1174163818359375,51.52433860667918],
+[-0.10591506958007812,51.51974577545329],
+[-0.10831832885742188,51.51429786349477],
+[-0.12531280517578122,51.51429786349477],
+[-0.13200759887695312,51.517823057404094]
+]);
 
 const markerCoord = new List([
   -0.2416815,
@@ -62,6 +71,10 @@ export default class MapExample extends Component {
     // console.log("On mouse move", center);
   }
 
+  _polygonClicked() {
+    console.log("Polygon clicked");
+  }
+
   render() {
     return (
       <ReactMapboxGl
@@ -87,6 +100,13 @@ export default class MapExample extends Component {
           lineCap="round"
           lineColor="#4790E5"
           lineWidth={12}/>
+        <Polygon
+          coordinates={polygonCoords}
+          sourceName="polygon"
+          fillColor="#6F788A"
+          fillOpacity={0.7}
+          onClick={this._polygonClicked}
+        />
       </ReactMapboxGl>
     );
   }
