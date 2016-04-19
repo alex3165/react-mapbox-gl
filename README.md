@@ -61,6 +61,10 @@ Display a mapbox webgl map
 - onClick: `Function` : Triggered whenever user click on the map
 - onStyleLoad: `Function` : Simple listener of mapbox event : `map.on("style.load")`
 - onMouseMove: `Function` : Listen the mouse moving on the map
+- onMove: `Function` : Executed whenever the center of the map change
+  - Function : (center: Object<Number>, Evt)
+- onMoveEnd: `Function` : Executed when the move of the map end
+  - Function : (center: Object<Number>, Evt)
 
 ### Marker: `React.Component`
 

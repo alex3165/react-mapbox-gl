@@ -24,21 +24,20 @@ const route = fromJS([
 export default class MapExample extends Component {
 
   state = {
-    popup: null
+    popup: null,
+    center: new List([0.2174037, 51.6476704])
   };
 
+  componentWillMount() {
+    setTimeout(() => {
+      this.setState({
+        center: new List([-0.120736, 51.5118219])
+      });
+    }, 2000);
+  }
+
   _onClickMarker(marker) {
-
     console.log("Clicked on the marker : ", marker.geometry.coordinates)
-
-    // const popup = (
-    //   <Popup
-    //     coordinates={new List(marker.geometry.coordinates)}
-    //     HTMLContent='<div width="100px" height="100px"><h1>Hello this is a popup</h1></div>'
-    //   />
-    // )
-
-    // this.setState({ popup });
   }
 
   _onClickMap(map) {
@@ -58,7 +57,11 @@ export default class MapExample extends Component {
   }
 
   _onMouseMove(map) {
-    console.log("On mouse move");
+    // console.log("On mouse move", map);
+  }
+
+  _onMove(center, evt) {
+    // console.log("On mouse move", center);
   }
 
   render() {
@@ -68,11 +71,10 @@ export default class MapExample extends Component {
         onClick={this._onClickMap}
         onStyleLoad={this._onStyleLoad}
         onMouseMove={this._onMouseMove}
+        onMove={this._onMove}
         accessToken={accessToken}
+        center={this.state.center}
         containerStyle={containerStyle}>
-        {
-          // this.state.popup
-        }
         <Marker
           coordinates={markerCoord}
           sourceName="marker"

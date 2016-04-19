@@ -18,7 +18,9 @@ export default class ReactMapboxGl extends Component {
     preserveDrawingBuffer: React.PropTypes.bool,
     onClick: React.PropTypes.func,
     onStyleLoad: React.PropTypes.func,
-    onMouseMove: React.PropTypes.func
+    onMouseMove: React.PropTypes.func,
+    onMove: React.PropTypes.func,
+    onMoveEnd: React.PropTypes.func
   };
 
   state = {};
@@ -42,7 +44,7 @@ export default class ReactMapboxGl extends Component {
   });
 
   componentDidMount() {
-    const { style, hash, preserveDrawingBuffer, accessToken, center, zoom, onClick, onStyleLoad, onMouseMove } = this.props;
+    const { style, hash, preserveDrawingBuffer, accessToken, center, zoom, onClick, onStyleLoad, onMouseMove, onMove, onMoveEnd } = this.props;
 
     const mapStyle = Map.isMap(style) ? style.toJS() : style;
 
@@ -70,10 +72,34 @@ export default class ReactMapboxGl extends Component {
     if(onMouseMove) {
       map.on("mousemove", onMouseMove);
     }
+
+    if(onMove) {
+      map.on("move", onMove.bind(this, map.getCenter()));
+    }
+
+    if(onMoveEnd) {
+      map.on("moveend", onMoveEnd.bind(this, map.getCenter()));
+    }
   }
 
   componentWillUnmount() {
     this.state.map.off();
+  }
+
+  componentWillReceiveProps(next) {
+    let state = {};
+
+    if(!next.center.equals(this.props.center)) {
+      state.center = next.center.toJS();
+    }
+
+    if(next.zoom !== this.props.zoom) {
+      state.zoom = next.zoom;
+    }
+
+    if(Object.keys(state).length > 0) {
+      this.state.map.flyTo(state);
+    }
   }
 
   render() {
