@@ -20,7 +20,8 @@ export default class ReactMapboxGl extends Component {
     onStyleLoad: React.PropTypes.func,
     onMouseMove: React.PropTypes.func,
     onMove: React.PropTypes.func,
-    onMoveEnd: React.PropTypes.func
+    onMoveEnd: React.PropTypes.func,
+    scrollZoom: React.PropTypes.bool
   };
 
   state = {};
@@ -32,7 +33,8 @@ export default class ReactMapboxGl extends Component {
       -0.2416815,
       51.5285582
     ]),
-    zoom: 11
+    zoom: 11,
+    scrollZoom: true
   };
 
   static childContextTypes = {
@@ -44,7 +46,7 @@ export default class ReactMapboxGl extends Component {
   });
 
   componentDidMount() {
-    const { style, hash, preserveDrawingBuffer, accessToken, center, zoom, onClick, onStyleLoad, onMouseMove, onMove, onMoveEnd } = this.props;
+    const { style, hash, preserveDrawingBuffer, accessToken, center, zoom, scrollZoom, onClick, onStyleLoad, onMouseMove, onMove, onMoveEnd } = this.props;
 
     const mapStyle = Map.isMap(style) ? style.toJS() : style;
 
@@ -56,7 +58,8 @@ export default class ReactMapboxGl extends Component {
       zoom,
       container: this.refs.mapboxContainer,
       center: center.toJS(),
-      style: mapStyle
+      style: mapStyle,
+      scrollZoom
     });
 
     this.setState({ map });

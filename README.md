@@ -61,10 +61,11 @@ Display a mapbox webgl map
 - center : `List<Number>` Center the map at the position at initialisation
 > When updating the map component if the center values changed, the library will re-center the map to the new position using [flyTo](https://www.mapbox.com/mapbox-gl-js/api/#Map.flyTo)
 - zoom : `Number` Zoom level of the map at initialisation
-> When updating the map component if the zoom values changed, the library will change the zoom using [flyTo](https://www.mapbox.com/mapbox-gl-js/api/#Map.flyTo)
+  - When updating the map component if the zoom values changed, the library will change the zoom using [flyTo](https://www.mapbox.com/mapbox-gl-js/api/#Map.flyTo)
+- scrollZoom: See [mapbox scrollZoom](https://www.mapbox.com/mapbox-gl-js/api/#Map)
 - containerStyle : `Object` The style of the container of the map
-- hash : `Boolean`, Default : `false` [See mapbox doc](https://www.mapbox.com/mapbox-gl-js/api/)
-- preserveDrawingBuffer: `Boolean`, Default : `false` [See mapbox doc](https://www.mapbox.com/mapbox-gl-js/api/)
+- hash : `Boolean`, Default : `false` [See mapbox doc](https://www.mapbox.com/mapbox-gl-js/api/#Map)
+- preserveDrawingBuffer: `Boolean`, Default : `false` [See mapbox doc](https://www.mapbox.com/mapbox-gl-js/api/#Map)
 - onClick: `Function` : Triggered whenever user click on the map
 - onStyleLoad: `Function` : Simple listener of mapbox event : `map.on("style.load")`
 - onMouseMove: `Function` : Listen the mouse moving on the map
