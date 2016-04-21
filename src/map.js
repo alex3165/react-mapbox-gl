@@ -77,11 +77,11 @@ export default class ReactMapboxGl extends Component {
     }
 
     if(onMove) {
-      map.on("move", onMove.bind(this, map.getCenter()));
+      map.on("move", onMove.bind(this, map));
     }
 
     if(onMoveEnd) {
-      map.on("moveend", onMoveEnd.bind(this, map.getCenter()));
+      map.on("moveend", onMoveEnd.bind(this, map));
     }
   }
 
