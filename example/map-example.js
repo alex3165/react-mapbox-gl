@@ -44,7 +44,9 @@ export default class MapExample extends Component {
   }
 
   _onClickMarker(marker) {
-    console.log("Clicked on the marker : ", marker.geometry.coordinates)
+    this.setState({
+      center: new List(marker.geometry.coordinates)
+    });
   }
 
   _onClickMap(map) {
