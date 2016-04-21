@@ -17,7 +17,7 @@ export default {
     const { map } = this.context;
 
     if(map) {
-      if(!map.loaded()) {
+      if(!map.style) {
         this._checkMapLoaded();
       } else {
         this._onMapStyleLoaded();
