@@ -92,7 +92,7 @@ export default class ReactMapboxGl extends Component {
   componentWillReceiveProps(next) {
     let state = {};
 
-    if(!next.center.equals(this.state.map.getCenter())) {
+    if(!next.center.equals(this.state.map.getCenter()) && !this.props.center.equals(next.center)) {
       state.center = next.center.toJS();
     }
 
