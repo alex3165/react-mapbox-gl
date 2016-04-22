@@ -24,8 +24,6 @@ export default class ReactMapboxGl extends Component {
     scrollZoom: React.PropTypes.bool
   };
 
-  state = {};
-
   static defaultProps = {
     hash: false,
     preserveDrawingBuffer: false,
@@ -42,7 +40,7 @@ export default class ReactMapboxGl extends Component {
   };
 
   getChildContext = () => ({
-    map: this.state.map
+    map: this._map
   });
 
   componentDidMount() {
@@ -62,10 +60,10 @@ export default class ReactMapboxGl extends Component {
       scrollZoom
     });
 
-    this.setState({ map });
+    this._map = map;
 
     if(onStyleLoad) {
-      map.on("style.load", onStyleLoad);
+      map.on("style.load", onStyleLoad.bind(this, map));
     }
 
     if(onClick) {
@@ -86,13 +84,13 @@ export default class ReactMapboxGl extends Component {
   }
 
   componentWillUnmount() {
-    this.state.map.off();
+    this._map.off();
   }
 
   componentWillReceiveProps(next) {
     let state = {};
 
-    if(!next.center.equals(this.state.map.getCenter()) && !this.props.center.equals(next.center)) {
+    if(!next.center.equals(this._map.getCenter()) && !this.props.center.equals(next.center)) {
       state.center = next.center.toJS();
     }
 
@@ -101,7 +99,7 @@ export default class ReactMapboxGl extends Component {
     }
 
     if(Object.keys(state).length > 0) {
-      this.state.map.flyTo(state);
+      this._map.flyTo(state);
     }
   }
 
