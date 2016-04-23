@@ -21,7 +21,9 @@ export default class ReactMapboxGl extends Component {
     onMouseMove: React.PropTypes.func,
     onMove: React.PropTypes.func,
     onMoveEnd: React.PropTypes.func,
-    scrollZoom: React.PropTypes.bool
+    scrollZoom: React.PropTypes.bool,
+    forceCenter: React.PropTypes.bool,
+    forceZoom: React.PropTypes.bool
   };
 
   state = {};
@@ -108,11 +110,11 @@ export default class ReactMapboxGl extends Component {
       return;
     }
 
-    if(!next.center.equals(map.getCenter()) && !this.props.center.equals(next.center)) {
+    if((!next.center.equals(map.getCenter()) && !this.props.center.equals(next.center)) || next.forceCenter) {
       state.center = next.center.toJS();
     }
 
-    if(next.zoom !== this.props.zoom && next.zoom !== map.getZoom()) {
+    if((next.zoom !== this.props.zoom && next.zoom !== map.getZoom()) || forceZoom) {
       state.zoom = next.zoom;
     }
 
