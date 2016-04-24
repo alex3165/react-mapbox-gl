@@ -73,9 +73,9 @@ export default class MapExample extends Component {
     // console.log("On mouse move", center);
   }
 
-  _polygonClicked() {
+  _polygonClicked = () => {
     console.log("Polygon clicked");
-  }
+  };
 
   render() {
     return (

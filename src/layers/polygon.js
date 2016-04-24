@@ -33,7 +33,7 @@ export default class Polygon extends Component {
     }
   };
 
-  _onMapStyleLoaded = () => {
+  componentWillMount() {
     const {
       sourceName,
       coordinates,
@@ -74,7 +74,7 @@ export default class Polygon extends Component {
     map.addSource(sourceName, source);
 
     map.addLayer(layer);
-  };
+  }
 
   componentWillUnmount() {
     const { sourceName } = this.props;

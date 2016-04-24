@@ -11,8 +11,6 @@ export default class Marker extends Component {
     HTMLContent: React.PropTypes.string
   };
 
-  _onMapStyleLoaded() {}
-
   componentWillMount() {
     let { HTMLContent, coordinates } = this.props;
     const { map } = this.context;

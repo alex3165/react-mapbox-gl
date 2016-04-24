@@ -32,7 +32,7 @@ export default class Marker extends Component {
     }
   };
 
-  _onMapStyleLoaded = () => {
+  componentWillMount() {
     const { sourceName, iconImage, coordinates, onClick, onHover } = this.props;
     const { map } = this.context;
 

@@ -21,8 +21,12 @@ export default class ReactMapboxGl extends Component {
     onMouseMove: React.PropTypes.func,
     onMove: React.PropTypes.func,
     onMoveEnd: React.PropTypes.func,
+    onMouseUp: React.PropTypes.func,
+    onDrag: React.PropTypes.func,
     scrollZoom: React.PropTypes.bool
   };
+
+  state = {};
 
   static defaultProps = {
     hash: false,
@@ -39,12 +43,27 @@ export default class ReactMapboxGl extends Component {
     map: React.PropTypes.object
   };
 
-  getChildContext = () => ({
-    map: this._map
-  });
+  getChildContext = () => {
+    return {
+      map: this.state.map
+    } 
+  };
+
+  state = {};
+
+  _onStyleLoaded(map) {
+    const { onStyleLoad } = this.props;
+
+    this.setState({ map });
+
+    if(onStyleLoad) {
+      onStyleLoad(map);
+    }
+  }
 
   componentDidMount() {
-    const { style, hash, preserveDrawingBuffer, accessToken, center, zoom, scrollZoom, onClick, onStyleLoad, onMouseMove, onMove, onMoveEnd } = this.props;
+
+    const { style, hash, preserveDrawingBuffer, accessToken, center, zoom, scrollZoom, onClick, onStyleLoad, onDrag, onMouseUp, onMouseMove, onMove, onMoveEnd } = this.props;
 
     const mapStyle = Map.isMap(style) ? style.toJS() : style;
 
@@ -60,11 +79,7 @@ export default class ReactMapboxGl extends Component {
       scrollZoom
     });
 
-    this._map = map;
-
-    if(onStyleLoad) {
-      map.on("style.load", onStyleLoad.bind(this, map));
-    }
+    map.on("style.load", this._onStyleLoaded.bind(this, map));
 
     if(onClick) {
       map.on("click", onClick);
@@ -72,6 +87,14 @@ export default class ReactMapboxGl extends Component {
 
     if(onMouseMove) {
       map.on("mousemove", onMouseMove);
+    }
+
+    if(onDrag) {
+      map.on("drag", onDrag);
+    }
+
+    if(onMouseUp) {
+      map.on("mouseup", onMouseUp);
     }
 
     if(onMove) {
@@ -84,31 +107,39 @@ export default class ReactMapboxGl extends Component {
   }
 
   componentWillUnmount() {
-    this._map.off();
+    this.state.map.off();
   }
 
   componentWillReceiveProps(next) {
     let state = {};
+    const { map } = this.state;
+    if(!map) {
+      console.warn("Updating the props of the map while the style has not been fully loaded")
+      return;
+    }
 
-    if(!next.center.equals(this._map.getCenter()) && !this.props.center.equals(next.center)) {
+    if(!next.center.equals(map.getCenter()) && this.props.center !== next.center) {
       state.center = next.center.toJS();
     }
 
-    if(next.zoom !== this.props.zoom) {
+    if(next.zoom !== this.props.zoom && next.zoom !== map.getZoom()) {
       state.zoom = next.zoom;
     }
 
     if(Object.keys(state).length > 0) {
-      this._map.flyTo(state);
+      map.flyTo(state);
     }
   }
 
   render() {
     const { containerStyle, children } = this.props;
+    const { map } = this.state;
 
     return (
       <div ref="mapboxContainer" style={containerStyle}>
-        { children }
+        {
+          map && children
+        }
       </div>
     )
   }

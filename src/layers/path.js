@@ -15,7 +15,7 @@ export default class Path extends Component {
     lineJoin: React.PropTypes.string
   };
 
-  _onMapStyleLoaded = () => {
+  componentWillMount() {
     const {
       sourceName,
       lineJoin,
@@ -53,7 +53,7 @@ export default class Path extends Component {
     map.addLayer(layer);
 
     this.setState({ source });
-  };
+  }
 
   componentWillUnmount() {
     const { sourceName } = this.props;

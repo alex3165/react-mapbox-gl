@@ -54,25 +54,31 @@ Mapbox throw a warning because react-mapbox-gl is using a compiled version of ma
 ### ReactMapboxGl: `React.Component`
 
 Display a mapbox webgl map
+> Render the children elements only when the style of the map is loaded
+
+To use the normal mapbox api use `onStyleLoad` property, the callback will receive the map object as a first arguments, then you can add your own logic using mapbox gl api.
 
 #### Properties
 - style : `String || Immutable.Map` (required) Mapbox map style
 - accessToken : `String` (required) Mapbox access token.
 - center : `List<Number>` Center the map at the position at initialisation
-> When updating the map component if the center values changed, the library will re-center the map to the new position using [flyTo](https://www.mapbox.com/mapbox-gl-js/api/#Map.flyTo)
+  - On re-rendering, it check for a reference equality, if the center is a new List, update to the given center [flyTo](https://www.mapbox.com/mapbox-gl-js/api/#Map.flyTo)
 - zoom : `Number` Zoom level of the map at initialisation
-  - When updating the map component if the zoom values changed, the library will change the zoom using [flyTo](https://www.mapbox.com/mapbox-gl-js/api/#Map.flyTo)
+  - Check the previous value and the new one, if the value changed update the zoom value [flyTo](https://www.mapbox.com/mapbox-gl-js/api/#Map.flyTo)
 - scrollZoom: See [mapbox scrollZoom](https://www.mapbox.com/mapbox-gl-js/api/#Map)
 - containerStyle : `Object` The style of the container of the map
 - hash : `Boolean`, Default : `false` [See mapbox doc](https://www.mapbox.com/mapbox-gl-js/api/#Map)
 - preserveDrawingBuffer: `Boolean`, Default : `false` [See mapbox doc](https://www.mapbox.com/mapbox-gl-js/api/#Map)
 - onClick: `Function` : Triggered whenever user click on the map
-- onStyleLoad: `Function` : Simple listener of mapbox event : `map.on("style.load")`
+- onStyleLoad: `Function` : Listener of mapbox event : `map.on("style.load")`
+  - Function : (map: Object, event: Object)
 - onMouseMove: `Function` : Listen the mouse moving on the map
 - onMove: `Function` : Executed whenever the center of the map change
   - Function : (center: Object<Number>, event: Object)
 - onMoveEnd: `Function` : Executed when the move of the map end
   - Function : (center: Object<Number>, event: Object)
+- onMouseUp : Simple binding of mapbox `mouseup` event
+- onDrag : Simple binding of mapbox `ondrag` event
 
 ### Marker: `React.Component`
 
