@@ -82,6 +82,14 @@ export default class LondonCycle extends Component {
     });
   }
 
+  _onHover(marker, map) {
+    map.getCanvas().style.cursor = "pointer";
+  }
+
+  _onOutHover(map) {
+    map.getCanvas().style.cursor = "";
+  }
+
   render() {
     const { stations, station, skip } = this.state;
 
@@ -112,6 +120,8 @@ export default class LondonCycle extends Component {
               return (
                 <Marker
                   key={index}
+                  onHover={this._onHover}
+                  onOutHover={this._onOutHover}
                   onClick={this._markerClick.bind(this, station)}
                   coordinates={station.get("position")}
                   sourceName={`marker-${index}`}
