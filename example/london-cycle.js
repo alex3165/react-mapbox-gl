@@ -48,6 +48,7 @@ export default class LondonCycle extends Component {
       this.setState({
         stations: fromJS(stations.map(station => ({
           id: parseInt(station.id[0]),
+          name: station.name[0],
           position: [parseFloat(station.long[0]), parseFloat(station.lat[0])],
           bikes: parseInt(station.nbBikes[0]),
           slots: parseInt(station.nbDocks[0]),
@@ -130,7 +131,8 @@ export default class LondonCycle extends Component {
               textAlign: "center",
               backgroundColor: "white"
             }}>
-              { station.get("bikes") } bikes / { station.get("slots") } slots
+              <p>{ station.get("name") }</p>
+              <p>{ station.get("bikes") } bikes / { station.get("slots") } slots</p>
             </div>
           )
         }
