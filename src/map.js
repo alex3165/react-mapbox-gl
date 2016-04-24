@@ -21,9 +21,9 @@ export default class ReactMapboxGl extends Component {
     onMouseMove: React.PropTypes.func,
     onMove: React.PropTypes.func,
     onMoveEnd: React.PropTypes.func,
-    scrollZoom: React.PropTypes.bool,
-    forceCenter: React.PropTypes.bool,
-    forceZoom: React.PropTypes.bool
+    onMouseUp: React.PropTypes.func,
+    onDrag: React.PropTypes.func,
+    scrollZoom: React.PropTypes.bool
   };
 
   state = {};
@@ -63,7 +63,7 @@ export default class ReactMapboxGl extends Component {
 
   componentDidMount() {
 
-    const { style, hash, preserveDrawingBuffer, accessToken, center, zoom, scrollZoom, onClick, onStyleLoad, onMouseMove, onMove, onMoveEnd } = this.props;
+    const { style, hash, preserveDrawingBuffer, accessToken, center, zoom, scrollZoom, onClick, onStyleLoad, onDrag, onMouseUp, onMouseMove, onMove, onMoveEnd } = this.props;
 
     const mapStyle = Map.isMap(style) ? style.toJS() : style;
 
@@ -89,6 +89,14 @@ export default class ReactMapboxGl extends Component {
       map.on("mousemove", onMouseMove);
     }
 
+    if(onDrag) {
+      map.on("drag", onDrag);
+    }
+
+    if(onMouseUp) {
+      map.on("mouseup", onMouseUp);
+    }
+
     if(onMove) {
       map.on("move", onMove.bind(this, map));
     }
@@ -110,11 +118,11 @@ export default class ReactMapboxGl extends Component {
       return;
     }
 
-    if((!next.center.equals(map.getCenter()) && !this.props.center.equals(next.center)) || next.forceCenter) {
+    if(!next.center.equals(map.getCenter()) && this.props.center !== next.center) {
       state.center = next.center.toJS();
     }
 
-    if((next.zoom !== this.props.zoom && next.zoom !== map.getZoom()) || forceZoom) {
+    if(next.zoom !== this.props.zoom && next.zoom !== map.getZoom()) {
       state.zoom = next.zoom;
     }
 
