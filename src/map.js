@@ -46,7 +46,7 @@ export default class ReactMapboxGl extends Component {
   getChildContext = () => {
     return {
       map: this.state.map
-    } 
+    }
   };
 
   state = {};
@@ -79,13 +79,19 @@ export default class ReactMapboxGl extends Component {
       scrollZoom
     });
 
-    map.on("style.load", this._onStyleLoaded.bind(this, map));
+    this.setState({ map });
 
-    if(onClick) {
+    if (onStyleLoad) {
+      map.on("style.load", () => {
+        onStyleLoad(map);
+      });
+    }
+
+    if (onClick) {
       map.on("click", onClick);
     }
 
-    if(onMouseMove) {
+    if (onMouseMove) {
       map.on("mousemove", onMouseMove);
     }
 
