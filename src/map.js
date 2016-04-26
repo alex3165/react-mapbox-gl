@@ -129,6 +129,7 @@ export default class ReactMapboxGl extends Component {
 
   shouldComponentUpdate(nextProps, nextState) {
     return (
+      nextProps.children !== this.props.children ||
       nextProps.containerStyle !== this.props.containerStyle ||
       nextState.map !== this.state.map
     );
