@@ -73,6 +73,7 @@ export default class Marker extends Component {
     const { sourceName } = this.props;
     const { map } = this.context;
 
+    map.removeLayer(sourceName);
     map.removeSource(sourceName);
     map.off("mousemove", this._onMouseMove);
     map.off("click", elementInteracted);
@@ -92,6 +93,7 @@ export default class Marker extends Component {
         }
       };
 
+      map.removeLayer(sourceName);
       map.addLayer(layer);
     }
   }
