@@ -79,10 +79,10 @@ export default class ReactMapboxGl extends Component {
       scrollZoom
     });
 
-    this.setState({ map });
-
     if (onStyleLoad) {
       map.on("style.load", () => {
+        this.setState({ map });
+
         onStyleLoad(map);
       });
     }
