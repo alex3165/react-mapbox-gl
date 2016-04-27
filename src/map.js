@@ -3,8 +3,6 @@ import React, { Component } from "react";
 import { Map, List } from "immutable";
 
 export default class ReactMapboxGl extends Component {
-  displayName = "ReactMapboxGl";
-
   static propTypes = {
     style: React.PropTypes.oneOfType([
       React.PropTypes.string,
