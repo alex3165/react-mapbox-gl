@@ -1,40 +1,37 @@
 import MapboxGl from "mapbox-gl/dist/mapbox-gl";
-import React, { Component } from "react";
+import React, { Component, PropTypes } from "react";
 import { Map, List } from "immutable";
 
 export default class ReactMapboxGl extends Component {
-  displayName = "ReactMapboxGl";
-
   static propTypes = {
-    style: React.PropTypes.oneOfType([
-      React.PropTypes.string,
-      React.PropTypes.instanceOf(Map)
+    style: PropTypes.oneOfType([
+      PropTypes.string,
+      PropTypes.instanceOf(Map)
     ]).isRequired,
-    accessToken: React.PropTypes.string.isRequired,
-    center: React.PropTypes.instanceOf(List),
-    zoom: React.PropTypes.number,
-    containerStyle: React.PropTypes.object,
-    hash: React.PropTypes.bool,
-    preserveDrawingBuffer: React.PropTypes.bool,
-    onClick: React.PropTypes.func,
-    onStyleLoad: React.PropTypes.func,
-    onMouseMove: React.PropTypes.func,
-    onMove: React.PropTypes.func,
-    onMoveEnd: React.PropTypes.func,
-    onMouseUp: React.PropTypes.func,
-    onDrag: React.PropTypes.func,
-    scrollZoom: React.PropTypes.bool
-  };
 
-  state = {};
+    accessToken: PropTypes.string.isRequired,
+    center: PropTypes.arrayOf(PropTypes.number),
+    zoom: PropTypes.number,
+    containerStyle: PropTypes.object,
+    hash: PropTypes.bool,
+    preserveDrawingBuffer: PropTypes.bool,
+    onClick: PropTypes.func,
+    onStyleLoad: PropTypes.func,
+    onMouseMove: PropTypes.func,
+    onMove: PropTypes.func,
+    onMoveEnd: PropTypes.func,
+    onMouseUp: PropTypes.func,
+    onDrag: PropTypes.func,
+    scrollZoom: PropTypes.bool
+  };
 
   static defaultProps = {
     hash: false,
     preserveDrawingBuffer: false,
-    center: new List([
+    center: [
       -0.2416815,
       51.5285582
-    ]),
+    ],
     zoom: 11,
     scrollZoom: true
   };
@@ -43,27 +40,26 @@ export default class ReactMapboxGl extends Component {
     map: React.PropTypes.object
   };
 
+  state = {};
+
   getChildContext = () => {
     return {
       map: this.state.map
-    } 
+    }
   };
 
   state = {};
 
-  _onStyleLoaded(map) {
-    const { onStyleLoad } = this.props;
-
-    this.setState({ map });
-
-    if(onStyleLoad) {
-      onStyleLoad(map);
-    }
-  }
-
   componentDidMount() {
-
-    const { style, hash, preserveDrawingBuffer, accessToken, center, zoom, scrollZoom, onClick, onStyleLoad, onDrag, onMouseUp, onMouseMove, onMove, onMoveEnd } = this.props;
+    const {
+      style,
+      hash,
+      preserveDrawingBuffer,
+      accessToken,
+      center,
+      zoom,
+      scrollZoom
+    } = this.props;
 
     const mapStyle = Map.isMap(style) ? style.toJS() : style;
 
@@ -79,55 +75,90 @@ export default class ReactMapboxGl extends Component {
       scrollZoom
     });
 
-    map.on("style.load", this._onStyleLoaded.bind(this, map));
+    map.on("style.load", () => {
+      this.setState({ map });
 
-    if(onClick) {
-      map.on("click", onClick);
-    }
+      if (this.props.onStyleLoad) {
+        this.props.onStyleLoad(map);
+      }
+    });
 
-    if(onMouseMove) {
-      map.on("mousemove", onMouseMove);
-    }
+    map.on("click", (...args) => {
+      if (this.props.onClick) {
+        this.props.onClick(...args);
+      }
+    });
 
-    if(onDrag) {
-      map.on("drag", onDrag);
-    }
+    map.on("mousemove", (...args) => {
+      if (this.props.onMouseMove) {
+        this.props.onMouseMove(...args);
+      }
+    });
 
-    if(onMouseUp) {
-      map.on("mouseup", onMouseUp);
-    }
+    map.on("drag", (...args) => {
+      if (this.props.onDrag) {
+        this.props.onDrag(...args);
+      }
+    });
 
-    if(onMove) {
-      map.on("move", onMove.bind(this, map));
-    }
+    map.on("mouseup", (...args) => {
+      if (this.props.onMouseUp) {
+        this.props.onMouseUp(...args);
+      }
+    });
 
-    if(onMoveEnd) {
-      map.on("moveend", onMoveEnd.bind(this, map));
-    }
+    map.on("move", (...args) => {
+      if (this.props.onMove) {
+        this.props.onMove(map, ...args);
+      }
+    });
+
+    map.on("moveend", (...args) => {
+      if (this.props.onMoveEnd) {
+        this.props.onMoveEnd(map, ...args);
+      }
+    });
   }
 
   componentWillUnmount() {
-    this.state.map.off();
+    if (this.state.map) {
+      this.state.map.off();
+    }
   }
 
-  componentWillReceiveProps(next) {
-    let state = {};
+  shouldComponentUpdate(nextProps, nextState) {
+    return (
+      nextProps.children !== this.props.children ||
+      nextProps.containerStyle !== this.props.containerStyle ||
+      nextState.map !== this.state.map
+    );
+  }
+
+  componentWillReceiveProps(nextProps) {
     const { map } = this.state;
-    if(!map) {
-      console.warn("Updating the props of the map while the style has not been fully loaded")
-      return;
+
+    if (!map) {
+      throw new Error("Updating the props of the map while the style hasn't loaded is not possible!");
     }
 
-    if(!next.center.equals(map.getCenter()) && this.props.center !== next.center) {
-      state.center = next.center.toJS();
-    }
+    const center = map.getCenter();
+    const zoom = map.getZoom();
 
-    if(next.zoom !== this.props.zoom && next.zoom !== map.getZoom()) {
-      state.zoom = next.zoom;
-    }
+    const didZoomUpdate = (
+      this.props.zoom !== nextProps.zoom &&
+      nextProps.zoom !== map.getZoom()
+    );
 
-    if(Object.keys(state).length > 0) {
-      map.flyTo(state);
+    const didCenterUpdate = (
+      this.props.center !== nextProps.center &&
+      nextProps.center !== map.getCenter()
+    );
+
+    if (didZoomUpdate || didCenterUpdate) {
+      map.flyTo({
+        zoom: nextProps.zoom,
+        center: nextProps.center
+      });
     }
   }
 

@@ -13,7 +13,8 @@ export default class Marker extends Component {
     iconImage: React.PropTypes.string.isRequired,
     onClick: React.PropTypes.func,
     onHover: React.PropTypes.func,
-    onOutHover: React.PropTypes.func
+    onOutHover: React.PropTypes.func,
+    iconSize: React.PropTypes.number
   };
 
   _onMouseMove = (args, evt) => {
@@ -33,7 +34,7 @@ export default class Marker extends Component {
   };
 
   componentWillMount() {
-    const { sourceName, iconImage, coordinates, onClick, onHover } = this.props;
+    const { sourceName, coordinates, iconImage, onClick, onHover, iconSize } = this.props;
     const { map } = this.context;
 
     const layer = {
@@ -41,7 +42,8 @@ export default class Marker extends Component {
       "type": "symbol",
       "source": sourceName,
       "layout": {
-        "icon-image": iconImage
+        "icon-image": iconImage,
+        "icon-size": iconSize || 1
       }
     };
 
@@ -71,9 +73,29 @@ export default class Marker extends Component {
     const { sourceName } = this.props;
     const { map } = this.context;
 
+    map.removeLayer(sourceName);
     map.removeSource(sourceName);
     map.off("mousemove", this._onMouseMove);
     map.off("click", elementInteracted);
+  }
+
+  componentWillReceiveProps(next) {
+    if (next.iconImage !== this.props.iconImage) {
+      const { map } = this.context;
+      const { sourceName, iconImage, iconSize } = next;
+      const layer = {
+        "id": sourceName,
+        "type": "symbol",
+        "source": sourceName,
+        "layout": {
+          "icon-image": iconImage,
+          "icon-size": iconSize || 1
+        }
+      };
+
+      map.removeLayer(sourceName);
+      map.addLayer(layer);
+    }
   }
 
   _onCoordinatesUpdated = (coordinates) => {
