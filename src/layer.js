@@ -2,7 +2,7 @@ import MapboxGl from "mapbox-gl/dist/mapbox-gl";
 import React, { Component, PropTypes, cloneElement, Children } from "react";
 import { Map } from "immutable";
 
-import Point from "./features/point";
+import Feature from "./feature";
 
 let index = 0;
 function generateID() {
@@ -16,11 +16,20 @@ export default class Layer extends Component {
 
   static propTypes = {
     id: PropTypes.string,
-    type: PropTypes.string,
-    iconImage: PropTypes.string,
-    iconSize: PropTypes.number,
+
+    type: PropTypes.oneOf([
+      "symbol",
+      "line",
+      "fill"
+    ]),
+
     layout: PropTypes.object,
+    paint: PropTypes.object,
     sourceOptions: PropTypes.object
+  };
+
+  static defaultProps = {
+    type: "symbol"
   };
 
   state = {
@@ -38,14 +47,32 @@ export default class Layer extends Component {
     }
   });
 
-  featurePoint = (props, id) => ({
+  geometry = coordinates => {
+    switch (this.props.type) {
+      case "symbol": return {
+        type: "Point",
+        coordinates
+      };
+
+      case "fill": return {
+        type: "Polygon",
+        coordinates
+      };
+
+      case "line": return {
+        type: "LineString",
+        coordinates
+      };
+
+      default: return null;
+    }
+  };
+
+  feature = (props, id) => ({
     type: "Feature",
-    geometry: {
-      type: "Point",
-      coordinates: props.coordinates
-    },
+    geometry: this.geometry(props.coordinates),
     properties: { id }
-  });
+  })
 
   onClick = evt => {
     const { map } = this.context;
@@ -69,18 +96,15 @@ export default class Layer extends Component {
 
   componentWillMount() {
     const { id, sourceName, source } = this;
-    const { type, iconImage, iconSize, layout } = this.props;
+    const { type, iconImage, iconSize, layout, paint } = this.props;
     const { map } = this.context;
 
     const layer = {
       id,
       source: id,
-      type: type || "symbol",
-      layout: {
-        "icon-image": iconImage,
-        "icon-size": iconSize || 1,
-        ...layout
-      }
+      type,
+      layout,
+      paint
     };
 
     map.addSource(id, source);
@@ -111,13 +135,7 @@ export default class Layer extends Component {
     const { children } = this.props;
 
     const features = children
-      .map(({ type, props }, id) => {
-        switch (type) {
-          case Point: return this.featurePoint(props, id);
-
-          default: return null;
-        }
-      })
+      .map(({ props }, id) => this.feature(props, id))
       .filter(Boolean);
 
     this.source.setData({
