@@ -53,15 +53,38 @@ export default class Layer extends Component {
     const { id } = this;
     const { features } = this.state;
 
-    const clicked = map.queryRenderedFeatures(evt.point, {
-      layers: [id]
-    });
+    const clicked = map
+      .queryRenderedFeatures(evt.point, { layers: [id] })
+      .map(x => {
+        const { id } = x.properties
+        return features.get(id);
+      })
+      .filter(Boolean)
+      .forEach(point => {
+        const { onClick, geometry, properties } = point;
 
-    features
-      .filter(x => clicked.indexOf(x) > -1)
-      .forEach(({ onClick }) => {
-        onClick(evt);
+        onClick({
+          ...evt,
+          geometry,
+          properties
+        });
       });
+  };
+
+  update = features => {
+    const { source } = this;
+    const data = {
+      type: "FeatureCollection",
+      features: features
+        .map(({ geometry, properties }) => ({
+          type: "Feature",
+          geometry,
+          properties
+        }))
+        .toArray()
+    };
+
+    source.setData(data);
   };
 
   componentWillMount() {
@@ -96,22 +119,21 @@ export default class Layer extends Component {
     map.off("click", this.onClick);
   }
 
+  shouldComponentUpdate(nextProps, nextState) {
+    if (nextState.features !== this.state.features) {
+      this.update(nextState.features);
+    }
+
+    if (nextProps.children !== this.props.children) {
+      return true;
+    }
+
+    return false;
+  }
+
   render() {
-    const { sourceName, source } = this;
-    const { features } = this.state;
+    const { sourceName } = this;
     const { children } = this.props;
-
-    const data = {
-      type: "FeatureCollection",
-      features: features
-        .map(({ geometry }) => ({
-          type: "Feature",
-          geometry
-        }))
-        .toArray()
-    };
-
-    source.setData(data);
 
     return (
       <div>

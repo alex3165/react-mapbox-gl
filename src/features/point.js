@@ -33,6 +33,7 @@ export default class Point extends Component {
         type: "Point",
         coordinates
       },
+      properties: { id },
       onClick
     });
   }
@@ -47,6 +48,7 @@ export default class Point extends Component {
           type: "Point",
           coordinates
         },
+        properties: { id },
         onClick
       });
     }
