@@ -34,10 +34,6 @@ export default class Layer extends Component {
     paint: {}
   };
 
-  state = {
-    features: new Map()
-  };
-
   identifier = this.props.id || generateID();
   id = `layer-${this.identifier}`;
 
