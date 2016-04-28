@@ -29,7 +29,9 @@ export default class Layer extends Component {
   };
 
   static defaultProps = {
-    type: "symbol"
+    type: "symbol",
+    layout: {},
+    paint: {}
   };
 
   state = {
