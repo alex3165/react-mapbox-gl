@@ -1,38 +1,37 @@
 import MapboxGl from "mapbox-gl/dist/mapbox-gl";
-import React, { Component } from "react";
+import React, { Component, PropTypes } from "react";
 import { Map, List } from "immutable";
 
 export default class ReactMapboxGl extends Component {
   static propTypes = {
-    style: React.PropTypes.oneOfType([
-      React.PropTypes.string,
-      React.PropTypes.instanceOf(Map)
+    style: PropTypes.oneOfType([
+      PropTypes.string,
+      PropTypes.instanceOf(Map)
     ]).isRequired,
-    accessToken: React.PropTypes.string.isRequired,
-    center: React.PropTypes.instanceOf(List),
-    zoom: React.PropTypes.number,
-    containerStyle: React.PropTypes.object,
-    hash: React.PropTypes.bool,
-    preserveDrawingBuffer: React.PropTypes.bool,
-    onClick: React.PropTypes.func,
-    onStyleLoad: React.PropTypes.func,
-    onMouseMove: React.PropTypes.func,
-    onMove: React.PropTypes.func,
-    onMoveEnd: React.PropTypes.func,
-    onMouseUp: React.PropTypes.func,
-    onDrag: React.PropTypes.func,
-    scrollZoom: React.PropTypes.bool
-  };
 
-  state = {};
+    accessToken: PropTypes.string.isRequired,
+    center: PropTypes.arrayOf(PropTypes.number),
+    zoom: PropTypes.number,
+    containerStyle: PropTypes.object,
+    hash: PropTypes.bool,
+    preserveDrawingBuffer: PropTypes.bool,
+    onClick: PropTypes.func,
+    onStyleLoad: PropTypes.func,
+    onMouseMove: PropTypes.func,
+    onMove: PropTypes.func,
+    onMoveEnd: PropTypes.func,
+    onMouseUp: PropTypes.func,
+    onDrag: PropTypes.func,
+    scrollZoom: PropTypes.bool
+  };
 
   static defaultProps = {
     hash: false,
     preserveDrawingBuffer: false,
-    center: new List([
+    center: [
       -0.2416815,
       51.5285582
-    ]),
+    ],
     zoom: 11,
     scrollZoom: true
   };
@@ -40,6 +39,8 @@ export default class ReactMapboxGl extends Component {
   static childContextTypes = {
     map: React.PropTypes.object
   };
+
+  state = {};
 
   getChildContext = () => {
     return {
@@ -150,19 +151,13 @@ export default class ReactMapboxGl extends Component {
 
     const didCenterUpdate = (
       this.props.center !== nextProps.center &&
-      nextProps.center.reduce((acc, x, key) => {
-        if (!center[key] || center[key] !== x) {
-          return true;
-        }
-
-        return acc;
-      }, false)
+      nextProps.center !== map.getCenter()
     );
 
     if (didZoomUpdate || didCenterUpdate) {
       map.flyTo({
         zoom: nextProps.zoom,
-        center: nextProps.center.toJS()
+        center: nextProps.center
       });
     }
   }
