@@ -12,7 +12,9 @@ const containerStyle = {
 };
 
 const buttonStyle = {
-  backgroundColor: "#fff",
+  backgroundColor: "#f9f9f9",
+  opacity: .95,
+  transition: "background-color 0.16s ease-out",
   cursor: "pointer",
   border: 0,
   height: 26,
@@ -22,6 +24,11 @@ const buttonStyle = {
   backgroundSize: "26px 260px",
   cursor: "pointer",
   outline: 0
+};
+
+const buttonStyleHovered = {
+  backgroundColor: "#fff",
+  opacity: 1
 };
 
 const buttonStylePlus = {
@@ -42,17 +49,45 @@ export default class ZoomControl extends Component {
     onControlClick: React.PropTypes.func
   };
 
+  state = {
+    hoverPlus: false,
+    hoverMinus: false
+  };
+
+  _onMouse(key, bool) {
+    this.setState({
+      [key]: bool
+    });
+  };
+
   render() {
     const { onControlClick, zoomDiff } = this.props;
+    const { hoverPlus, hoverMinus } = this.state;
 
     return (
       <div style={containerStyle}>
         <button
-          style={Object.assign({}, buttonStyle, buttonStylePlus)}
+          style={
+            Object.assign({},
+              buttonStyle,
+              buttonStylePlus,
+              hoverPlus ? buttonStyleHovered : {}
+            )
+          }
+          onMouseOver={this._onMouse.bind(this, "hoverPlus", true)}
+          onMouseOut={this._onMouse.bind(this, "hoverPlus", false)}
           onClick={onControlClick.bind(this, zoomDiff)}>
         </button>
         <button
-          style={Object.assign({}, buttonStyle, buttonStyleMinus)}
+          style={
+            Object.assign({},
+              buttonStyle,
+              buttonStyleMinus,
+              hoverMinus ? buttonStyleHovered : {}
+            )
+          }
+          onMouseOver={this._onMouse.bind(this, "hoverMinus", true)}
+          onMouseOut={this._onMouse.bind(this, "hoverMinus", false)}
           onClick={onControlClick.bind(this, -zoomDiff)}>
         </button>
       </div>
