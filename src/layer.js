@@ -2,6 +2,8 @@ import MapboxGl from "mapbox-gl/dist/mapbox-gl";
 import React, { Component, PropTypes, cloneElement, Children } from "react";
 import { Map } from "immutable";
 
+import Point from "./features/point";
+
 let index = 0;
 function generateID() {
   return index++;
@@ -32,59 +34,37 @@ export default class Layer extends Component {
     ...this.props.sourceOptions,
     data: {
       type: "FeatureCollection",
-      features: this.state.features
+      features: []
     }
   });
 
-  addFeature = (id, feature) => {
-    this.setState(({ features }) => ({
-      features: features.set(id, feature)
-    }));
-  };
-
-  removeFeature = id => {
-    this.setState(({ features }) => ({
-      features: features.delete(id)
-    }));
-  };
+  featurePoint = (props, id) => ({
+    type: "Feature",
+    geometry: {
+      type: "Point",
+      coordinates: props.coordinates
+    },
+    properties: { id }
+  });
 
   onClick = evt => {
     const { map } = this.context;
+    const { children } = this.props;
     const { id } = this;
-    const { features } = this.state;
 
-    const clicked = map
-      .queryRenderedFeatures(evt.point, { layers: [id] })
-      .map(x => {
-        const { id } = x.properties
-        return features.get(id);
-      })
-      .filter(Boolean)
-      .forEach(point => {
-        const { onClick, geometry, properties } = point;
+    const clicked = map.queryRenderedFeatures(evt.point, { layers: [id] });
 
-        onClick({
-          ...evt,
-          geometry,
-          properties
-        });
+    for (let feature of clicked) {
+      const { geometry, properties } = feature;
+      const child = children[properties.id];
+      const { onClick } = child.props;
+
+      onClick && onClick({
+        ...evt,
+        geometry,
+        properties
       });
-  };
-
-  update = features => {
-    const { source } = this;
-    const data = {
-      type: "FeatureCollection",
-      features: features
-        .map(({ geometry, properties }) => ({
-          type: "Feature",
-          geometry,
-          properties
-        }))
-        .toArray()
-    };
-
-    source.setData(data);
+    }
   };
 
   componentWillMount() {
@@ -120,10 +100,6 @@ export default class Layer extends Component {
   }
 
   shouldComponentUpdate(nextProps, nextState) {
-    if (nextState.features !== this.state.features) {
-      this.update(nextState.features);
-    }
-
     if (nextProps.children !== this.props.children) {
       return true;
     }
@@ -132,21 +108,24 @@ export default class Layer extends Component {
   }
 
   render() {
-    const { sourceName } = this;
     const { children } = this.props;
 
-    return (
-      <div>
-        {
-          Children.map(children, x => {
-            return cloneElement(x, {
-              addFeature: this.addFeature,
-              removeFeature: this.removeFeature,
-              sourceName
-            });
-          })
+    const features = children
+      .map(({ type, props }, id) => {
+        switch (type) {
+          case Point: return this.featurePoint(props, id);
+
+          default: return null;
         }
-      </div>
-    );
+      })
+      .filter(Boolean);
+
+    this.source.setData({
+      type: "FeatureCollection",
+      features
+    });
+
+    return null;
   }
 }
+

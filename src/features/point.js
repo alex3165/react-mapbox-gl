@@ -16,49 +16,6 @@ export default class Point extends Component {
     onClick: PropTypes.func
   };
 
-  id = `point-${this.props.id || generateID()}`;
-
-  onClick = evt => {
-    if (this.props.onClick) {
-      this.props.onClick(evt);
-    }
-  };
-
-  componentWillMount() {
-    const { id, onClick } = this;
-    const { coordinates } = this.props;
-
-    this.props.addFeature(id, {
-      geometry: {
-        type: "Point",
-        coordinates
-      },
-      properties: { id },
-      onClick
-    });
-  }
-
-  componentWillReceiveProps(nextProps) {
-    if (nextProps.coordinates !== this.props.coordinates) {
-      const { id, onClick } = this;
-      const { coordinates } = nextProps;
-
-      this.props.addFeature(id, {
-        geometry: {
-          type: "Point",
-          coordinates
-        },
-        properties: { id },
-        onClick
-      });
-    }
-  }
-
-  componentWillUnmount() {
-    const { id } = this;
-    this.props.removeFeature(this.id);
-  }
-
   render() {
     return null;
   }
