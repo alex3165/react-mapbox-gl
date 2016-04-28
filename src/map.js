@@ -70,7 +70,7 @@ export default class ReactMapboxGl extends Component {
       hash,
       zoom,
       container: this.refs.mapboxContainer,
-      center: center.toJS(),
+      center: center,
       style: mapStyle,
       scrollZoom
     });
