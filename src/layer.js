@@ -1,6 +1,5 @@
 import MapboxGl from "mapbox-gl/dist/mapbox-gl";
 import React, { Component, PropTypes, cloneElement, Children } from "react";
-import { Map } from "immutable";
 
 import Feature from "./feature";
 
@@ -94,7 +93,7 @@ export default class Layer extends Component {
 
   componentWillMount() {
     const { id, sourceName, source } = this;
-    const { type, iconImage, iconSize, layout, paint } = this.props;
+    const { type, layout, paint } = this.props;
     const { map } = this.context;
 
     const layer = {

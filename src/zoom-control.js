@@ -43,6 +43,8 @@ const buttonStyleMinus = {
   borderBottomRightRadius: 2
 };
 
+const [PLUS, MINUS] = [0,1];
+
 export default class ZoomControl extends Component {
   static propTypes = {
     zoomDiff: React.PropTypes.number,
@@ -50,44 +52,39 @@ export default class ZoomControl extends Component {
   };
 
   state = {
-    hoverPlus: false,
-    hoverMinus: false
+    hover: undefined
   };
 
-  _onMouse(key, bool) {
-    this.setState({
-      [key]: bool
-    });
+  _onMouse = (hover) => {
+    if(hover !== this.state.hover) {
+      this.setState({ hover });
+    }
   };
 
   render() {
     const { onControlClick, zoomDiff } = this.props;
-    const { hoverPlus, hoverMinus } = this.state;
+    const { hover } = this.state;
 
     return (
       <div style={containerStyle}>
         <button
-          style={
-            Object.assign({},
-              buttonStyle,
-              buttonStylePlus,
-              hoverPlus ? buttonStyleHovered : {}
-            )
-          }
-          onMouseOver={this._onMouse.bind(this, "hoverPlus", true)}
-          onMouseOut={this._onMouse.bind(this, "hoverPlus", false)}
+          style={{
+            ...buttonStyle,
+            ...buttonStylePlus,
+            ...(hover === PLUS && buttonStyleHovered)
+          }}
+          onMouseOver={this._onMouse.bind(this, PLUS)}
+          onMouseOut={this._onMouse}
           onClick={onControlClick.bind(this, zoomDiff)}>
         </button>
         <button
-          style={
-            Object.assign({},
-              buttonStyle,
-              buttonStyleMinus,
-              hoverMinus ? buttonStyleHovered : {}
-            )
-          }
-          onMouseOver={this._onMouse.bind(this, "hoverMinus", true)}
-          onMouseOut={this._onMouse.bind(this, "hoverMinus", false)}
+          style={{
+            ...buttonStyle,
+            ...buttonStyleMinus,
+            ...(hover === MINUS && buttonStyleHovered)
+          }}
+          onMouseOver={this._onMouse.bind(this, MINUS)}
+          onMouseOut={this._onMouse}
           onClick={onControlClick.bind(this, -zoomDiff)}>
         </button>
       </div>

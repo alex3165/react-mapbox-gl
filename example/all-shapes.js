@@ -26,7 +26,7 @@ const markerCoord = [
 
 const mappedRoute = route.points.map(point => [ point.lat, point.lng ]);
 
-export default class MapExample extends Component {
+export default class AllShapes extends Component {
 
   state = {
     popup: null,
@@ -41,11 +41,11 @@ export default class MapExample extends Component {
     }, 3000);
   }
 
-  _onClickMarker(marker) {
+  _onClickMarker = (marker) => {
     this.setState({
       center: marker.geometry.coordinates
     });
-  }
+  };
 
   _onClickMap(map) {
     console.log("Clicked on the map : ", map);
@@ -91,10 +91,8 @@ export default class MapExample extends Component {
           type="symbol"
           layout={{ "icon-image": "harbor-15" }}>
           <Feature
-            // onHover={this._onHover}
-            // onOutHover={this._onOutHover}
             coordinates={markerCoord}
-            onClick={this._onClickMarker.bind(this)}/>
+            onClick={this._onClickMarker}/>
         </Layer>
 
         <Layer

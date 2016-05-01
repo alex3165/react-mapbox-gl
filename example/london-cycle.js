@@ -32,6 +32,15 @@ const containerStyle = {
 const styles = {
   button: {
     cursor: "pointer"
+  },
+  stationDescription: {
+    position: "absolute",
+    bottom: 0,
+    left: 0,
+    right: 0,
+    padding: "16px 0px",
+    textAlign: "center",
+    backgroundColor: "white"
   }
 }
 
@@ -76,42 +85,11 @@ export default class LondonCycle extends Component {
     }
   };
 
-  _clickButton(direction) {
-    const { skip } = this.state;
-
-    const nextSkip = (direction < 0 && skip > 20) ? (skip - offset) : (skip + offset);
-
-    this.setState({
-      skip: nextSkip
-    });
-  }
-
-  _onHover(marker, map) {
-    map.getCanvas().style.cursor = "pointer";
-  }
-
-  _onOutHover(map) {
-    map.getCanvas().style.cursor = "";
-  }
-
   render() {
     const { stations, station, skip } = this.state;
 
     return (
       <div>
-        <div style={{
-          position: "absolute",
-          top: 0,
-          left: 0,
-          right: 0,
-          padding: "16px 20px",
-          zIndex: 1,
-          textAlign: "right",
-          color: "#3453DC"
-        }}>
-          <span style={styles.button} onClick={this._clickButton.bind(this, -1)}>Prev</span> / <span style={styles.button} onClick={this._clickButton.bind(this, 1)}>Next</span>
-        </div>
-
         <ReactMapboxGl
           style={style}
           center={this.state.center}
@@ -119,41 +97,27 @@ export default class LondonCycle extends Component {
           accessToken={accessToken}
           onDrag={this._onDrag}
           containerStyle={containerStyle}>
-
           <Layer
             type="symbol"
             id="marker"
             layout={{ "icon-image": "marker-15" }}>
             {
               stations
-                .skip(skip)
-                .take(offset)
                 .map((station, index) => (
                   <Feature
                     key={station.get("id")}
                     id={station.get("id")}
-                    // onHover={this._onHover}
-                    // onOutHover={this._onOutHover}
                     onClick={this._markerClick.bind(this, station)}
                     coordinates={station.get("position")}/>
                 )).toArray()
             }
           </Layer>
 
-
         </ReactMapboxGl>
 
         {
           station && (
-            <div style={{
-              position: "absolute",
-              bottom: 0,
-              left: 0,
-              right: 0,
-              padding: "16px 0px",
-              textAlign: "center",
-              backgroundColor: "white"
-            }}>
+            <div style={styles.stationDescription}>
               <p>{ station.get("name") }</p>
               <p>{ station.get("bikes") } bikes / { station.get("slots") } slots</p>
             </div>

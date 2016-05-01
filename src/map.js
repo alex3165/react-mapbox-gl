@@ -1,12 +1,11 @@
 import MapboxGl from "mapbox-gl/dist/mapbox-gl";
 import React, { Component, PropTypes } from "react";
-import { Map, List } from "immutable";
 
 export default class ReactMapboxGl extends Component {
   static propTypes = {
     style: PropTypes.oneOfType([
       PropTypes.string,
-      PropTypes.instanceOf(Map)
+      PropTypes.object
     ]).isRequired,
 
     accessToken: PropTypes.string.isRequired,
@@ -42,11 +41,9 @@ export default class ReactMapboxGl extends Component {
 
   state = {};
 
-  getChildContext = () => {
-    return {
-      map: this.state.map
-    }
-  };
+  getChildContext = () => ({
+    map: this.state.map
+  });
 
   state = {};
 
@@ -58,10 +55,15 @@ export default class ReactMapboxGl extends Component {
       accessToken,
       center,
       zoom,
+      onStyleLoad,
+      onClick,
+      onMouseMove,
+      onDrag,
+      onMouseUp,
+      onMove,
+      onMoveEnd,
       scrollZoom
     } = this.props;
-
-    const mapStyle = Map.isMap(style) ? style.toJS() : style;
 
     MapboxGl.accessToken = accessToken;
 
@@ -70,52 +72,52 @@ export default class ReactMapboxGl extends Component {
       hash,
       zoom,
       container: this.refs.mapboxContainer,
-      center: center,
-      style: mapStyle,
+      center,
+      style,
       scrollZoom
     });
 
     map.on("style.load", () => {
       this.setState({ map });
 
-      if (this.props.onStyleLoad) {
-        this.props.onStyleLoad(map);
+      if (onStyleLoad) {
+        onStyleLoad(map);
       }
     });
 
     map.on("click", (...args) => {
-      if (this.props.onClick) {
-        this.props.onClick(...args);
+      if (onClick) {
+        onClick(...args);
       }
     });
 
     map.on("mousemove", (...args) => {
-      if (this.props.onMouseMove) {
-        this.props.onMouseMove(...args);
+      if (onMouseMove) {
+        onMouseMove(...args);
       }
     });
 
     map.on("drag", (...args) => {
-      if (this.props.onDrag) {
-        this.props.onDrag(...args);
+      if (onDrag) {
+        onDrag(...args);
       }
     });
 
     map.on("mouseup", (...args) => {
-      if (this.props.onMouseUp) {
-        this.props.onMouseUp(...args);
+      if (onMouseUp) {
+        onMouseUp(...args);
       }
     });
 
     map.on("move", (...args) => {
-      if (this.props.onMove) {
-        this.props.onMove(map, ...args);
+      if (onMove) {
+        onMove(map, ...args);
       }
     });
 
     map.on("moveend", (...args) => {
-      if (this.props.onMoveEnd) {
-        this.props.onMoveEnd(map, ...args);
+      if (onMoveEnd) {
+        onMoveEnd(map, ...args);
       }
     });
   }
@@ -136,10 +138,7 @@ export default class ReactMapboxGl extends Component {
 
   componentWillReceiveProps(nextProps) {
     const { map } = this.state;
-
-    if (!map) {
-      throw new Error("Updating the props of the map while the style hasn't loaded is not possible!");
-    }
+    if (!map) return;
 
     const center = map.getCenter();
     const zoom = map.getZoom();

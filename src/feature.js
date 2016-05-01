@@ -1,13 +1,10 @@
-import React, { Component, PropTypes } from "react";
+import React, { PropTypes } from "react";
 
-export default class Feature extends Component {
-  static propTypes = {
-    coordinates: PropTypes.array.isRequired,
-    onClick: PropTypes.func
-  };
+const Feature = () => null;
 
-  render() {
-    return null;
-  }
-}
+Feature.propTypes = {
+  coordinates: PropTypes.array.isRequired,
+  onClick: PropTypes.func
+};
 
+export default Feature;

@@ -39,8 +39,6 @@
     "mapbox-gl": "^0.17.0"
   },
   "peerDependencies": {
-    "react-mixin": "^3.0.5",
-    "immutable": "^3.8.0",
     "react": "^15.0.1"
   },
   "devDependencies": {
