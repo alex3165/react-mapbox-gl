@@ -6,19 +6,16 @@ Based on [mapbox-gl-js](https://www.mapbox.com/mapbox-gl-js/api/) this library a
 The library include the following elements :
 
 - ReactMapboxGl
-- Marker
-- Path
-- Polygon
+- Layer
+- Feature
+  - Layer type properties `symbol` display a mapbox point
+  - Layer type properties `line` display a lineString
+  - Layer type properties `fill` display a polygon
+- ZoomControl
 
 It will include as well:
 
 - Popup
-
-## Peer-dependencies
-
-You need to install the following dependencies to make it work :
-- [immutablejs](https://facebook.github.io/immutable-js/docs/#/) for some properties
-- react-mixin
 
 ## How to start
 
@@ -30,22 +27,27 @@ Import the component :
 
 ```
 // ES6 way
-import ReactMapboxGl, { Marker, Path } from "react-mapbox-gl";
+import ReactMapboxGl, { Layer, Feature } from "react-mapbox-gl";
 
 // ES5
 var ReactMapboxGl = require("react-mapbox-gl");
-var Marker = ReactMapboxGl.Marker;
-var Path = ReactMapboxGl.Path;
+var Layer = ReactMapboxGl.Layer;
+var Feature = ReactMapboxGl.Feature;
 ```
 
-[Example](example/map-example.js)
+## Examples
 
-## Run the example
+- See the example to display a big amount of markers : [London cycle example](example/london-cycle.js)
+- See the example to display all the availables shapes : [All shapes example](example/all-shapes.js) 
+
+### Run the examples
 
 - Clone the repository
 - Install the dependencies: `npm install`
 - Run the example : `npm run example`
-> Default port: 8080
+  - Default port: `8080`
+
+> Change the example by replacing the example component in `example/main.js` file.
 
 ## Notes
 
@@ -58,13 +60,13 @@ Mapbox throw a warning because react-mapbox-gl is using a compiled version of ma
 Display a mapbox webgl map
 > Render the children elements only when the style of the map is loaded
 
-To use the normal mapbox api use `onStyleLoad` property, the callback will receive the map object as a first arguments, then you can add your own logic using mapbox gl api.
+To use original mapbox API use `onStyleLoad` property, the callback will receive the map object as a first arguments, then you can add your own logic using [mapbox gl API](https://www.mapbox.com/mapbox-gl-js/api/).
 
 #### Properties
-- style : `String || Immutable.Map` (required) Mapbox map style
+- style : `String || Object` (required) Mapbox map style
 - accessToken : `String` (required) Mapbox access token.
-- center : `List<Number>` Center the map at the position at initialisation
-  - On re-rendering, it check for a reference equality, if the center is a new List, update to the given center [flyTo](https://www.mapbox.com/mapbox-gl-js/api/#Map.flyTo)
+- center : `Array<Number>` Center the map at the position at initialisation
+  - Re-center the map if the value change regarding the prev value or the actual center position [flyTo](https://www.mapbox.com/mapbox-gl-js/api/#Map.flyTo)
 - zoom : `Number` Zoom level of the map at initialisation
   - Check the previous value and the new one, if the value changed update the zoom value [flyTo](https://www.mapbox.com/mapbox-gl-js/api/#Map.flyTo)
 - scrollZoom: See [mapbox scrollZoom](https://www.mapbox.com/mapbox-gl-js/api/#Map)
@@ -82,39 +84,36 @@ To use the normal mapbox api use `onStyleLoad` property, the callback will recei
 - onMouseUp : Simple binding of mapbox `mouseup` event
 - onDrag : Simple binding of mapbox `ondrag` event
 
-### Marker: `React.Component`
 
-Display a marker on the map
+### Layer: `React.Component`
 
-#### Properties
-- coordinates : `List<Number>` (required) Display the marker at the given position
-- sourceName : `String` (required) A unique key to identify the marker
-- iconImage : `String` (required) The image name of the marker, defined on mapbox studio or on the style of the map
-- onClick : `Function` Triggered when user click on the icon
-- onHover : `Function` Triggered when the user hover the icon
-- onOutHover : `Function` Triggered when the user is not hovering anymore
-
-### Path: `React.Component`
-
-Display a path on the map
+Create a new mapbox layer and create all the sources depending on the children components.
+All the childrens of a Layer object have to be a Feature component.
 
 #### Properties
-- coordinates : `List<Number>` (required) Display the marker at the given position
-- sourceName : `String` (required) A unique key to identify the marker
-- lineColor : `String` The color of the line
-- lineWidth : `Number` The width of the line
-- lineCap : `String` The shape of the extremity of the path
-- lineJoin : `String` The shape of the edges
+- id : `String` The id of the layer or generate an incremented number as id
+- type : `String` The type of the features childs element
+  - `symbol` for mapbox `Point`
+  - `line` for mapbox `LineString`
+  - `fill` for mapbox `Polygon`
+- layout: Mapbox layout object passed down to mapbox `addLayer` method [mapbox layout api](https://www.mapbox.com/mapbox-gl-style-spec/#layer-layout)
+- paint: Mapbox paint object passed down to mapbox `addLayer` method [mapbox paint api](https://www.mapbox.com/mapbox-gl-style-spec/#layer-paint)
+- sourceOptions: Options object merged to the object used when calling `GeoJSONSource` method
 
-### Polygon: `React.Component`
 
-Display a polygon on the map.
+### Feature: `React.Component`
+
+Display a feature on the map, can only be used when wrapped in a `Layer` component. The type of the feature is defined at the `Layer` level. If you want to create a new type, create an associated new layer.
 
 #### Properties
-- coordinates : `List<Number>` (required) Display the polygon at the given position
-- sourceName : `String` (required) A unique key to identify the marker
-- onClick : `Function` Triggered when user click on the icon
-- onHover : `Function` Triggered when the user hover the icon
-- onOutHover : `Function` Triggered when the user is not hovering anymore
-- fillColor: `String` The color of the polygon
-- fillOpacity: `String` The opacity of the polygon
+- coordinates : `Array<Number>` (required) Display the feature at the given position
+- onClick : `Function` Triggered when user click on the feature
+
+
+### ZoomControl: `React.Component`
+
+A custom react zoom control component (This component is new and not tested yet, we advise to create your own component)
+
+#### Properties
+- onControlClick : `Function` triggered when user click on minus or plus button
+- zoomDiff : `Number` The shift number passed to the callback `onControlClick`
