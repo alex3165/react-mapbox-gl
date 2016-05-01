@@ -1,7 +1,5 @@
 # react-mapbox-gl
 
-## Please do not consider using it in production right now, we are re-writing the codebase.
-
 Based on [mapbox-gl-js](https://www.mapbox.com/mapbox-gl-js/api/) this library aim to bring the api to a React friendly way with some additional extra behavior.
 The library include the following elements :
 
