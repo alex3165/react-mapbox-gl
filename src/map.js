@@ -7,7 +7,6 @@ export default class ReactMapboxGl extends Component {
       PropTypes.string,
       PropTypes.object
     ]).isRequired,
-
     accessToken: PropTypes.string.isRequired,
     center: PropTypes.arrayOf(PropTypes.number),
     zoom: PropTypes.number,
