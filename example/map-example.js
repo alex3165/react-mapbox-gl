@@ -1,8 +1,6 @@
 import React, { Component } from "react";
-import ReactMapboxGl, { Marker, Path, Polygon } from "../src/index.js";
+import ReactMapboxGl, { Layer, Feature } from "../src/index";
 import route from "./route.json";
-
-import { List, fromJS } from "immutable";
 
 const accessToken = "pk.eyJ1IjoiZmFicmljOCIsImEiOiJjaWc5aTV1ZzUwMDJwdzJrb2w0dXRmc2d0In0.p6GGlfyV-WksaDV_KdN27A";
 const style = "mapbox://styles/mapbox/streets-v8";
@@ -12,40 +10,40 @@ const containerStyle = {
   width: "100%"
 };
 
-const polygonCoords = fromJS([
-[-0.13235092163085938,51.518250335096376],
-[-0.1174163818359375,51.52433860667918],
-[-0.10591506958007812,51.51974577545329],
-[-0.10831832885742188,51.51429786349477],
-[-0.12531280517578122,51.51429786349477],
-[-0.13200759887695312,51.517823057404094]
-]);
+const polygonCoords = [
+  [-0.13235092163085938,51.518250335096376],
+  [-0.1174163818359375,51.52433860667918],
+  [-0.10591506958007812,51.51974577545329],
+  [-0.10831832885742188,51.51429786349477],
+  [-0.12531280517578122,51.51429786349477],
+  [-0.13200759887695312,51.517823057404094]
+];
 
-const markerCoord = new List([
+const markerCoord = [
   -0.2416815,
   51.5285582
-]);
+];
 
-const mappedRoute = new List(route.points.map(point => ([point.lat, point.lng])))
+const mappedRoute = route.points.map(point => [ point.lat, point.lng ]);
 
 export default class MapExample extends Component {
 
   state = {
     popup: null,
-    center: new List([0.2174037, 51.6476704])
+    center: [0.2174037, 51.6476704]
   };
 
   componentWillMount() {
     setTimeout(() => {
       this.setState({
-        center: new List([-0.120736, 51.5118219])
+        center: [-0.120736, 51.5118219]
       });
     }, 3000);
   }
 
   _onClickMarker(marker) {
     this.setState({
-      center: new List(marker.geometry.coordinates)
+      center: marker.geometry.coordinates
     });
   }
 
@@ -88,27 +86,31 @@ export default class MapExample extends Component {
         accessToken={accessToken}
         center={this.state.center}
         containerStyle={containerStyle}>
-        <Marker
-          coordinates={markerCoord}
-          sourceName="marker"
-          onClick={this._onClickMarker.bind(this)}
-          onHover={this._onHover}
-          onOutHover={this._onOutHover}
-          iconImage="harbor-15"/>
-        <Path
-          sourceName="route"
-          coordinates={mappedRoute}
-          lineJoin="round"
-          lineCap="round"
-          lineColor="#4790E5"
-          lineWidth={12}/>
-        <Polygon
-          coordinates={polygonCoords}
-          sourceName="polygon"
-          fillColor="#6F788A"
-          fillOpacity={0.7}
-          onClick={this._polygonClicked}
-        />
+
+        <Layer
+          type="symbol"
+          layout={{ "icon-image": "harbor-15" }}>
+          <Feature
+            // onHover={this._onHover}
+            // onOutHover={this._onOutHover}
+            coordinates={markerCoord}
+            onClick={this._onClickMarker.bind(this)}/>
+        </Layer>
+
+        <Layer
+          type="line"
+          paint={{ "line-color": "#4790E5", "line-width": 12 }}>
+          <Feature coordinates={mappedRoute}/>
+        </Layer>
+
+        <Layer
+          type="fill"
+          paint={{ "fill-color": "#6F788A", "fill-opacity": .7 }}>
+          <Feature
+            onClick={this._polygonClicked}
+            coordinates={polygonCoords}/>
+        </Layer>
+
       </ReactMapboxGl>
     );
   }

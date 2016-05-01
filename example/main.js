@@ -4,4 +4,4 @@ import {render} from "react-dom";
 import MapExample from "./map-example";
 import LondonCycle from "./london-cycle";
 
-render(<LondonCycle/>, document.getElementById("root"));
+render(<MapExample/>, document.getElementById("root"));

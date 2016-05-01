@@ -130,7 +130,7 @@ export default class Layer extends Component {
   }
 
   render() {
-    const { children } = this.props;
+    const children = [].concat(this.props.children);
 
     const features = children
       .map(({ props }, id) => this.feature(props, id))
