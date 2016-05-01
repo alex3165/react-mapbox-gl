@@ -4,9 +4,7 @@ import React, { Component, PropTypes, cloneElement, Children } from "react";
 import Feature from "./feature";
 
 let index = 0;
-function generateID() {
-  return index++;
-}
+const generateID = () => index++;
 
 export default class Layer extends Component {
   static contextTypes = {

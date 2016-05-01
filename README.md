@@ -33,15 +33,19 @@ var Layer = ReactMapboxGl.Layer;
 var Feature = ReactMapboxGl.Feature;
 ```
 
+## Examples
+
 - See the example to display a big amount of markers : [London cycle example](example/london-cycle.js)
 - See the example to display all the availables shapes : [All shapes example](example/all-shapes.js) 
 
-## Run the example
+### Run the examples
 
 - Clone the repository
 - Install the dependencies: `npm install`
 - Run the example : `npm run example`
-> Default port: 8080
+  - Default port: `8080`
+
+> Change the example by replacing the example component in `example/main.js` file.
 
 ## Notes
 
