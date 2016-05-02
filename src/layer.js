@@ -92,7 +92,7 @@ export default class Layer extends Component {
     }
   };
 
-  _onMouseMove = (args) => {
+  onMouseMove = (args) => {
     const { map } = this.context;
     const { children } = this.props;
     const { prevHovers } = this.state;
@@ -145,7 +145,7 @@ export default class Layer extends Component {
     map.addLayer(layer);
 
     map.on("click", this.onClick);
-    map.on("mousemove", this._onMouseMove);
+    map.on("mousemove", this.onMouseMove);
   }
 
   componentWillUnmount() {
@@ -156,7 +156,7 @@ export default class Layer extends Component {
     map.removeSource(sourceName);
 
     map.off("click", this.onClick);
-    map.off("mousemove", this._onMouseMove);
+    map.off("mousemove", this.onMouseMove);
   }
 
   shouldComponentUpdate(nextProps, nextState) {
