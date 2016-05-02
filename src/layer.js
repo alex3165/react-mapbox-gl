@@ -81,37 +81,35 @@ export default class Layer extends Component {
     const features = map.queryRenderedFeatures(evt.point, { layers: [id] });
 
     for (let feature of features) {
-      const { geometry, properties } = feature;
+      const { properties } = feature;
       const child = Array.isArray(children) ? children[properties.id] : children;
       const { onClick } = child.props;
 
       onClick && onClick({
         ...evt,
-        geometry,
-        properties,
+        feature,
         map
       });
     }
   };
 
-  _onMouseMove = (evt) => {
+  _onMouseMove = (args) => {
     const { map } = this.context;
     const { children } = this.props;
     const { prevHovers } = this.state;
     const currentHovers = [];
 
     const childs = Array.isArray(children) ? children : [children];
-    const features = map.queryRenderedFeatures(evt.point, { layers: [this.id] });
+    const features = map.queryRenderedFeatures(args.point, { layers: [this.id] });
 
     for (let feature of features) {
-      const { geometry, properties } = feature;
+      const { properties } = feature;
       currentHovers.push(properties.id);
       const child = childs[properties.id]
       const { onHover } = child.props;
       onHover && onHover({
-        ...evt,
-        geometry,
-        properties,
+        ...args,
+        feature,
         map
       });
     }
@@ -125,7 +123,7 @@ export default class Layer extends Component {
     .forEach(id => {
       const { onEndHover } = childs[id].props;
       onEndHover && onEndHover({
-        ...evt,
+        ...args,
         map
       });
     });

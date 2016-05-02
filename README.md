@@ -65,7 +65,7 @@ To use original mapbox API use `onStyleLoad` property, the callback will receive
 #### Properties
 - style : `String || Object` (required) Mapbox map style
 - accessToken : `String` (required) Mapbox access token.
-- center : `Array<Number>` Center the map at the position at initialisation
+- center : `Array of Number` Center the map at the position at initialisation
   - Re-center the map if the value change regarding the prev value or the actual center position [flyTo](https://www.mapbox.com/mapbox-gl-js/api/#Map.flyTo)
 - zoom : `Number` Zoom level of the map at initialisation
   - Check the previous value and the new one, if the value changed update the zoom value [flyTo](https://www.mapbox.com/mapbox-gl-js/api/#Map.flyTo)
@@ -74,15 +74,18 @@ To use original mapbox API use `onStyleLoad` property, the callback will receive
 - hash : `Boolean`, Default : `false` [See mapbox doc](https://www.mapbox.com/mapbox-gl-js/api/#Map)
 - preserveDrawingBuffer: `Boolean`, Default : `false` [See mapbox doc](https://www.mapbox.com/mapbox-gl-js/api/#Map)
 - onClick: `Function` : Triggered whenever user click on the map
+  - Function::(map: Object, event: Object)
 - onStyleLoad: `Function` : Listener of mapbox event : `map.on("style.load")`
-  - Function : (map: Object, event: Object)
+  - Function::(map: Object, event: Object)
 - onMouseMove: `Function` : Listen the mouse moving on the map
 - onMove: `Function` : Executed whenever the center of the map change
-  - Function : (center: Object<Number>, event: Object)
+  - Function::(map: Object, event: Object)
 - onMoveEnd: `Function` : Executed when the move of the map end
-  - Function : (center: Object<Number>, event: Object)
+  - Function::(map: Object, event: Object)
 - onMouseUp : Simple binding of mapbox `mouseup` event
+  - Function::(map: Object, event: Object)
 - onDrag : Simple binding of mapbox `ondrag` event
+  - Function::(map: Object, event: Object)
 
 
 ### Layer: `React.Component`
@@ -106,9 +109,16 @@ All the childrens of a Layer object have to be a Feature component.
 Display a feature on the map, can only be used when wrapped in a `Layer` component. The type of the feature is defined at the `Layer` level. If you want to create a new type, create an associated new layer.
 
 #### Properties
-- coordinates : `Array<Number>` (required) Display the feature at the given position
+- coordinates : `Array of Number` (required) Display the feature at the given position.
 - onClick : `Function` Triggered when user click on the feature
-
+  - Function::(args: Object)
+    - args contain the feature object, the map object and the arguments passed by mapbox from the event `click`
+- onHover : `Function` Triggered when the mouse hover the feature element
+  - Function::(args: Object)
+    - args contain the feature object, the map object and the arguments passed by mapbox from the event `onmousemove`
+- onEndHover : `Function` Triggered at the end of the hover state
+  - Function::(args: Object)
+    - args contain the map object and the arguments passed by mapbox from the event `onmousemove`
 
 ### ZoomControl: `React.Component`
 
@@ -116,4 +126,5 @@ A custom react zoom control component (This component is new and not tested yet,
 
 #### Properties
 - onControlClick : `Function` triggered when user click on minus or plus button
+  - Function::(zoomDiff: Number)
 - zoomDiff : `Number` The shift number passed to the callback `onControlClick`
