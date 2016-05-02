@@ -11,6 +11,10 @@ export default class Layer extends Component {
     map: PropTypes.object
   };
 
+  state = {
+    prevHovers: []
+  };
+
   static propTypes = {
     id: PropTypes.string,
 
@@ -74,9 +78,9 @@ export default class Layer extends Component {
     const { children } = this.props;
     const { id } = this;
 
-    const clicked = map.queryRenderedFeatures(evt.point, { layers: [id] });
+    const features = map.queryRenderedFeatures(evt.point, { layers: [id] });
 
-    for (let feature of clicked) {
+    for (let feature of features) {
       const { geometry, properties } = feature;
       const child = Array.isArray(children) ? children[properties.id] : children;
       const { onClick } = child.props;
@@ -84,9 +88,47 @@ export default class Layer extends Component {
       onClick && onClick({
         ...evt,
         geometry,
-        properties
+        properties,
+        map
       });
     }
+  };
+
+  _onMouseMove = (evt) => {
+    const { map } = this.context;
+    const { children } = this.props;
+    const { prevHovers } = this.state;
+    const currentHovers = [];
+
+    const childs = Array.isArray(children) ? children : [children];
+    const features = map.queryRenderedFeatures(evt.point, { layers: [this.id] });
+
+    for (let feature of features) {
+      const { geometry, properties } = feature;
+      currentHovers.push(properties.id);
+      const child = childs[properties.id]
+      const { onHover } = child.props;
+      onHover && onHover({
+        ...evt,
+        geometry,
+        properties,
+        map
+      });
+    }
+
+    this.setState({
+      prevHovers: currentHovers
+    });
+
+    prevHovers
+    .filter(prevHoverId => currentHovers.indexOf(prevHoverId) === -1)
+    .forEach(id => {
+      const { onEndHover } = childs[id].props;
+      onEndHover && onEndHover({
+        ...evt,
+        map
+      });
+    });
   };
 
   componentWillMount() {
@@ -106,6 +148,7 @@ export default class Layer extends Component {
     map.addLayer(layer);
 
     map.on("click", this.onClick);
+    map.on("mousemove", this._onMouseMove);
   }
 
   componentWillUnmount() {
@@ -116,6 +159,7 @@ export default class Layer extends Component {
     map.removeSource(sourceName);
 
     map.off("click", this.onClick);
+    map.off("mousemove", this._onMouseMove);
   }
 
   shouldComponentUpdate(nextProps, nextState) {

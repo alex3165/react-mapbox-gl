@@ -55,20 +55,12 @@ export default class AllShapes extends Component {
     console.log("Style loaded: ", map);
   }
 
-  _onHover(marker, map) {
+  _onHover({ map }) {
     map.getCanvas().style.cursor = "pointer";
   }
 
-  _onOutHover(map) {
+  _onEndHover({ map }) {
     map.getCanvas().style.cursor = "";
-  }
-
-  _onMouseMove(map) {
-    // console.log("On mouse move", map);
-  }
-
-  _onMove(center, evt) {
-    // console.log("On mouse move", center);
   }
 
   _polygonClicked = () => {
@@ -81,17 +73,16 @@ export default class AllShapes extends Component {
         style={style}
         onClick={this._onClickMap}
         onStyleLoad={this._onStyleLoad}
-        onMouseMove={this._onMouseMove}
-        onMove={this._onMove}
         accessToken={accessToken}
         center={this.state.center}
         containerStyle={containerStyle}>
-
         <Layer
           type="symbol"
           layout={{ "icon-image": "harbor-15" }}>
           <Feature
             coordinates={markerCoord}
+            onHover={this._onHover}
+            onEndHover={this._onEndHover}
             onClick={this._onClickMarker}/>
         </Layer>
 
