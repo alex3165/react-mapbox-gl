@@ -11,10 +11,6 @@ export default class Layer extends Component {
     map: PropTypes.object
   };
 
-  state = {
-    prevHovers: []
-  };
-
   static propTypes = {
     id: PropTypes.string,
 
@@ -34,6 +30,9 @@ export default class Layer extends Component {
     layout: {},
     paint: {}
   };
+
+  state = {};
+  hover = [];
 
   identifier = this.props.id || generateID();
   id = `layer-${this.identifier}`;
@@ -84,6 +83,7 @@ export default class Layer extends Component {
       const { properties } = feature;
       const child = children[properties.id];
 
+      const { onClick } = child.props;
       onClick && onClick({
         ...evt,
         feature,
@@ -92,40 +92,40 @@ export default class Layer extends Component {
     }
   };
 
-  onMouseMove = (args) => {
+  onMouseMove = evt => {
+    const children = [].concat(this.props.children);
     const { map } = this.context;
-    const { children } = this.props;
-    const { prevHovers } = this.state;
-    const currentHovers = [];
+    const { id } = this;
 
-    const childs = Array.isArray(children) ? children : [children];
-    const features = map.queryRenderedFeatures(args.point, { layers: [this.id] });
+    const oldHover = this.hover;
+    const hover = [];
+
+    const features = map.queryRenderedFeatures(evt.point, { layers: [id] });
 
     for (let feature of features) {
       const { properties } = feature;
-      currentHovers.push(properties.id);
-      const child = childs[properties.id]
+      const child = children[properties.id];
+      hover.push(properties.id);
+
       const { onHover } = child.props;
       onHover && onHover({
-        ...args,
+        ...evt,
         feature,
         map
       });
     }
 
-    this.setState({
-      prevHovers: currentHovers
-    });
-
-    prevHovers
-    .filter(prevHoverId => currentHovers.indexOf(prevHoverId) === -1)
-    .forEach(id => {
-      const { onEndHover } = childs[id].props;
-      onEndHover && onEndHover({
-        ...args,
-        map
+    oldHover
+      .filter(prevHoverId => hover.indexOf(prevHoverId) === -1)
+      .forEach(id => {
+        const { onEndHover } = children[id].props;
+        onEndHover && onEndHover({
+          ...args,
+          map
+        });
       });
-    });
+
+    this.hover = hover;
   };
 
   componentWillMount() {
