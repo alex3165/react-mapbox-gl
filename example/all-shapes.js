@@ -41,9 +41,9 @@ export default class AllShapes extends Component {
     }, 3000);
   }
 
-  _onClickMarker = (marker) => {
+  _onClickMarker = ({ feature }) => {
     this.setState({
-      center: marker.geometry.coordinates
+      center: feature.geometry.coordinates
     });
   };
 
