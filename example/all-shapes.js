@@ -10,14 +10,14 @@ const containerStyle = {
   width: "100%"
 };
 
-const polygonCoords = [
+const polygonCoords = [[
   [-0.13235092163085938,51.518250335096376],
   [-0.1174163818359375,51.52433860667918],
   [-0.10591506958007812,51.51974577545329],
   [-0.10831832885742188,51.51429786349477],
   [-0.12531280517578122,51.51429786349477],
   [-0.13200759887695312,51.517823057404094]
-];
+]];
 
 const markerCoord = [
   -0.2416815,
@@ -97,6 +97,7 @@ export default class AllShapes extends Component {
 
         <Layer
           type="line"
+          layout={{ "line-cap": "round", "line-join": "round" }}
           paint={{ "line-color": "#4790E5", "line-width": 12 }}>
           <Feature coordinates={mappedRoute}/>
         </Layer>

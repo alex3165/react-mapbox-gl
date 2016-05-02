@@ -78,7 +78,7 @@ export default class Layer extends Component {
 
     for (let feature of clicked) {
       const { geometry, properties } = feature;
-      const child = children[properties.id];
+      const child = Array.isArray(children) ? children[properties.id] : children;
       const { onClick } = child.props;
 
       onClick && onClick({
