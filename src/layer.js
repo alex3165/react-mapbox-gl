@@ -74,16 +74,15 @@ export default class Layer extends Component {
   })
 
   onClick = evt => {
+    const children = [].concat(this.props.children);
     const { map } = this.context;
-    const { children } = this.props;
     const { id } = this;
 
     const features = map.queryRenderedFeatures(evt.point, { layers: [id] });
 
     for (let feature of features) {
       const { properties } = feature;
-      const child = Array.isArray(children) ? children[properties.id] : children;
-      const { onClick } = child.props;
+      const child = children[properties.id];
 
       onClick && onClick({
         ...evt,
