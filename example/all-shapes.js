@@ -1,23 +1,23 @@
 import React, { Component } from "react";
 import ReactMapboxGl, { Layer, Feature } from "../src/index";
 import route from "./route.json";
+import config from "./config.json";
 
-const accessToken = "pk.eyJ1IjoiZmFicmljOCIsImEiOiJjaWc5aTV1ZzUwMDJwdzJrb2w0dXRmc2d0In0.p6GGlfyV-WksaDV_KdN27A";
-const style = "mapbox://styles/mapbox/streets-v8";
+const { accessToken, style } = config;
 
 const containerStyle = {
   height: "100vh",
   width: "100%"
 };
 
-const polygonCoords = [
+const polygonCoords = [[
   [-0.13235092163085938,51.518250335096376],
   [-0.1174163818359375,51.52433860667918],
   [-0.10591506958007812,51.51974577545329],
   [-0.10831832885742188,51.51429786349477],
   [-0.12531280517578122,51.51429786349477],
   [-0.13200759887695312,51.517823057404094]
-];
+]];
 
 const markerCoord = [
   -0.2416815,
@@ -41,9 +41,9 @@ export default class AllShapes extends Component {
     }, 3000);
   }
 
-  _onClickMarker = (marker) => {
+  _onClickMarker = ({ feature }) => {
     this.setState({
-      center: marker.geometry.coordinates
+      center: feature.geometry.coordinates
     });
   };
 
@@ -55,24 +55,16 @@ export default class AllShapes extends Component {
     console.log("Style loaded: ", map);
   }
 
-  _onHover(marker, map) {
+  _onHover({ map }) {
     map.getCanvas().style.cursor = "pointer";
   }
 
-  _onOutHover(map) {
+  _onEndHover({ map }) {
     map.getCanvas().style.cursor = "";
   }
 
-  _onMouseMove(map) {
-    // console.log("On mouse move", map);
-  }
-
-  _onMove(center, evt) {
-    // console.log("On mouse move", center);
-  }
-
-  _polygonClicked = () => {
-    console.log("Polygon clicked");
+  _polygonClicked = ({ feature }) => {
+    console.log("Polygon clicked", feature.geometry.coordinates);
   };
 
   render() {
@@ -81,22 +73,22 @@ export default class AllShapes extends Component {
         style={style}
         onClick={this._onClickMap}
         onStyleLoad={this._onStyleLoad}
-        onMouseMove={this._onMouseMove}
-        onMove={this._onMove}
         accessToken={accessToken}
         center={this.state.center}
         containerStyle={containerStyle}>
-
         <Layer
           type="symbol"
           layout={{ "icon-image": "harbor-15" }}>
           <Feature
             coordinates={markerCoord}
+            onHover={this._onHover}
+            onEndHover={this._onEndHover}
             onClick={this._onClickMarker}/>
         </Layer>
 
         <Layer
           type="line"
+          layout={{ "line-cap": "round", "line-join": "round" }}
           paint={{ "line-color": "#4790E5", "line-width": 12 }}>
           <Feature coordinates={mappedRoute}/>
         </Layer>

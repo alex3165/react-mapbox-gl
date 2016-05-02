@@ -76,35 +76,35 @@ export default class ReactMapboxGl extends Component {
       scrollZoom
     });
 
-    map.on("style.load", () => {
+    map.on("style.load", (...args) => {
       this.setState({ map });
 
       if (onStyleLoad) {
-        onStyleLoad(map);
+        onStyleLoad(map, ...args);
       }
     });
 
     map.on("click", (...args) => {
       if (onClick) {
-        onClick(...args);
+        onClick(map, ...args);
       }
     });
 
     map.on("mousemove", (...args) => {
       if (onMouseMove) {
-        onMouseMove(...args);
+        onMouseMove(map, ...args);
       }
     });
 
     map.on("drag", (...args) => {
       if (onDrag) {
-        onDrag(...args);
+        onDrag(map, ...args);
       }
     });
 
     map.on("mouseup", (...args) => {
       if (onMouseUp) {
-        onMouseUp(...args);
+        onMouseUp(map, ...args);
       }
     });
 
