@@ -120,7 +120,7 @@ export default class Layer extends Component {
       .forEach(id => {
         const { onEndHover } = children[id].props;
         onEndHover && onEndHover({
-          ...args,
+          ...evt,
           map
         });
       });
