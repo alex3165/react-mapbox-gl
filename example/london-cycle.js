@@ -69,9 +69,9 @@ export default class LondonCycle extends Component {
     });
   }
 
-  _markerClick = (station, marker) => {
+  _markerClick = (station, { feature }) => {
     this.setState({
-      center: marker.geometry.coordinates,
+      center: feature.geometry.coordinates,
       zoom: 14,
       station
     });

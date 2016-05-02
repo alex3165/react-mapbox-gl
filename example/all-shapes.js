@@ -63,8 +63,8 @@ export default class AllShapes extends Component {
     map.getCanvas().style.cursor = "";
   }
 
-  _polygonClicked = () => {
-    console.log("Polygon clicked");
+  _polygonClicked = ({ feature }) => {
+    console.log("Polygon clicked", feature.geometry.coordinates);
   };
 
   render() {
