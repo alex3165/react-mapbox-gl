@@ -3,19 +3,18 @@
   "version": "0.1.3",
   "description": "A React binding of mapbox-gl-js",
   "main": "dist/index.js",
+  "jsnext:main": "es/index.js",
   "scripts": {
-    "clean": "rimraf dist",
-    "build": "npm run clean && babel src --out-dir dist",
+    "clean": "rm -rf dist",
+    "build": "babel src --out-dir dist",
+    "prepublish": "npm run clean && npm run build",
+    "postversion": "git push && git push --tags",
     "example": "webpack-dev-server --config ./webpack.config.dev.js",
-    "build-example": "webpack --config ./webpack.config.dev.js",
-    "release:major": "npm version major && git push --follow-tags",
-    "release:minor": "npm version minor && git push --follow-tags",
-    "release:patch": "npm version patch && git push --follow-tags"
+    "build-example": "webpack --config ./webpack.config.dev.js"
   },
   "files": [
-    "dist/",
-    "LICENSE",
-    "README.md"
+    "dist",
+    "src"
   ],
   "repository": {
     "type": "git",
@@ -54,7 +53,6 @@
     "react-dom": "^15.0.1",
     "react-hot-loader": "^1.3.0",
     "react-mixin": "^3.0.5",
-    "rimraf": "^2.5.2",
     "webpack": "^1.13.0",
     "webpack-dev-server": "^1.14.1",
     "xml2js": "^0.4.16"
