@@ -2,6 +2,9 @@ import React, { Component } from "react";
 import ReactMapboxGl, { Layer, Feature } from "../src/index";
 import { parseString } from "xml2js";
 import { Map } from "immutable";
+import config from "./config.json";
+
+const { accessToken, style } = config;
 
 function getCycleStations() {
   return fetch("https://tfl.gov.uk/tfl/syndication/feeds/cycle-hire/livecyclehireupdates.xml")
@@ -18,11 +21,6 @@ function getCycleStations() {
       });
     })
 }
-
-const accessToken = "pk.eyJ1IjoiZmFicmljOCIsImEiOiJjaWc5aTV1ZzUwMDJwdzJrb2w0dXRmc2d0In0.p6GGlfyV-WksaDV_KdN27A";
-const style = "mapbox://styles/mapbox/streets-v8";
-
-const offset = 20;
 
 const containerStyle = {
   height: "100vh",
@@ -106,7 +104,6 @@ export default class LondonCycle extends Component {
                 .map((station, index) => (
                   <Feature
                     key={station.get("id")}
-                    id={station.get("id")}
                     onClick={this._markerClick.bind(this, station)}
                     coordinates={station.get("position")}/>
                 )).toArray()

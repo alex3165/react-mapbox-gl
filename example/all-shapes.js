@@ -1,9 +1,9 @@
 import React, { Component } from "react";
 import ReactMapboxGl, { Layer, Feature } from "../src/index";
 import route from "./route.json";
+import config from "./config.json";
 
-const accessToken = "pk.eyJ1IjoiZmFicmljOCIsImEiOiJjaWc5aTV1ZzUwMDJwdzJrb2w0dXRmc2d0In0.p6GGlfyV-WksaDV_KdN27A";
-const style = "mapbox://styles/mapbox/streets-v8";
+const { accessToken, style } = config;
 
 const containerStyle = {
   height: "100vh",
