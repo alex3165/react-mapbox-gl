@@ -55,6 +55,10 @@ export default class ZoomControl extends Component {
     hover: undefined
   };
 
+  static childContextTypes = {
+    map: React.PropTypes.object
+  };
+
   _onMouse = (hover) => {
     if(hover !== this.state.hover) {
       this.setState({ hover });
@@ -64,6 +68,7 @@ export default class ZoomControl extends Component {
   render() {
     const { onControlClick, zoomDiff } = this.props;
     const { hover } = this.state;
+    const { map } = this.context;
 
     return (
       <div style={containerStyle}>
@@ -75,7 +80,7 @@ export default class ZoomControl extends Component {
           }}
           onMouseOver={this._onMouse.bind(this, PLUS)}
           onMouseOut={this._onMouse}
-          onClick={onControlClick.bind(this, zoomDiff)}>
+          onClick={onControlClick.bind(this, map, zoomDiff)}>
         </button>
         <button
           style={{
@@ -85,7 +90,7 @@ export default class ZoomControl extends Component {
           }}
           onMouseOver={this._onMouse.bind(this, MINUS)}
           onMouseOut={this._onMouse}
-          onClick={onControlClick.bind(this, -zoomDiff)}>
+          onClick={onControlClick.bind(this, map, -zoomDiff)}>
         </button>
       </div>
     );

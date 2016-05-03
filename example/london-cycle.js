@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import ReactMapboxGl, { Layer, Feature } from "../src/index";
+import ZoomControl from "../src/zoom-control";
 import { parseString } from "xml2js";
 import { Map } from "immutable";
 import config from "./config.json";
@@ -65,7 +66,7 @@ export default class LondonCycle extends Component {
         }, new Map()))
       }));
     });
-  }
+  };
 
   _markerClick = (station, { feature }) => {
     this.setState({
@@ -83,6 +84,11 @@ export default class LondonCycle extends Component {
     }
   };
 
+  _onControlClick = (map, zoomDiff) => {
+    const zoom = map.getZoom() + zoomDiff;
+    this.setState({ zoom });
+  };
+
   render() {
     const { stations, station, skip } = this.state;
 
@@ -95,6 +101,11 @@ export default class LondonCycle extends Component {
           accessToken={accessToken}
           onDrag={this._onDrag}
           containerStyle={containerStyle}>
+
+          <ZoomControl
+            zoomDiff={1}
+            onControlClick={this._onControlClick}/>
+
           <Layer
             type="symbol"
             id="marker"

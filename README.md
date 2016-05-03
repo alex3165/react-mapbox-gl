@@ -126,5 +126,5 @@ A custom react zoom control component (This component is new and not tested yet,
 
 #### Properties
 - onControlClick : `Function` triggered when user click on minus or plus button
-  - Function::(zoomDiff: Number)
+  - Function::(map: Object, zoomDiff: Number)
 - zoomDiff : `Number` The shift number passed to the callback `onControlClick`
