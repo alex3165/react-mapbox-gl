@@ -130,7 +130,7 @@ export default class LondonCycle extends Component {
 
           {
             station && (
-              <Popup coordinates={station.get("position")}>
+              <Popup key={station.get("id")} coordinates={station.get("position")}>
                 <span style={styles.popup}>
                   {station.get("name")}
                 </span>
