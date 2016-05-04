@@ -1,6 +1,6 @@
 import React, { Component } from "react";
-import ReactMapboxGl, { Layer, Feature } from "../src/index";
-import ZoomControl from "../src/zoom-control";
+import ReactMapboxGl, { Layer, Feature, Popup, ZoomControl } from "../src/index";
+
 import { parseString } from "xml2js";
 import { Map } from "immutable";
 import config from "./config.json";
@@ -32,6 +32,7 @@ const styles = {
   button: {
     cursor: "pointer"
   },
+
   stationDescription: {
     position: "absolute",
     bottom: 0,
@@ -40,6 +41,12 @@ const styles = {
     padding: "16px 0px",
     textAlign: "center",
     backgroundColor: "white"
+  },
+
+  popup: {
+    background: "#fff",
+    padding: "5px",
+    borderRadius: "2px"
   }
 }
 
@@ -121,6 +128,15 @@ export default class LondonCycle extends Component {
             }
           </Layer>
 
+          {
+            station && (
+              <Popup coordinates={station.get("position")}>
+                <span style={styles.popup}>
+                  {station.get("name")}
+                </span>
+              </Popup>
+            )
+          }
         </ReactMapboxGl>
 
         {
