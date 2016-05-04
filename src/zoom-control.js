@@ -69,7 +69,7 @@ export default class ZoomControl extends Component {
     const { onControlClick, zoomDiff } = this.props;
     const { hover } = this.state;
     const { map } = this.context;
-    console.log(this.context)
+
     return (
       <div style={containerStyle}>
         <button
