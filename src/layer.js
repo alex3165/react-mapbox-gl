@@ -107,7 +107,7 @@ export default class Layer extends Component {
       const child = children[properties.id];
       hover.push(properties.id);
 
-      const { onHover } = child.props;
+      const onHover = child && child.props.onHover;
       onHover && onHover({
         ...evt,
         feature,
