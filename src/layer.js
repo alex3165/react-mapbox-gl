@@ -83,7 +83,7 @@ export default class Layer extends Component {
       const { properties } = feature;
       const child = children[properties.id];
 
-      const { onClick } = child.props;
+      const onClick = child && child.props.onClick;
       onClick && onClick({
         ...evt,
         feature,
@@ -107,7 +107,7 @@ export default class Layer extends Component {
       const child = children[properties.id];
       hover.push(properties.id);
 
-      const { onHover } = child.props;
+      const onHover = child && child.props.onHover;
       onHover && onHover({
         ...evt,
         feature,
@@ -118,7 +118,7 @@ export default class Layer extends Component {
     oldHover
       .filter(prevHoverId => hover.indexOf(prevHoverId) === -1)
       .forEach(id => {
-        const { onEndHover } = children[id].props;
+        const onEndHover = children[id] && children[id].props.onEndHover;
         onEndHover && onEndHover({
           ...evt,
           map
