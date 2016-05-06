@@ -11,6 +11,13 @@ const containerStyle = {
   border: "1px solid rgba(0, 0, 0, 0.1)"
 };
 
+const positions = {
+  topRight: { top: 10, right: 10, bottom: "auto", left: "auto"},
+  topLeft: { top: 10, left: 10, bottom: "auto", right: "auto"},
+  bottomRight: { bottom: 10, right: 10, top: "auto", left: "auto"},
+  bottomLeft: { bottom: 10, left: 10, top: "auto", right: "auto"},
+};
+
 const buttonStyle = {
   backgroundColor: "#f9f9f9",
   opacity: .95,
@@ -48,7 +55,8 @@ const [PLUS, MINUS] = [0,1];
 export default class ZoomControl extends Component {
   static propTypes = {
     zoomDiff: React.PropTypes.number,
-    onControlClick: React.PropTypes.func
+    onControlClick: React.PropTypes.func,
+    position: React.PropTypes.string
   };
 
   state = {
@@ -66,12 +74,19 @@ export default class ZoomControl extends Component {
   };
 
   render() {
-    const { onControlClick, zoomDiff } = this.props;
+    const { onControlClick, zoomDiff, position } = this.props;
     const { hover } = this.state;
     const { map } = this.context;
 
     return (
-      <div style={containerStyle}>
+      <div
+        style={{
+          ...containerStyle,
+          ...(position === "top-right" && positions.topRight),
+          ...(position === "top-left" && positions.topLeft),
+          ...(position === "bottom-right" && positions.bottomRight),
+          ...(position === "bottom-left" && positions.bottomLeft),  
+        }}>
         <button
           style={{
             ...buttonStyle,
