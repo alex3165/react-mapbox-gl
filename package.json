@@ -45,6 +45,7 @@
     "babel-cli": "^6.7.5",
     "babel-core": "^6.7.6",
     "babel-loader": "^6.2.4",
+    "babel-plugin-transform-es2015-modules-commonjs": "^6.8.0",
     "babel-preset-philpl": "^0.1.0",
     "babel-register": "^6.7.2",
     "immutable": "^3.8.0",
