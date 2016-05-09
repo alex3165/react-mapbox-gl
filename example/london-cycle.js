@@ -4,6 +4,7 @@ import ReactMapboxGl, { Layer, Feature, Popup, ZoomControl } from "../src/index"
 import { parseString } from "xml2js";
 import { Map } from "immutable";
 import config from "./config.json";
+import MapboxCSS from "../src/mapbox-css/mapbox-gl.css";
 
 const { accessToken, style } = config;
 
@@ -25,7 +26,7 @@ function getCycleStations() {
 
 const containerStyle = {
   height: "100vh",
-  width: "100%"
+  width: "100vw"
 };
 
 const styles = {
@@ -91,13 +92,22 @@ export default class LondonCycle extends Component {
     }
   };
 
+  _setMove = (end) => {
+    if(end !== this.state.end)
+      this.setState({ end });
+  };
+
+  _onToggleHover(cursor, { map }) {
+    map.getCanvas().style.cursor = cursor;
+  }
+
   _onControlClick = (map, zoomDiff) => {
     const zoom = map.getZoom() + zoomDiff;
     this.setState({ zoom });
   };
 
   render() {
-    const { stations, station, skip } = this.state;
+    const { stations, station, skip, end } = this.state;
 
     return (
       <div>
@@ -107,6 +117,8 @@ export default class LondonCycle extends Component {
           zoom={this.state.zoom}
           accessToken={accessToken}
           onDrag={this._onDrag}
+          onMoveEnd={this._setMove.bind(this, true)}
+          onMove={this._setMove.bind(this, false)}
           containerStyle={containerStyle}>
 
           <ZoomControl
@@ -122,6 +134,8 @@ export default class LondonCycle extends Component {
                 .map((station, index) => (
                   <Feature
                     key={station.get("id")}
+                    onHover={this._onToggleHover.bind(this, "pointer")}
+                    onEndHover={this._onToggleHover.bind(this, "")}
                     onClick={this._markerClick.bind(this, station)}
                     coordinates={station.get("position")}/>
                 )).toArray()
@@ -129,8 +143,8 @@ export default class LondonCycle extends Component {
           </Layer>
 
           {
-            station && (
-              <Popup key={station.get("id")} coordinates={station.get("position")}>
+            station && end && (
+              <Popup key={station.get("id")} coordinates={station.get("position")} closeButton={true}>
                 <span style={styles.popup}>
                   {station.get("name")}
                 </span>
@@ -140,7 +154,7 @@ export default class LondonCycle extends Component {
         </ReactMapboxGl>
 
         {
-          station && (
+          station && end && (
             <div style={styles.stationDescription}>
               <p>{ station.get("name") }</p>
               <p>{ station.get("bikes") } bikes / { station.get("slots") } slots</p>
