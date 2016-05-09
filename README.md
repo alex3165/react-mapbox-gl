@@ -15,7 +15,7 @@ The library include the following elements :
 
 It will include as well:
 
-- Popup
+- Popup (Currently working on it)
 
 ## How to start
 
