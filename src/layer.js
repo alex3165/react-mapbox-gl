@@ -53,7 +53,7 @@ export default class Layer extends Component {
       };
 
       case "fill": return {
-        type: "Polygon",
+        type: coordinates.length > 1 ? "MultiPolygon" : "Polygon",
         coordinates
       };
 
