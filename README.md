@@ -12,9 +12,6 @@ The library include the following elements :
   - Layer type properties `line` display a lineString
   - Layer type properties `fill` display a polygon
 - ZoomControl
-
-It will include as well:
-
 - Popup
 
 ## How to start
@@ -26,7 +23,7 @@ npm install react-mapbox-gl --save
 Import the component :
 
 ```
-// ES6 way
+// ES6
 import ReactMapboxGl, { Layer, Feature } from "react-mapbox-gl";
 
 // ES5
@@ -52,6 +49,18 @@ var Feature = ReactMapboxGl.Feature;
 ## Notes
 
 Mapbox throw a warning because react-mapbox-gl is using a compiled version of mapbox-gl which is necessary when using webpack for now as long as the sources files requires the node package `fs` to read the shaders.
+
+## Import mapbox css file
+
+If you are using webpack we advise you to use [style-loader and css-loader](https://webpack.github.io/docs/stylesheets.html) and require mapbox css file when needed, check london-cycle for more information. React-mapbox-gl include a revisited version of mapbox-gl.css file but you can definitely use the original css file as well. Though if you want to use our custom css file you can import it like this (assuming we are in a webpack environment) :
+
+```
+// ES6
+import MapboxCSS from "react-mapbox-gl/src/mapbox-css/mapbox-gl.css";
+
+// ES5
+require("react-mapbox-gl/src/mapbox-css/mapbox-gl.css");
+```
 
 ## API
 
@@ -120,6 +129,7 @@ Display a feature on the map, can only be used when wrapped in a `Layer` compone
   - Function::(args: Object)
     - args contain the map object and the arguments passed by mapbox from the event `onmousemove`
 
+
 ### ZoomControl: `React.Component`
 
 A custom react zoom control component (This component is new and not tested yet, we advise to create your own component)
@@ -128,3 +138,19 @@ A custom react zoom control component (This component is new and not tested yet,
 - onControlClick : `Function` triggered when user click on minus or plus button
   - Function::(map: Object, zoomDiff: Number)
 - zoomDiff : `Number` The shift number passed to the callback `onControlClick`
+
+
+### Popup: `React.Component`
+
+Before using Popup you need to import `mapbox-gl.css` file (see import css file above).
+
+The popup component allow you to display a popup tooltip on top of the map using mapbox-gl-js.
+You can define the content of the popup by using react component, it will be rendered as a DOM element using react-dom and injected in the popup.
+
+#### Properties
+- coordinates : `Array of Number` (required) Display the popup at the given position.
+- dangerouslySetInnerHTML: `String` Set the content of the popup using string.
+- text: `String` Set the text content of the popup
+- closeButton: `Boolean` Add a cross button to close the popup
+- closeOnClick: `Boolean` Close the popup in click on it
+- anchor: `String` Set the anchor point of the popup.
