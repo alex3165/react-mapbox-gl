@@ -129,7 +129,7 @@ export default class Layer extends Component {
   };
 
   componentWillMount() {
-    const { id, sourceName, source } = this;
+    const { id, source } = this;
     const { type, layout, paint } = this.props;
     const { map } = this.context;
 
@@ -149,11 +149,11 @@ export default class Layer extends Component {
   }
 
   componentWillUnmount() {
-    const { id, sourceName } = this;
+    const { id, source } = this;
     const { map } = this.context;
 
     map.removeLayer(id);
-    map.removeSource(sourceName);
+    map.removeSource(id);
 
     map.off("click", this.onClick);
     map.off("mousemove", this.onMouseMove);
