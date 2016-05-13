@@ -137,7 +137,9 @@ export default class ReactMapboxGl extends Component {
 
   componentWillReceiveProps(nextProps) {
     const { map } = this.state;
-    if (!map) return;
+    if (!map) {
+      return null;
+    }
 
     const center = map.getCenter();
     const zoom = map.getZoom();
@@ -170,6 +172,6 @@ export default class ReactMapboxGl extends Component {
           map && children
         }
       </div>
-    )
+    );
   }
 }
