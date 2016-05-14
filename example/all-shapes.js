@@ -42,7 +42,7 @@ export default class AllShapes extends Component {
         center: [-0.120736, 51.5118219],
         circleRadius: 10
       });
-    }, 3000);
+    }, 6000);
   }
 
   _onClickMarker = ({ feature }) => {
@@ -79,6 +79,7 @@ export default class AllShapes extends Component {
         onStyleLoad={this._onStyleLoad}
         accessToken={accessToken}
         center={this.state.center}
+        movingMethod="jumpTo"
         containerStyle={containerStyle}>
         <Layer
           type="symbol"

@@ -82,7 +82,9 @@ To use original mapbox API use `onStyleLoad` property, the callback will receive
 - scrollZoom: See [mapbox scrollZoom](https://www.mapbox.com/mapbox-gl-js/api/#Map)
 - containerStyle : `Object` The style of the container of the map
 - hash : `Boolean`, Default : `false` [See mapbox doc](https://www.mapbox.com/mapbox-gl-js/api/#Map)
-- preserveDrawingBuffer: `Boolean`, Default : `false` [See mapbox doc](https://www.mapbox.com/mapbox-gl-js/api/#Map)
+- preserveDrawingBuffer: `Boolean`, Default: `false` [See mapbox doc](https://www.mapbox.com/mapbox-gl-js/api/#Map)
+- movingMethod: `String`. Default: `"flyTo"`, Possible choices : `jumpTo`, `easeTo`, `flyTo`, define the method used when changing the center or zoom position.
+
 - onClick: `Function` : Triggered whenever user click on the map
   - Function::(map: Object, event: Object)
 - onStyleLoad: `Function` : Listener of mapbox event : `map.on("style.load")`
