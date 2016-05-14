@@ -32,13 +32,15 @@ export default class AllShapes extends Component {
 
   state = {
     popup: null,
-    center: [0.2174037, 51.6476704]
+    center: [0.2174037, 51.6476704],
+    circleRadius: 30
   };
 
   componentWillMount() {
     setTimeout(() => {
       this.setState({
-        center: [-0.120736, 51.5118219]
+        center: [-0.120736, 51.5118219],
+        circleRadius: 10
       });
     }, 3000);
   }
@@ -97,7 +99,7 @@ export default class AllShapes extends Component {
 
         <Layer
           type="circle"
-          paint={{ "circle-radius": 30, "circle-color": "#4790E5", "circle-opacity": .5 }}>
+          paint={{ "circle-radius": this.state.circleRadius, "circle-color": "#4790E5", "circle-opacity": .5 }}>
           <Feature coordinates={circleCoord}/>
         </Layer>
 

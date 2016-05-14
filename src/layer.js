@@ -1,6 +1,7 @@
 import MapboxGl from "mapbox-gl/dist/mapbox-gl";
 import React, { Component, PropTypes, cloneElement, Children } from "react";
-
+import _ from "lodash";
+import { diff } from "./helper";
 import Feature from "./feature";
 
 let index = 0;
@@ -158,6 +159,22 @@ export default class Layer extends Component {
 
     map.off("click", this.onClick);
     map.off("mousemove", this.onMouseMove);
+  }
+
+  componentWillReceiveProps(props) {
+    const { paint, layout } = this.props;
+
+    if(!_.isEqual(props.paint, paint)) {
+      _.forEach(diff(paint, props.paint), (val, key) => {
+        this.context.map.setPaintProperty(this.id, key, val);
+      });
+    }
+
+    if(!_.isEqual(props.layout, layout)) {
+      _.forEach(diff(layout, props.layout), (val, key) => {
+        this.context.map.setLayoutProperty(this.id, key, val);
+      });
+    }
   }
 
   shouldComponentUpdate(nextProps) {

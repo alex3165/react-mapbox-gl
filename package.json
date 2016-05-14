@@ -35,6 +35,7 @@
   },
   "homepage": "https://github.com/alex3165/react-mapbox-gl#readme",
   "dependencies": {
+    "lodash": "^4.12.0",
     "mapbox-gl": "^0.18.0"
   },
   "peerDependencies": {
