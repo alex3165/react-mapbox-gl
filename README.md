@@ -8,9 +8,10 @@ The library include the following elements :
 - ReactMapboxGl
 - Layer
 - Feature
-  - Layer type properties `symbol` display a mapbox point
-  - Layer type properties `line` display a lineString
-  - Layer type properties `fill` display a polygon
+  - Layer type properties `symbol` display a mapbox symbol.
+  - Layer type properties `line` display a lineString.
+  - Layer type properties `fill` display a polygon.
+  - Layer type properties `circle` display a mapbox circle.
 - ZoomControl
 - Popup
 

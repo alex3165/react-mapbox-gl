@@ -17,7 +17,8 @@ export default class Layer extends Component {
     type: PropTypes.oneOf([
       "symbol",
       "line",
-      "fill"
+      "fill",
+      "circle"
     ]),
 
     layout: PropTypes.object,
@@ -31,7 +32,6 @@ export default class Layer extends Component {
     paint: {}
   };
 
-  state = {};
   hover = [];
 
   identifier = this.props.id || generateID();
@@ -47,7 +47,8 @@ export default class Layer extends Component {
 
   geometry = coordinates => {
     switch (this.props.type) {
-      case "symbol": return {
+      case "symbol":
+      case "circle": return {
         type: "Point",
         coordinates
       };
@@ -149,7 +150,7 @@ export default class Layer extends Component {
   }
 
   componentWillUnmount() {
-    const { id, source } = this;
+    const { id } = this;
     const { map } = this.context;
 
     map.removeLayer(id);
@@ -159,7 +160,7 @@ export default class Layer extends Component {
     map.off("mousemove", this.onMouseMove);
   }
 
-  shouldComponentUpdate(nextProps, nextState) {
+  shouldComponentUpdate(nextProps) {
     if (nextProps.children !== this.props.children) {
       return true;
     }

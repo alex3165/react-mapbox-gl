@@ -24,6 +24,8 @@ const markerCoord = [
   51.5285582
 ];
 
+const circleCoord = [-0.1915664, 51.4870717];
+
 const mappedRoute = route.points.map(point => [ point.lat, point.lng ]);
 
 export default class AllShapes extends Component {
@@ -91,6 +93,12 @@ export default class AllShapes extends Component {
           layout={{ "line-cap": "round", "line-join": "round" }}
           paint={{ "line-color": "#4790E5", "line-width": 12 }}>
           <Feature coordinates={mappedRoute}/>
+        </Layer>
+
+        <Layer
+          type="circle"
+          paint={{ "circle-radius": 30, "circle-color": "#4790E5", "circle-opacity": .5 }}>
+          <Feature coordinates={circleCoord}/>
         </Layer>
 
         <Layer
