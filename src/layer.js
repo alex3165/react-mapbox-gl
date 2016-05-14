@@ -178,11 +178,9 @@ export default class Layer extends Component {
   }
 
   shouldComponentUpdate(nextProps) {
-    if (nextProps.children !== this.props.children) {
-      return true;
-    }
-
-    return false;
+    return !_.isEqual(nextProps.children, this.props.children)
+          || !_.isEqual(nextProps.paint, this.props.paint)
+          || !_.isEqual(nextProps.layout, this.props.layout)
   }
 
   render() {

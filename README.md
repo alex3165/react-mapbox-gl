@@ -105,6 +105,10 @@ To use original mapbox API use `onStyleLoad` property, the callback will receive
 Create a new mapbox layer and create all the sources depending on the children components.
 All the childrens of a Layer object have to be a Feature component.
 
+If you change the value of the paint or the layout property of the layer,
+it will automatically update this property using respectively either `setLayoutProperty` or `setPaintProperty`.
+> Only work with the first depth of the object.
+
 #### Properties
 - id : `String` The id of the layer or generate an incremented number as id
 - type : `String` The type of the features childs element
