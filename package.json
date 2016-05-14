@@ -6,7 +6,7 @@
   "jsnext:main": "es/index.js",
   "scripts": {
     "clean": "rm -rf dist",
-    "build": "babel src --out-dir dist",
+    "build": "babel src --out-dir dist && cp -R src/mapbox-css dist",
     "prepublish": "npm run clean && npm run build",
     "postversion": "git push && git push --tags",
     "example": "webpack-dev-server --config ./webpack.config.dev.js",

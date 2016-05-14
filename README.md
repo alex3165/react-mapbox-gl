@@ -57,10 +57,10 @@ If you are using webpack we advise you to use [style-loader and css-loader](http
 
 ```
 // ES6
-import MapboxCSS from "react-mapbox-gl/src/mapbox-css/mapbox-gl.css";
+import MapboxCSS from "react-mapbox-gl/dist/mapbox-css/mapbox-gl.css";
 
 // ES5
-require("react-mapbox-gl/src/mapbox-css/mapbox-gl.css");
+require("react-mapbox-gl/dist/mapbox-css/mapbox-gl.css");
 ```
 
 ## API
