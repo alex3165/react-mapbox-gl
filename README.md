@@ -112,9 +112,11 @@ it will automatically update this property using respectively either `setLayoutP
 #### Properties
 - id : `String` The id of the layer or generate an incremented number as id
 - type : `String` The type of the features childs element
-  - `symbol` for mapbox `Point`
-  - `line` for mapbox `LineString`
-  - `fill` for mapbox `Polygon`
+  - Possible value : `symbol`, Include a mapbox `symbol` (`Point` GeoJson)
+  - Possible value : `line`, Include a mapbox `line` (`LineString` GeoJson)
+  - Possible value : `fill`, Include a mapbox `polygon` (`Fill` GeoJson)
+  - Possible value : `circle`, Include a mapbox `circle` (`Point` GeoJson)
+
 - layout: Mapbox layout object passed down to mapbox `addLayer` method [mapbox layout api](https://www.mapbox.com/mapbox-gl-style-spec/#layer-layout)
 - paint: Mapbox paint object passed down to mapbox `addLayer` method [mapbox paint api](https://www.mapbox.com/mapbox-gl-style-spec/#layer-paint)
 - sourceOptions: Options object merged to the object used when calling `GeoJSONSource` method
