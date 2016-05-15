@@ -43,8 +43,6 @@ const markerCoord = [
   51.5285582
 ];
 
-const circleCoord = [-0.1915664, 51.4870717];
-
 const mappedRoute = route.points.map(point => [ point.lat, point.lng ]);
 
 export default class AllShapes extends Component {
@@ -52,7 +50,8 @@ export default class AllShapes extends Component {
   state = {
     popup: null,
     center: [0.2174037, 51.6476704],
-    circleRadius: 30
+    circleRadius: 30,
+    routeIndex: 0
   };
 
   componentWillMount() {
@@ -62,6 +61,12 @@ export default class AllShapes extends Component {
         circleRadius: 10
       });
     }, 6000);
+
+    setInterval(() => {
+      this.setState({
+        routeIndex: this.state.routeIndex + 1
+      });
+    }, 8000);
   }
 
   _onClickMarker = ({ feature }) => {
@@ -119,8 +124,8 @@ export default class AllShapes extends Component {
 
         <Layer
           type="circle"
-          paint={{ "circle-radius": this.state.circleRadius, "circle-color": "#4790E5", "circle-opacity": .5 }}>
-          <Feature coordinates={circleCoord}/>
+          paint={{ "circle-radius": this.state.circleRadius, "circle-color": "#E54E52", "circle-opacity": .8 }}>
+          <Feature coordinates={mappedRoute[this.state.routeIndex]}/>
         </Layer>
 
         <Layer
