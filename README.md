@@ -8,9 +8,10 @@ The library include the following elements :
 - ReactMapboxGl
 - Layer
 - Feature
-  - Layer type properties `symbol` display a mapbox point
-  - Layer type properties `line` display a lineString
-  - Layer type properties `fill` display a polygon
+  - Layer type properties `symbol` display a mapbox symbol.
+  - Layer type properties `line` display a lineString.
+  - Layer type properties `fill` display a polygon.
+  - Layer type properties `circle` display a mapbox circle.
 - ZoomControl
 - Popup
 
@@ -56,10 +57,10 @@ If you are using webpack we advise you to use [style-loader and css-loader](http
 
 ```
 // ES6
-import MapboxCSS from "react-mapbox-gl/src/mapbox-css/mapbox-gl.css";
+import MapboxCSS from "react-mapbox-gl/dist/mapbox-css/mapbox-gl.css";
 
 // ES5
-require("react-mapbox-gl/src/mapbox-css/mapbox-gl.css");
+require("react-mapbox-gl/dist/mapbox-css/mapbox-gl.css");
 ```
 
 ## API
@@ -81,7 +82,9 @@ To use original mapbox API use `onStyleLoad` property, the callback will receive
 - scrollZoom: See [mapbox scrollZoom](https://www.mapbox.com/mapbox-gl-js/api/#Map)
 - containerStyle : `Object` The style of the container of the map
 - hash : `Boolean`, Default : `false` [See mapbox doc](https://www.mapbox.com/mapbox-gl-js/api/#Map)
-- preserveDrawingBuffer: `Boolean`, Default : `false` [See mapbox doc](https://www.mapbox.com/mapbox-gl-js/api/#Map)
+- preserveDrawingBuffer: `Boolean`, Default: `false` [See mapbox doc](https://www.mapbox.com/mapbox-gl-js/api/#Map)
+- movingMethod: `String`. Default: `"flyTo"`, Possible choices : `jumpTo`, `easeTo`, `flyTo`, define the method used when changing the center or zoom position.
+
 - onClick: `Function` : Triggered whenever user click on the map
   - Function::(map: Object, event: Object)
 - onStyleLoad: `Function` : Listener of mapbox event : `map.on("style.load")`
@@ -102,12 +105,18 @@ To use original mapbox API use `onStyleLoad` property, the callback will receive
 Create a new mapbox layer and create all the sources depending on the children components.
 All the childrens of a Layer object have to be a Feature component.
 
+If you change the value of the paint or the layout property of the layer,
+it will automatically update this property using respectively either `setLayoutProperty` or `setPaintProperty`.
+> Only work with the first depth of the object.
+
 #### Properties
 - id : `String` The id of the layer or generate an incremented number as id
 - type : `String` The type of the features childs element
-  - `symbol` for mapbox `Point`
-  - `line` for mapbox `LineString`
-  - `fill` for mapbox `Polygon`
+  - Possible value : `symbol`, Include a mapbox `symbol` (`Point` GeoJson)
+  - Possible value : `line`, Include a mapbox `line` (`LineString` GeoJson)
+  - Possible value : `fill`, Include a mapbox `polygon` (`Fill` GeoJson)
+  - Possible value : `circle`, Include a mapbox `circle` (`Point` GeoJson)
+
 - layout: Mapbox layout object passed down to mapbox `addLayer` method [mapbox layout api](https://www.mapbox.com/mapbox-gl-style-spec/#layer-layout)
 - paint: Mapbox paint object passed down to mapbox `addLayer` method [mapbox paint api](https://www.mapbox.com/mapbox-gl-style-spec/#layer-paint)
 - sourceOptions: Options object merged to the object used when calling `GeoJSONSource` method

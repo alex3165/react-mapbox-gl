@@ -20,7 +20,12 @@ export default class ReactMapboxGl extends Component {
     onMoveEnd: PropTypes.func,
     onMouseUp: PropTypes.func,
     onDrag: PropTypes.func,
-    scrollZoom: PropTypes.bool
+    scrollZoom: PropTypes.bool,
+    movingMethod: PropTypes.oneOf([
+      "jumpTo",
+      "easeTo",
+      "flyTo"
+    ])
   };
 
   static defaultProps = {
@@ -31,7 +36,8 @@ export default class ReactMapboxGl extends Component {
       51.5285582
     ],
     zoom: 11,
-    scrollZoom: true
+    scrollZoom: true,
+    movingMethod: "flyTo"
   };
 
   static childContextTypes = {
@@ -155,7 +161,7 @@ export default class ReactMapboxGl extends Component {
     );
 
     if (didZoomUpdate || didCenterUpdate) {
-      map.flyTo({
+      map[this.props.movingMethod]({
         zoom: nextProps.zoom,
         center: nextProps.center
       });

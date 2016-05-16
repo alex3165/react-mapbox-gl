@@ -1,6 +1,7 @@
 import MapboxGl from "mapbox-gl/dist/mapbox-gl";
 import React, { Component, PropTypes, cloneElement, Children } from "react";
-
+import _ from "lodash";
+import { diff } from "./helper";
 import Feature from "./feature";
 
 let index = 0;
@@ -17,7 +18,8 @@ export default class Layer extends Component {
     type: PropTypes.oneOf([
       "symbol",
       "line",
-      "fill"
+      "fill",
+      "circle"
     ]),
 
     layout: PropTypes.object,
@@ -31,7 +33,6 @@ export default class Layer extends Component {
     paint: {}
   };
 
-  state = {};
   hover = [];
 
   identifier = this.props.id || generateID();
@@ -47,13 +48,14 @@ export default class Layer extends Component {
 
   geometry = coordinates => {
     switch (this.props.type) {
-      case "symbol": return {
+      case "symbol":
+      case "circle": return {
         type: "Point",
         coordinates
       };
 
       case "fill": return {
-        type: "Polygon",
+        type: coordinates.length > 1 ? "MultiPolygon" : "Polygon",
         coordinates
       };
 
@@ -149,7 +151,7 @@ export default class Layer extends Component {
   }
 
   componentWillUnmount() {
-    const { id, source } = this;
+    const { id } = this;
     const { map } = this.context;
 
     map.removeLayer(id);
@@ -159,12 +161,26 @@ export default class Layer extends Component {
     map.off("mousemove", this.onMouseMove);
   }
 
-  shouldComponentUpdate(nextProps, nextState) {
-    if (nextProps.children !== this.props.children) {
-      return true;
+  componentWillReceiveProps(props) {
+    const { paint, layout } = this.props;
+
+    if(!_.isEqual(props.paint, paint)) {
+      _.forEach(diff(paint, props.paint), (val, key) => {
+        this.context.map.setPaintProperty(this.id, key, val);
+      });
     }
 
-    return false;
+    if(!_.isEqual(props.layout, layout)) {
+      _.forEach(diff(layout, props.layout), (val, key) => {
+        this.context.map.setLayoutProperty(this.id, key, val);
+      });
+    }
+  }
+
+  shouldComponentUpdate(nextProps) {
+    return !_.isEqual(nextProps.children, this.props.children)
+          || !_.isEqual(nextProps.paint, this.props.paint)
+          || !_.isEqual(nextProps.layout, this.props.layout)
   }
 
   render() {

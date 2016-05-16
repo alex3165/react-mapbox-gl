@@ -1,12 +1,12 @@
 {
   "name": "react-mapbox-gl",
-  "version": "0.3.1",
+  "version": "0.4.1",
   "description": "A React binding of mapbox-gl-js",
   "main": "dist/index.js",
   "jsnext:main": "es/index.js",
   "scripts": {
     "clean": "rm -rf dist",
-    "build": "babel src --out-dir dist",
+    "build": "babel src --out-dir dist && cp -R src/mapbox-css dist",
     "prepublish": "npm run clean && npm run build",
     "postversion": "git push && git push --tags",
     "example": "webpack-dev-server --config ./webpack.config.dev.js",
@@ -35,6 +35,7 @@
   },
   "homepage": "https://github.com/alex3165/react-mapbox-gl#readme",
   "dependencies": {
+    "lodash": "^4.12.0",
     "mapbox-gl": "^0.18.0"
   },
   "peerDependencies": {
