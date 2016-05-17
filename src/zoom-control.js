@@ -12,10 +12,10 @@ const containerStyle = {
 };
 
 const positions = {
-  topRight: { top: 10, right: 10, bottom: "auto", left: "auto"},
-  topLeft: { top: 10, left: 10, bottom: "auto", right: "auto"},
-  bottomRight: { bottom: 10, right: 10, top: "auto", left: "auto"},
-  bottomLeft: { bottom: 10, left: 10, top: "auto", right: "auto"},
+  topRight: { top: 10, right: 10, bottom: "auto", left: "auto" },
+  topLeft: { top: 10, left: 10, bottom: "auto", right: "auto" },
+  bottomRight: { bottom: 10, right: 10, top: "auto", left: "auto" },
+  bottomLeft: { bottom: 10, left: 10, top: "auto", right: "auto" }
 };
 
 const buttonStyle = {
@@ -29,7 +29,6 @@ const buttonStyle = {
   backgroundImage: "url('https://api.mapbox.com/mapbox.js/v2.4.0/images/icons-000000@2x.png')",
   backgroundPosition: "0px 0px",
   backgroundSize: "26px 260px",
-  cursor: "pointer",
   outline: 0
 };
 
@@ -50,7 +49,7 @@ const buttonStyleMinus = {
   borderBottomRightRadius: 2
 };
 
-const [PLUS, MINUS] = [0,1];
+const [ PLUS, MINUS ] = [ 0, 1 ];
 
 export default class ZoomControl extends Component {
   static propTypes = {
@@ -67,7 +66,7 @@ export default class ZoomControl extends Component {
     map: React.PropTypes.object
   };
 
-  _onMouse = (hover) => {
+  _onMouse = hover => {
     if(hover !== this.state.hover) {
       this.setState({ hover });
     }
@@ -85,7 +84,7 @@ export default class ZoomControl extends Component {
           ...(position === "top-right" && positions.topRight),
           ...(position === "top-left" && positions.topLeft),
           ...(position === "bottom-right" && positions.bottomRight),
-          ...(position === "bottom-left" && positions.bottomLeft),  
+          ...(position === "bottom-left" && positions.bottomLeft)
         }}>
         <button
           style={{
