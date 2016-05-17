@@ -2,8 +2,6 @@ import React, { Component } from "react";
 
 const containerStyle = {
   position: "absolute",
-  bottom: 10,
-  right: 10,
   zIndex: 2,
   display: "flex",
   flexDirection: "column",
@@ -50,12 +48,17 @@ const buttonStyleMinus = {
 };
 
 const [ PLUS, MINUS ] = [ 0, 1 ];
+const POSITIONS = [ "top-right", "top-left", "bottom-right", "bottom-left" ];
 
 export default class ZoomControl extends Component {
   static propTypes = {
     zoomDiff: React.PropTypes.number,
     onControlClick: React.PropTypes.func,
     position: React.PropTypes.string
+  };
+
+  static defaultProps = {
+    position: "top-right"
   };
 
   state = {
@@ -81,10 +84,10 @@ export default class ZoomControl extends Component {
       <div
         style={{
           ...containerStyle,
-          ...(position === "top-right" && positions.topRight),
-          ...(position === "top-left" && positions.topLeft),
-          ...(position === "bottom-right" && positions.bottomRight),
-          ...(position === "bottom-left" && positions.bottomLeft)
+          ...(position === POSITIONS[0] && positions.topRight),
+          ...(position === POSITIONS[1] && positions.topLeft),
+          ...(position === POSITIONS[2] && positions.bottomRight),
+          ...(position === POSITIONS[3] && positions.bottomLeft)
         }}>
         <button
           style={{
