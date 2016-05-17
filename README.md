@@ -147,7 +147,7 @@ A custom react zoom control component (This component is new and not tested yet,
 - onControlClick : `Function` triggered when user click on minus or plus button
   - Function::(map: Object, zoomDiff: Number)
 - zoomDiff : `Number` The shift number passed to the callback `onControlClick`
-
+- position: `String` The control position, set by default to `top-right`
 
 ### Popup: `React.Component`
 
