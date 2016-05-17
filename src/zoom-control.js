@@ -2,13 +2,18 @@ import React, { Component } from "react";
 
 const containerStyle = {
   position: "absolute",
-  bottom: 10,
-  right: 10,
   zIndex: 2,
   display: "flex",
   flexDirection: "column",
   boxShadow: "0px 1px 4px rgba(0, 0, 0, .3)",
   border: "1px solid rgba(0, 0, 0, 0.1)"
+};
+
+const positions = {
+  topRight: { top: 10, right: 10, bottom: "auto", left: "auto" },
+  topLeft: { top: 10, left: 10, bottom: "auto", right: "auto" },
+  bottomRight: { bottom: 10, right: 10, top: "auto", left: "auto" },
+  bottomLeft: { bottom: 10, left: 10, top: "auto", right: "auto" }
 };
 
 const buttonStyle = {
@@ -22,7 +27,6 @@ const buttonStyle = {
   backgroundImage: "url('https://api.mapbox.com/mapbox.js/v2.4.0/images/icons-000000@2x.png')",
   backgroundPosition: "0px 0px",
   backgroundSize: "26px 260px",
-  cursor: "pointer",
   outline: 0
 };
 
@@ -43,12 +47,18 @@ const buttonStyleMinus = {
   borderBottomRightRadius: 2
 };
 
-const [PLUS, MINUS] = [0,1];
+const [ PLUS, MINUS ] = [ 0, 1 ];
+const POSITIONS = [ "top-right", "top-left", "bottom-right", "bottom-left" ];
 
 export default class ZoomControl extends Component {
   static propTypes = {
     zoomDiff: React.PropTypes.number,
-    onControlClick: React.PropTypes.func
+    onControlClick: React.PropTypes.func,
+    position: React.PropTypes.string
+  };
+
+  static defaultProps = {
+    position: "top-right"
   };
 
   state = {
@@ -59,19 +69,26 @@ export default class ZoomControl extends Component {
     map: React.PropTypes.object
   };
 
-  _onMouse = (hover) => {
+  _onMouse = hover => {
     if(hover !== this.state.hover) {
       this.setState({ hover });
     }
   };
 
   render() {
-    const { onControlClick, zoomDiff } = this.props;
+    const { onControlClick, zoomDiff, position } = this.props;
     const { hover } = this.state;
     const { map } = this.context;
 
     return (
-      <div style={containerStyle}>
+      <div
+        style={{
+          ...containerStyle,
+          ...(position === POSITIONS[0] && positions.topRight),
+          ...(position === POSITIONS[1] && positions.topLeft),
+          ...(position === POSITIONS[2] && positions.bottomRight),
+          ...(position === POSITIONS[3] && positions.bottomLeft)
+        }}>
         <button
           style={{
             ...buttonStyle,
