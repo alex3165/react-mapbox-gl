@@ -58,7 +58,10 @@ export default class ZoomControl extends Component {
   };
 
   static defaultProps = {
-    position: "top-right"
+    position: POSITIONS[0],
+    onControlClick: (map, zoomDiff) => {
+      map.setZoom(map.getZoom() + zoomDiff);
+    }
   };
 
   state = {
