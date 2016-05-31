@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component, PropTypes } from "react";
 
 const scales = [
   .01, .02, .05,
@@ -10,12 +10,18 @@ const scales = [
   10 * 1000
 ];
 
+const positions = {
+  topRight: { top: 10, right: 10, bottom: "auto", left: "auto" },
+  topLeft: { top: 10, left: 10, bottom: "auto", right: "auto" },
+  bottomRight: { bottom: 10, right: 10, top: "auto", left: "auto" },
+  bottomLeft: { bottom: 10, left: 10, top: "auto", right: "auto" }
+};
+
 const containerStyle = {
   position: "absolute",
   zIndex: 2,
   boxShadow: "0px 1px 4px rgba(0, 0, 0, .3)",
   border: "1px solid rgba(0, 0, 0, 0.1)",
-  bottom: 10,
   right: 50,
   backgroundColor: "#fff",
   opacity: .85,
@@ -34,6 +40,8 @@ const scaleStyle = {
   borderBottomRightRadius: 1
 };
 
+const POSITIONS = Object.keys(positions);
+
 const MEASUREMENTS = [ "km", "mi" ];
 
 const MILE_IN_KILOMETERS = 1.60934;
@@ -44,15 +52,18 @@ const MIN_WIDTH_SCALE = 40;
 
 export default class ScaleControl extends Component {
    static contextTypes = {
-    map: React.PropTypes.object
+    map: PropTypes.object
   };
 
   static propTypes = {
-    measurement: React.PropTypes.string
+    measurement: PropTypes.oneOf(MEASUREMENTS),
+    style: PropTypes.object,
+    position: PropTypes.string
   };
 
   static defaultProps = {
-    measurement: MEASUREMENTS[0]
+    measurement: MEASUREMENTS[0],
+    position: POSITIONS[2]
   };
 
   state = {
@@ -75,7 +86,7 @@ export default class ScaleControl extends Component {
     }
   }
 
-  _setScale = (map) => {
+  _setScale = map => {
     const { measurement } = this.props;
     const clientWidth = map._canvas.canvas.clientWidth;
     const { _ne, _sw } = map.getBounds();
@@ -130,11 +141,15 @@ export default class ScaleControl extends Component {
   }
 
   render() {
-    const { measurement } = this.props;
+    const { measurement, style, position } = this.props;
     const { chosenScale, scaleWidth } = this.state;
 
     return (
-      <div style={containerStyle}>
+      <div style={{
+        ...containerStyle,
+        ...positions[position],
+        ...style
+      }}>
         <div
           style={{
             ...scaleStyle,
