@@ -83,7 +83,7 @@ To use original mapbox API use `onStyleLoad` property, the callback will receive
 - containerStyle : `Object` The style of the container of the map
 - hash : `Boolean`, Default : `false` [See mapbox doc](https://www.mapbox.com/mapbox-gl-js/api/#Map)
 - preserveDrawingBuffer: `Boolean`, Default: `false` [See mapbox doc](https://www.mapbox.com/mapbox-gl-js/api/#Map)
-- movingMethod: `String`. Default: `"flyTo"`, Possible choices : `jumpTo`, `easeTo`, `flyTo`, define the method used when changing the center or zoom position.
+- movingMethod: `String`. Default: `"flyTo"`, Possible value : `jumpTo`, `easeTo`, `flyTo`, define the method used when changing the center or zoom position.
 
 - onClick: `Function` : Triggered whenever user click on the map
   - Function::(map: Object, event: Object)
@@ -141,13 +141,25 @@ Display a feature on the map, can only be used when wrapped in a `Layer` compone
 
 ### ZoomControl: `React.Component`
 
-A custom react zoom control component (This component is new and not tested yet, we advise to create your own component)
+A custom react zoom control component.
 
 #### Properties
 - onControlClick : `Function` triggered when user click on minus or plus button
   - Function::(map: Object, zoomDiff: Number)
+- style : `Object` Style object merged with internal style into the container
 - zoomDiff : `Number` The shift number passed to the callback `onControlClick`
-- position: `String` The control position, set by default to `top-right`
+- position: `String` The control position, set by default to `topRight`, Possible values : `topRight`, `topLeft`, `bottomRight`, `bottomLeft`
+
+
+### ScaleControl: `React.Component`
+
+A custom react scale feedback control component.
+
+#### Properties
+- measurement : `String`, Possible values : `km`, `mi`
+- style : `Object` Style object merged with internal style into the container
+- position: `String` The control position, set by default to `topRight`, Possible values : `topRight`, `topLeft`, `bottomRight`, `bottomLeft`
+
 
 ### Popup: `React.Component`
 
