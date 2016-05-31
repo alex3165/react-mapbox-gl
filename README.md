@@ -141,13 +141,25 @@ Display a feature on the map, can only be used when wrapped in a `Layer` compone
 
 ### ZoomControl: `React.Component`
 
-A custom react zoom control component (This component is new and not tested yet, we advise to create your own component)
+A custom react zoom control component.
 
 #### Properties
 - onControlClick : `Function` triggered when user click on minus or plus button
   - Function::(map: Object, zoomDiff: Number)
+- style : `Object` Style object merged with internal style into the container
 - zoomDiff : `Number` The shift number passed to the callback `onControlClick`
-- position: `String` The control position, set by default to `top-right`
+- position: `String` The control position, set by default to `topRight`
+
+
+### ScaleControl: `React.Component`
+
+A custom react scale feedback control component.
+
+#### Properties
+- measurement : `String`, Possible values : `km`, `mi`
+- style : `Object` Style object merged with internal style into the container
+- position: `String` The control position, set by default to `topRight`
+
 
 ### Popup: `React.Component`
 
