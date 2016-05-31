@@ -27,10 +27,11 @@ const containerStyle = {
 
 const scaleStyle = {
   border: "2px solid #7e8490",
+  boxShadow: "0px 1px 4px rgba(0, 0, 0, .3)",
   borderTop: "none",
   height: 7,
-  borderBottomLeftRadius: 0,
-  borderBottomRightRadius: 0
+  borderBottomLeftRadius: 1,
+  borderBottomRightRadius: 1
 };
 
 const MEASUREMENTS = [ "km", "mi" ];
@@ -63,7 +64,7 @@ export default class ScaleControl extends Component {
     const { map } = this.context;
     this._setScale(map);
 
-    map.on("zoomend", (...args) => {
+    map.on("zoomend", () => {
       this._setScale(map);
     });
   }
@@ -129,7 +130,6 @@ export default class ScaleControl extends Component {
   }
 
   render() {
-    const { map } = this.context;
     const { measurement } = this.props;
     const { chosenScale, scaleWidth } = this.state;
 
