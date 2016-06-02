@@ -178,8 +178,8 @@ export default class ReactMapboxGl extends Component {
 
     if (didZoomUpdate || didCenterUpdate) {
       map[this.props.movingMethod]({
-        zoom: nextProps.zoom,
-        center: nextProps.center
+        zoom: didZoomUpdate ? nextProps.zoom : zoom,
+        center: didCenterUpdate ? nextProps.center : center
       });
     }
   }
