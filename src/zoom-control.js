@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component, PropTypes } from "react";
 
 const containerStyle = {
   position: "absolute",
@@ -48,17 +48,19 @@ const buttonStyleMinus = {
 };
 
 const [ PLUS, MINUS ] = [ 0, 1 ];
-const POSITIONS = [ "top-right", "top-left", "bottom-right", "bottom-left" ];
+const POSITIONS = Object.keys(positions);
 
 export default class ZoomControl extends Component {
   static propTypes = {
-    zoomDiff: React.PropTypes.number,
-    onControlClick: React.PropTypes.func,
-    position: React.PropTypes.string
+    zoomDiff: PropTypes.number,
+    onControlClick: PropTypes.func,
+    position: PropTypes.oneOf(POSITIONS),
+    style: PropTypes.object
   };
 
   static defaultProps = {
     position: POSITIONS[0],
+    zoomDiff: 0.5,
     onControlClick: (map, zoomDiff) => {
       map.setZoom(map.getZoom() + zoomDiff);
     }
@@ -69,7 +71,7 @@ export default class ZoomControl extends Component {
   };
 
   static contextTypes = {
-    map: React.PropTypes.object
+    map: PropTypes.object
   };
 
   _onMouse = hover => {
@@ -79,7 +81,7 @@ export default class ZoomControl extends Component {
   };
 
   render() {
-    const { onControlClick, zoomDiff, position } = this.props;
+    const { onControlClick, zoomDiff, position, style } = this.props;
     const { hover } = this.state;
     const { map } = this.context;
 
@@ -87,10 +89,8 @@ export default class ZoomControl extends Component {
       <div
         style={{
           ...containerStyle,
-          ...(position === POSITIONS[0] && positions.topRight),
-          ...(position === POSITIONS[1] && positions.topLeft),
-          ...(position === POSITIONS[2] && positions.bottomRight),
-          ...(position === POSITIONS[3] && positions.bottomLeft)
+          ...positions[position],
+          ...style
         }}>
         <button
           style={{
