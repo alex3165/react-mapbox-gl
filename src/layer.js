@@ -37,8 +37,7 @@ export default class Layer extends Component {
 
   hover = [];
 
-  identifier = this.props.id || generateID();
-  id = `layer-${this.identifier}`;
+  id = this.props.id || `layer-${generateID()}`;
 
   source = new MapboxGl.GeoJSONSource({
     ...this.props.sourceOptions,
