@@ -24,7 +24,9 @@ export default class Layer extends Component {
 
     layout: PropTypes.object,
     paint: PropTypes.object,
-    sourceOptions: PropTypes.object
+    sourceOptions: PropTypes.object,
+    layerOptions: PropTypes.object,
+    sourceId: PropTypes.string
   };
 
   static defaultProps = {
@@ -135,18 +137,22 @@ export default class Layer extends Component {
 
   componentWillMount() {
     const { id, source } = this;
-    const { type, layout, paint } = this.props;
+    const { type, layout, paint, layerOptions, sourceId } = this.props;
     const { map } = this.context;
 
     const layer = {
       id,
-      source: id,
+      source: sourceId || id,
       type,
       layout,
-      paint
+      paint,
+      ...layerOptions
     };
 
-    map.addSource(id, source);
+    if(!sourceId) {
+      map.addSource(id, source);
+    }
+
     map.addLayer(layer);
 
     map.on("click", this.onClick);
