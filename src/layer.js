@@ -32,7 +32,8 @@ export default class Layer extends Component {
   static defaultProps = {
     type: "symbol",
     layout: {},
-    paint: {}
+    paint: {},
+    children: {}
   };
 
   hover = [];
