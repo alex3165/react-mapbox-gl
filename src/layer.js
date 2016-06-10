@@ -32,8 +32,7 @@ export default class Layer extends Component {
   static defaultProps = {
     type: "symbol",
     layout: {},
-    paint: {},
-    children: {}
+    paint: {}
   };
 
   hover = [];
@@ -194,16 +193,18 @@ export default class Layer extends Component {
   }
 
   render() {
-    const children = [].concat(this.props.children);
+    if(this.props.children) {
+      const children = [].concat(this.props.children);
 
-    const features = children
-      .map(({ props }, id) => this.feature(props, id))
-      .filter(Boolean);
+      const features = children
+        .map(({ props }, id) => this.feature(props, id))
+        .filter(Boolean);
 
-    this.source.setData({
-      type: "FeatureCollection",
-      features
-    });
+      this.source.setData({
+        type: "FeatureCollection",
+        features
+      });
+    }
 
     return null;
   }
