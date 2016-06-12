@@ -71,7 +71,10 @@ export default class Layer extends Component {
   feature = (props, id) => ({
     type: "Feature",
     geometry: this.geometry(props.coordinates),
-    properties: props.properties
+    properties: {
+      ...props.properties,
+      id
+    }
   })
 
   onClick = evt => {

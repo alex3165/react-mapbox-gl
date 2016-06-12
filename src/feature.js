@@ -6,7 +6,8 @@ Feature.propTypes = {
   coordinates: PropTypes.array.isRequired,
   onClick: PropTypes.func,
   onHover: PropTypes.func,
-  onEndHover: PropTypes.func
+  onEndHover: PropTypes.func,
+  properties: PropTypes.object
 };
 
 export default Feature;

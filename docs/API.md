@@ -97,6 +97,7 @@ import { Feature } from "react-mapbox-gl";
 
 ### Properties
 - **coordinates** *(required)* : `Array<Number>` Display the feature at the given position.
+- **properties** : `Object` Properties object passed down to the feature at the creation of the source.
 - **onClick** : `Function` Triggered when user click on the feature
   - Function::(args: Object)
     - Args contain the feature object, the map object and the arguments passed by mapbox from the event `click`
