@@ -87,11 +87,11 @@ export default class ReactMapboxGl extends Component {
     });
 
     map.on("style.load", (...args) => {
-      this.setState({ map });
-
       if (onStyleLoad) {
         onStyleLoad(map, ...args);
       }
+
+      this.setState({ map });
     });
 
     map.on("click", (...args) => {
