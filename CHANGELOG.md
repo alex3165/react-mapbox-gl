@@ -1,4 +1,4 @@
-## 0.6.0 (June 15 2016)
+## 0.7.0 (June 15 2016)
 
 - Add `layerOptions` property to Layer component
 - Layer can use external source : #22
