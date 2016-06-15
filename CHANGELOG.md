@@ -5,3 +5,4 @@
 - Add Layer with external source to all-shape example
 - `onStyleLoad` callback is now called before childrens components are rendered
 - Update mapbox-gl to version 0.20.0
+- Add properties property to Feature component
