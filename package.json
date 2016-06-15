@@ -1,6 +1,6 @@
 {
   "name": "react-mapbox-gl",
-  "version": "0.5.1",
+  "version": "0.7.0",
   "description": "A React binding of mapbox-gl-js",
   "main": "dist/index.js",
   "jsnext:main": "es/index.js",
@@ -36,7 +36,7 @@
   "homepage": "https://github.com/alex3165/react-mapbox-gl#readme",
   "dependencies": {
     "lodash": "^4.12.0",
-    "mapbox-gl": "^0.18.0"
+    "mapbox-gl": "^0.20.0"
   },
   "peerDependencies": {
     "react": "^15.0.1",
