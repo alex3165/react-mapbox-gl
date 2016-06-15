@@ -2,8 +2,9 @@ import React, { Component } from "react";
 import ReactMapboxGl, { Layer, Feature, ScaleControl, ZoomControl } from "../src/index";
 import route from "./route.json";
 import config from "./config.json";
+import style from "./style.json";
 
-const { accessToken, style } = config;
+const { accessToken } = config;
 
 const containerStyle = {
   height: "100vh",
@@ -116,6 +117,19 @@ export default class AllShapes extends Component {
             onEndHover={this._onEndHover}
             onClick={this._onClickMarker}/>
         </Layer>
+
+        <Layer
+          id="mapbox-route-example"
+          type="line"
+          sourceId="route"
+          layout={{
+            "line-join": "round",
+            "line-cap": "round"
+          }}
+          paint={{
+            "line-color": "#888",
+            "line-width": 8
+          }}/>
 
         <Layer
           type="line"
