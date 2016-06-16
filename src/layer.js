@@ -1,6 +1,6 @@
 import MapboxGl from "mapbox-gl/dist/mapbox-gl";
 import React, { Component, PropTypes, cloneElement, Children } from "react";
-import _ from "lodash";
+import { isEqual, forEach } from "lodash";
 import { diff } from "./helper";
 import Feature from "./feature";
 
@@ -172,23 +172,23 @@ export default class Layer extends Component {
   componentWillReceiveProps(props) {
     const { paint, layout } = this.props;
 
-    if(!_.isEqual(props.paint, paint)) {
-      _.forEach(diff(paint, props.paint), (val, key) => {
+    if(!isEqual(props.paint, paint)) {
+      forEach(diff(paint, props.paint), (val, key) => {
         this.context.map.setPaintProperty(this.id, key, val);
       });
     }
 
-    if(!_.isEqual(props.layout, layout)) {
-      _.forEach(diff(layout, props.layout), (val, key) => {
+    if(!isEqual(props.layout, layout)) {
+      forEach(diff(layout, props.layout), (val, key) => {
         this.context.map.setLayoutProperty(this.id, key, val);
       });
     }
   }
 
   shouldComponentUpdate(nextProps) {
-    return !_.isEqual(nextProps.children, this.props.children)
-          || !_.isEqual(nextProps.paint, this.props.paint)
-          || !_.isEqual(nextProps.layout, this.props.layout)
+    return !isEqual(nextProps.children, this.props.children)
+          || !isEqual(nextProps.paint, this.props.paint)
+          || !isEqual(nextProps.layout, this.props.layout)
   }
 
   render() {

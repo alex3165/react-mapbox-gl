@@ -12,7 +12,7 @@ import ReactMapboxGl from "react-mapbox-gl";
 ```
 
 ### Properties
-- **style** *(required)* : `String || Object`  Mapbox map style
+- **style** *(required)* : `String || Object`  Mapbox map style, if changed, the style will be updated using `setStyle`.
 - **accessToken** *(required)* : `String` Mapbox access token.
 - **center** *(Default: `[ -0.2416815, 51.5285582 ]`)*: `Array<Number>` Center the map at the position at initialisation
   - Re-center the map if the value change regarding the prev value or the actual center position [flyTo](https://www.mapbox.com/mapbox-gl-js/api/#Map.flyTo)
@@ -73,7 +73,8 @@ import { Layer } from "react-mapbox-gl";
 - **layout**: Mapbox layout object passed down to mapbox `addLayer` method [mapbox layout api](https://www.mapbox.com/mapbox-gl-style-spec/#layer-layout)
 - **paint**: Mapbox paint object passed down to mapbox `addLayer` method [mapbox paint api](https://www.mapbox.com/mapbox-gl-style-spec/#layer-paint)
 - **sourceOptions**: Options object merged to the object used when calling `GeoJSONSource` method
-
+- **layerOptions**: Passed down to the layer object when setting it out.
+- **sourceId**: When passed to the layer, the source will not be created but only the layer and it will use the given source id.
 
 ### Example
 

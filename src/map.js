@@ -1,5 +1,6 @@
 import MapboxGl from "mapbox-gl/dist/mapbox-gl";
 import React, { Component, PropTypes } from "react";
+import { isEqual } from "lodash";
 
 export default class ReactMapboxGl extends Component {
   static propTypes = {
@@ -153,7 +154,8 @@ export default class ReactMapboxGl extends Component {
     return (
       nextProps.children !== this.props.children ||
       nextProps.containerStyle !== this.props.containerStyle ||
-      nextState.map !== this.state.map
+      nextState.map !== this.state.map ||
+      nextProps.style !== this.props.style
     );
   }
 
@@ -181,6 +183,10 @@ export default class ReactMapboxGl extends Component {
         zoom: didZoomUpdate ? nextProps.zoom : zoom,
         center: didCenterUpdate ? nextProps.center : center
       });
+    }
+
+    if (!isEqual(this.props.style, nextProps.style)) {
+      map.setStyle(nextProps.style);
     }
   }
 
