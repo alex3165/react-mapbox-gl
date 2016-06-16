@@ -1,6 +1,6 @@
 import MapboxGl from "mapbox-gl/dist/mapbox-gl";
 import React, { Component, PropTypes } from "react";
-import { isEqual } from "lodash";
+import isEqual from "deep-equal";
 
 export default class ReactMapboxGl extends Component {
   static propTypes = {
