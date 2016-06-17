@@ -88,6 +88,10 @@ export default class AllShapes extends Component {
     map.getCanvas().style.cursor = "pointer";
   }
 
+  _onZoom(map) {
+    console.log("Zoom level changed to ", map.getZoom());
+  }
+
   _onEndHover({ map }) {
     map.getCanvas().style.cursor = "";
   }
@@ -101,6 +105,7 @@ export default class AllShapes extends Component {
       <ReactMapboxGl
         style={style}
         onClick={this._onClickMap}
+        onZoom={this._onZoom}
         onStyleLoad={this._onStyleLoad}
         accessToken={accessToken}
         center={this.state.center}

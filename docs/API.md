@@ -39,6 +39,8 @@ import ReactMapboxGl from "react-mapbox-gl";
   - Function::(map: Object, event: Object)
 - **onDrag** : `Function` : Simple binding of mapbox `ondrag` event
   - Function::(map: Object, event: Object)
+- **onZoom**: `Function` : Executed repeatedly during transitions between zoom levels
+  - Function::(map: Object, event: Object)
 
 
 ### Example
