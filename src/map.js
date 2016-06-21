@@ -11,6 +11,7 @@ export default class ReactMapboxGl extends Component {
     accessToken: PropTypes.string.isRequired,
     center: PropTypes.arrayOf(PropTypes.number),
     zoom: PropTypes.number,
+    bearing: PropTypes.number,
     containerStyle: PropTypes.object,
     hash: PropTypes.bool,
     preserveDrawingBuffer: PropTypes.bool,
@@ -40,6 +41,7 @@ export default class ReactMapboxGl extends Component {
       51.5285582
     ],
     zoom: 11,
+    bearing: 0,
     scrollZoom: true,
     movingMethod: "flyTo"
   };
@@ -64,6 +66,7 @@ export default class ReactMapboxGl extends Component {
       accessToken,
       center,
       zoom,
+      bearing,
       onStyleLoad,
       onClick,
       onMouseMove,
@@ -83,6 +86,7 @@ export default class ReactMapboxGl extends Component {
       preserveDrawingBuffer,
       hash,
       zoom,
+      bearing,
       container: this.refs.mapboxContainer,
       center,
       style,
@@ -175,6 +179,7 @@ export default class ReactMapboxGl extends Component {
 
     const center = map.getCenter();
     const zoom = map.getZoom();
+    const bearing = map.getBearing();
 
     const didZoomUpdate = (
       this.props.zoom !== nextProps.zoom &&
@@ -186,10 +191,16 @@ export default class ReactMapboxGl extends Component {
       nextProps.center !== map.getCenter()
     );
 
-    if (didZoomUpdate || didCenterUpdate) {
+    const didBearingUpdate = (
+      this.props.bearing !== nextProps.bearing &&
+      nextProps.bearing !== map.getBearing()
+    )
+
+    if (didZoomUpdate || didCenterUpdate || didBearingUpdate) {
       map[this.props.movingMethod]({
         zoom: didZoomUpdate ? nextProps.zoom : zoom,
-        center: didCenterUpdate ? nextProps.center : center
+        center: didCenterUpdate ? nextProps.center : center,
+        bearing: didBearingUpdate ? nextProps.bearing : bearing
       });
     }
 
