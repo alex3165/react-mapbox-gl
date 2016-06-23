@@ -51,6 +51,11 @@ const styles = {
   }
 }
 
+const maxBounds = [
+      [-0.481747846041145,51.3233379650232], // South West
+      [0.23441119994140536,51.654967740310525], // North East
+];
+
 export default class LondonCycle extends Component {
 
   state = {
@@ -115,6 +120,9 @@ export default class LondonCycle extends Component {
           style={style}
           center={this.state.center}
           zoom={this.state.zoom}
+          minZoom={8}
+          maxZoom={15}
+          maxBounds={maxBounds}
           accessToken={accessToken}
           onDrag={this._onDrag}
           onMoveEnd={this._setMove.bind(this, true)}
