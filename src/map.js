@@ -10,7 +10,7 @@ export default class ReactMapboxGl extends Component {
     ]).isRequired,
     accessToken: PropTypes.string.isRequired,
     center: PropTypes.arrayOf(PropTypes.number),
-    zoom: PropTypes.number,
+    zoom: PropTypes.arrayOf(PropTypes.number),
     minZoom: PropTypes.number,
     maxZoom: PropTypes.number,
     maxBounds: PropTypes.array,
@@ -43,7 +43,7 @@ export default class ReactMapboxGl extends Component {
       -0.2416815,
       51.5285582
     ],
-    zoom: 11,
+    zoom: [11],
     minZoom: 0,
     maxZoom: 20,
     bearing: 0,
@@ -93,7 +93,7 @@ export default class ReactMapboxGl extends Component {
     const map = new MapboxGl.Map({
       preserveDrawingBuffer,
       hash,
-      zoom,
+      zoom: zoom[0],
       minZoom,
       maxZoom,
       maxBounds,
@@ -209,7 +209,7 @@ export default class ReactMapboxGl extends Component {
 
     if (didZoomUpdate || didCenterUpdate || didBearingUpdate) {
       map[this.props.movingMethod]({
-        zoom: didZoomUpdate ? nextProps.zoom : zoom,
+        zoom: didZoomUpdate ? nextProps.zoom[0] : zoom,
         center: didCenterUpdate ? nextProps.center : center,
         bearing: didBearingUpdate ? nextProps.bearing : bearing
       });

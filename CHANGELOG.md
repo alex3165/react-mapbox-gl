@@ -1,3 +1,7 @@
+## 0.8.0 (July 5 2016)
+
+- Breaking change, zoom is now wrapped in an array so the map component can check for a reference equality of the value.
+
 ## 0.7.1 (June 16 2016)
 
 - Update API documentation

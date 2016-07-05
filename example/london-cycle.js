@@ -60,7 +60,7 @@ export default class LondonCycle extends Component {
 
   state = {
     center: [-0.109970527, 51.52916347],
-    zoom: 11,
+    zoom: [11],
     skip: 0,
     stations: new Map()
   };
@@ -84,7 +84,7 @@ export default class LondonCycle extends Component {
   _markerClick = (station, { feature }) => {
     this.setState({
       center: feature.geometry.coordinates,
-      zoom: 14,
+      zoom: [14],
       station
     });
   };
@@ -108,7 +108,7 @@ export default class LondonCycle extends Component {
 
   _onControlClick = (map, zoomDiff) => {
     const zoom = map.getZoom() + zoomDiff;
-    this.setState({ zoom });
+    this.setState({ zoom: [zoom] });
   };
 
   render() {

@@ -15,6 +15,10 @@ The library include the following elements :
 - ZoomControl
 - Popup
 
+## Breaking change
+
+`zoom` property is now an array because we have to check for reference equality on `componentWillReceiveProps` of the map component.
+
 ## How to start
 
 ```

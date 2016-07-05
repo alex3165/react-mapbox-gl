@@ -16,7 +16,7 @@ import ReactMapboxGl from "react-mapbox-gl";
 - **accessToken** *(required)* : `String` Mapbox access token.
 - **center** *(Default: `[ -0.2416815, 51.5285582 ]`)*: `Array<Number>` Center the map at the position at initialisation
   - Re-center the map if the value change regarding the prev value or the actual center position [flyTo](https://www.mapbox.com/mapbox-gl-js/api/#Map.flyTo)
-- **zoom** *(Default: `11`)*: `Number` Zoom level of the map at initialisation
+- **zoom** *(Default: `[11]`)*: `Array` Zoom level of the map at initialisation wrapped in an array.
   - Check the previous value and the new one, if the value changed update the zoom value [flyTo](https://www.mapbox.com/mapbox-gl-js/api/#Map.flyTo)
 - **minZoom** *(Default: `0`)*: `Number` Minimum zoom level. Must be between 0 and 20.
 - **maxZoom** *(Default: `20`)*: `Number` Maximum zoom level. Must be between 0 and 20.
