@@ -17,7 +17,7 @@ The library include the following elements :
 
 ## Breaking change
 
-`zoom` property is now an array because we have to check for reference equality on `componentWillReceiveProps` of the map component.
+`zoom` property is now an array it is required to test for a reference equality in `componentWillReceiveProps` of the map component in order to properly update the zoom when the reference changed.
 
 ## How to start
 
