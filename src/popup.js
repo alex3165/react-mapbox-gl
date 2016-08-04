@@ -58,7 +58,7 @@ export default class Popup extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    const { popup } = this;
+    const { popup, div } = this;
     const {
       children,
       coordinates,
@@ -75,6 +75,8 @@ export default class Popup extends Component {
       } else if (text !== this.props.text) {
         popup.setText(text);
       }
+    } else {
+      render(children, div);
     }
 
     if (this.props.coordinates !== coordinates) {

@@ -62,7 +62,8 @@ export default class LondonCycle extends Component {
     center: [-0.109970527, 51.52916347],
     zoom: [11],
     skip: 0,
-    stations: new Map()
+    stations: new Map(),
+    popupShowLabel: true
   };
 
   componentWillMount() {
@@ -111,8 +112,12 @@ export default class LondonCycle extends Component {
     this.setState({ zoom: [zoom] });
   };
 
+  _popupChange(popupShowLabel) {
+    this.setState({ popupShowLabel });
+  }
+
   render() {
-    const { stations, station, skip, end } = this.state;
+    const { stations, station, skip, end, popupShowLabel } = this.state;
 
     return (
       <div>
@@ -153,9 +158,19 @@ export default class LondonCycle extends Component {
           {
             station && end && (
               <Popup key={station.get("id")} coordinates={station.get("position")} closeButton={true}>
-                <span style={styles.popup}>
-                  {station.get("name")}
-                </span>
+                <div>
+                  <span style={{
+                    ...styles.popup,
+                    display: popupShowLabel ? "block" : "none"
+                  }}>
+                    {station.get("name")}
+                  </span>
+                  <div onClick={this._popupChange.bind(this, !popupShowLabel)}>
+                    {
+                      popupShowLabel ? "Hide" : "Show"
+                    }
+                  </div>
+                </div>
               </Popup>
             )
           }
