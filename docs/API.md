@@ -82,6 +82,7 @@ import { Layer } from "react-mapbox-gl";
 - **sourceOptions**: Options object merged to the object used when calling `GeoJSONSource` method
 - **layerOptions**: Passed down to the layer object when setting it out.
 - **sourceId**: When passed to the layer, the source will not be created but only the layer and it will use the given source id.
+- **before**:`String` Pass the id of a layer, it will display the current layer before the layer defined by the id. [mapbox api](https://www.mapbox.com/mapbox-gl-js/api/#Map#addLayer)
 
 ### Example
 
