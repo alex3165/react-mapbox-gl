@@ -15,6 +15,7 @@ export default class ReactMapboxGl extends Component {
     maxZoom: PropTypes.number,
     maxBounds: PropTypes.array,
     bearing: PropTypes.number,
+    pitch: PropTypes.number,
     containerStyle: PropTypes.object,
     hash: PropTypes.bool,
     preserveDrawingBuffer: PropTypes.bool,
