@@ -68,6 +68,7 @@ export default class ReactMapboxGl extends Component {
       preserveDrawingBuffer,
       accessToken,
       center,
+      pitch,
       zoom,
       minZoom,
       maxZoom,
@@ -98,6 +99,7 @@ export default class ReactMapboxGl extends Component {
       bearing,
       container: this.refs.mapboxContainer,
       center,
+      pitch,
       style,
       scrollZoom
     });
