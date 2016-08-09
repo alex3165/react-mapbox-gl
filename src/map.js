@@ -61,8 +61,6 @@ export default class ReactMapboxGl extends Component {
     map: this.state.map
   });
 
-  state = {};
-
   componentDidMount() {
     const {
       style,
