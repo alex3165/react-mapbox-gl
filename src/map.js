@@ -49,7 +49,8 @@ export default class ReactMapboxGl extends Component {
     maxZoom: 20,
     bearing: 0,
     scrollZoom: true,
-    movingMethod: "flyTo"
+    movingMethod: "flyTo",
+    pitch: 0
   };
 
   static childContextTypes = {
