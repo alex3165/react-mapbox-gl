@@ -1,6 +1,6 @@
 # react-mapbox-gl
 
-![London cycle example gif](london-cycle-example.gif "London cycle example gif")
+![London cycle example gif](docs/london-cycle-example.gif "London cycle example gif")
 
 Based on [mapbox-gl-js](https://www.mapbox.com/mapbox-gl-js/api/) this library aim to bring the api to a React friendly way with some additional extra behavior.
 The library include the following elements :
@@ -40,7 +40,7 @@ var Feature = ReactMapboxGl.Feature;
 ## Examples
 
 - See the example to display a big amount of markers : [London cycle example](example/london-cycle.js)
-- See the example to display all the availables shapes : [All shapes example](example/all-shapes.js) 
+- See the example to display all the availables shapes : [All shapes example](example/all-shapes.js)
 
 ### Run the examples
 
