@@ -1,0 +1,24 @@
+{
+  "name": "react-mapbox-gl-example",
+  "version": "0.1.0",
+  "private": true,
+  "description": "An example for react-mapbox-gl",
+  "license": "MIT",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "immutable": "^3.8.0",
+    "react": "^15.3.1",
+    "react-dom": "^15.3.1",
+    "xml2js": "^0.4.17"
+  },
+  "devDependencies": {
+    "babel-core": "^6.14.0",
+    "babel-loader": "^6.2.5",
+    "babel-preset-philpl": "^0.1.0",
+    "json-loader": "^0.5.4",
+    "webpack": "^2.1.0-beta.21",
+    "webpack-dev-server": "^2.1.0-beta.0"
+  }
+}

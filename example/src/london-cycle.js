@@ -1,10 +1,9 @@
 import React, { Component } from "react";
-import ReactMapboxGl, { Layer, Feature, Popup, ZoomControl } from "../src/index";
+import ReactMapboxGl, { Layer, Feature, Popup, ZoomControl } from "react-mapbox-gl";
 
 import { parseString } from "xml2js";
 import { Map } from "immutable";
 import config from "./config.json";
-import MapboxCSS from "../src/mapbox-css/mapbox-gl.css";
 
 const { accessToken, style } = config;
 
