@@ -227,7 +227,7 @@ export default class ReactMapboxGl extends Component {
     const { map } = this.state;
 
     return (
-      <div ref={x => this.container = x}style={containerStyle}>
+      <div ref={x => this.container = x} style={containerStyle}>
         {
           map && children
         }
