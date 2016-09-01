@@ -15,10 +15,6 @@ The library include the following elements :
 - ZoomControl
 - Popup
 
-## Breaking change
-
-`zoom` property is now an array it is required to test for a reference equality in `componentWillReceiveProps` of the map component in order to properly update the zoom when the reference changed.
-
 ## How to start
 
 ```
@@ -45,8 +41,9 @@ var Feature = ReactMapboxGl.Feature;
 ### Run the examples
 
 - Clone the repository
+- Go to example folder
 - Install the dependencies: `npm install`
-- Run the example : `npm run example`
+- Run the example : `npm run start`
   - Default port: `8080`
 
 > Change the example by replacing the example component in `example/main.js` file.
@@ -57,14 +54,6 @@ Mapbox throw a warning because react-mapbox-gl is using a compiled version of ma
 
 ## Import mapbox css file
 
-If you are using webpack we advise you to use [style-loader and css-loader](https://webpack.github.io/docs/stylesheets.html) and require mapbox css file when needed, check london-cycle for more information. React-mapbox-gl include a revisited version of mapbox-gl.css file but you can definitely use the original css file as well. Though if you want to use our custom css file you can import it like this (assuming we are in a webpack environment) :
-
-```
-// ES6
-import MapboxCSS from "react-mapbox-gl/dist/mapbox-css/mapbox-gl.css";
-
-// ES5
-require("react-mapbox-gl/dist/mapbox-css/mapbox-gl.css");
-```
+The CSS file is now already included in the library.
 
 ## [API](docs/API.md)
