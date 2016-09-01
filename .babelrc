@@ -6,6 +6,18 @@
     "/node_modules/"
   ],
   "plugins": [
-    "babel-plugin-transform-es2015-modules-commonjs"
-  ]
+    "transform-runtime",
+    "transform-react-constant-elements",
+    "transform-react-inline-elements"
+  ],
+  "env": {
+    "commonjssimple": {
+      "plugins": [
+        ["transform-es2015-modules-commonjs-simple", {
+          "noMangle": true,
+          "addExports": true
+        }]
+      ]
+    }
+  }
 }

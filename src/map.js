@@ -99,7 +99,7 @@ export default class ReactMapboxGl extends Component {
       maxZoom,
       maxBounds,
       bearing,
-      container: this.refs.mapboxContainer,
+      container: this.container,
       center,
       pitch,
       style,
@@ -227,7 +227,7 @@ export default class ReactMapboxGl extends Component {
     const { map } = this.state;
 
     return (
-      <div ref="mapboxContainer" style={containerStyle}>
+      <div ref={x => this.container = x}style={containerStyle}>
         {
           map && children
         }
