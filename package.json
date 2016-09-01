@@ -15,6 +15,7 @@
   },
   "files": [
     "lib",
+    "es",
     "src"
   ],
   "repository": {
