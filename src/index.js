@@ -1,3 +1,7 @@
+// Add a style tag to the document's head for the map's styling
+import injectCSS from "./util/inject-css";
+injectCSS(window);
+
 import Map from "./map";
 import Layer from "./layer";
 import Feature from "./feature";
