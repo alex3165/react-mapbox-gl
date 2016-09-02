@@ -6,6 +6,8 @@
   "jsnext:main": "es/index.js",
   "scripts": {
     "clean": "rm -rf dist",
+    "vendor": "webpack --config webpack.mapbox.js",
+    "prebuild": "npm run vendor",
     "build:commonjs": "BABEL_ENV=commonjssimple babel src --out-dir lib",
     "build:es": "babel src --out-dir es",
     "build": "npm run build:commonjs && npm run build:es",
@@ -16,7 +18,8 @@
   "files": [
     "lib",
     "es",
-    "src"
+    "src",
+    "vendor"
   ],
   "repository": {
     "type": "git",
@@ -57,7 +60,12 @@
     "babel-plugin-transform-react-inline-elements": "^6.8.0",
     "babel-plugin-transform-runtime": "^6.15.0",
     "babel-preset-philpl": "^0.1.0",
+    "json-loader": "^0.5.4",
     "react": "^15.3.1",
-    "react-dom": "^15.3.1"
+    "react-dom": "^15.3.1",
+    "transform-loader": "^0.2.3",
+    "webpack": "^1.13.2",
+    "webworkify-webpack": "^1.1.7",
+    "worker-loader": "^0.7.1"
   }
 }

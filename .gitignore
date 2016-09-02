@@ -1,5 +1,6 @@
 .DS_Store
 
+vendor/
 lib/
 dist/
 es/
