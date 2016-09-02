@@ -186,8 +186,6 @@ import { ScaleControl } from "react-mapbox-gl";
 ----------
 # Popup
 
-Before using Popup you need to import `mapbox-gl.css` file (see import css file above).
-
 The popup component allow you to display a popup tooltip on top of the map using mapbox-gl-js.
 You can define the content of the popup by using react component, it will be rendered as a DOM element using react-dom and injected in the popup.
 
