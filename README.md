@@ -50,10 +50,6 @@ var Feature = ReactMapboxGl.Feature;
 
 ## Notes
 
-Mapbox throw a warning because react-mapbox-gl is using a compiled version of mapbox-gl which is necessary when using webpack for now as long as the sources files requires the node package `fs` to read the shaders.
-
-## Import mapbox css file
-
 The CSS file is now already included in the library.
 
 ## [API](docs/API.md)
