@@ -3,5 +3,6 @@ import {render} from "react-dom";
 
 import AllShapes from "./all-shapes";
 import LondonCycle from "./london-cycle";
+import GeoJSONExample from "./geojson-example";
 
-render(<LondonCycle/>, document.getElementById("root"));
+render(<GeoJSONExample/>, document.getElementById("root"));
