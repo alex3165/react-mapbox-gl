@@ -4,6 +4,7 @@ injectCSS(window);
 
 import Map from "./map";
 import Layer from "./layer";
+import GeoJSONLayer from "./geojson-layer";
 import Feature from "./feature";
 import ZoomControl from "./zoom-control";
 import Popup from "./popup";
@@ -12,6 +13,7 @@ import ScaleControl from "./scale-control";
 export {
   Feature,
   Layer,
+  GeoJSONLayer,
   Map,
   Popup,
   ZoomControl,
