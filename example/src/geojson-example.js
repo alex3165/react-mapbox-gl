@@ -19,7 +19,7 @@ export default class GeoJSONExample extends Component {
   render() {
     return (
       <ReactMapboxGl
-        style="mapbox://styles/mapbox/light-v9"
+        style="mapbox://styles/mapbox/light-v8"
         accessToken={accessToken}
         center={this.state.center}
         movingMethod="jumpTo"
@@ -27,7 +27,14 @@ export default class GeoJSONExample extends Component {
 
         <ScaleControl/>
         <ZoomControl/>
-        <GeoJSONLayer data={geojson}/>
+        <GeoJSONLayer
+          data={geojson}
+          symbolLayout={{
+            "text-field": "{place}",
+            "text-font": ["Open Sans Semibold", "Arial Unicode MS Bold"],
+            "text-offset": [0, 0.6],
+            "text-anchor": "top"
+          }}/>
 
       </ReactMapboxGl>
     );
