@@ -13,6 +13,7 @@ import ScaleControl from "./scale-control";
 export {
   Feature,
   Layer,
+  GeoJSONLayer,
   Map,
   Popup,
   ZoomControl,

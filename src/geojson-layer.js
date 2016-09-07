@@ -15,29 +15,23 @@ export default class GeoJSONLayer extends Component {
   static propTypes = {
     id: PropTypes.string,
 
-    type: PropTypes.oneOf([
-      "symbol",
-      "line",
-      "fill",
-      "circle"
-    ]),
-
     data: PropTypes.oneOfType([
       PropTypes.string,
       PropTypes.object
     ]).isRequired,
 
-    layout: PropTypes.object,
-    paint: PropTypes.object,
-    sourceOptions: PropTypes.string,
-    layerOptions: PropTypes.string,
-    before: Proptypes.string
-  };
+    lineLayout: PropTypes.object,
+    symbolLayout: PropTypes.object,
+    circleLayout: PropTypes.object,
+    fillLayout: PropTypes.object,
 
-  static defaultProps = {
-    type: "symbol",
-    layout: {},
-    paint: {}
+    linePaint: PropTypes.object,
+    symbolPaint: PropTypes.object,
+    circlePaint: PropTypes.object,
+    fillPaint: PropTypes.object,
+
+    sourceOptions: PropTypes.string,
+    before: PropTypes.string
   };
 
   id = this.props.id || `geojson-${generateID()}`;
@@ -47,30 +41,47 @@ export default class GeoJSONLayer extends Component {
     data: this.props.data
   });
 
-  componentWillMount() {
-    const { id, source } = this;
-    const { type, layout, paint, layerOptions, before } = this.props;
+  layerIds = [];
+
+  createLayer = type => {
+    const { id, layerIds } = this;
+    const { before } = this.props;
     const { map } = this.context;
 
-    const layer = {
-      id: id,
+    const layerId = id + "-" + type;
+    layerIds.push(layerId);
+
+    const paint = this.props[type + "Paint"] || {};
+    const layout = this.props[type + "Layout"] || {};
+
+    map.addLayer({
+      id: layerId,
       source: id,
       type,
-      layout,
       paint,
-      ...layerOptions
-    };
+      layout
+    }, before);
+  };
+
+  componentWillMount() {
+    const { id, source } = this;
+    const { map } = this.context;
 
     map.addSource(id, source);
-    map.addLayer(layer, before);
+
+    this.createLayer("symbol");
+    this.createLayer("line");
+    this.createLayer("fill");
+    this.createLayer("circle");
   }
 
   componentWillUnmount() {
-    const { id } = this;
+    const { id, layerIds } = this;
     const { map } = this.context;
 
-    map.removeLayer(id);
     map.removeSource(id);
+
+    layerIds.forEach(id => map.removeLayer(id));
   }
 
   componentWillReceiveProps(props) {
