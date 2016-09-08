@@ -1,3 +1,7 @@
+## 0.11.0 (September 8 2016)
+
+- Add GeoJSONLayer component to display a raw geojson
+
 ## 0.8.0 (July 5 2016)
 
 - Breaking change, zoom is now wrapped in an array so the map component can check for a reference equality of the value.

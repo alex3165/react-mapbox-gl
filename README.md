@@ -7,6 +7,7 @@ The library include the following elements :
 
 - ReactMapboxGl
 - Layer
+- GeoJSONLayer
 - Feature
   - Layer type properties `symbol` display a mapbox symbol.
   - Layer type properties `line` display a lineString.
@@ -35,8 +36,9 @@ var Feature = ReactMapboxGl.Feature;
 
 ## Examples
 
-- See the example to display a big amount of markers : [London cycle example](example/london-cycle.js)
-- See the example to display all the availables shapes : [All shapes example](example/all-shapes.js)
+- See the example to display a big amount of markers : [London cycle example](example/src/london-cycle.js)
+- See the example to display all the availables shapes : [All shapes example](example/src/all-shapes.js)
+- See the example to display a GEOJson file : [geojson example](example/src/geojson-example.js)
 
 ### Run the examples
 
@@ -46,7 +48,7 @@ var Feature = ReactMapboxGl.Feature;
 - Run the example : `npm run start`
   - Default port: `8080`
 
-> Change the example by replacing the example component in `example/main.js` file.
+> Change the example by replacing the example component in `example/src/index.js` file.
 
 ## Notes
 

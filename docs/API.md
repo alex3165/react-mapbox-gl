@@ -95,6 +95,36 @@ import { Layer } from "react-mapbox-gl";
 ```
 
 ----------
+# GeoJSONLayer
+
+Display on the map all the informations contained in a geojson file.
+
+### Import
+```
+import { GeoJSONLayer } from "react-mapbox-gl";
+```
+
+### Properties
+- **data** *(required)* : `String | Object` The url to the geojson file or the geojson file itself.
+- **lineLayout** | **symbolLayout** | **circleLayout** | **fillLayout** : `Object` Layer layout informations. [mapbox layout api](https://www.mapbox.com/mapbox-gl-style-spec/#layer-layout)
+- **linePaint** | **symbolPaint** | **circlePaint** | **fillPaint** : `Object` Paint informations. [mapbox paint api](https://www.mapbox.com/mapbox-gl-style-spec/#layer-paint)
+- **sourceOptions**: Options object merged to the object used when calling `GeoJSONSource` method
+- **before**:`String` Pass the id of a layer, it will display the current layer before the layer defined by the id. [mapbox api](https://www.mapbox.com/mapbox-gl-js/api/#Map#addLayer)
+
+### Example
+
+```
+<GeoJSONLayer
+  data={geojson}
+  symbolLayout={{
+    "text-field": "{place}",
+    "text-font": ["Open Sans Semibold", "Arial Unicode MS Bold"],
+    "text-offset": [0, 0.6],
+    "text-anchor": "top"
+  }}/>
+```
+
+----------
 # Feature
 
 Display a feature on the map, can only be used when wrapped in a `Layer` component. The type of the feature is defined at the `Layer` level. If you want to create a new type, create an associated new layer.
