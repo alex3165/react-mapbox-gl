@@ -171,8 +171,15 @@ export default class ReactMapboxGl extends Component {
   }
 
   componentWillUnmount() {
-    if (this.state.map) {
-      this.state.map.off();
+    const { map } = this.state;
+
+    if (map) {
+      map.off();
+
+      // NOTE: We need to defer removing the map to after all children have unmounted
+      setTimeout(() => {
+        map.remove();
+      });
     }
   }
 
