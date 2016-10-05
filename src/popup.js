@@ -1,5 +1,4 @@
-const MapboxGl = require("../vendor/mapbox-gl.bundle.js");
-
+import MapboxGl from "../vendor/mapbox-gl.bundle";
 import React, { Component, PropTypes } from "react";
 import { render, unmountComponentAtNode } from "react-dom";
 

@@ -5,4 +5,4 @@ import AllShapes from "./all-shapes";
 import LondonCycle from "./london-cycle";
 import GeoJSONExample from "./geojson-example";
 
-render(<GeoJSONExample/>, document.getElementById("root"));
+render(<AllShapes/>, document.getElementById("root"));

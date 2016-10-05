@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import ReactMapboxGl, { Layer, Feature, ScaleControl, ZoomControl } from "react-mapbox-gl";
+import ReactMapboxGl, { Layer, Feature, ScaleControl, ZoomControl, Marker } from "react-mapbox-gl";
 import route from "./route.json";
 import config from "./config.json";
 import style from "./style.json";
@@ -45,6 +45,10 @@ const markerCoord = [
 ];
 
 const mappedRoute = route.points.map(point => [ point.lat, point.lng ]);
+
+const markerContainer = document.createElement('div');
+markerContainer.style.width = "400px";
+markerContainer.style.position = "absolute";
 
 export default class AllShapes extends Component {
 
@@ -148,6 +152,12 @@ export default class AllShapes extends Component {
           paint={{ "circle-radius": this.state.circleRadius, "circle-color": "#E54E52", "circle-opacity": .8 }}>
           <Feature coordinates={mappedRoute[this.state.routeIndex]}/>
         </Layer>
+
+        <Marker
+          container={markerContainer}
+          coordinates={markerCoord}>
+            <h1>TEST</h1>
+        </Marker>
 
         <Layer
           type="fill"
