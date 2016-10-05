@@ -33,6 +33,19 @@ export default class ReactMapboxGl extends Component {
     });
   }
 
+  componentWillReceiveProps(nextProps) {
+    const { marker, div } = this;
+    const { coordinates, children } = nextProps;
+
+    if(children) {
+      render(children, div);
+    }
+
+    if (this.props.coordinates !== coordinates) {
+      marker.setLngLat(coordinates);
+    }
+  }
+
   componentWillUnmount() {
     const { marker, div } = this;
 
