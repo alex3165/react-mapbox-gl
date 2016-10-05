@@ -8,6 +8,7 @@ The library include the following elements :
 - ReactMapboxGl
 - Layer
 - GeoJSONLayer
+- Marker
 - Feature
   - Layer type properties `symbol` display a mapbox symbol.
   - Layer type properties `line` display a lineString.
@@ -45,13 +46,11 @@ var Feature = ReactMapboxGl.Feature;
 - Clone the repository
 - Go to example folder
 - Install the dependencies: `npm install`
-- Run the example : `npm run start`
+- Run the example
+  - Go to example folder `cd example`
+  - Run example `npm run start`
   - Default port: `8080`
 
 > Change the example by replacing the example component in `example/src/index.js` file.
-
-## Notes
-
-The CSS file is now already included in the library.
 
 ## [API](docs/API.md)
