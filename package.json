@@ -9,6 +9,7 @@
     "vendor": "webpack --config webpack.mapbox.js",
     "prebuild": "npm run vendor",
     "build:commonjs": "BABEL_ENV=commonjssimple babel src --out-dir lib",
+    "build:watch": "BABEL_ENV=commonjssimple babel src --watch --out-dir lib",
     "build:es": "babel src --out-dir es",
     "build": "npm run build:commonjs && npm run build:es",
     "prepublish": "npm run clean && npm run build",

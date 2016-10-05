@@ -249,3 +249,34 @@ import { Popup } from "react-mapbox-gl";
   <h1>Popup</h1>
 </Popup>
 ```
+
+----------
+# Marker
+
+Add an html marker to the map.
+
+### Import
+
+```
+import { Marker } from "react-mapbox-gl";
+```
+
+### Properties
+- **coordinates** *(required)*: `Array of Number` Display the popup at the given position.
+- **container**: `DOMElement` Use the given DOM element to render the children components in.
+
+### Example
+
+```
+const markerContainer = document.createElement('div');
+markerContainer.style.width = "400px";
+markerContainer.style.position = "absolute";
+
+...
+
+<Marker
+  container={markerContainer}
+  coordinates={[-0.2416815, 51.5285582]}>
+    <h1>TEST</h1>
+</Marker>
+```

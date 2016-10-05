@@ -9,6 +9,7 @@ import Feature from "./feature";
 import ZoomControl from "./zoom-control";
 import Popup from "./popup";
 import ScaleControl from "./scale-control";
+import Marker from './marker';
 
 export {
   Feature,
@@ -17,7 +18,8 @@ export {
   Map,
   Popup,
   ZoomControl,
-  ScaleControl
+  ScaleControl,
+  Marker
 };
 
 export default Map;
