@@ -47,6 +47,7 @@ var Feature = ReactMapboxGl.Feature;
 - Go to example folder
 - Install the dependencies: `npm install`
 - Run the example
+  - Build the library `npm run build`
   - Go to example folder `cd example`
   - Run example `npm run start`
   - Default port: `8080`
