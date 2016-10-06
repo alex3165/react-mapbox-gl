@@ -29,16 +29,17 @@ export default class GeoJSONLayer extends Component {
     circlePaint: PropTypes.object,
     fillPaint: PropTypes.object,
 
-    sourceOptions: PropTypes.string,
+    sourceOptions: PropTypes.object,
     before: PropTypes.string
   };
 
-  id = this.props.id || `geojson-${generateID()}`;
+  static defaultProps = {
+    sourceOptions: {
+      type: "geojson"
+    }
+  };
 
-  source = new MapboxGl.GeoJSONSource({
-    ...this.props.sourceOptions,
-    data: this.props.data
-  });
+  id = this.props.id || `geojson-${generateID()}`;
 
   layerIds = [];
 
@@ -66,7 +67,10 @@ export default class GeoJSONLayer extends Component {
     const { id, source } = this;
     const { map } = this.context;
 
-    map.addSource(id, source);
+    this.source = map.addSource(id, {
+      ...this.props.sourceOptions,
+      data: this.props.data,
+    })
 
     this.createLayer("symbol");
     this.createLayer("line");
@@ -84,7 +88,6 @@ export default class GeoJSONLayer extends Component {
   }
 
   componentWillReceiveProps(props) {
-    const { source } = this;
     const { data, paint, layout } = this.props;
     const { map } = this.context;
 
@@ -105,7 +108,7 @@ export default class GeoJSONLayer extends Component {
     }
 
     if (props.data !== data) {
-      source.setData(props.data);
+      map.getSource(this.id).setData(props.data);
     }
   }
 
@@ -121,4 +124,3 @@ export default class GeoJSONLayer extends Component {
     return null;
   }
 }
-

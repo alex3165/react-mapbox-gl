@@ -4,7 +4,7 @@ var path = require("path");
 var nodeModules = path.join(__dirname, "node_modules");
 
 module.exports = {
-  entry: path.join(nodeModules, "mapbox-gl/js/mapbox-gl.js"),
+  entry: path.join(nodeModules, "mapbox-gl/dist/mapbox-gl.js"),
   output: {
     path: path.join(__dirname, "vendor"),
     filename: "mapbox-gl.bundle.js",

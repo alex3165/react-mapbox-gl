@@ -94,4 +94,3 @@ export default class Popup extends Component {
     return null;
   }
 }
-
