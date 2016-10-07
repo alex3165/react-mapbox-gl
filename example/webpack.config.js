@@ -8,7 +8,7 @@ module.exports = {
   ],
   devtool: 'cheap-module-eval-source-map',
   resolve: {
-    extensions: ['', '.js', '.jsx'],
+    extensions: ['.js', '.jsx'],
     alias: {
       'react-mapbox-gl': path.join(__dirname, '../lib/index.js')
     }
@@ -32,4 +32,3 @@ module.exports = {
     filename: 'bundle.js'
   }
 }
-

@@ -33,20 +33,15 @@ export default class Layer extends Component {
   static defaultProps = {
     type: "symbol",
     layout: {},
-    paint: {}
+    paint: {},
+    sourceOptions: {
+      type: "geojson"
+    }
   };
 
   hover = [];
 
   id = this.props.id || `layer-${generateID()}`;
-
-  source = new MapboxGl.GeoJSONSource({
-    ...this.props.sourceOptions,
-    data: {
-      type: "FeatureCollection",
-      features: []
-    }
-  });
 
   geometry = coordinates => {
     switch (this.props.type) {
@@ -136,7 +131,7 @@ export default class Layer extends Component {
   };
 
   componentWillMount() {
-    const { id, source } = this;
+    const { id } = this;
     const { type, layout, paint, layerOptions, sourceId, before } = this.props;
     const { map } = this.context;
 
@@ -149,8 +144,20 @@ export default class Layer extends Component {
       ...layerOptions
     };
 
-    if(!sourceId) {
-      map.addSource(id, source);
+    const source = map.getSource(sourceId || id)
+    if (source) {
+      source.setData({
+        type: "FeatureCollection",
+        features: []
+      })
+    } else {
+      map.addSource(sourceId || id, {
+        ...this.props.sourceOptions,
+        data: {
+          type: "FeatureCollection",
+          features: []
+        }
+      })
     }
 
     map.addLayer(layer, before);
@@ -200,12 +207,13 @@ export default class Layer extends Component {
   render() {
     if(this.props.children) {
       const children = [].concat(this.props.children);
+      const { map } = this.context;
 
       const features = children
         .map(({ props }, id) => this.feature(props, id))
         .filter(Boolean);
 
-      this.source.setData({
+      map.getSource(this.props.sourceId || this.id).setData({
         type: "FeatureCollection",
         features
       });
@@ -214,4 +222,3 @@ export default class Layer extends Component {
     return null;
   }
 }
-
