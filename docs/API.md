@@ -32,6 +32,11 @@ import ReactMapboxGl from "react-mapbox-gl";
   - `jumpTo`
   - `easeTo`
   - `flyTo`
+- **attributionPosition**: `String` The corner of the map to include the mandatory Mapbox attribution. Possible values:
+  - `top-left`
+  - `top-right`
+  - `bottom-left`
+  - `bottom-right`
 - **onClick**: `Function` : Triggered whenever user click on the map
   - Function::(map: Object, event: Object)
 - **onStyleLoad**: `Function` : Listener of Mapbox event : `map.on("style.load")`
