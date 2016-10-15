@@ -28,7 +28,8 @@ import ReactMapboxGl from "react-mapbox-gl";
 - **containerStyle** : `Object` The style of the container of the map
 - **hash** *(Default: `false`)*: `Boolean`, [See mapbox doc](https://www.mapbox.com/mapbox-gl-js/api/#Map)
 - **preserveDrawingBuffer** *(Default: `false`)*: `Boolean`, [See mapbox doc](https://www.mapbox.com/mapbox-gl-js/api/#Map)
-- **movingMethod** *(Default: `flyTo`)*: `String`, define the method used when changing the center or zoom position. Possible value :
+- **interactive** *(Default: `true`)*: `Boolean` Set to `false` to disable interaction with the map.
+- **movingMethod** *(Default: `flyTo`)*: `String` define the method used when changing the center or zoom position. Possible value :
   - `jumpTo`
   - `easeTo`
   - `flyTo`

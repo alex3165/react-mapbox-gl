@@ -40,7 +40,8 @@ export default class ReactMapboxGl extends Component {
       "top-right",
       "bottom-left",
       "bottom-right"
-    ])
+    ]),
+    interactive: PropTypes.bool
   };
 
   static defaultProps = {
@@ -57,7 +58,8 @@ export default class ReactMapboxGl extends Component {
     scrollZoom: true,
     movingMethod: "flyTo",
     pitch: 0,
-    attributionPosition: 'bottom-right'
+    attributionPosition: 'bottom-right',
+    interactive: true
   };
 
   static childContextTypes = {
@@ -94,7 +96,8 @@ export default class ReactMapboxGl extends Component {
       onMoveEnd,
       onZoom,
       scrollZoom,
-      attributionPosition
+      attributionPosition,
+      interactive
     } = this.props;
 
     MapboxGl.accessToken = accessToken;
@@ -114,7 +117,8 @@ export default class ReactMapboxGl extends Component {
       scrollZoom,
       attributionControl: {
         position: attributionPosition
-      }
+      },
+      interactive
     });
 
     map.on("style.load", (...args) => {
