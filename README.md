@@ -53,6 +53,4 @@ var Feature = ReactMapboxGl.Feature;
   - Run example `npm run start`
   - Default port: `8080`
 
-> Change the example by replacing the example component in `example/src/index.js` file.
-
 ## [API](docs/API.md)
