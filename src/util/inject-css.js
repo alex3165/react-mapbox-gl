@@ -10,4 +10,3 @@ export default function injectCSS(window) {
     head.appendChild(styleElement);
   }
 }
-

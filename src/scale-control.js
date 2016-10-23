@@ -88,15 +88,16 @@ export default class ScaleControl extends Component {
 
   _setScale = map => {
     const { measurement } = this.props;
-    const clientWidth = map._canvas.canvas.clientWidth;
+
+    const clientWidth = map._canvas.clientWidth;
     const { _ne, _sw } = map.getBounds();
 
     const totalWidth = this._getDistanceTwoPoints([ _sw.lng, _ne.lat ], [ _ne.lng, _ne.lat ], measurement);
     const relativeWidth = totalWidth / clientWidth * MIN_WIDTH_SCALE;
 
     const chosenScale = scales.reduce((acc, curr) => acc || (curr > relativeWidth && curr), 0);
-    const canvasWidth = map._canvas.canvas.width;
-    const scaleWidth = chosenScale / totalWidth * map._canvas.canvas.width;
+    const canvasWidth = map._canvas.width;
+    const scaleWidth = chosenScale / totalWidth * map._canvas.width;
 
     this.setState({
       chosenScale,

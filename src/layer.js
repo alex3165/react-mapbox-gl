@@ -1,4 +1,4 @@
-import MapboxGl from "../vendor/mapbox-gl.bundle";
+import MapboxGl from "mapbox-gl/dist/mapbox-gl.js";
 import React, { Component, PropTypes, cloneElement, Children } from "react";
 import isEqual from "deep-equal";
 import { diff } from "./helper";
@@ -40,13 +40,14 @@ export default class Layer extends Component {
 
   id = this.props.id || `layer-${generateID()}`;
 
-  source = new MapboxGl.GeoJSONSource({
+  source = {
+    "type": "geojson",
     ...this.props.sourceOptions,
     data: {
       type: "FeatureCollection",
       features: []
     }
-  });
+  };
 
   geometry = coordinates => {
     switch (this.props.type) {
@@ -161,10 +162,11 @@ export default class Layer extends Component {
 
   componentWillUnmount() {
     const { id } = this;
+
     const { map } = this.context;
 
     map.removeLayer(id);
-    map.removeSource(id);
+    map.removeSource(this.props.sourceId || id);
 
     map.off("click", this.onClick);
     map.off("mousemove", this.onMouseMove);
@@ -198,6 +200,8 @@ export default class Layer extends Component {
   }
 
   render() {
+    const { map } = this.context;
+
     if(this.props.children) {
       const children = [].concat(this.props.children);
 
@@ -205,7 +209,8 @@ export default class Layer extends Component {
         .map(({ props }, id) => this.feature(props, id))
         .filter(Boolean);
 
-      this.source.setData({
+      const source = map.getSource(this.props.sourceId || this.id)
+      source.setData({
         type: "FeatureCollection",
         features
       });

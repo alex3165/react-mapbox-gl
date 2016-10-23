@@ -1,8 +1,6 @@
 import React from "react";
 import {render} from "react-dom";
 
-import AllShapes from "./all-shapes";
-import LondonCycle from "./london-cycle";
-import GeoJSONExample from "./geojson-example";
+import Main from "./main";
 
-render(<AllShapes/>, document.getElementById("root"));
+render(<Main/>, document.getElementById("root"));

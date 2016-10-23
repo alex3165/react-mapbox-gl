@@ -1,4 +1,4 @@
-import MapboxGl from "../vendor/mapbox-gl.bundle";
+import MapboxGl from "mapbox-gl/dist/mapbox-gl.js";
 import React, { Component, PropTypes, cloneElement, Children } from "react";
 import isEqual from "deep-equal";
 import { diff } from "./helper";
@@ -35,10 +35,11 @@ export default class GeoJSONLayer extends Component {
 
   id = this.props.id || `geojson-${generateID()}`;
 
-  source = new MapboxGl.GeoJSONSource({
+  source = {
+    "type": "geojson",
     ...this.props.sourceOptions,
     data: this.props.data
-  });
+  };
 
   layerIds = [];
 
@@ -84,7 +85,7 @@ export default class GeoJSONLayer extends Component {
   }
 
   componentWillReceiveProps(props) {
-    const { source } = this;
+    const { source, id } = this;
     const { data, paint, layout } = this.props;
     const { map } = this.context;
 
@@ -105,7 +106,9 @@ export default class GeoJSONLayer extends Component {
     }
 
     if (props.data !== data) {
-      source.setData(props.data);
+      map
+        .getSource(id)
+        .setData(props.data);
     }
   }
 

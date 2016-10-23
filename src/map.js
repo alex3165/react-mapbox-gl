@@ -1,4 +1,4 @@
-import MapboxGl from "../vendor/mapbox-gl.bundle";
+import MapboxGl from "mapbox-gl/dist/mapbox-gl.js";
 import React, { Component, PropTypes } from "react";
 import isEqual from "deep-equal";
 
