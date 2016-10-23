@@ -1,3 +1,9 @@
+## 0.15.0 (October 23 2016)
+
+- Upgrade mapbox-gl from v0.21.0 to v0.25.1 and don't build the vendor anymore, react-mapbox-gl is now using mapbox-gl/dist/mapbox-gl.js bundle again
+- Improve the examples with a navigation to select one.
+- Fix a major issue when removing a layer with a sourceId.
+
 ## 0.11.0 (September 8 2016)
 
 - Add GeoJSONLayer component to display a raw geojson

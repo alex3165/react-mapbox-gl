@@ -8,13 +8,14 @@ The library include the following elements :
 - ReactMapboxGl
 - Layer
 - GeoJSONLayer
-- Marker
+- Marker (Html marker)
 - Feature
   - Layer type properties `symbol` display a mapbox symbol.
   - Layer type properties `line` display a lineString.
   - Layer type properties `fill` display a polygon.
   - Layer type properties `circle` display a mapbox circle.
 - ZoomControl
+- ScaleControl
 - Popup
 
 ## How to start
@@ -27,7 +28,7 @@ Import the component :
 
 ```
 // ES6
-import ReactMapboxGl, { Layer, Feature } from "react-mapbox-gl";
+import ReactMapboxGl, { Layer, Feature, Marker } from "react-mapbox-gl";
 
 // ES5
 var ReactMapboxGl = require("react-mapbox-gl");
