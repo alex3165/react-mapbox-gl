@@ -1,4 +1,4 @@
-import reduce from "reduce-object";
+import reduce from 'reduce-object';
 
 function find(obj, predicate) {
   let res;
@@ -14,7 +14,7 @@ function find(obj, predicate) {
 
 export const diff = (obj1, obj2) => (
   reduce(obj2, (res, value, key) => {
-    if(find(obj1, (v, k) => key === k && value !== v)) {
+    if (find(obj1, (v, k) => key === k && value !== v)) {
       res[key] = value;
     }
     return res;

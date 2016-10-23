@@ -2,7 +2,7 @@ import MapboxGl from "mapbox-gl/dist/mapbox-gl.js";
 import React, { Component, PropTypes } from "react";
 import { render, unmountComponentAtNode } from "react-dom";
 
-export default class Popup extends Component {
+export class Popup extends Component {
   static contextTypes = {
     map: PropTypes.object
   };

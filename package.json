@@ -6,6 +6,7 @@
   "jsnext:main": "es/index.js",
   "scripts": {
     "clean": "rm -rf dist",
+    "lint": "eslint src",
     "build:commonjs": "BABEL_ENV=commonjssimple babel src --out-dir lib",
     "build:watch": "BABEL_ENV=commonjssimple babel src --watch --out-dir lib",
     "build:es": "babel src --out-dir es",
@@ -59,6 +60,10 @@
     "babel-plugin-transform-react-inline-elements": "^6.8.0",
     "babel-plugin-transform-runtime": "^6.15.0",
     "babel-preset-philpl": "^0.1.0",
+    "eslint": "^3.8.1",
+    "eslint-config-airbnb-base": "^9.0.0",
+    "eslint-plugin-import": "^2.0.1",
+    "eslint-plugin-react": "^6.4.1",
     "react": "^15.3.1",
     "react-dom": "^15.3.1"
   }

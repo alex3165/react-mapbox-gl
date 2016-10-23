@@ -6,7 +6,7 @@ import { diff } from "./helper";
 let index = 0;
 const generateID = () => index++;
 
-export default class GeoJSONLayer extends Component {
+export class GeoJSONLayer extends Component {
   static contextTypes = {
     map: PropTypes.object
   };

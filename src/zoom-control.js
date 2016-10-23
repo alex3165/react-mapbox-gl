@@ -50,7 +50,7 @@ const buttonStyleMinus = {
 const [ PLUS, MINUS ] = [ 0, 1 ];
 const POSITIONS = Object.keys(positions);
 
-export default class ZoomControl extends Component {
+export class ZoomControl extends Component {
   static propTypes = {
     zoomDiff: PropTypes.number,
     onControlClick: PropTypes.func,

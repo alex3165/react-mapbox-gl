@@ -1,4 +1,4 @@
-import React, { PropTypes } from "react";
+import React, { PropTypes } from 'react';
 
 const Feature = () => null;
 
@@ -7,7 +7,7 @@ Feature.propTypes = {
   onClick: PropTypes.func,
   onHover: PropTypes.func,
   onEndHover: PropTypes.func,
-  properties: PropTypes.object
+  properties: PropTypes.object,
 };
 
-export default Feature;
+export Feature;
