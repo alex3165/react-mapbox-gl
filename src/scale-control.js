@@ -50,7 +50,7 @@ const KILOMETER_IN_METERS = 1000;
 
 const MIN_WIDTH_SCALE = 40;
 
-export class ScaleControl extends Component {
+export default class ScaleControl extends Component {
    static contextTypes = {
     map: PropTypes.object
   };

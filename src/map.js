@@ -2,7 +2,7 @@ import MapboxGl from "mapbox-gl/dist/mapbox-gl.js";
 import React, { Component, PropTypes } from "react";
 import isEqual from "deep-equal";
 
-export class ReactMapboxGl extends Component {
+export default class ReactMapboxGl extends Component {
   static propTypes = {
     style: PropTypes.oneOfType([
       PropTypes.string,

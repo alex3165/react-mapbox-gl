@@ -7,7 +7,7 @@ import Feature from "./feature";
 let index = 0;
 const generateID = () => index++;
 
-export class Layer extends Component {
+export default class Layer extends Component {
   static contextTypes = {
     map: PropTypes.object
   };

@@ -1,6 +1,6 @@
 import cssRules from '../constants/css';
 
-export function injectCSS(window) {
+export default function injectCSS(window) {
   if (window && typeof window === 'object' && window.document) {
     const { document } = window;
     const head = (document.head || document.getElementsByTagName('head')[0]);
