@@ -1,4 +1,3 @@
-import MapboxGl from "mapbox-gl/dist/mapbox-gl.js";
 import React, { Component, PropTypes, cloneElement, Children } from "react";
 import isEqual from "deep-equal";
 import { diff } from "./helper";
