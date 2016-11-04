@@ -22,6 +22,10 @@ export default class Popup extends Component {
       "top-right",
       "bottom-left",
       "bottom-right"
+    ]),
+    offset: PropTypes.oneOfType([
+      PropTypes.number,
+      PropTypes.object
     ])
   }
 
@@ -29,7 +33,8 @@ export default class Popup extends Component {
   popup = new MapboxGl.Popup({
     closeButton: this.props.closeButton,
     closeOnClick: this.props.closeOnClick,
-    anchor: this.props.anchor
+    anchor: this.props.anchor,
+    offset: this.props.offset
   });
 
   componentWillMount() {
