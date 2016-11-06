@@ -1,13 +1,17 @@
-import React, { Component, PropTypes, cloneElement, Children } from "react";
-import isEqual from "deep-equal";
-import { diff } from "./helper";
+import React, { PropTypes } from 'react';
+import isEqual from 'deep-equal';
+import diff from './helper';
 
 let index = 0;
-const generateID = () => index++;
+const generateID = () => {
+  const newId = index + 1;
+  index = newId;
+  return index;
+};
 
-export default class GeoJSONLayer extends Component {
+export default class GeoJSONLayer extends React.PureComponent {
   static contextTypes = {
-    map: PropTypes.object
+    map: PropTypes.object,
   };
 
   static propTypes = {
@@ -15,7 +19,7 @@ export default class GeoJSONLayer extends Component {
 
     data: PropTypes.oneOfType([
       PropTypes.string,
-      PropTypes.object
+      PropTypes.object,
     ]).isRequired,
 
     lineLayout: PropTypes.object,
@@ -29,36 +33,36 @@ export default class GeoJSONLayer extends Component {
     fillPaint: PropTypes.object,
 
     sourceOptions: PropTypes.string,
-    before: PropTypes.string
+    before: PropTypes.string,
   };
 
   id = this.props.id || `geojson-${generateID()}`;
 
   source = {
-    "type": "geojson",
+    type: 'geojson',
     ...this.props.sourceOptions,
-    data: this.props.data
+    data: this.props.data,
   };
 
   layerIds = [];
 
-  createLayer = type => {
+  createLayer = (type) => {
     const { id, layerIds } = this;
     const { before } = this.props;
     const { map } = this.context;
 
-    const layerId = id + "-" + type;
+    const layerId = `${id}-${type}`;
     layerIds.push(layerId);
 
-    const paint = this.props[type + "Paint"] || {};
-    const layout = this.props[type + "Layout"] || {};
+    const paint = this.props[`${type}Paint`] || {};
+    const layout = this.props[`${type}Layout`] || {};
 
     map.addLayer({
       id: layerId,
       source: id,
       type,
       paint,
-      layout
+      layout,
     }, before);
   };
 
@@ -68,10 +72,10 @@ export default class GeoJSONLayer extends Component {
 
     map.addSource(id, source);
 
-    this.createLayer("symbol");
-    this.createLayer("line");
-    this.createLayer("fill");
-    this.createLayer("circle");
+    this.createLayer('symbol');
+    this.createLayer('line');
+    this.createLayer('fill');
+    this.createLayer('circle');
   }
 
   componentWillUnmount() {
@@ -80,28 +84,28 @@ export default class GeoJSONLayer extends Component {
 
     map.removeSource(id);
 
-    layerIds.forEach(id => map.removeLayer(id));
+    layerIds.forEach(key => map.removeLayer(key));
   }
 
   componentWillReceiveProps(props) {
-    const { source, id } = this;
+    const { id } = this;
     const { data, paint, layout } = this.props;
     const { map } = this.context;
 
     if (!isEqual(props.paint, paint)) {
       const paintDiff = diff(paint, props.paint);
 
-      for (const key in paintDiff) {
+      Object.keys(paintDiff).forEach((key) => {
         map.setPaintProperty(this.id, key, paintDiff[key]);
-      }
+      });
     }
 
     if (!isEqual(props.layout, layout)) {
       const layoutDiff = diff(layout, props.layout);
 
-      for (const key in layoutDiff) {
+      Object.keys(layoutDiff).forEach((key) => {
         map.setLayoutProperty(this.id, key, layoutDiff[key]);
-      }
+      });
     }
 
     if (props.data !== data) {

@@ -1,24 +1,27 @@
-import React, { Component, PropTypes, cloneElement, Children } from "react";
-import isEqual from "deep-equal";
-import { diff } from "./helper";
-import Feature from "./feature";
+import React, { PropTypes } from 'react';
+import isEqual from 'deep-equal';
+import diff from './helper';
 
 let index = 0;
-const generateID = () => index++;
+const generateID = () => {
+  const newId = index + 1;
+  index = newId;
+  return index;
+};
 
-export default class Layer extends Component {
+export default class Layer extends React.PureComponent {
   static contextTypes = {
-    map: PropTypes.object
+    map: PropTypes.object,
   };
 
   static propTypes = {
     id: PropTypes.string,
 
     type: PropTypes.oneOf([
-      "symbol",
-      "line",
-      "fill",
-      "circle"
+      'symbol',
+      'line',
+      'fill',
+      'circle',
     ]),
 
     layout: PropTypes.object,
@@ -26,13 +29,13 @@ export default class Layer extends Component {
     sourceOptions: PropTypes.object,
     layerOptions: PropTypes.object,
     sourceId: PropTypes.string,
-    before: PropTypes.string
+    before: PropTypes.string,
   };
 
   static defaultProps = {
-    type: "symbol",
+    type: 'symbol',
     layout: {},
-    paint: {}
+    paint: {},
   };
 
   hover = [];
@@ -40,30 +43,30 @@ export default class Layer extends Component {
   id = this.props.id || `layer-${generateID()}`;
 
   source = {
-    "type": "geojson",
+    type: 'geojson',
     ...this.props.sourceOptions,
     data: {
-      type: "FeatureCollection",
-      features: []
-    }
+      type: 'FeatureCollection',
+      features: [],
+    },
   };
 
-  geometry = coordinates => {
+  geometry = (coordinates) => {
     switch (this.props.type) {
-      case "symbol":
-      case "circle": return {
-        type: "Point",
-        coordinates
+      case 'symbol':
+      case 'circle': return {
+        type: 'Point',
+        coordinates,
       };
 
-      case "fill": return {
-        type: coordinates.length > 1 ? "MultiPolygon" : "Polygon",
-        coordinates
+      case 'fill': return {
+        type: coordinates.length > 1 ? 'MultiPolygon' : 'Polygon',
+        coordinates,
       };
 
-      case "line": return {
-        type: "LineString",
-        coordinates
+      case 'line': return {
+        type: 'LineString',
+        coordinates,
       };
 
       default: return null;
@@ -71,35 +74,32 @@ export default class Layer extends Component {
   };
 
   feature = (props, id) => ({
-    type: "Feature",
+    type: 'Feature',
     geometry: this.geometry(props.coordinates),
     properties: {
       ...props.properties,
-      id
-    }
+      id,
+    },
   })
 
-  onClick = evt => {
+  onClick = (evt) => {
     const children = [].concat(this.props.children);
     const { map } = this.context;
     const { id } = this;
-
     const features = map.queryRenderedFeatures(evt.point, { layers: [id] });
 
-    for (let feature of features) {
+    features.forEach((feature) => {
       const { properties } = feature;
       const child = children[properties.id];
 
       const onClick = child && child.props.onClick;
-      onClick && onClick({
-        ...evt,
-        feature,
-        map
-      });
-    }
+      if (onClick) {
+        onClick({ ...evt, feature, map });
+      }
+    });
   };
 
-  onMouseMove = evt => {
+  onMouseMove = (evt) => {
     const children = [].concat(this.props.children);
     const { map } = this.context;
     const { id } = this;
@@ -109,27 +109,24 @@ export default class Layer extends Component {
 
     const features = map.queryRenderedFeatures(evt.point, { layers: [id] });
 
-    for (let feature of features) {
+    features.forEach((feature) => {
       const { properties } = feature;
       const child = children[properties.id];
       hover.push(properties.id);
 
       const onHover = child && child.props.onHover;
-      onHover && onHover({
-        ...evt,
-        feature,
-        map
-      });
-    }
+      if (onHover) {
+        onHover({ ...evt, feature, map });
+      }
+    });
 
     oldHover
       .filter(prevHoverId => hover.indexOf(prevHoverId) === -1)
-      .forEach(id => {
-        const onEndHover = children[id] && children[id].props.onEndHover;
-        onEndHover && onEndHover({
-          ...evt,
-          map
-        });
+      .forEach((key) => {
+        const onEndHover = children[key] && children[key].props.onEndHover;
+        if (onEndHover) {
+          onEndHover({ ...evt, map });
+        }
       });
 
     this.hover = hover;
@@ -146,17 +143,17 @@ export default class Layer extends Component {
       type,
       layout,
       paint,
-      ...layerOptions
+      ...layerOptions,
     };
 
-    if(!sourceId) {
+    if (!sourceId) {
       map.addSource(id, source);
     }
 
     map.addLayer(layer, before);
 
-    map.on("click", this.onClick);
-    map.on("mousemove", this.onMouseMove);
+    map.on('click', this.onClick);
+    map.on('mousemove', this.onMouseMove);
   }
 
   componentWillUnmount() {
@@ -167,51 +164,51 @@ export default class Layer extends Component {
     map.removeLayer(id);
     map.removeSource(this.props.sourceId || id);
 
-    map.off("click", this.onClick);
-    map.off("mousemove", this.onMouseMove);
+    map.off('click', this.onClick);
+    map.off('mousemove', this.onMouseMove);
   }
 
   componentWillReceiveProps(props) {
     const { paint, layout } = this.props;
     const { map } = this.context;
 
-    if(!isEqual(props.paint, paint)) {
+    if (!isEqual(props.paint, paint)) {
       const paintDiff = diff(paint, props.paint);
 
-      for (const key in paintDiff) {
+      Object.keys(paintDiff).forEach((key) => {
         map.setPaintProperty(this.id, key, paintDiff[key]);
-      }
+      });
     }
 
-    if(!isEqual(props.layout, layout)) {
+    if (!isEqual(props.layout, layout)) {
       const layoutDiff = diff(layout, props.layout);
 
-      for (const key in layoutDiff) {
+      Object.keys(layoutDiff).forEach((key) => {
         map.setLayoutProperty(this.id, key, layoutDiff[key]);
-      }
+      });
     }
   }
 
   shouldComponentUpdate(nextProps) {
     return !isEqual(nextProps.children, this.props.children)
         || !isEqual(nextProps.paint, this.props.paint)
-        || !isEqual(nextProps.layout, this.props.layout)
+        || !isEqual(nextProps.layout, this.props.layout);
   }
 
   render() {
     const { map } = this.context;
 
-    if(this.props.children) {
+    if (this.props.children) {
       const children = [].concat(this.props.children);
 
       const features = children
         .map(({ props }, id) => this.feature(props, id))
         .filter(Boolean);
 
-      const source = map.getSource(this.props.sourceId || this.id)
+      const source = map.getSource(this.props.sourceId || this.id);
       source.setData({
-        type: "FeatureCollection",
-        features
+        type: 'FeatureCollection',
+        features,
       });
     }
 

@@ -1,22 +1,17 @@
 import reduce from 'reduce-object';
 
-function find(obj, predicate) {
-  let res;
-  for (const key in obj) {
-    if (predicate(obj[key], key)) {
-      res = obj[key];
-      break;
-    }
-  }
+const find = (obj, predicate) => (
+  Object.keys(obj).find(key => predicate(obj[key], key))
+);
 
-  return res;
-}
-
-export const diff = (obj1, obj2) => (
+const diff = (obj1, obj2) => (
   reduce(obj2, (res, value, key) => {
+    const toMutate = res;
     if (find(obj1, (v, k) => key === k && value !== v)) {
-      res[key] = value;
+      toMutate[key] = value;
     }
-    return res;
+    return toMutate;
   }, {})
 );
+
+export default diff;

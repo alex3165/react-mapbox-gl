@@ -1,25 +1,25 @@
-import MapboxGl from "mapbox-gl/dist/mapbox-gl.js";
-import React, { Component, PropTypes } from "react";
-import { render, unmountComponentAtNode } from "react-dom";
+import MapboxGl from 'mapbox-gl/dist/mapbox-gl.js';
+import React, { PropTypes } from 'react';
+import { render, unmountComponentAtNode } from 'react-dom';
 
-export default class ReactMapboxGl extends Component {
+export default class ReactMapboxGl extends React.PureComponent {
   static contextTypes = {
-    map: PropTypes.object
+    map: PropTypes.object,
   };
 
   static propTypes = {
     coordinates: PropTypes.arrayOf(PropTypes.number).isRequired,
-    container: PropTypes.object
+    container: PropTypes.object,
   }
 
-  div = document.createElement("div");
+  div = document.createElement('div');
 
   componentWillMount() {
     const { map } = this.context;
     const {
       children,
       coordinates,
-      container
+      container,
     } = this.props;
 
     if (container && container.nodeName) {
@@ -37,7 +37,7 @@ export default class ReactMapboxGl extends Component {
     const { marker, div } = this;
     const { coordinates, children } = nextProps;
 
-    if(children) {
+    if (children) {
       render(children, div);
     }
 

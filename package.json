@@ -10,7 +10,7 @@
     "build:commonjs": "BABEL_ENV=commonjssimple babel src --out-dir lib",
     "build:watch": "BABEL_ENV=commonjssimple babel src --watch --out-dir lib",
     "build:es": "babel src --out-dir es",
-    "build": "npm run build:commonjs && npm run build:es",
+    "build": "npm run lint && npm run build:commonjs && npm run build:es",
     "prepublish": "npm run clean && npm run build",
     "version": "npm run build",
     "postversion": "git push && git push --tags"
@@ -53,6 +53,7 @@
     "babel": "^6.5.2",
     "babel-cli": "^6.7.5",
     "babel-core": "^6.10.4",
+    "babel-eslint": "^7.1.0",
     "babel-loader": "^6.2.4",
     "babel-plugin-transform-es2015-modules-commonjs": "^6.10.3",
     "babel-plugin-transform-es2015-modules-commonjs-simple": "^6.7.4",

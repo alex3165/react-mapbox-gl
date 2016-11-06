@@ -1,10 +1,10 @@
-import MapboxGl from "mapbox-gl/dist/mapbox-gl.js";
-import React, { Component, PropTypes } from "react";
-import { render, unmountComponentAtNode } from "react-dom";
+import MapboxGl from 'mapbox-gl/dist/mapbox-gl.js';
+import React, { PropTypes } from 'react';
+import { render, unmountComponentAtNode } from 'react-dom';
 
-export default class Popup extends Component {
+export default class Popup extends React.PureComponent {
   static contextTypes = {
-    map: PropTypes.object
+    map: PropTypes.object,
   };
 
   static propTypes = {
@@ -14,27 +14,27 @@ export default class Popup extends Component {
     closeButton: PropTypes.bool,
     closeOnClick: PropTypes.bool,
     anchor: PropTypes.oneOf([
-      "top",
-      "bottom",
-      "left",
-      "right",
-      "top-left",
-      "top-right",
-      "bottom-left",
-      "bottom-right"
+      'top',
+      'bottom',
+      'left',
+      'right',
+      'top-left',
+      'top-right',
+      'bottom-left',
+      'bottom-right',
     ]),
     offset: PropTypes.oneOfType([
       PropTypes.number,
-      PropTypes.object
-    ])
+      PropTypes.object,
+    ]),
   }
 
-  div = document.createElement("div");
+  div = document.createElement('div');
   popup = new MapboxGl.Popup({
     closeButton: this.props.closeButton,
     closeOnClick: this.props.closeOnClick,
     anchor: this.props.anchor,
-    offset: this.props.offset
+    offset: this.props.offset,
   });
 
   componentWillMount() {
@@ -44,7 +44,7 @@ export default class Popup extends Component {
       coordinates,
       children,
       dangerouslySetInnerHTML,
-      text
+      text,
     } = this.props;
 
     if (children) {
@@ -52,7 +52,7 @@ export default class Popup extends Component {
     } else if (dangerouslySetInnerHTML) {
       popup.setHTML(dangerouslySetInnerHTML);
     } else {
-      popup.setText(text || "");
+      popup.setText(text || '');
     }
 
     popup.setLngLat(coordinates);
@@ -68,7 +68,7 @@ export default class Popup extends Component {
       children,
       coordinates,
       dangerouslySetInnerHTML,
-      text
+      text,
     } = nextProps;
 
     if (!children) {

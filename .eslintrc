@@ -1,10 +1,24 @@
 {
+  "parser": "babel-eslint",
+  "ecmaFeatures": {
+      "classes": true,
+      "jsx": true
+  },
   "extends": "airbnb-base",
   "cache": true,
   "plugins": [
     "react"
   ],
   "rules": {
-    "react/jsx-uses-vars": 1
+    "react/jsx-uses-vars": 1,
+    "react/jsx-uses-react": "error",
+    "class-methods-use-this": 0,
+    "no-underscore-dangle": 0,
+    "import/extensions": 0,
+    "no-mixed-operators": 0
+  },
+  "globals": {
+    "window": true,
+    "document": true
   }
 }
