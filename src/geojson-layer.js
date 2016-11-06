@@ -1,6 +1,6 @@
 import React, { PropTypes } from 'react';
 import isEqual from 'deep-equal';
-import diff from './helper';
+import diff from './util/diff';
 
 let index = 0;
 const generateID = () => {
