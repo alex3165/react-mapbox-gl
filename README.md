@@ -36,6 +36,12 @@ var Layer = ReactMapboxGl.Layer;
 var Feature = ReactMapboxGl.Feature;
 ```
 
+## Disclaimer
+
+The zoom property is an array on purpose. With a float as a value we can't tell whether the zoom has changed because `7 === 7 // true`. We did a work around using array so that `[7] !== [7] // true`, this way we can reliably update the zoom value.
+
+See https://github.com/alex3165/react-mapbox-gl/issues/57 for more informations.
+
 ## Examples
 
 - See the example to display a big amount of markers : [London cycle example](example/src/london-cycle.js)
