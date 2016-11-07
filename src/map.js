@@ -218,12 +218,12 @@ export default class ReactMapboxGl extends Component {
 
     const didZoomUpdate = (
       this.props.zoom !== nextProps.zoom &&
-      nextProps.zoom !== map.getZoom()
+      nextProps.zoom[0] !== map.getZoom()
     );
 
     const didCenterUpdate = (
       this.props.center !== nextProps.center &&
-      nextProps.center !== map.getCenter()
+      (nextProps.center[0] !== map.getCenter().lng || nextProps.center[1] !== map.getCenter().lat)
     );
 
     const didBearingUpdate = (
