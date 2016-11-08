@@ -19,6 +19,8 @@ export default class ReactMapboxGl extends Component {
     containerStyle: PropTypes.object,
     hash: PropTypes.bool,
     preserveDrawingBuffer: PropTypes.bool,
+    onResize: PropTypes.func,
+    onDblClick: PropTypes.func,
     onClick: PropTypes.func,
     onStyleLoad: PropTypes.func,
     onMouseMove: PropTypes.func,
@@ -28,7 +30,10 @@ export default class ReactMapboxGl extends Component {
     onMouseUp: PropTypes.func,
     onDragStart: PropTypes.func,
     onDrag: PropTypes.func,
+    onDragEnd: PropTypes.func,
+    onZoomStart: PropTypes.func,
     onZoom: PropTypes.func,
+    onZoomEnd: PropTypes.func,
     scrollZoom: PropTypes.bool,
     movingMethod: PropTypes.oneOf([
       'jumpTo',
@@ -86,15 +91,20 @@ export default class ReactMapboxGl extends Component {
       maxBounds,
       bearing,
       onStyleLoad,
+      onResize,
+      onDblClick,
       onClick,
       onMouseMove,
       onDragStart,
       onDrag,
+      onDragEnd,
       onMouseUp,
       onMove,
       onMoveStart,
       onMoveEnd,
+      onZoomStart,
       onZoom,
+      onZoomEnd,
       scrollZoom,
       attributionPosition,
       interactive,
@@ -129,6 +139,18 @@ export default class ReactMapboxGl extends Component {
       this.setState({ map });
     });
 
+    map.on('resize', (...args) => {
+      if (onResize) {
+        onResize(map, ...args);
+      }
+    });
+
+    map.on('dblclick', (...args) => {
+      if (onDblClick) {
+        onDblClick(map, ...args);
+      }
+    });
+
     map.on('click', (...args) => {
       if (onClick) {
         onClick(map, ...args);
@@ -150,6 +172,12 @@ export default class ReactMapboxGl extends Component {
     map.on('drag', (...args) => {
       if (onDrag) {
         onDrag(map, ...args);
+      }
+    });
+
+    map.on('dragend', (...args) => {
+      if (onDragEnd) {
+        onDragEnd(map, ...args);
       }
     });
 
@@ -177,9 +205,21 @@ export default class ReactMapboxGl extends Component {
       }
     });
 
+    map.on('zoomstart', (...args) => {
+      if (onZoomStart) {
+        onZoomStart(map, ...args);
+      }
+    });
+
     map.on('zoom', (...args) => {
       if (onZoom) {
         onZoom(map, ...args);
+      }
+    });
+
+    map.on('zoomend', (...args) => {
+      if (onZoomEnd) {
+        onZoomEnd(map, ...args);
       }
     });
   }
@@ -223,7 +263,7 @@ export default class ReactMapboxGl extends Component {
 
     const didCenterUpdate = (
       this.props.center !== nextProps.center &&
-      (nextProps.center[0] !== map.getCenter().lng || nextProps.center[1] !== map.getCenter().lat)
+      (nextProps.center[0] !== map.getCenter().lng || nextProps.center[1] !== map.getCenter().lat)
     );
 
     const didBearingUpdate = (
