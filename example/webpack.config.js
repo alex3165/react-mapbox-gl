@@ -8,7 +8,7 @@ module.exports = {
   ],
   devtool: 'cheap-module-eval-source-map',
   resolve: {
-    extensions: ['', '.js', '.jsx'],
+    extensions: ['.js', '.jsx'],
     alias: {
       'react-mapbox-gl': path.join(__dirname, '../lib/index.js')
     }
@@ -17,12 +17,12 @@ module.exports = {
     loaders: [
       {
         test: /\.jsx?$/,
-        loader: 'babel',
+        loader: 'babel-loader',
         include: path.join(__dirname, 'src'),
         exclude: /node_modules/
       }, {
         test: /\.json$/,
-        loader: 'json'
+        loader: 'json-loader'
       }
     ]
   },
