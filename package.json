@@ -7,6 +7,7 @@
   "scripts": {
     "clean": "rm -rf dist",
     "lint": "eslint src",
+    "test": "jest",
     "build:commonjs": "BABEL_ENV=commonjssimple babel src --out-dir lib",
     "build:watch": "BABEL_ENV=commonjssimple babel src --watch --out-dir lib",
     "build:es": "babel src --out-dir es",
@@ -54,6 +55,7 @@
     "babel-cli": "^6.7.5",
     "babel-core": "^6.18.2",
     "babel-eslint": "^7.1.0",
+    "babel-jest": "^17.0.0",
     "babel-loader": "^6.2.4",
     "babel-plugin-transform-es2015-modules-commonjs": "^6.10.3",
     "babel-plugin-transform-es2015-modules-commonjs-simple": "^6.7.4",
@@ -65,7 +67,9 @@
     "eslint-config-airbnb-base": "^9.0.0",
     "eslint-plugin-import": "^2.1.0",
     "eslint-plugin-react": "^6.5.0",
+    "jest": "^17.0.1",
     "react": "^15.3.1",
-    "react-dom": "^15.3.1"
+    "react-dom": "^15.3.1",
+    "react-test-renderer": "^15.3.2"
   }
 }
