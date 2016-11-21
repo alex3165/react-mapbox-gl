@@ -30,6 +30,7 @@ export default class Layer extends React.PureComponent {
     layerOptions: PropTypes.object,
     sourceId: PropTypes.string,
     before: PropTypes.string,
+    filter: PropTypes.string,
   };
 
   static defaultProps = {
@@ -134,7 +135,7 @@ export default class Layer extends React.PureComponent {
 
   componentWillMount() {
     const { id, source } = this;
-    const { type, layout, paint, layerOptions, sourceId, before } = this.props;
+    const { type, layout, paint, layerOptions, sourceId, before, filter } = this.props;
     const { map } = this.context;
 
     const layer = {
@@ -151,6 +152,10 @@ export default class Layer extends React.PureComponent {
     }
 
     map.addLayer(layer, before);
+
+    if (filter) {
+      map.setFilter(id, filter);
+    }
 
     map.on('click', this.onClick);
     map.on('mousemove', this.onMouseMove);
@@ -169,7 +174,7 @@ export default class Layer extends React.PureComponent {
   }
 
   componentWillReceiveProps(props) {
-    const { paint, layout } = this.props;
+    const { paint, layout, filter } = this.props;
     const { map } = this.context;
 
     if (!isEqual(props.paint, paint)) {
@@ -187,12 +192,17 @@ export default class Layer extends React.PureComponent {
         map.setLayoutProperty(this.id, key, layoutDiff[key]);
       });
     }
+
+    if (!isEqual(props.filter, filter)) {
+      map.setFilter(this.id, props.filter);
+    }
   }
 
   shouldComponentUpdate(nextProps) {
     return !isEqual(nextProps.children, this.props.children)
         || !isEqual(nextProps.paint, this.props.paint)
-        || !isEqual(nextProps.layout, this.props.layout);
+        || !isEqual(nextProps.layout, this.props.layout)
+        || !isEqual(nextProps.filter, this.props.filter);
   }
 
   render() {
