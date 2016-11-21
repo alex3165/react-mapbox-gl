@@ -1,28 +1,32 @@
 import React from 'react';
 import Layer from '../layer';
-import renderer from 'react-test-renderer';
+import TestUtils from 'react-addons-test-utils';
 import { withContext } from 'recompose';
 
-test('Layer', () => {
-  describe('Should test Layer', () => {
-    let LayerWithContext;
+describe('Layer', () => {
+  let LayerWithContext;
 
-    beforeAll(() => {
-      LayerWithContext = withContext({
-        map: React.PropTypes.object
-      }, () => ({
-        map: {
-          addSource: () => null,
-          addLayer: () => null,
-          on: () => null
-        }
-      }))(Layer);
-    });
+  beforeAll(() => {
+    LayerWithContext = withContext({
+      map: React.PropTypes.object
+    }, () => ({
+      map: {
+        addSource: jest.fn(),
+        addLayer: jest.fn(),
+        on: jest.fn(),
+        getSource: jest.fn().mockReturnValue({ setData: jest.fn() })
+      }
+    }))(Layer);
+  });
 
-    it('Should render layer', () => {
-      const LayerComponent = renderer.create(
-        <LayerWithContext/>
-      );
-    });
+  it('Should render layer', () => {
+    const LayerComponent = TestUtils.renderIntoDocument(
+      <LayerWithContext
+        children={[{ props: {}}]}/>
+    );
+
+    // console.log(LayerComponent);
+
+    // expect(LayerComponent).toMatchSnapshot();
   });
 });

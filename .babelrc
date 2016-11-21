@@ -3,7 +3,11 @@
     "babel-preset-philpl"
   ],
   "ignore": [
-    "/node_modules/"
+    "/node_modules/",
+    "/example/",
+    "/lib/",
+    "/es/",
+    "/docs/"
   ],
   "plugins": [
     "transform-runtime",

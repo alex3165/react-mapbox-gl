@@ -6,7 +6,7 @@
   "jsnext:main": "es/index.js",
   "scripts": {
     "clean": "rm -rf dist",
-    "lint": "eslint src",
+    "lint": "eslint src --ignore-pattern __tests__",
     "test": "jest",
     "build:commonjs": "BABEL_ENV=commonjssimple babel src --out-dir lib",
     "build:watch": "BABEL_ENV=commonjssimple babel src --watch --out-dir lib",
@@ -19,7 +19,8 @@
   "jest": {
     "testPathIgnorePatterns": [
       "/node_modules/",
-      "/lib/"
+      "/lib/",
+      "/es/"
     ],
     "verbose": true
   },
@@ -75,9 +76,10 @@
     "eslint-plugin-import": "^2.1.0",
     "eslint-plugin-react": "^6.5.0",
     "jest": "^17.0.1",
-    "react": "^15.3.1",
-    "react-dom": "^15.3.1",
-    "react-test-renderer": "^15.3.2",
+    "react": "^15.4.0",
+    "react-addons-test-utils": "^15.4.0",
+    "react-dom": "^15.4.0",
+    "react-test-renderer": "^15.4.0",
     "recompose": "^0.20.2"
   }
 }
