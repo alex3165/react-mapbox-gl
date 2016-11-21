@@ -30,7 +30,7 @@ export default class Layer extends React.PureComponent {
     layerOptions: PropTypes.object,
     sourceId: PropTypes.string,
     before: PropTypes.string,
-    filter: PropTypes.string,
+    filter: PropTypes.array,
   };
 
   static defaultProps = {
