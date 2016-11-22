@@ -6,14 +6,23 @@
   "jsnext:main": "es/index.js",
   "scripts": {
     "clean": "rm -rf dist",
-    "lint": "eslint src",
+    "lint": "eslint src --ignore-pattern __tests__",
+    "test": "jest",
     "build:commonjs": "BABEL_ENV=commonjssimple babel src --out-dir lib",
     "build:watch": "BABEL_ENV=commonjssimple babel src --watch --out-dir lib",
     "build:es": "babel src --out-dir es",
-    "build": "npm run lint && npm run build:commonjs && npm run build:es",
+    "build": "npm run lint && npm run test && npm run build:commonjs && npm run build:es",
     "prepublish": "npm run clean && npm run build",
     "version": "npm run build",
     "postversion": "git push && git push --tags"
+  },
+  "jest": {
+    "testPathIgnorePatterns": [
+      "/node_modules/",
+      "/lib/",
+      "/es/"
+    ],
+    "verbose": true
   },
   "files": [
     "lib",
@@ -54,6 +63,7 @@
     "babel-cli": "^6.7.5",
     "babel-core": "^6.18.2",
     "babel-eslint": "^7.1.0",
+    "babel-jest": "^17.0.2",
     "babel-loader": "^6.2.4",
     "babel-plugin-transform-es2015-modules-commonjs": "^6.10.3",
     "babel-plugin-transform-es2015-modules-commonjs-simple": "^6.7.4",
@@ -65,7 +75,11 @@
     "eslint-config-airbnb-base": "^9.0.0",
     "eslint-plugin-import": "^2.1.0",
     "eslint-plugin-react": "^6.5.0",
-    "react": "^15.3.1",
-    "react-dom": "^15.3.1"
+    "jest": "^17.0.1",
+    "react": "^15.4.0",
+    "react-addons-test-utils": "^15.4.0",
+    "react-dom": "^15.4.0",
+    "react-test-renderer": "^15.4.0",
+    "recompose": "^0.20.2"
   }
 }

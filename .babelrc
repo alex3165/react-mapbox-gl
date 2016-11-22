@@ -3,7 +3,11 @@
     "babel-preset-philpl"
   ],
   "ignore": [
-    "/node_modules/"
+    "/node_modules/",
+    "/example/",
+    "/lib/",
+    "/es/",
+    "/docs/"
   ],
   "plugins": [
     "transform-runtime",
@@ -12,6 +16,14 @@
   ],
   "env": {
     "commonjssimple": {
+      "plugins": [
+        ["transform-es2015-modules-commonjs-simple", {
+          "noMangle": true,
+          "addExports": true
+        }]
+      ]
+    },
+    "test": {
       "plugins": [
         ["transform-es2015-modules-commonjs-simple", {
           "noMangle": true,
