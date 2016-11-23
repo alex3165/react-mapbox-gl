@@ -1,16 +1,20 @@
-import MapboxGl from 'mapbox-gl/dist/mapbox-gl.js';
 import React, { PropTypes } from 'react';
-import { render, unmountComponentAtNode } from 'react-dom';
+import {
+  projectCoordinates,
+  anchorTranslate,
+  positionTranslate,
+  calculateAnchor,
+  normalizeOffset,
+} from './util/popup';
 
-export default class Popup extends React.PureComponent {
+export default class Popup extends React.Component {
   static contextTypes = {
     map: PropTypes.object,
-  };
+  }
 
   static propTypes = {
     coordinates: PropTypes.arrayOf(PropTypes.number).isRequired,
-    dangerouslySetInnerHTML: PropTypes.string,
-    text: PropTypes.string,
+    children: PropTypes.node,
     closeButton: PropTypes.bool,
     closeOnClick: PropTypes.bool,
     anchor: PropTypes.oneOf([
@@ -29,74 +33,77 @@ export default class Popup extends React.PureComponent {
     ]),
   }
 
-  div = document.createElement('div');
-  popup = new MapboxGl.Popup({
-    closeButton: this.props.closeButton,
-    closeOnClick: this.props.closeOnClick,
-    anchor: this.props.anchor,
-    offset: this.props.offset,
-  });
-
-  componentWillMount() {
-    const { div, popup } = this;
-    const { map } = this.context;
-    const {
-      coordinates,
-      children,
-      dangerouslySetInnerHTML,
-      text,
-    } = this.props;
-
-    if (children) {
-      popup.setDOMContent(div);
-    } else if (dangerouslySetInnerHTML) {
-      popup.setHTML(dangerouslySetInnerHTML);
-    } else {
-      popup.setText(text || '');
-    }
-
-    popup.setLngLat(coordinates);
-
-    render(children, div, () => {
-      popup.addTo(map);
-    });
+  static defaultProps = {
+    closeButton: true,
+    closeOnClick: true,
+    offset: 0,
   }
 
-  componentWillReceiveProps(nextProps) {
-    const { popup, div } = this;
-    const {
-      children,
-      coordinates,
-      dangerouslySetInnerHTML,
-      text,
-    } = nextProps;
+  state = {
+    anchor: null,
+    position: null,
+  }
 
-    if (!children) {
-      if (
-        this.props.dangerouslySetInnerHTML &&
-        dangerouslySetInnerHTML !== this.props.dangerouslySetInnerHTML
-      ) {
-        popup.setHTML(dangerouslySetInnerHTML);
-      } else if (text !== this.props.text) {
-        popup.setText(text);
-      }
-    } else {
-      render(children, div);
-    }
+  handleClickClose = () => {
+  }
 
-    if (this.props.coordinates !== coordinates) {
-      popup.setLngLat(coordinates);
+  calculatePosition = ({ offsetWidth = 0, offsetHeight = 0 } = {}) => {
+    const { map } = this.context;
+
+    const pos = projectCoordinates(map, this.props.coordinates);
+    const offsets = normalizeOffset(this.props.offset);
+    const anchor = this.props.anchor
+      || calculateAnchor(map, offsets, pos, { offsetWidth, offsetHeight });
+
+    return {
+      anchor,
+      position: pos.add(offsets[anchor]),
+    };
+  }
+
+  handleMapMove = () => {
+    this.setState(this.calculatePosition(this.container));
+  }
+
+  componentWillMount() {
+    // this.container is not rendered yet.
+    // Initialize anchor/position assuming 0 sized container
+    this.setState(this.calculatePosition());
+  }
+
+  componentDidMount() {
+    const { map } = this.context;
+    map.on('move', this.handleMapMove);
+    if (this.props.closeOnClick) {
+      map.on('click', this.handleClickClose);
     }
+    // Now this.container is rendered and the size of container is known.
+    // Recalculate the anchor/position
+    this.setState(this.calculatePosition(this.container));
   }
 
   componentWillUnmount() {
-    const { popup, div } = this;
-    popup.remove();
-    unmountComponentAtNode(div);
+    const { map } = this.context;
+    if (map) {
+      map.off('move', this.handleMapMove);
+      map.off('click', this.handleClickClose);
+    }
   }
 
   render() {
-    return null;
+    const closeButton = <button type="button" className="mapboxgl-popup-close-button" onClick={this.handleClickClose}>&#215;</button>;
+    const { anchor, position } = this.state;
+    return (
+      <div className={`mapboxgl-popup mapboxgl-popup-anchor-${anchor}`}
+           style={{ transform: `${anchorTranslate(anchor)} ${positionTranslate(position)}`, zIndex: 2 }}
+           ref={(el) => { this.container = el; }}>
+        <div className="mapboxgl-popup-tip"></div>
+        <div className="mapboxgl-popup-content">
+          {this.props.closeButton && closeButton}
+          {this.props.children}
+        </div>
+      </div>
+    );
   }
 }
 
