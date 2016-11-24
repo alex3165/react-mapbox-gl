@@ -1,59 +1,87 @@
-import MapboxGl from 'mapbox-gl/dist/mapbox-gl.js';
 import React, { PropTypes } from 'react';
-import { render, unmountComponentAtNode } from 'react-dom';
+import {
+  anchorPropTypes,
+  offsetPropTypes,
+  projectCoordinates,
+  anchorTranslate,
+  positionTranslate,
+  normalizeOffsets,
+  calculateAnchor,
+} from './util/overlays';
 
-export default class ReactMapboxGl extends React.PureComponent {
+export default class Marker extends React.Component {
   static contextTypes = {
     map: PropTypes.object,
   };
 
   static propTypes = {
     coordinates: PropTypes.arrayOf(PropTypes.number).isRequired,
-    container: PropTypes.object,
+    anchor: anchorPropTypes,
+    offset: offsetPropTypes,
+    onClick: PropTypes.func,
   }
 
-  div = document.createElement('div');
+  state = {
+    position: null,
+  }
+
+  calculatePosition = (roundCoordinates, { offsetWidth = 0, offsetHeight = 0 } = {}) => {
+    const { map } = this.context;
+
+    const pos = projectCoordinates(map, this.props.coordinates, roundCoordinates);
+    const offsets = normalizeOffsets(this.props.offset);
+    const anchor = this.props.anchor
+      || calculateAnchor(map, offsets, pos, { offsetWidth, offsetHeight });
+
+    return {
+      anchor,
+      position: pos.add(offsets[anchor]),
+    };
+  }
+
+  handleMapMove = () => {
+    this.setState(this.calculatePosition(false, this.container));
+  }
+
+  handleMapMoveEnd = () => {
+    this.setState(this.calculatePosition(false, this.container));
+  }
 
   componentWillMount() {
     const { map } = this.context;
-    const {
-      children,
-      coordinates,
-      container,
-    } = this.props;
-
-    if (container && container.nodeName) {
-      this.div = container;
-    }
-
-    this.marker = new MapboxGl.Marker(this.div).setLngLat(coordinates);
-
-    render(children, this.div, () => {
-      this.marker.addTo(map);
-    });
+    map.on('move', this.handleMapMove);
+    map.on('moveend', this.handleMapMoveEnd);
+    this.setState(this.calculatePosition(false));
   }
 
-  componentWillReceiveProps(nextProps) {
-    const { marker, div } = this;
-    const { coordinates, children } = nextProps;
-
-    if (children) {
-      render(children, div);
-    }
-
-    if (this.props.coordinates !== coordinates) {
-      marker.setLngLat(coordinates);
-    }
+  componentDidMount() {
+    this.setState(this.calculatePosition(false, this.container));
   }
 
   componentWillUnmount() {
-    const { marker, div } = this;
-
-    marker.remove();
-    unmountComponentAtNode(div);
+    const { map } = this.context;
+    if (map) {
+      map.off('move', this.handleMapMove);
+      map.off('moveend', this.handleMapMoveEnd);
+    }
   }
 
   render() {
-    return null;
+    const { anchor, position } = this.state;
+    const noop = () => {};
+    const onClick = this.props.onClick || noop;
+    const style = {
+      transform: `${anchorTranslate(anchor)} ${positionTranslate(position)}`,
+      zIndex: 2,
+      cursor: (this.props.onClick ? 'pointer' : 'auto'),
+    };
+    return (
+      <div className="mapboxgl-marker"
+           onClick={onClick}
+           style={style}
+           ref={(el) => { this.container = el; }}>
+        {this.props.children}
+      </div>
+    );
   }
 }

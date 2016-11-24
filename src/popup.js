@@ -1,11 +1,13 @@
 import React, { PropTypes } from 'react';
 import {
+  anchorPropTypes,
+  offsetPropTypes,
   projectCoordinates,
   anchorTranslate,
   positionTranslate,
   calculateAnchor,
-  normalizeOffset,
-} from './util/popup';
+  normalizeOffsets,
+} from './util/overlays';
 
 export default class Popup extends React.Component {
   static contextTypes = {
@@ -17,25 +19,13 @@ export default class Popup extends React.Component {
     children: PropTypes.node,
     closeButton: PropTypes.bool,
     closeOnClick: PropTypes.bool,
-    anchor: PropTypes.oneOf([
-      'top',
-      'bottom',
-      'left',
-      'right',
-      'top-left',
-      'top-right',
-      'bottom-left',
-      'bottom-right',
-    ]),
-    offset: PropTypes.oneOfType([
-      PropTypes.number,
-      PropTypes.object,
-    ]),
+    anchor: anchorPropTypes,
+    offset: offsetPropTypes,
   }
 
   static defaultProps = {
-    closeButton: true,
-    closeOnClick: true,
+    closeButton: false,
+    closeOnClick: false,
     offset: 0,
   }
 
@@ -51,7 +41,7 @@ export default class Popup extends React.Component {
     const { map } = this.context;
 
     const pos = projectCoordinates(map, this.props.coordinates);
-    const offsets = normalizeOffset(this.props.offset);
+    const offsets = normalizeOffsets(this.props.offset);
     const anchor = this.props.anchor
       || calculateAnchor(map, offsets, pos, { offsetWidth, offsetHeight });
 
@@ -93,9 +83,13 @@ export default class Popup extends React.Component {
   render() {
     const closeButton = <button type="button" className="mapboxgl-popup-close-button" onClick={this.handleClickClose}>&#215;</button>;
     const { anchor, position } = this.state;
+    const style = {
+      transform: `${anchorTranslate(anchor)} ${positionTranslate(position)}`,
+      zIndex: 3,
+    };
     return (
       <div className={`mapboxgl-popup mapboxgl-popup-anchor-${anchor}`}
-           style={{ transform: `${anchorTranslate(anchor)} ${positionTranslate(position)}`, zIndex: 2 }}
+           style={style}
            ref={(el) => { this.container = el; }}>
         <div className="mapboxgl-popup-tip"></div>
         <div className="mapboxgl-popup-content">

@@ -3,12 +3,35 @@
 /* eslint no-else-return: 0 */
 
 import { LngLat, Point } from 'mapbox-gl/dist/mapbox-gl.js';
+import { PropTypes } from 'react';
 
-export const projectCoordinates = (map, coordinates) =>
-  map.project(LngLat.convert(coordinates)).round();
+export const anchorPropTypes = PropTypes.oneOf([
+  'center',
+  'top',
+  'bottom',
+  'left',
+  'right',
+  'top-left',
+  'top-right',
+  'bottom-left',
+  'bottom-right',
+]);
+
+export const offsetPropTypes = PropTypes.oneOfType([
+  PropTypes.number,
+  PropTypes.arrayOf(PropTypes.number),
+  PropTypes.object,
+]);
+
+export const projectCoordinates = (map, coordinates, round = true) => (
+  round
+    ? map.project(LngLat.convert(coordinates)).round()
+    : map.project(LngLat.convert(coordinates))
+);
 
 export const anchorTranslate = (anchor) => {
   const anchorTranslates = {
+    'center': 'translate(-50%,-50%)',
     'top': 'translate(-50%,0)',
     'top-left': 'translate(0,0)',
     'top-right': 'translate(-100%,0)',
@@ -48,15 +71,23 @@ export const calculateAnchor = (map, offsets, pos, { offsetHeight, offsetWidth }
   return anchor;
 };
 
-const isPointLike = input => input instanceof Point || Array.isArray(input);
+const isPointLike = input =>
+  input instanceof Point || Array.isArray(input);
 
-export const normalizeOffset = (offset) => {
+export const normalizeOffset = offset => (
+  isPointLike(offset)
+    ? Point.convert(offset)
+    : Point.convert([0, 0])
+);
+
+export const normalizeOffsets = (offset) => {
   if (!offset) {
-    return normalizeOffset(new Point(0, 0));
+    return normalizeOffsets(new Point(0, 0));
   } else if (typeof offset === 'number') {
     // input specifies a radius from which to calculate offsets at all positions
     const cornerOffset = Math.round(Math.sqrt(0.5 * Math.pow(offset, 2)));
     return {
+      'center': new Point(offset, offset),
       'top': new Point(0, offset),
       'top-left': new Point(cornerOffset, cornerOffset),
       'top-right': new Point(-cornerOffset, cornerOffset),
@@ -70,6 +101,7 @@ export const normalizeOffset = (offset) => {
     // input specifies a single offset to be applied to all positions
     const convertedOffset = Point.convert(offset);
     return {
+      'center': convertedOffset,
       'top': convertedOffset,
       'top-left': convertedOffset,
       'top-right': convertedOffset,
@@ -82,14 +114,15 @@ export const normalizeOffset = (offset) => {
   } else {
     // input specifies an offset per position
     return {
-      'top': Point.convert(offset['top']),
-      'top-left': Point.convert(offset['top-left']),
-      'top-right': Point.convert(offset['top-right']),
-      'bottom': Point.convert(offset['bottom']),
-      'bottom-left': Point.convert(offset['bottom-left']),
-      'bottom-right': Point.convert(offset['bottom-right']),
-      'left': Point.convert(offset['left']),
-      'right': Point.convert(offset['right']),
+      'center': Point.convert(offset['center'] || [0, 0]),
+      'top': Point.convert(offset['top'] || [0, 0]),
+      'top-left': Point.convert(offset['top-left'] || [0, 0]),
+      'top-right': Point.convert(offset['top-right'] || [0, 0]),
+      'bottom': Point.convert(offset['bottom'] || [0, 0]),
+      'bottom-left': Point.convert(offset['bottom-left'] || [0, 0]),
+      'bottom-right': Point.convert(offset['bottom-right'] || [0, 0]),
+      'left': Point.convert(offset['left'] || [0, 0]),
+      'right': Point.convert(offset['right'] || [0, 0]),
     };
   }
 };
