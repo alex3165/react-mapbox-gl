@@ -30,9 +30,9 @@ const projectCoordinates = (map, coordinates) =>
 const calculateAnchor = (map, offsets, position, { offsetHeight, offsetWidth }) => {
   let anchor = null;
 
-  if (position.y + offsets.bottom.y < offsetHeight) {
+  if (position.y + offsets.bottom.y - offsetHeight < 0) {
     anchor = ['top'];
-  } else if (position.y > map.transform.height - offsetHeight) {
+  } else if (position.y + offsets.top.y + offsetHeight > map.transform.height) {
     anchor = ['bottom'];
   } else {
     anchor = [];

@@ -24,6 +24,10 @@ export default class Marker extends React.Component {
   state = {
   }
 
+  setContainer = (el) => {
+    this.container = el;
+  }
+
   handleMapMove = () => {
     this.setState(overlayState(this.props, this.context, this.container));
   }
@@ -56,7 +60,7 @@ export default class Marker extends React.Component {
       <div className="mapboxgl-marker"
            onClick={onClick}
            style={style}
-           ref={(el) => { this.container = el; }}>
+           ref={this.setContainer}>
         {this.props.children}
       </div>
     );

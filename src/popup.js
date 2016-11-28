@@ -24,6 +24,10 @@ export default class Popup extends React.Component {
   state = {
   }
 
+  setContainer = (el) => {
+    this.container = el;
+  }
+
   handleMapMove = () => {
     this.setState(overlayState(this.props, this.context, this.container));
   }
@@ -53,9 +57,9 @@ export default class Popup extends React.Component {
   render() {
     const { anchor } = this.state;
     return (
-      <div className={`mapboxgl-popup mapboxgl-popup-anchor-${anchor || ''}`}
+      <div className={`mapboxgl-popup ${anchor ? `mapboxgl-popup-anchor-${anchor}` : ''}`}
            style={{ transform: overlayTransform(this.state), zIndex: 3 }}
-           ref={(el) => { this.container = el; }}>
+           ref={this.setContainer}>
         <div className="mapboxgl-popup-tip"></div>
         <div className="mapboxgl-popup-content">
           {this.props.children}
