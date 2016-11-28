@@ -1,12 +1,8 @@
 import React, { PropTypes } from 'react';
 import {
-  anchorPropTypes,
-  offsetPropTypes,
-  projectCoordinates,
-  anchorTranslate,
-  positionTranslate,
-  normalizeOffsets,
-  calculateAnchor,
+  OverlayPropTypes,
+  overlayState,
+  overlayTransform,
 } from './util/overlays';
 
 export default class Marker extends React.Component {
@@ -16,62 +12,43 @@ export default class Marker extends React.Component {
 
   static propTypes = {
     coordinates: PropTypes.arrayOf(PropTypes.number).isRequired,
-    anchor: anchorPropTypes,
-    offset: offsetPropTypes,
+    anchor: OverlayPropTypes.anchor,
+    offset: OverlayPropTypes.offset,
     onClick: PropTypes.func,
   }
 
-  state = {
-    position: null,
+  static defaultProps = {
+    offset: 0,
   }
 
-  calculatePosition = (roundCoordinates, { offsetWidth = 0, offsetHeight = 0 } = {}) => {
-    const { map } = this.context;
-
-    const pos = projectCoordinates(map, this.props.coordinates, roundCoordinates);
-    const offsets = normalizeOffsets(this.props.offset);
-    const anchor = this.props.anchor
-      || calculateAnchor(map, offsets, pos, { offsetWidth, offsetHeight });
-
-    return {
-      anchor,
-      position: pos.add(offsets[anchor]),
-    };
+  state = {
   }
 
   handleMapMove = () => {
-    this.setState(this.calculatePosition(false, this.container));
+    this.setState(overlayState(this.props, this.context, this.container));
   }
 
   handleMapMoveEnd = () => {
-    this.setState(this.calculatePosition(false, this.container));
-  }
-
-  componentWillMount() {
-    const { map } = this.context;
-    map.on('move', this.handleMapMove);
-    map.on('moveend', this.handleMapMoveEnd);
-    this.setState(this.calculatePosition(false));
+    this.setState(overlayState(this.props, this.context, this.container));
   }
 
   componentDidMount() {
-    this.setState(this.calculatePosition(false, this.container));
+    const { map } = this.context;
+    map.on('move', this.handleMapMove);
+    map.on('moveend', this.handleMapMoveEnd);
+    this.setState(overlayState(this.props, this.context, this.container));
   }
 
   componentWillUnmount() {
     const { map } = this.context;
-    if (map) {
-      map.off('move', this.handleMapMove);
-      map.off('moveend', this.handleMapMoveEnd);
-    }
+    map.off('move', this.handleMapMove);
+    map.off('moveend', this.handleMapMoveEnd);
   }
 
   render() {
-    const { anchor, position } = this.state;
-    const noop = () => {};
-    const onClick = this.props.onClick || noop;
+    const onClick = this.props.onClick || (() => {});
     const style = {
-      transform: `${anchorTranslate(anchor)} ${positionTranslate(position)}`,
+      transform: overlayTransform(this.state),
       zIndex: 2,
       cursor: (this.props.onClick ? 'pointer' : 'auto'),
     };

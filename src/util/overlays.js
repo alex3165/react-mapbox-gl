@@ -5,61 +5,42 @@
 import { LngLat, Point } from 'mapbox-gl/dist/mapbox-gl.js';
 import { PropTypes } from 'react';
 
-export const anchorPropTypes = PropTypes.oneOf([
-  'center',
-  'top',
-  'bottom',
-  'left',
-  'right',
-  'top-left',
-  'top-right',
-  'bottom-left',
-  'bottom-right',
-]);
-
-export const offsetPropTypes = PropTypes.oneOfType([
-  PropTypes.number,
-  PropTypes.arrayOf(PropTypes.number),
-  PropTypes.object,
-]);
-
-export const projectCoordinates = (map, coordinates, round = true) => (
-  round
-    ? map.project(LngLat.convert(coordinates)).round()
-    : map.project(LngLat.convert(coordinates))
-);
-
-export const anchorTranslate = (anchor) => {
-  const anchorTranslates = {
-    'center': 'translate(-50%,-50%)',
-    'top': 'translate(-50%,0)',
-    'top-left': 'translate(0,0)',
-    'top-right': 'translate(-100%,0)',
-    'bottom': 'translate(-50%,-100%)',
-    'bottom-left': 'translate(0,-100%)',
-    'bottom-right': 'translate(-100%,-100%)',
-    'left': 'translate(0,-50%)',
-    'right': 'translate(-100%,-50%)',
-  };
-  return anchorTranslates[anchor];
+export const OverlayPropTypes = {
+  anchor: PropTypes.oneOf([
+    'center',
+    'top',
+    'bottom',
+    'left',
+    'right',
+    'top-left',
+    'top-right',
+    'bottom-left',
+    'bottom-right',
+  ]),
+  offset: PropTypes.oneOfType([
+    PropTypes.number,
+    PropTypes.arrayOf(PropTypes.number),
+    PropTypes.object,
+  ]),
 };
 
-export const positionTranslate = position => `translate(${position.x}px,${position.y}px)`;
+const projectCoordinates = (map, coordinates) =>
+  map.project(LngLat.convert(coordinates));
 
-export const calculateAnchor = (map, offsets, pos, { offsetHeight, offsetWidth }) => {
+const calculateAnchor = (map, offsets, position, { offsetHeight, offsetWidth }) => {
   let anchor = null;
 
-  if (pos.y + offsets.bottom.y < offsetHeight) {
+  if (position.y + offsets.bottom.y < offsetHeight) {
     anchor = ['top'];
-  } else if (pos.y > map.transform.height - offsetHeight) {
+  } else if (position.y > map.transform.height - offsetHeight) {
     anchor = ['bottom'];
   } else {
     anchor = [];
   }
 
-  if (pos.x < offsetWidth / 2) {
+  if (position.x < offsetWidth / 2) {
     anchor.push('left');
-  } else if (pos.x > map.transform.width - offsetWidth / 2) {
+  } else if (position.x > map.transform.width - offsetWidth / 2) {
     anchor.push('right');
   }
 
@@ -74,15 +55,9 @@ export const calculateAnchor = (map, offsets, pos, { offsetHeight, offsetWidth }
 const isPointLike = input =>
   input instanceof Point || Array.isArray(input);
 
-export const normalizeOffset = offset => (
-  isPointLike(offset)
-    ? Point.convert(offset)
-    : Point.convert([0, 0])
-);
-
-export const normalizeOffsets = (offset) => {
+const normalizedOffsets = (offset) => {
   if (!offset) {
-    return normalizeOffsets(new Point(0, 0));
+    return normalizedOffsets(new Point(0, 0));
   } else if (typeof offset === 'number') {
     // input specifies a radius from which to calculate offsets at all positions
     const cornerOffset = Math.round(Math.sqrt(0.5 * Math.pow(offset, 2)));
@@ -127,3 +102,40 @@ export const normalizeOffsets = (offset) => {
   }
 };
 
+export const overlayState = (props, context, element = {}) => {
+  const { offsetWidth = 0, offsetHeight = 0 } = element;
+  const position = projectCoordinates(context.map, props.coordinates);
+  const offsets = normalizedOffsets(props.offset);
+  const anchor = props.anchor
+    || calculateAnchor(context.map, offsets, position, { offsetWidth, offsetHeight });
+
+  return {
+    anchor,
+    position,
+    offset: offsets[anchor],
+  };
+};
+
+const anchorTranslate = (anchor) => {
+  const anchorTranslates = {
+    'center': 'translate(-50%,-50%)',
+    'top': 'translate(-50%,0)',
+    'top-left': 'translate(0,0)',
+    'top-right': 'translate(-100%,0)',
+    'bottom': 'translate(-50%,-100%)',
+    'bottom-left': 'translate(0,-100%)',
+    'bottom-right': 'translate(-100%,-100%)',
+    'left': 'translate(0,-50%)',
+    'right': 'translate(-100%,-50%)',
+  };
+  return anchorTranslates[anchor] || '';
+};
+
+const moveTranslate = point => (
+  point ? `translate(${point.x}px,${point.y}px)` : ''
+);
+
+export const overlayTransform = (state) => {
+  const { anchor, position, offset } = state;
+  return `${anchorTranslate(anchor)} ${moveTranslate(position)} ${moveTranslate(offset)}`;
+};
