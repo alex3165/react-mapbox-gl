@@ -5,44 +5,46 @@ import {
   overlayTransform,
 } from './util/overlays';
 
+const defaultStyle = {
+  zIndex: 3,
+};
+
+const defaultClassName = ['mapboxgl-popup'];
+
 export default class Popup extends React.Component {
   static contextTypes = {
     map: PropTypes.object,
-  }
+  };
 
   static propTypes = {
     coordinates: PropTypes.arrayOf(PropTypes.number).isRequired,
     anchor: OverlayPropTypes.anchor,
     offset: OverlayPropTypes.offset,
     children: PropTypes.node,
-  }
+    style: PropTypes.object,
+  };
 
   static defaultProps = {
     offset: 0,
-  }
+  };
 
-  state = {
-  }
+  state = {};
 
   setContainer = (el) => {
-    this.container = el;
-  }
+    if (el) {
+      this.container = el;
+    }
+  };
 
   handleMapMove = () => {
     this.setState(overlayState(this.props, this.context, this.container));
-  }
-
-  handleMapMoveEnd = () => {
-    this.setState(overlayState(this.props, this.context, this.container));
-  }
-
-  componentWillMount() {
-  }
+  };
 
   componentDidMount() {
     const { map } = this.context;
+
     map.on('move', this.handleMapMove);
-    map.on('moveend', this.handleMapMoveEnd);
+    map.on('moveend', this.handleMapMove);
     // Now this.container is rendered and the size of container is known.
     // Recalculate the anchor/position
     this.setState(overlayState(this.props, this.context, this.container));
@@ -50,16 +52,30 @@ export default class Popup extends React.Component {
 
   componentWillUnmount() {
     const { map } = this.context;
+
     map.off('move', this.handleMapMove);
-    map.off('moveend', this.handleMapMoveEnd);
+    map.off('moveend', this.handleMapMove);
   }
 
   render() {
     const { anchor } = this.state;
+    const { style } = this.props;
+
+    const finalStyle = {
+      ...defaultStyle,
+      ...style,
+      transform: overlayTransform(this.state),
+    };
+
+    if (anchor) {
+      defaultClassName.push(`mapboxgl-popup-anchor-${anchor}`);
+    }
+
     return (
-      <div className={`mapboxgl-popup ${anchor ? `mapboxgl-popup-anchor-${anchor}` : ''}`}
-           style={{ transform: overlayTransform(this.state), zIndex: 3 }}
-           ref={this.setContainer}>
+      <div
+        className={defaultClassName.join(' ')}
+        style={finalStyle}
+        ref={this.setContainer}>
         <div className="mapboxgl-popup-tip"></div>
         <div className="mapboxgl-popup-content">
           {this.props.children}

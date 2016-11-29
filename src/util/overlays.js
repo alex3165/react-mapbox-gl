@@ -5,18 +5,20 @@
 import { LngLat, Point } from 'mapbox-gl/dist/mapbox-gl.js';
 import { PropTypes } from 'react';
 
+const anchors = [
+  'center',
+  'top',
+  'bottom',
+  'left',
+  'right',
+  'top-left',
+  'top-right',
+  'bottom-left',
+  'bottom-right',
+];
+
 export const OverlayPropTypes = {
-  anchor: PropTypes.oneOf([
-    'center',
-    'top',
-    'bottom',
-    'left',
-    'right',
-    'top-left',
-    'top-right',
-    'bottom-left',
-    'bottom-right',
-  ]),
+  anchor: PropTypes.oneOf(anchors),
   offset: PropTypes.oneOfType([
     PropTypes.number,
     PropTypes.arrayOf(PropTypes.number),
@@ -31,21 +33,21 @@ const calculateAnchor = (map, offsets, position, { offsetHeight, offsetWidth }) 
   let anchor = null;
 
   if (position.y + offsets.bottom.y - offsetHeight < 0) {
-    anchor = ['top'];
+    anchor = [anchors[1]];
   } else if (position.y + offsets.top.y + offsetHeight > map.transform.height) {
-    anchor = ['bottom'];
+    anchor = [anchors[2]];
   } else {
     anchor = [];
   }
 
   if (position.x < offsetWidth / 2) {
-    anchor.push('left');
+    anchor.push(anchors[3]);
   } else if (position.x > map.transform.width - offsetWidth / 2) {
-    anchor.push('right');
+    anchor.push(anchors[4]);
   }
 
   if (anchor.length === 0) {
-    anchor = 'bottom';
+    anchor = anchors[2];
   } else {
     anchor = anchor.join('-');
   }
@@ -74,31 +76,17 @@ const normalizedOffsets = (offset) => {
     };
   } else if (isPointLike(offset)) {
     // input specifies a single offset to be applied to all positions
-    const convertedOffset = Point.convert(offset);
-    return {
-      'center': convertedOffset,
-      'top': convertedOffset,
-      'top-left': convertedOffset,
-      'top-right': convertedOffset,
-      'bottom': convertedOffset,
-      'bottom-left': convertedOffset,
-      'bottom-right': convertedOffset,
-      'left': convertedOffset,
-      'right': convertedOffset,
-    };
+    return anchors.reduce((res, anchor) => {
+      res[anchor] = Point.convert(offset);
+      return res;
+    });
+
   } else {
     // input specifies an offset per position
-    return {
-      'center': Point.convert(offset['center'] || [0, 0]),
-      'top': Point.convert(offset['top'] || [0, 0]),
-      'top-left': Point.convert(offset['top-left'] || [0, 0]),
-      'top-right': Point.convert(offset['top-right'] || [0, 0]),
-      'bottom': Point.convert(offset['bottom'] || [0, 0]),
-      'bottom-left': Point.convert(offset['bottom-left'] || [0, 0]),
-      'bottom-right': Point.convert(offset['bottom-right'] || [0, 0]),
-      'left': Point.convert(offset['left'] || [0, 0]),
-      'right': Point.convert(offset['right'] || [0, 0]),
-    };
+    return anchors.reduce((res, anchor) => {
+      res[anchor] = Point.convert(offset[anchor] || [0, 0]);
+      return res;
+    });
   }
 };
 
