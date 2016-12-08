@@ -62,7 +62,7 @@ export default class ZoomControl extends Component {
     position: POSITIONS[0],
     zoomDiff: 0.5,
     onControlClick: (map, zoomDiff) => {
-      map.setZoom(map.getZoom() + zoomDiff);
+      map.zoomTo(map.getZoom() + zoomDiff);
     },
   };
 
