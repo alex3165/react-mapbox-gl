@@ -96,6 +96,15 @@ export default `
       margin-left: 2px;
   }
 
+  .mapboxgl-marker {
+      position: absolute;
+      top: 0;
+      left: 0;
+      display: -webkit-flex;
+      display: flex;
+      will-change: transform;
+  }
+
   .mapboxgl-popup {
       position: absolute;
       top: 0;
@@ -105,6 +114,7 @@ export default `
       will-change: transform;
       pointer-events: none;
   }
+  .mapboxgl-popup-anchor-center,
   .mapboxgl-popup-anchor-top,
   .mapboxgl-popup-anchor-top-left,
   .mapboxgl-popup-anchor-top-right {
@@ -130,6 +140,9 @@ export default `
       height: 0;
       border: 10px solid transparent;
       z-index: 1;
+  }
+  .mapboxgl-popup-anchor-center .mapboxgl-popup-tip {
+      display: none;
   }
   .mapboxgl-popup-anchor-top .mapboxgl-popup-tip {
       -webkit-align-self: center;

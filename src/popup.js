@@ -1,102 +1,71 @@
-import MapboxGl from 'mapbox-gl/dist/mapbox-gl.js';
 import React, { PropTypes } from 'react';
-import { render, unmountComponentAtNode } from 'react-dom';
+import {
+  OverlayPropTypes,
+  overlayState,
+  overlayTransform,
+} from './util/overlays';
 
-export default class Popup extends React.PureComponent {
+export default class Popup extends React.Component {
   static contextTypes = {
     map: PropTypes.object,
-  };
+  }
 
   static propTypes = {
     coordinates: PropTypes.arrayOf(PropTypes.number).isRequired,
-    dangerouslySetInnerHTML: PropTypes.string,
-    text: PropTypes.string,
-    closeButton: PropTypes.bool,
-    closeOnClick: PropTypes.bool,
-    anchor: PropTypes.oneOf([
-      'top',
-      'bottom',
-      'left',
-      'right',
-      'top-left',
-      'top-right',
-      'bottom-left',
-      'bottom-right',
-    ]),
-    offset: PropTypes.oneOfType([
-      PropTypes.number,
-      PropTypes.object,
-    ]),
+    anchor: OverlayPropTypes.anchor,
+    offset: OverlayPropTypes.offset,
+    children: PropTypes.node,
   }
 
-  div = document.createElement('div');
-  popup = new MapboxGl.Popup({
-    closeButton: this.props.closeButton,
-    closeOnClick: this.props.closeOnClick,
-    anchor: this.props.anchor,
-    offset: this.props.offset,
-  });
+  static defaultProps = {
+    offset: 0,
+  }
+
+  state = {
+  }
+
+  setContainer = (el) => {
+    this.container = el;
+  }
+
+  handleMapMove = () => {
+    this.setState(overlayState(this.props, this.context, this.container));
+  }
+
+  handleMapMoveEnd = () => {
+    this.setState(overlayState(this.props, this.context, this.container));
+  }
 
   componentWillMount() {
-    const { div, popup } = this;
-    const { map } = this.context;
-    const {
-      coordinates,
-      children,
-      dangerouslySetInnerHTML,
-      text,
-    } = this.props;
-
-    if (children) {
-      popup.setDOMContent(div);
-    } else if (dangerouslySetInnerHTML) {
-      popup.setHTML(dangerouslySetInnerHTML);
-    } else {
-      popup.setText(text || '');
-    }
-
-    popup.setLngLat(coordinates);
-
-    render(children, div, () => {
-      popup.addTo(map);
-    });
   }
 
-  componentWillReceiveProps(nextProps) {
-    const { popup, div } = this;
-    const {
-      children,
-      coordinates,
-      dangerouslySetInnerHTML,
-      text,
-    } = nextProps;
-
-    if (!children) {
-      if (
-        this.props.dangerouslySetInnerHTML &&
-        dangerouslySetInnerHTML !== this.props.dangerouslySetInnerHTML
-      ) {
-        popup.setHTML(dangerouslySetInnerHTML);
-      } else if (text !== this.props.text) {
-        popup.setText(text);
-      }
-    } else {
-      render(children, div);
-    }
-
-    if (this.props.coordinates !== coordinates) {
-      popup.setLngLat(coordinates);
-    }
+  componentDidMount() {
+    const { map } = this.context;
+    map.on('move', this.handleMapMove);
+    map.on('moveend', this.handleMapMoveEnd);
+    // Now this.container is rendered and the size of container is known.
+    // Recalculate the anchor/position
+    this.setState(overlayState(this.props, this.context, this.container));
   }
 
   componentWillUnmount() {
-    const { popup, div } = this;
-    popup.remove();
-    unmountComponentAtNode(div);
+    const { map } = this.context;
+    map.off('move', this.handleMapMove);
+    map.off('moveend', this.handleMapMoveEnd);
   }
 
   render() {
-    return null;
+    const { anchor } = this.state;
+    return (
+      <div className={`mapboxgl-popup ${anchor ? `mapboxgl-popup-anchor-${anchor}` : ''}`}
+           style={{ transform: overlayTransform(this.state), zIndex: 3 }}
+           ref={this.setContainer}>
+        <div className="mapboxgl-popup-tip"></div>
+        <div className="mapboxgl-popup-content">
+          {this.props.children}
+        </div>
+      </div>
+    );
   }
 }
 

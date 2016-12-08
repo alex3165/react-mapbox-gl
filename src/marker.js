@@ -1,59 +1,68 @@
-import MapboxGl from 'mapbox-gl/dist/mapbox-gl.js';
 import React, { PropTypes } from 'react';
-import { render, unmountComponentAtNode } from 'react-dom';
+import {
+  OverlayPropTypes,
+  overlayState,
+  overlayTransform,
+} from './util/overlays';
 
-export default class ReactMapboxGl extends React.PureComponent {
+export default class Marker extends React.Component {
   static contextTypes = {
     map: PropTypes.object,
   };
 
   static propTypes = {
     coordinates: PropTypes.arrayOf(PropTypes.number).isRequired,
-    container: PropTypes.object,
+    anchor: OverlayPropTypes.anchor,
+    offset: OverlayPropTypes.offset,
+    onClick: PropTypes.func,
   }
 
-  div = document.createElement('div');
+  static defaultProps = {
+    offset: 0,
+  }
 
-  componentWillMount() {
+  state = {
+  }
+
+  setContainer = (el) => {
+    this.container = el;
+  }
+
+  handleMapMove = () => {
+    this.setState(overlayState(this.props, this.context, this.container));
+  }
+
+  handleMapMoveEnd = () => {
+    this.setState(overlayState(this.props, this.context, this.container));
+  }
+
+  componentDidMount() {
     const { map } = this.context;
-    const {
-      children,
-      coordinates,
-      container,
-    } = this.props;
-
-    if (container && container.nodeName) {
-      this.div = container;
-    }
-
-    this.marker = new MapboxGl.Marker(this.div).setLngLat(coordinates);
-
-    render(children, this.div, () => {
-      this.marker.addTo(map);
-    });
-  }
-
-  componentWillReceiveProps(nextProps) {
-    const { marker, div } = this;
-    const { coordinates, children } = nextProps;
-
-    if (children) {
-      render(children, div);
-    }
-
-    if (this.props.coordinates !== coordinates) {
-      marker.setLngLat(coordinates);
-    }
+    map.on('move', this.handleMapMove);
+    map.on('moveend', this.handleMapMoveEnd);
+    this.setState(overlayState(this.props, this.context, this.container));
   }
 
   componentWillUnmount() {
-    const { marker, div } = this;
-
-    marker.remove();
-    unmountComponentAtNode(div);
+    const { map } = this.context;
+    map.off('move', this.handleMapMove);
+    map.off('moveend', this.handleMapMoveEnd);
   }
 
   render() {
-    return null;
+    const onClick = this.props.onClick || (() => {});
+    const style = {
+      transform: overlayTransform(this.state),
+      zIndex: 2,
+      cursor: (this.props.onClick ? 'pointer' : 'auto'),
+    };
+    return (
+      <div className="mapboxgl-marker"
+           onClick={onClick}
+           style={style}
+           ref={this.setContainer}>
+        {this.props.children}
+      </div>
+    );
   }
 }
