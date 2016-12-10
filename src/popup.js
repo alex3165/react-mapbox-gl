@@ -60,16 +60,25 @@ export default class Popup extends React.Component {
   render() {
     const { anchor } = this.state;
     const { style } = this.props;
+    const transform = overlayTransform(this.state);
 
-    const finalStyle = {
+    let finalStyle = {
       ...defaultStyle,
-      ...style,
-      transform: overlayTransform(this.state),
+      ...style
     };
+
+    if (transform) {
+      finalStyle = {
+        ...finalStyle,
+        transform
+      }
+    }
 
     if (anchor) {
       defaultClassName.push(`mapboxgl-popup-anchor-${anchor}`);
     }
+
+    console.log(anchor, transform, finalStyle, this.state);
 
     return (
       <div

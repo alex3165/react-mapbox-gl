@@ -26,6 +26,18 @@ export const OverlayPropTypes = {
   ]),
 };
 
+const anchorTranslates = {
+  'center': 'translate(-50%,-50%)',
+  'top': 'translate(-50%,0)',
+  'top-left': 'translate(0,0)',
+  'top-right': 'translate(-100%,0)',
+  'bottom': 'translate(-50%,-100%)',
+  'bottom-left': 'translate(0,-100%)',
+  'bottom-right': 'translate(-100%,-100%)',
+  'left': 'translate(0,-50%)',
+  'right': 'translate(-100%,-50%)',
+};
+
 const projectCoordinates = (map, coordinates) =>
   map.project(LngLat.convert(coordinates));
 
@@ -79,14 +91,14 @@ const normalizedOffsets = (offset) => {
     return anchors.reduce((res, anchor) => {
       res[anchor] = Point.convert(offset);
       return res;
-    });
+    }, {});
 
   } else {
     // input specifies an offset per position
     return anchors.reduce((res, anchor) => {
       res[anchor] = Point.convert(offset[anchor] || [0, 0]);
       return res;
-    });
+    }, {});
   }
 };
 
@@ -104,26 +116,17 @@ export const overlayState = (props, context, element = {}) => {
   };
 };
 
-const anchorTranslate = (anchor) => {
-  const anchorTranslates = {
-    'center': 'translate(-50%,-50%)',
-    'top': 'translate(-50%,0)',
-    'top-left': 'translate(0,0)',
-    'top-right': 'translate(-100%,0)',
-    'bottom': 'translate(-50%,-100%)',
-    'bottom-left': 'translate(0,-100%)',
-    'bottom-right': 'translate(-100%,-100%)',
-    'left': 'translate(0,-50%)',
-    'right': 'translate(-100%,-50%)',
-  };
-  return anchorTranslates[anchor] || '';
-};
-
-const moveTranslate = point => (
-  point ? `translate(${point.x}px,${point.y}px)` : ''
-);
-
 export const overlayTransform = (state) => {
   const { anchor, position, offset } = state;
-  return `${anchorTranslate(anchor)} ${moveTranslate(position)} ${moveTranslate(offset)}`;
+  const point = position || offset;
+
+  if (anchor) {
+    return anchorTranslates[anchor];
+  }
+
+  if (point) {
+    return `translate(${point.x}px,${point.y}px)`;
+  }
+
+  return null;
 };
