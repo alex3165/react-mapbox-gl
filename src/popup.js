@@ -37,7 +37,7 @@ export default class Popup extends React.Component {
   };
 
   handleMapMove = () => {
-    this.setState(overlayState(this.props, this.context, this.container));
+    this.setState(overlayState(this.props, this.context.map, this.container));
   };
 
   componentDidMount() {
@@ -47,7 +47,7 @@ export default class Popup extends React.Component {
     map.on('moveend', this.handleMapMove);
     // Now this.container is rendered and the size of container is known.
     // Recalculate the anchor/position
-    this.setState(overlayState(this.props, this.context, this.container));
+    this.setState(overlayState(this.props, map, this.container));
   }
 
   componentWillUnmount() {
@@ -60,25 +60,16 @@ export default class Popup extends React.Component {
   render() {
     const { anchor } = this.state;
     const { style } = this.props;
-    const transform = overlayTransform(this.state);
 
     let finalStyle = {
       ...defaultStyle,
-      ...style
+      ...style,
+      transform: overlayTransform(this.state).join(' ')
     };
-
-    if (transform) {
-      finalStyle = {
-        ...finalStyle,
-        transform
-      }
-    }
 
     if (anchor) {
       defaultClassName.push(`mapboxgl-popup-anchor-${anchor}`);
     }
-
-    console.log(anchor, transform, finalStyle, this.state);
 
     return (
       <div

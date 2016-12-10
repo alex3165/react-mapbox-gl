@@ -102,12 +102,12 @@ const normalizedOffsets = (offset) => {
   }
 };
 
-export const overlayState = (props, context, element = {}) => {
+export const overlayState = (props, map, element = {}) => {
   const { offsetWidth = 0, offsetHeight = 0 } = element;
-  const position = projectCoordinates(context.map, props.coordinates);
+  const position = projectCoordinates(map, props.coordinates);
   const offsets = normalizedOffsets(props.offset);
   const anchor = props.anchor
-    || calculateAnchor(context.map, offsets, position, { offsetWidth, offsetHeight });
+    || calculateAnchor(map, offsets, position, { offsetWidth, offsetHeight });
 
   return {
     anchor,
@@ -116,17 +116,22 @@ export const overlayState = (props, context, element = {}) => {
   };
 };
 
+const moveTranslate = point => (
+  point ? `translate(${point.x}px,${point.y}px)` : ''
+);
+
 export const overlayTransform = (state) => {
   const { anchor, position, offset } = state;
-  const point = position || offset;
+
+  const res = [moveTranslate(position)];
+
+  if (offset && offset.x && offset.y) {
+    res.push(moveTranslate(offset));
+  }
 
   if (anchor) {
-    return anchorTranslates[anchor];
+    res.push(anchorTranslates[anchor]);
   }
 
-  if (point) {
-    return `translate(${point.x}px,${point.y}px)`;
-  }
-
-  return null;
+  return res;
 };
