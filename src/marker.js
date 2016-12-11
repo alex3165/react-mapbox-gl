@@ -1,80 +1,31 @@
 import React, { PropTypes } from 'react';
+import ProjectedLayer from './projected-layer';
 import {
   OverlayPropTypes,
-  overlayState,
-  overlayTransform,
 } from './util/overlays';
 
-const defaultStyle = {
-  zIndex: 2,
-  cursor: 'pointer',
-};
+const propsToRemove = { children: undefined };
 
-export default class Marker extends React.Component {
-  static contextTypes = {
-    map: PropTypes.object,
-  };
-
+export default class Popup extends React.Component {
   static propTypes = {
     coordinates: PropTypes.arrayOf(PropTypes.number).isRequired,
     anchor: OverlayPropTypes.anchor,
     offset: OverlayPropTypes.offset,
+    children: PropTypes.node,
     onClick: PropTypes.func,
     style: PropTypes.object,
   };
 
-  static defaultProps = {
-    offset: 0,
-    onClick: (...args) => args,
-  };
-
-  state = {};
-
-  setContainer = (el) => {
-    if (el) {
-      this.container = el;
-    }
-  };
-
-  handleMapMove = () => {
-    if (!this.prevent) {
-      this.setState(overlayState(this.props, this.context.map, this.container));
-    }
-  };
-
-  componentDidMount() {
-    const { map } = this.context;
-
-    map.on('move', this.handleMapMove);
-
-    this.handleMapMove();
-  }
-
-  componentWillUnmount() {
-    const { map } = this.context;
-
-    this.prevent = true;
-
-    map.off('move', this.handleMapMove);
-  }
-
   render() {
-    const { onClick, style, children } = this.props;
-
-    const finalStyle = {
-      ...defaultStyle,
-      ...style,
-      transform: overlayTransform(this.state).join(' '),
-    };
+    const { children } = this.props;
+    const nestedProps = Object.assign({}, this.props, propsToRemove);
 
     return (
-      <div
-        className="mapboxgl-marker"
-        onClick={onClick}
-        style={finalStyle}
-        ref={this.setContainer}>
+      <ProjectedLayer
+        {...nestedProps}
+        className="mapboxgl-marker">
         { children }
-      </div>
+      </ProjectedLayer>
     );
   }
 }
