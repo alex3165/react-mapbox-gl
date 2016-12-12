@@ -19,7 +19,7 @@ const positions = {
 
 const containerStyle = {
   position: 'absolute',
-  zIndex: 2,
+  zIndex: 10,
   boxShadow: '0px 1px 4px rgba(0, 0, 0, .3)',
   border: '1px solid rgba(0, 0, 0, 0.1)',
   right: 50,

@@ -1,59 +1,31 @@
-import MapboxGl from 'mapbox-gl/dist/mapbox-gl.js';
 import React, { PropTypes } from 'react';
-import { render, unmountComponentAtNode } from 'react-dom';
+import ProjectedLayer from './projected-layer';
+import {
+  OverlayPropTypes,
+} from './util/overlays';
 
-export default class ReactMapboxGl extends React.PureComponent {
-  static contextTypes = {
-    map: PropTypes.object,
-  };
+const propsToRemove = { children: undefined };
 
+export default class Popup extends React.Component {
   static propTypes = {
     coordinates: PropTypes.arrayOf(PropTypes.number).isRequired,
-    container: PropTypes.object,
-  }
-
-  div = document.createElement('div');
-
-  componentWillMount() {
-    const { map } = this.context;
-    const {
-      children,
-      coordinates,
-      container,
-    } = this.props;
-
-    if (container && container.nodeName) {
-      this.div = container;
-    }
-
-    this.marker = new MapboxGl.Marker(this.div).setLngLat(coordinates);
-
-    render(children, this.div, () => {
-      this.marker.addTo(map);
-    });
-  }
-
-  componentWillReceiveProps(nextProps) {
-    const { marker, div } = this;
-    const { coordinates, children } = nextProps;
-
-    if (children) {
-      render(children, div);
-    }
-
-    if (this.props.coordinates !== coordinates) {
-      marker.setLngLat(coordinates);
-    }
-  }
-
-  componentWillUnmount() {
-    const { marker, div } = this;
-
-    marker.remove();
-    unmountComponentAtNode(div);
-  }
+    anchor: OverlayPropTypes.anchor,
+    offset: OverlayPropTypes.offset,
+    children: PropTypes.node,
+    onClick: PropTypes.func,
+    style: PropTypes.object,
+  };
 
   render() {
-    return null;
+    const { children } = this.props;
+    const nestedProps = Object.assign({}, this.props, propsToRemove);
+
+    return (
+      <ProjectedLayer
+        {...nestedProps}
+        className="mapboxgl-marker">
+        { children }
+      </ProjectedLayer>
+    );
   }
 }
