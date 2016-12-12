@@ -60,7 +60,6 @@ export default class ProjectedLayer extends React.Component {
   }
 
   render() {
-    const { anchor } = this.state;
     const { style, children, className } = this.props;
 
     const finalStyle = {

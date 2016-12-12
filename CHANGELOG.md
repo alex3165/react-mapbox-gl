@@ -1,3 +1,7 @@
+## 0.19.0 (December 12 2016)
+
+- Implement the `Popup` and the `Marker` Components using React. These components now keep track of the context.
+
 ## 0.15.0 (October 23 2016)
 
 - Upgrade mapbox-gl from v0.21.0 to v0.25.1 and don't build the vendor anymore, react-mapbox-gl is now using mapbox-gl/dist/mapbox-gl.js bundle again

@@ -27,7 +27,7 @@ const anchorTranslates = {
 
 const defaultElement = { offsetWidth: 0, offsetHeight: 0 };
 
-const isPointLike = (input) => (input instanceof Point || Array.isArray(input));
+const isPointLike = input => (input instanceof Point || Array.isArray(input));
 
 const projectCoordinates = (map, coordinates) => map.project(LngLat.convert(coordinates));
 

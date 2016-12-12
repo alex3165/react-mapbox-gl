@@ -241,17 +241,18 @@ import { Popup } from "react-mapbox-gl";
   - `top-right`
   - `bottom-left`
   - `bottom-right`
-  - `null | undefined`: When not set, the anchor is automatically calculated to keep the content of the popup visible. 
+  - `null | undefined`: When not set, the anchor is automatically calculated to keep the content of the popup visible.
 - **offset** *(Default: 0)*: `Number | Array<Number> | Object` Set the offset of popup, where the tip of the popup will be pointing.
   - When `Number` is passed, the popup will be offset by that number for all anchor positions.
   - When an `Array<Number>` is passed (e.g. [-12, 30]), the popup will be offset by that point.
   - When `Object` is passed, it must contain keys for different anchor positions and values as the offset (`Number` or `Array<Number>`)
-
+- **onClick**: `Function` Triggered whenever user click on the marker
+- **style**: `Object` Apply style to the marker container
 
 ### Example
 
 ```
-<Popup 
+<Popup
   coordinates={[-0.13235092163085938,51.518250335096376]}
   offset={{
     'bottom-left': [12, -38],  'bottom': [0, -38], 'bottom-right': [-12, -38]
@@ -275,6 +276,8 @@ import { Marker } from "react-mapbox-gl";
 - **coordinates** *(required)*: `Array of Number` Display the popup at the given position.
 - **anchor**: `String` Same as Popup's anchor property.
 - **offset**: `String` Same as Popup's offset property.
+- **onClick**: `Function` Triggered whenever user click on the marker
+- **style**: `Object` Apply style to the marker container
 
 ### Example
 
