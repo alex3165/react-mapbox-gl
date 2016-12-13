@@ -98,9 +98,9 @@ export default class ZoomControl extends Component {
             ...buttonStylePlus,
             ...(hover === PLUS && buttonStyleHovered),
           }}
-          onMouseOver={this.onMouseAction.bind(this, PLUS)}
+          onMouseOver={() => this.onMouseAction(PLUS)}
           onMouseOut={this.onMouseAction}
-          onClick={onControlClick.bind(this, map, zoomDiff)}>
+          onClick={() => onControlClick(map, zoomDiff)}>
         </button>
         <button
           style={{
@@ -108,9 +108,9 @@ export default class ZoomControl extends Component {
             ...buttonStyleMinus,
             ...(hover === MINUS && buttonStyleHovered),
           }}
-          onMouseOver={this.onMouseAction.bind(this, MINUS)}
+          onMouseOver={() => this.onMouseAction(MINUS)}
           onMouseOut={this.onMouseAction}
-          onClick={onControlClick.bind(this, map, -zoomDiff)}>
+          onClick={() => onControlClick(map, -zoomDiff)}>
         </button>
       </div>
     );
