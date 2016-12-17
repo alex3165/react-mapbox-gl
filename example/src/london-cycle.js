@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import ReactMapboxGl, { Layer, Feature, Popup, ZoomControl } from "react-mapbox-gl";
-
+import styles from './london-cycle.style';
 import { parseString } from "xml2js";
 import { Map } from "immutable";
 import config from "./config.json";
@@ -23,36 +23,9 @@ function getCycleStations() {
     })
 }
 
-const containerStyle = {
-  height: "100vh",
-  width: "100vw"
-};
-
-const styles = {
-  button: {
-    cursor: "pointer"
-  },
-
-  stationDescription: {
-    position: "absolute",
-    bottom: 0,
-    left: 0,
-    right: 0,
-    padding: "16px 0px",
-    textAlign: "center",
-    backgroundColor: "white"
-  },
-
-  popup: {
-    background: "#fff",
-    padding: "5px",
-    borderRadius: "2px"
-  }
-}
-
 const maxBounds = [
-      [-0.481747846041145,51.3233379650232], // South West
-      [0.23441119994140536,51.654967740310525], // North East
+  [-0.481747846041145,51.3233379650232], // South West
+  [0.23441119994140536,51.654967740310525], // North East
 ];
 
 export default class LondonCycle extends Component {
@@ -97,11 +70,6 @@ export default class LondonCycle extends Component {
     }
   };
 
-  _setMove = (end) => {
-    if(end !== this.state.end)
-      this.setState({ end });
-  };
-
   _onToggleHover(cursor, { map }) {
     map.getCanvas().style.cursor = cursor;
   }
@@ -115,13 +83,30 @@ export default class LondonCycle extends Component {
     this.setState({ popupShowLabel });
   }
 
+  _onFitBoundsClick = () => {
+    const { stations } = this.state;
+
+    if (this.state.fitBounds) {
+      this.setState({
+        fitBounds: [[-0.079684557, 51.51646835], [-0.138231303, 51.52554222]]
+      });
+    } else {
+      this.setState({
+        fitBounds: [[-0.122555629777, 51.4734862092], [-0.114842, 51.50621]]
+      });
+    }
+  };
+
   render() {
-    const { stations, station, skip, end, popupShowLabel } = this.state;
+    const { stations, station, skip, end, popupShowLabel, fitBounds } = this.state;
+
+    console.log('render', fitBounds);
 
     return (
       <div>
         <ReactMapboxGl
           style={style}
+          fitBounds={fitBounds}
           center={this.state.center}
           zoom={this.state.zoom}
           minZoom={8}
@@ -129,9 +114,7 @@ export default class LondonCycle extends Component {
           maxBounds={maxBounds}
           accessToken={accessToken}
           onDrag={this._onDrag}
-          onMoveEnd={this._setMove.bind(this, true)}
-          onMove={this._setMove.bind(this, false)}
-          containerStyle={containerStyle}>
+          containerStyle={styles.container}>
 
           <ZoomControl
             zoomDiff={1}
@@ -155,8 +138,8 @@ export default class LondonCycle extends Component {
           </Layer>
 
           {
-            station && end && (
-              <Popup key={station.get("id")} coordinates={station.get("position")} closeButton={true}>
+            station && (
+              <Popup key={station.get("id")} coordinates={station.get("position")}>
                 <div>
                   <span style={{
                     ...styles.popup,
@@ -174,15 +157,17 @@ export default class LondonCycle extends Component {
             )
           }
         </ReactMapboxGl>
-
         {
-          station && end && (
+          station && (
             <div style={styles.stationDescription}>
               <p>{ station.get("name") }</p>
               <p>{ station.get("bikes") } bikes / { station.get("slots") } slots</p>
             </div>
           )
         }
+        <div style={styles.btnWrapper}>
+          <button style={styles.btn} onClick={this._onFitBoundsClick}>Fit to bounds</button>
+        </div>
       </div>
     )
   }

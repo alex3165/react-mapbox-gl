@@ -14,6 +14,8 @@ export default class ReactMapboxGl extends Component {
     minZoom: PropTypes.number,
     maxZoom: PropTypes.number,
     maxBounds: PropTypes.array,
+    fitBounds: PropTypes.array,
+    fitBoundsOptions: PropTypes.object,
     bearing: PropTypes.number,
     pitch: PropTypes.number,
     containerStyle: PropTypes.object,
@@ -89,6 +91,8 @@ export default class ReactMapboxGl extends Component {
       minZoom,
       maxZoom,
       maxBounds,
+      fitBounds,
+      fitBoundsOptions,
       bearing,
       onStyleLoad,
       onResize,
@@ -130,6 +134,10 @@ export default class ReactMapboxGl extends Component {
       },
       interactive,
     });
+
+    if (fitBounds) {
+      map.fitBounds(fitBounds, fitBoundsOptions);
+    }
 
     map.on('style.load', (...args) => {
       if (onStyleLoad) {
@@ -242,7 +250,8 @@ export default class ReactMapboxGl extends Component {
       nextProps.children !== this.props.children ||
       nextProps.containerStyle !== this.props.containerStyle ||
       nextState.map !== this.state.map ||
-      nextProps.style !== this.props.style
+      nextProps.style !== this.props.style ||
+      nextProps.fitBounds !== this.props.fitBounds
     );
   }
 
@@ -270,6 +279,23 @@ export default class ReactMapboxGl extends Component {
       this.props.bearing !== nextProps.bearing &&
       nextProps.bearing !== map.getBearing()
     );
+
+    if (nextProps.fitBounds) {
+      const { fitBounds } = this.props;
+
+      const didFitBoundsUpdate = (
+        fitBounds !== nextProps.fitBounds || // Check for reference equality
+        nextProps.fitBounds.length !== fitBounds && fitBounds.length || // Check if we added an element
+        !!fitBounds.find((c, i) => { // Check for equality
+          const nc = nextProps.fitBounds[i];
+          return c[0] !== nc[0] || c[1] !== nc[1];
+        })
+      );
+
+      if (didFitBoundsUpdate) {
+        map.fitBounds(nextProps.fitBounds, nextProps.fitBoundsOptions);
+      }
+    }
 
     if (didZoomUpdate || didCenterUpdate || didBearingUpdate) {
       map[this.props.movingMethod]({
