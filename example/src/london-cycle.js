@@ -83,24 +83,26 @@ export default class LondonCycle extends Component {
     this.setState({ popupShowLabel });
   }
 
+  toggle = true;
+
   _onFitBoundsClick = () => {
     const { stations } = this.state;
 
-    if (this.state.fitBounds) {
-      this.setState({
-        fitBounds: [[-0.079684557, 51.51646835], [-0.138231303, 51.52554222]]
-      });
-    } else {
+    if (this.toggle) {
       this.setState({
         fitBounds: [[-0.122555629777, 51.4734862092], [-0.114842, 51.50621]]
       });
+    } else {
+      this.setState({
+        fitBounds: [[32.958984, -5.353521], [43.50585, 5.615985]] // this won't focus on the area as there is a maxBounds
+      });
     }
+
+    this.toggle = !this.toggle;
   };
 
   render() {
     const { stations, station, skip, end, popupShowLabel, fitBounds } = this.state;
-
-    console.log('render', fitBounds);
 
     return (
       <div>
