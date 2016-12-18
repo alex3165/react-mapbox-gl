@@ -21,6 +21,7 @@ import ReactMapboxGl from "react-mapbox-gl";
 - **minZoom** *(Default: `0`)*: `Number` Minimum zoom level. Must be between 0 and 20.
 - **maxZoom** *(Default: `20`)*: `Number` Maximum zoom level. Must be between 0 and 20.
 - **maxBounds** : `LngLatBounds | Array<Array<number>>` If set, the map is constrained to the given bounds [SouthWest, NorthEast]
+- **fitBounds** : `Array<Array<number>>` If set, the map will center on the given coordinates, [fitBounds](https://www.mapbox.com/mapbox-gl-js/api/#Map#fitBounds)
 - **bearing** *(Default: `0`)*: `Number` Bearing (rotation) of the map at initialisation measured in degrees counter-clockwise from north.
   - Check the previous value and the new one, if the value changed update the bearing value [flyTo](https://www.mapbox.com/mapbox-gl-js/api/#Map.flyTo)
 - **pitch** *(Default: `0`)*: `Number` Pitch (tilt) of the map at initialisation, range : `0 - 60`
