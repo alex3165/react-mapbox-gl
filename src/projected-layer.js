@@ -51,6 +51,17 @@ export default class ProjectedLayer extends React.Component {
     this.handleMapMove();
   }
 
+  componentWillUpdate(nextProps) {
+    const { coordinates } = this.props;
+
+    if (
+      coordinates[0] !== nextProps.coordinates[0]
+      || coordinates[1] !== nextProps.coordinates[1]
+    ) {
+      this.setState(overlayState(nextProps, this.context.map, this.container))
+    }
+  }
+
   componentWillUnmount() {
     const { map } = this.context;
 
