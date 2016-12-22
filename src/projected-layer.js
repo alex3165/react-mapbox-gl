@@ -22,7 +22,7 @@ export default class ProjectedLayer extends React.Component {
     onClick: PropTypes.func,
     onMouseEnter: PropTypes.func,
     onMouseLeave: PropTypes.func,
-    style: PropTypes.object
+    style: PropTypes.object,
   };
 
   static defaultProps = {
@@ -60,7 +60,7 @@ export default class ProjectedLayer extends React.Component {
       coordinates[0] !== nextProps.coordinates[0]
       || coordinates[1] !== nextProps.coordinates[1]
     ) {
-      this.setState(overlayState(nextProps, this.context.map, this.container))
+      this.setState(overlayState(nextProps, this.context.map, this.container));
     }
   }
 
@@ -79,7 +79,7 @@ export default class ProjectedLayer extends React.Component {
       className,
       onClick,
       onMouseEnter,
-      onMouseLeave
+      onMouseLeave,
     } = this.props;
 
     const finalStyle = {

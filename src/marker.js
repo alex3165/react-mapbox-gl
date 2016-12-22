@@ -16,7 +16,7 @@ export default class Popup extends React.Component {
   };
 
   render() {
-    const { children, onClick, onMouseEnter, onMouseLeave } = this.props;
+    const { children } = this.props;
     const nestedProps = Object.assign({}, this.props, propsToRemove);
 
     return (
