@@ -20,7 +20,9 @@ export default class ProjectedLayer extends React.Component {
     offset: OverlayPropTypes.offset,
     children: PropTypes.node,
     onClick: PropTypes.func,
-    style: PropTypes.object,
+    onMouseEnter: PropTypes.func,
+    onMouseLeave: PropTypes.func,
+    style: PropTypes.object
   };
 
   static defaultProps = {
@@ -60,7 +62,14 @@ export default class ProjectedLayer extends React.Component {
   }
 
   render() {
-    const { style, children, className } = this.props;
+    const {
+      style,
+      children,
+      className,
+      onClick,
+      onMouseEnter,
+      onMouseLeave
+    } = this.props;
 
     const finalStyle = {
       ...defaultStyle,
@@ -71,6 +80,9 @@ export default class ProjectedLayer extends React.Component {
     return (
       <div
         className={className}
+        onClick={onClick}
+        onMouseEnter={onMouseEnter}
+        onMouseLeave={onMouseLeave}
         style={finalStyle}
         ref={this.setContainer}>
         { children }

@@ -12,12 +12,11 @@ export default class Popup extends React.Component {
     anchor: OverlayPropTypes.anchor,
     offset: OverlayPropTypes.offset,
     children: PropTypes.node,
-    onClick: PropTypes.func,
     style: PropTypes.object,
   };
 
   render() {
-    const { children } = this.props;
+    const { children, onClick, onMouseEnter, onMouseLeave } = this.props;
     const nestedProps = Object.assign({}, this.props, propsToRemove);
 
     return (
