@@ -141,7 +141,9 @@ export default class LondonCycle extends Component {
 
           {
             station && (
-              <Popup key={station.get("id")} coordinates={station.get("position")}>
+              <Popup
+                key={station.get("id")}
+                coordinates={station.get("position")}>
                 <div>
                   <span style={{
                     ...styles.popup,
@@ -167,7 +169,10 @@ export default class LondonCycle extends Component {
             </div>
           )
         }
-        <div style={styles.btnWrapper}>
+        <div style={{
+        ...styles.btnWrapper,
+        ...(station && styles.btnStationOpen)
+      }}>
           <button style={styles.btn} onClick={this._onFitBoundsClick}>Fit to bounds</button>
         </div>
       </div>

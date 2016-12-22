@@ -100,6 +100,18 @@ export default class AllShapes extends Component {
     map.getCanvas().style.cursor = "";
   }
 
+  _markerClick() {
+    console.log('Marker clicked');
+  }
+
+  _markerMouseEnter() {
+    console.log('Marker mouse enter');
+  }
+
+  _markerMouseLeave() {
+    console.log('Marker mouse leave');
+  }
+
   _polygonClicked = ({ feature }) => {
     console.log("Polygon clicked", feature.geometry.coordinates);
   };
@@ -154,6 +166,9 @@ export default class AllShapes extends Component {
         </Layer>
 
         <Marker
+          onClick={this._markerClick}
+          onMouseEnter={this._markerMouseEnter}
+          onMouseLeave={this._markerMouseLeave}
           container={markerContainer}
           coordinates={markerCoord}>
             <h1>TEST</h1>

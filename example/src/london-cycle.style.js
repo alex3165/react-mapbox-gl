@@ -28,6 +28,9 @@ export default {
     bottom: 0,
     width: '100%'
   },
+  btnStationOpen: {
+    marginBottom: 140
+  },
   btn: {
     backgroundColor: 'rgb(71, 144, 229)',
     color: 'white',
