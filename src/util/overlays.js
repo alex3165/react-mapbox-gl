@@ -120,8 +120,7 @@ const moveTranslate = point => (
   point ? `translate(${point.x}px,${point.y}px)` : ''
 );
 
-export const overlayTransform = (state) => {
-  const { anchor, position, offset } = state;
+export const overlayTransform = ({ anchor, position, offset }) => {
 
   const res = [moveTranslate(position)];
 
