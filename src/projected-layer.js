@@ -53,7 +53,7 @@ export default class ProjectedLayer extends React.Component {
     this.handleMapMove();
   }
 
-  componentWillUpdate(nextProps) {
+  componentWillReceiveProps(nextProps) {
     const { coordinates } = this.props;
 
     if (
