@@ -5,8 +5,6 @@ import {
   OverlayPropTypes,
 } from './util/overlays';
 
-const defaultClassName = ['mapboxgl-popup'];
-
 export default class Popup extends React.Component {
   static propTypes = {
     coordinates: PropTypes.arrayOf(PropTypes.number).isRequired,
@@ -24,10 +22,6 @@ export default class Popup extends React.Component {
   render() {
     const { coordinates, anchor, offset, onClick, children, style } = this.props;
 
-    if (anchor) {
-      defaultClassName.push(`mapboxgl-popup-anchor-${anchor}`);
-    }
-
     return (
       <ProjectedLayer
         style={style}
@@ -35,7 +29,7 @@ export default class Popup extends React.Component {
         offset={offset}
         anchor={anchor}
         coordinates={coordinates}
-        className={defaultClassName.join(' ')}>
+        className={`mapboxgl-popup mapboxgl-popup-anchor-${anchor}`}>
         <div className="mapboxgl-popup-tip"></div>
         <div className="mapboxgl-popup-content">
           { children }
