@@ -1,6 +1,7 @@
 import React, { PropTypes } from 'react';
 import ProjectedLayer from './projected-layer';
 import {
+  anchors,
   OverlayPropTypes,
 } from './util/overlays';
 
@@ -14,6 +15,10 @@ export default class Popup extends React.Component {
     children: PropTypes.node,
     onClick: PropTypes.func,
     style: PropTypes.object,
+  };
+
+  static defaultProps = {
+    anchor: anchors[0]
   };
 
   render() {

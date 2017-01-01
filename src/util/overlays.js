@@ -1,7 +1,7 @@
 import { LngLat, Point } from 'mapbox-gl/dist/mapbox-gl.js';
 import { PropTypes } from 'react';
 
-const anchors = [
+export const anchors = [
   'center',
   'top',
   'bottom',
