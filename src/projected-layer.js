@@ -3,7 +3,7 @@ import {
   OverlayPropTypes,
   overlayState,
   overlayTransform,
-  anchors
+  anchors,
 } from './util/overlays';
 
 const defaultStyle = {

@@ -16,7 +16,7 @@ export default class Popup extends React.Component {
   };
 
   static defaultProps = {
-    anchor: anchors[0]
+    anchor: anchors[0],
   };
 
   render() {
