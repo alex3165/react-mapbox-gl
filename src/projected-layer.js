@@ -3,6 +3,7 @@ import {
   OverlayPropTypes,
   overlayState,
   overlayTransform,
+  anchors
 } from './util/overlays';
 
 const defaultStyle = {
@@ -26,6 +27,7 @@ export default class ProjectedLayer extends React.Component {
   };
 
   static defaultProps = {
+    anchor: anchors[0],
     offset: 0,
     onClick: (...args) => args,
   };
