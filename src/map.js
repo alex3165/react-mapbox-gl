@@ -49,6 +49,7 @@ export default class ReactMapboxGl extends Component {
       'bottom-right',
     ]),
     interactive: PropTypes.bool,
+    dragRotate: PropTypes.bool,
   };
 
   static defaultProps = {
@@ -67,6 +68,7 @@ export default class ReactMapboxGl extends Component {
     pitch: 0,
     attributionPosition: 'bottom-right',
     interactive: true,
+    dragRotate: true,
   };
 
   static childContextTypes = {
@@ -112,6 +114,7 @@ export default class ReactMapboxGl extends Component {
       scrollZoom,
       attributionPosition,
       interactive,
+      dragRotate,
     } = this.props;
 
     MapboxGl.accessToken = accessToken;
@@ -133,6 +136,7 @@ export default class ReactMapboxGl extends Component {
         position: attributionPosition,
       },
       interactive,
+      dragRotate,
     });
 
     if (fitBounds) {
