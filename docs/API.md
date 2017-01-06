@@ -54,7 +54,7 @@ import ReactMapboxGl from "react-mapbox-gl";
   - Function::(map: Object, event: Object)
 - **onZoom**: `Function` : Executed repeatedly during transitions between zoom levels
   - Function::(map: Object, event: Object)
-
+- **dragRotate** *(Default: `true`)*: `Boolean` Set to `false` to disable drag rotation, see [mapbox DragRotateHandler](https://www.mapbox.com/mapbox-gl-js/api/#DragRotateHandler) 
 
 ### Example
 
