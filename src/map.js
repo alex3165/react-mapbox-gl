@@ -2,8 +2,33 @@ import MapboxGl from 'mapbox-gl/dist/mapbox-gl.js';
 import React, { Component, PropTypes } from 'react';
 import isEqual from 'deep-equal';
 
+const events = {
+  onStyleLoad: 'style.load', // Should remain first
+  onResize: 'resize',
+  onDblClick: 'dblclick',
+  onClick: 'click',
+  onMouseMove: 'mousemove',
+  onMoveStart: 'mousestart',
+  onMove: 'move',
+  onMoveEnd: 'moveend',
+  onMouseUp: 'mouseup',
+  onDragStart: 'dragstart',
+  onDrag: 'drag',
+  onDragEnd: 'dragend',
+  onZoomStart: 'zoomstart',
+  onZoom: 'zoom',
+  onZoomEnd: 'zoomend'
+};
+
 export default class ReactMapboxGl extends Component {
   static propTypes = {
+    // Events propTypes
+    ...Object.keys(events).reduce((acc, event) => {
+      acc[event] = PropTypes.func;
+      return acc;
+    }, {}),
+
+    // Main propTypes
     style: PropTypes.oneOfType([
       PropTypes.string,
       PropTypes.object,
@@ -21,21 +46,6 @@ export default class ReactMapboxGl extends Component {
     containerStyle: PropTypes.object,
     hash: PropTypes.bool,
     preserveDrawingBuffer: PropTypes.bool,
-    onResize: PropTypes.func,
-    onDblClick: PropTypes.func,
-    onClick: PropTypes.func,
-    onStyleLoad: PropTypes.func,
-    onMouseMove: PropTypes.func,
-    onMoveStart: PropTypes.func,
-    onMove: PropTypes.func,
-    onMoveEnd: PropTypes.func,
-    onMouseUp: PropTypes.func,
-    onDragStart: PropTypes.func,
-    onDrag: PropTypes.func,
-    onDragEnd: PropTypes.func,
-    onZoomStart: PropTypes.func,
-    onZoom: PropTypes.func,
-    onZoomEnd: PropTypes.func,
     scrollZoom: PropTypes.bool,
     movingMethod: PropTypes.oneOf([
       'jumpTo',
@@ -54,6 +64,7 @@ export default class ReactMapboxGl extends Component {
 
   static defaultProps = {
     hash: false,
+    onStyleLoad: (...args) => args,
     preserveDrawingBuffer: false,
     center: [
       -0.2416815,
@@ -96,21 +107,6 @@ export default class ReactMapboxGl extends Component {
       fitBounds,
       fitBoundsOptions,
       bearing,
-      onStyleLoad,
-      onResize,
-      onDblClick,
-      onClick,
-      onMouseMove,
-      onDragStart,
-      onDrag,
-      onDragEnd,
-      onMouseUp,
-      onMove,
-      onMoveStart,
-      onMoveEnd,
-      onZoomStart,
-      onZoom,
-      onZoomEnd,
       scrollZoom,
       attributionPosition,
       interactive,
@@ -143,95 +139,17 @@ export default class ReactMapboxGl extends Component {
       map.fitBounds(fitBounds, fitBoundsOptions);
     }
 
-    map.on('style.load', (...args) => {
-      if (onStyleLoad) {
-        onStyleLoad(map, ...args);
-      }
+    Object.keys(events).forEach((event, index) => {
+      const propEvent = this.props[event];
 
-      this.setState({ map });
-    });
+      if (propEvent) {
+        map.on(events[event], (...args) => {
+          propEvent(map, ...args);
 
-    map.on('resize', (...args) => {
-      if (onResize) {
-        onResize(map, ...args);
-      }
-    });
-
-    map.on('dblclick', (...args) => {
-      if (onDblClick) {
-        onDblClick(map, ...args);
-      }
-    });
-
-    map.on('click', (...args) => {
-      if (onClick) {
-        onClick(map, ...args);
-      }
-    });
-
-    map.on('mousemove', (...args) => {
-      if (onMouseMove) {
-        onMouseMove(map, ...args);
-      }
-    });
-
-    map.on('dragstart', (...args) => {
-      if (onDragStart) {
-        onDragStart(map, ...args);
-      }
-    });
-
-    map.on('drag', (...args) => {
-      if (onDrag) {
-        onDrag(map, ...args);
-      }
-    });
-
-    map.on('dragend', (...args) => {
-      if (onDragEnd) {
-        onDragEnd(map, ...args);
-      }
-    });
-
-    map.on('mouseup', (...args) => {
-      if (onMouseUp) {
-        onMouseUp(map, ...args);
-      }
-    });
-
-    map.on('movestart', (...args) => {
-      if (onMoveStart) {
-        onMoveStart(map, ...args);
-      }
-    });
-
-    map.on('move', (...args) => {
-      if (onMove) {
-        onMove(map, ...args);
-      }
-    });
-
-    map.on('moveend', (...args) => {
-      if (onMoveEnd) {
-        onMoveEnd(map, ...args);
-      }
-    });
-
-    map.on('zoomstart', (...args) => {
-      if (onZoomStart) {
-        onZoomStart(map, ...args);
-      }
-    });
-
-    map.on('zoom', (...args) => {
-      if (onZoom) {
-        onZoom(map, ...args);
-      }
-    });
-
-    map.on('zoomend', (...args) => {
-      if (onZoomEnd) {
-        onZoomEnd(map, ...args);
+          if (index === 0) {
+            this.setState({ map });
+          }
+        });
       }
     });
   }
@@ -240,6 +158,7 @@ export default class ReactMapboxGl extends Component {
     const { map } = this.state;
 
     if (map) {
+      // Remove all events attached to the map
       map.off();
 
       // NOTE: We need to defer removing the map to after all children have unmounted
