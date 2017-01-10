@@ -6,7 +6,7 @@ import {
 
 const propsToRemove = { children: undefined };
 
-export default class Popup extends React.Component {
+export default class Marker extends React.Component {
   static propTypes = {
     coordinates: PropTypes.arrayOf(PropTypes.number).isRequired,
     anchor: OverlayPropTypes.anchor,
