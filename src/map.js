@@ -17,16 +17,16 @@ const events = {
   onDragEnd: 'dragend',
   onZoomStart: 'zoomstart',
   onZoom: 'zoom',
-  onZoomEnd: 'zoomend'
+  onZoomEnd: 'zoomend',
 };
 
 export default class ReactMapboxGl extends Component {
   static propTypes = {
     // Events propTypes
-    ...Object.keys(events).reduce((acc, event) => {
-      acc[event] = PropTypes.func;
-      return acc;
-    }, {}),
+    ...Object.keys(events)
+      .reduce((acc, event) => (
+        Object.assign({}, acc, { [event]: PropTypes.func })
+      ), {}),
 
     // Main propTypes
     style: PropTypes.oneOfType([
