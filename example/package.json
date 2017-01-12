@@ -5,7 +5,8 @@
   "description": "An example for react-mapbox-gl",
   "license": "MIT",
   "scripts": {
-    "start": "nodemon --watch ../lib server.js"
+    "start": "nodemon --watch ../lib server.js",
+    "build": "NODE_ENV=prod webpack"
   },
   "dependencies": {
     "immutable": "^3.8.0",

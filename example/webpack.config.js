@@ -2,7 +2,7 @@ var webpack = require('webpack')
 var path = require('path')
 
 module.exports = {
-  watch: true,
+  watch: process.env.NODE_ENV !== 'prod',
   entry: [
     './src/index.js'
   ],
