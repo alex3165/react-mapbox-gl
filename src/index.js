@@ -9,6 +9,7 @@ import Popup from './popup';
 import ScaleControl from './scale-control';
 import Marker from './marker';
 import Source from './source';
+import Cluster from './cluster';
 
 injectCSS(window);
 
@@ -22,6 +23,7 @@ export {
   ScaleControl,
   Marker,
   Source,
+  Cluster,
 };
 
 export default Map;

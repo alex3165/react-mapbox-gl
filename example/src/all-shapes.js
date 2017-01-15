@@ -46,10 +46,6 @@ const markerCoord = [
 
 const mappedRoute = route.points.map(point => [ point.lat, point.lng ]);
 
-const markerContainer = document.createElement('div');
-markerContainer.style.width = "400px";
-markerContainer.style.position = "absolute";
-
 export default class AllShapes extends Component {
 
   state = {
@@ -169,7 +165,6 @@ export default class AllShapes extends Component {
           onClick={this._markerClick}
           onMouseEnter={this._markerMouseEnter}
           onMouseLeave={this._markerMouseLeave}
-          container={markerContainer}
           coordinates={markerCoord}>
             <h1>TEST</h1>
         </Marker>
