@@ -3,13 +3,29 @@ import supercluster from 'supercluster';
 
 export default class Cluster extends Component {
 
+  static propTypes = {
+    ClusterMarkerFactory: PropTypes.func.isRequired,
+    clusterThreshold: PropTypes.number,
+    radius: PropTypes.number,
+    minZoom: PropTypes.number,
+    maxZoom: PropTypes.number,
+    extent: PropTypes.number,
+    nodeSize: PropTypes.number,
+    log: PropTypes.bool
+  };
+
   static contextTypes = {
     map: PropTypes.object,
   };
 
   static defaultProps = {
+    clusterThreshold: 1,
     radius: 60,
-    maxZoom: 16
+    minZoom: 0,
+    maxZoom: 16,
+    extent: 512,
+    nodeSize: 64,
+    log: false
   };
 
   state = {
@@ -30,6 +46,7 @@ export default class Cluster extends Component {
     // Todo: read debounce from props and apply it
     map.on('move', this.mapChange);
     map.on('zoom', this.mapChange);
+    this.mapChange();
   }
 
   mapChange = () => {
@@ -59,13 +76,13 @@ export default class Cluster extends Component {
   }
 
   render() {
-    const { children, ClusterMarkerFactory } = this.props;
+    const { children, ClusterMarkerFactory, clusterThreshold } = this.props;
     const { clusterPoints } = this.state;
 
     return (
       <div>
         { 
-          clusterPoints.length <= 8 ?
+          clusterPoints.length <= clusterThreshold ?
           children :
           clusterPoints.map(point => ClusterMarkerFactory(point.geometry.coordinates))
         }
