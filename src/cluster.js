@@ -38,23 +38,9 @@ export default class Cluster extends Component {
 
     const { _sw, _ne } = map.getBounds();
     const zoom = map.getZoom();
-    const newPoints = clusterIndex.getClusters([_sw.lat, _sw.lng, _ne.lat, _ne.lng], Math.round(zoom));
+    const newPoints = clusterIndex.getClusters([_sw.lng, _sw.lat, _ne.lng, _ne.lat], Math.round(zoom));
 
-    // TODO: Fix it
-    let find = newPoints.length !== clusterPoints.length;
-
-    if (newPoints.length === clusterPoints.length) {
-      find = !!newPoints.find(
-        ({ geometry: { coordinates } }) => {
-          console.log(coordinates, clusterPoints.geometry.coordinates);
-          return (
-            coordinates[0] !== clusterPoints.geometry.coordinates[0] ||
-            coordinates[1] !== clusterPoints.geometry.coordinates[1]
-          )
-        });
-    }
-
-    if (find) {
+    if (newPoints.length !== clusterPoints.length) {
       this.setState({ clusterPoints: newPoints });
     }
   };
@@ -73,14 +59,16 @@ export default class Cluster extends Component {
   }
 
   render() {
-    const { children, clusteredMarker } = this.props;
+    const { children, ClusterMarkerFactory } = this.props;
     const { clusterPoints } = this.state;
-
-    console.log('re-render');
 
     return (
       <div>
-        { children }
+        { 
+          clusterPoints.length <= 8 ?
+          children :
+          clusterPoints.map(point => ClusterMarkerFactory(point.geometry.coordinates))
+        }
       </div>
     );
   }

@@ -15,13 +15,21 @@ export default class ClusterExample extends Component {
     console.log(coords);
   }
 
+  clusterMarker = (coordinates) => {
+    return (
+      <Marker coordinates={coordinates}>
+      C
+      </Marker>
+    )
+  }
+
   render() {
     return (
       <ReactMapboxGl
         style={style}
         accessToken={config.accessToken}
         containerStyle={containerStyle}>
-        <Cluster>
+        <Cluster ClusterMarkerFactory={this.clusterMarker}>
           {
             places.features.map((feature, key) =>
               <Marker
