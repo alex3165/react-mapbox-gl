@@ -11,7 +11,7 @@ export default class Source extends React.Component {
   };
 
   static propTypes = {
-    id: PropTypes.string,
+    id: PropTypes.string.isRequired,
     sourceOptions: PropTypes.object,
   };
 
@@ -31,7 +31,7 @@ export default class Source extends React.Component {
   componentWillUnmount() {
     const { map } = this.context;
     if (map.getSource(this.id)) {
-      map.removeSOurce(this.id);
+      map.removeSource(this.id);
     }
   }
 }
