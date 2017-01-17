@@ -333,7 +333,7 @@ import { Cluster } from "react-mapbox-gl";
 ```
 
 ### Properties
-- **ClusterMarkerFactory** *(required)*: `(coordinates: number[]) => Marker` A function called for every cluster.
+- **ClusterMarkerFactory** *(required)*: `(coordinates: number[], pointCount: number) => Marker` A function called for every cluster, the function must return a Marker component
 - **clusterThreshold**: *Default: 1*: `Number` Limit of number of cluster points to display wheter clustered marker or marker.
 - **radius**: *Default: 60*:`Number` Cluster radius, in pixels.
 - **minZoom**: *Default: 0*:`Number` Minimum zoom level at which clusters are generated.

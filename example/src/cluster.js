@@ -39,9 +39,9 @@ export default class ClusterExample extends Component {
     console.log(coords);
   }
 
-  clusterMarker = (coordinates) => (
+  clusterMarker = (coordinates, pointCount) => (
     <Marker coordinates={coordinates} style={styles.clusterMarker}>
-      C
+      { pointCount }
     </Marker>
   );
 

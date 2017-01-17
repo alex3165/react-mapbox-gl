@@ -68,7 +68,9 @@ export default class Cluster extends Component {
       type: 'point',
       coordinates
     },
-    properties: {}
+    properties: {
+      point_count: 1
+    }
   });
 
   childrenToFeatures(children) {
@@ -84,7 +86,8 @@ export default class Cluster extends Component {
         { 
           clusterPoints.length <= clusterThreshold ?
           children :
-          clusterPoints.map(point => ClusterMarkerFactory(point.geometry.coordinates))
+          clusterPoints.map(({ geometry, properties }) =>
+            ClusterMarkerFactory(geometry.coordinates, properties.point_count))
         }
       </div>
     );
