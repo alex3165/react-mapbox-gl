@@ -11,7 +11,7 @@ export default class Cluster extends Component {
     maxZoom: PropTypes.number,
     extent: PropTypes.number,
     nodeSize: PropTypes.number,
-    log: PropTypes.bool
+    log: PropTypes.bool,
   };
 
   static contextTypes = {
@@ -25,15 +25,15 @@ export default class Cluster extends Component {
     maxZoom: 16,
     extent: 512,
     nodeSize: 64,
-    log: false
+    log: false,
   };
 
   state = {
     clusterIndex: supercluster({
       radius: this.props.radius,
-      maxZoom: this.props.maxZoom
+      maxZoom: this.props.maxZoom,
     }),
-    clusterPoints: []
+    clusterPoints: [],
   };
 
   componentWillMount() {
@@ -43,7 +43,7 @@ export default class Cluster extends Component {
     const features = this.childrenToFeatures(this.props.children);
     clusterIndex.load(features);
 
-    // Todo: read debounce from props and apply it
+    // TODO: Debounce ?
     map.on('move', this.mapChange);
     map.on('zoom', this.mapChange);
     this.mapChange();
@@ -55,23 +55,28 @@ export default class Cluster extends Component {
 
     const { _sw, _ne } = map.getBounds();
     const zoom = map.getZoom();
-    const newPoints = clusterIndex.getClusters([_sw.lng, _sw.lat, _ne.lng, _ne.lat], Math.round(zoom));
+    const newPoints = clusterIndex.getClusters(
+      [_sw.lng, _sw.lat, _ne.lng, _ne.lat],
+      Math.round(zoom)
+    );
 
     if (newPoints.length !== clusterPoints.length) {
       this.setState({ clusterPoints: newPoints });
     }
   };
 
-  feature = (coordinates) => ({
-    type: 'Feature',
-    geometry: {
-      type: 'point',
-      coordinates
-    },
-    properties: {
-      point_count: 1
-    }
-  });
+  feature(coordinates) {
+    return {
+      type: 'Feature',
+      geometry: {
+        type: 'point',
+        coordinates,
+      },
+      properties: {
+        point_count: 1,
+      },
+    };
+  }
 
   childrenToFeatures(children) {
     return children.map(child => this.feature(child.props.coordinates));
@@ -83,7 +88,7 @@ export default class Cluster extends Component {
 
     return (
       <div>
-        { 
+        {
           clusterPoints.length <= clusterThreshold ?
           children :
           clusterPoints.map(({ geometry, properties }) =>
