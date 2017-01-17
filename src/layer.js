@@ -22,6 +22,7 @@ export default class Layer extends React.PureComponent {
       'line',
       'fill',
       'circle',
+      'raster',
     ]),
 
     layout: PropTypes.object,

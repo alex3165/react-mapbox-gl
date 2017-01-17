@@ -8,6 +8,7 @@ import ZoomControl from './zoom-control';
 import Popup from './popup';
 import ScaleControl from './scale-control';
 import Marker from './marker';
+import Source from './source';
 
 injectCSS(window);
 
@@ -20,6 +21,7 @@ export {
   ZoomControl,
   ScaleControl,
   Marker,
+  Source,
 };
 
 export default Map;
