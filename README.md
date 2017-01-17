@@ -17,6 +17,7 @@ The library include the following elements :
 - ZoomControl
 - ScaleControl
 - Popup
+- Source
 
 ## How to start
 
