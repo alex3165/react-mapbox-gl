@@ -15,7 +15,7 @@ export default class Source extends React.Component {
 
   source = {
     ...this.props.sourceOptions,
-  }
+  };
 
   componentWillMount() {
     const { map } = this.context;
@@ -33,6 +33,6 @@ export default class Source extends React.Component {
 
   render() {
     return null;
-  };
+  }
 
 }
