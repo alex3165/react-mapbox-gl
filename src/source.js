@@ -33,6 +33,6 @@ export default class Source extends React.Component {
 
   render() {
     return null;
-  };
+  }
 
 }
