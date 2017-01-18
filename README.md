@@ -2,9 +2,9 @@
 
 ![London cycle example gif](docs/london-cycle-example.gif "London cycle example gif")
 
-Based on [mapbox-gl-js](https://www.mapbox.com/mapbox-gl-js/api/) this library aim to bring the api to a React friendly way with some additional extra behavior.
-The library include the following elements :
+React wrapper of [mapbox-gl-js](https://www.mapbox.com/mapbox-gl-js/api/) which bring the API to a react friendly way and expose projected react components.
 
+Include the following elements :
 - ReactMapboxGl
 - Layer
 - Source
@@ -16,8 +16,8 @@ The library include the following elements :
 - GeoJSONLayer
 - ZoomControl
 - ScaleControl
-- Marker (Html marker)
-- Popup
+- Marker (Projected component)
+- Popup (Projected component)
 - Cluster
 
 ## How to start
