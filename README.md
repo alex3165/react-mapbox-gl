@@ -8,15 +8,15 @@ The library include the following elements :
 - ReactMapboxGl
 - Layer
 - Source
-- GeoJSONLayer
-- Marker (Html marker)
 - Feature
   - Layer type properties `symbol` display a mapbox symbol.
   - Layer type properties `line` display a lineString.
   - Layer type properties `fill` display a polygon.
   - Layer type properties `circle` display a mapbox circle.
+- GeoJSONLayer
 - ZoomControl
 - ScaleControl
+- Marker (Html marker)
 - Popup
 - Cluster
 
