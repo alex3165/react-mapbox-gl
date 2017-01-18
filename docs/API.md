@@ -54,7 +54,7 @@ import ReactMapboxGl from "react-mapbox-gl";
   - Function::(map: Object, event: Object)
 - **onZoom**: `Function` : Executed repeatedly during transitions between zoom levels
   - Function::(map: Object, event: Object)
-- **dragRotate** *(Default: `true`)*: `Boolean` Set to `false` to disable drag rotation, see [mapbox DragRotateHandler](https://www.mapbox.com/mapbox-gl-js/api/#DragRotateHandler) 
+- **dragRotate** *(Default: `true`)*: `Boolean` Set to `false` to disable drag rotation, see [mapbox DragRotateHandler](https://www.mapbox.com/mapbox-gl-js/api/#DragRotateHandler)
 
 ### Example
 
@@ -85,6 +85,7 @@ import { Layer } from "react-mapbox-gl";
   - `line`, Include a Mapbox `line` (`LineString` GeoJson)
   - `fill`, Include a Mapbox `polygon` (`Fill` GeoJson)
   - `circle`, Include a Mapbox `circle` (`Point` GeoJson)
+  - `raster`, Include a Mapbox raster layer
 - **layout**: Mapbox layout object passed down to mapbox `addLayer` method [mapbox layout api](https://www.mapbox.com/mapbox-gl-style-spec/#layer-layout)
 - **paint**: Mapbox paint object passed down to mapbox `addLayer` method [mapbox paint api](https://www.mapbox.com/mapbox-gl-style-spec/#layer-paint)
 - **sourceOptions**: Options object merged to the object used when calling `GeoJSONSource` method
@@ -99,6 +100,36 @@ import { Layer } from "react-mapbox-gl";
   type="symbol"
   layout={{ "icon-image": "harbor-15" }}>
 </Layer>
+```
+
+----------
+# Source
+
+Add a source to the map (for layers to use, for example).
+
+### Import
+
+```
+import { Source } from "react-mapbox-gl";
+```
+
+### Properties
+- **id** *(required)*: `String`
+- **options** *(required)*: `Object` Source options.
+
+### Example
+
+```
+const RASTER_SOURCE_OPTIONS = {
+  "type": "raster",
+  "tiles": [
+    "https://someurl.com/512/{z}/{x}/{y}",
+  ],
+  "tileSize": 512,
+  data: {},
+};
+<Source id="example_id" sourceOptions={RASTER_SOURCE_OPTIONS} />
+<Layer type="raster" id="example_id" sourceId="example_id" />
 ```
 
 ----------

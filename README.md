@@ -7,6 +7,7 @@ The library include the following elements :
 
 - ReactMapboxGl
 - Layer
+- Source
 - GeoJSONLayer
 - Marker (Html marker)
 - Feature
