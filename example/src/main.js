@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import AllShapes from "./all-shapes";
 import LondonCycle from "./london-cycle";
 import GeoJSONExample from "./geojson-example";
+import Cluster from './cluster';
 
 const examples = [
   {
@@ -15,6 +16,10 @@ const examples = [
   {
     component: GeoJSONExample,
     label: "GEOJson"
+  },
+  {
+    component: Cluster,
+    label: 'Cluster'
   }
 ];
 
@@ -45,7 +50,7 @@ const styles = {
 export default class Main extends Component {
 
   state = {
-    index: 0
+    index: 3
   };
 
   indexToExample = index => examples[index].component;

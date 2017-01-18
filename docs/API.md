@@ -320,3 +320,50 @@ import { Marker } from "react-mapbox-gl";
   <img src={markerUrl}/>
 </Marker>
 ```
+
+________
+# Cluster
+
+Create a cluster of `Marker`
+
+### Import
+
+```
+import { Cluster } from "react-mapbox-gl";
+```
+
+### Properties
+- **ClusterMarkerFactory** *(required)*: `(coordinates: number[], pointCount: number) => Marker` A function called for every cluster, the function must return a Marker component
+- **clusterThreshold**: *Default: 1*: `Number` Limit of number of cluster points to display wheter clustered marker or marker.
+- **radius**: *Default: 60*:`Number` Cluster radius, in pixels.
+- **minZoom**: *Default: 0*:`Number` Minimum zoom level at which clusters are generated.
+- **maxZoom**: *Default: 16*:`Number` Maximum zoom level at which clusters are generated.
+- **extent**: *Default: 512*:`Number` (Tiles) Tile extent. Radius is calculated relative to this value.
+- **nodeSize**: *Default: 64*:`Number` Size of the KD-tree leaf node. Affects performance.
+- **log**: *Default: false*:`Boolean` Whether timing info should be logged.
+
+### Example
+
+```
+clusterMarker = (coordinates) => (
+  <Marker coordinates={coordinates} style={styles.clusterMarker}>
+    C
+  </Marker>
+);
+
+...
+
+<Cluster ClusterMarkerFactory={this.clusterMarker} clusterThreshold={8}>
+  {
+    places.features.map((feature, key) =>
+      <Marker
+        key={key}
+        style={styles.marker}
+        coordinates={feature.geometry.coordinates}
+        onClick={this.onMarkerClick.bind(this, feature.geometry.coordinates)}>
+        M
+      </Marker>
+    )
+  }
+</Cluster>
+```
