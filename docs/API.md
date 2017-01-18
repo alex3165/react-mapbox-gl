@@ -12,11 +12,11 @@ import ReactMapboxGl from "react-mapbox-gl";
 ```
 
 ### Properties
-- **style** *(required)* : `String || Object`  Mapbox map style, if changed, the style will be updated using `setStyle`.
+- **style** *(required)* : `String | Object`  Mapbox map style, if changed, the style will be updated using `setStyle`.
 - **accessToken** *(required)* : `String` Mapbox access token.
 - **center** *(Default: `[ -0.2416815, 51.5285582 ]`)*: `Array<Number>` Center the map at the position at initialisation
   - Re-center the map if the value change regarding the prev value or the actual center position [flyTo](https://www.mapbox.com/mapbox-gl-js/api/#Map.flyTo)
-- **zoom** *(Default: `[11]`)*: `Array` Zoom level of the map at initialisation wrapped in an array.
+- **zoom** *(Default: `[11]`)*: `Array<Number>` Zoom level of the map at initialisation wrapped in an array.
   - Check the previous value and the new one, if the value changed update the zoom value [flyTo](https://www.mapbox.com/mapbox-gl-js/api/#Map.flyTo)
 - **minZoom** *(Default: `0`)*: `Number` Minimum zoom level. Must be between 0 and 20.
 - **maxZoom** *(Default: `20`)*: `Number` Maximum zoom level. Must be between 0 and 20.
@@ -39,21 +39,14 @@ import ReactMapboxGl from "react-mapbox-gl";
   - `top-right`
   - `bottom-left`
   - `bottom-right`
-- **onClick**: `Function` : Triggered whenever user click on the map
-  - Function::(map: Object, event: Object)
-- **onStyleLoad**: `Function` : Listener of Mapbox event : `map.on("style.load")`
-  - Function::(map: Object, event: Object)
-- **onMouseMove**: `Function` : Listen the mouse moving on the map
-- **onMove**: `Function` : Executed whenever the center of the map change
-  - Function::(map: Object, event: Object)
-- **onMoveEnd**: `Function` : Executed when the move of the map end
-  - Function::(map: Object, event: Object)
-- **onMouseUp** : `Function` : Simple binding of Mapbox `mouseup` event
-  - Function::(map: Object, event: Object)
-- **onDrag** : `Function` : Simple binding of mapbox `ondrag` event
-  - Function::(map: Object, event: Object)
-- **onZoom**: `Function` : Executed repeatedly during transitions between zoom levels
-  - Function::(map: Object, event: Object)
+- **onClick**: `(map: Object, event: Object) => void` : Triggered whenever user click on the map
+- **onStyleLoad**: `(map: Object, event: Object) => void` : Listener of Mapbox event : `map.on("style.load")`
+- **onMouseMove**: `(map: Object, event: Object) => void` : Listen the mouse moving on the map
+- **onMove**: `(map: Object, event: Object) => void` : Executed whenever the center of the map change
+- **onMoveEnd**: `(map: Object, event: Object) => void` : Executed when the move of the map end
+- **onMouseUp** : `(map: Object, event: Object) => void` : Simple binding of Mapbox `mouseup` event
+- **onDrag** : `(map: Object, event: Object) => void` : Simple binding of mapbox `ondrag` event
+- **onZoom**: `(map: Object, event: Object) => void` : Executed repeatedly during transitions between zoom levels
 - **dragRotate** *(Default: `true`)*: `Boolean` Set to `false` to disable drag rotation, see [mapbox DragRotateHandler](https://www.mapbox.com/mapbox-gl-js/api/#DragRotateHandler)
 
 ### Example
@@ -86,12 +79,12 @@ import { Layer } from "react-mapbox-gl";
   - `fill`, Include a Mapbox `polygon` (`Fill` GeoJson)
   - `circle`, Include a Mapbox `circle` (`Point` GeoJson)
   - `raster`, Include a Mapbox raster layer
-- **layout**: Mapbox layout object passed down to mapbox `addLayer` method [mapbox layout api](https://www.mapbox.com/mapbox-gl-style-spec/#layer-layout)
-- **paint**: Mapbox paint object passed down to mapbox `addLayer` method [mapbox paint api](https://www.mapbox.com/mapbox-gl-style-spec/#layer-paint)
-- **sourceOptions**: Options object merged to the object used when calling `GeoJSONSource` method
-- **layerOptions**: Passed down to the layer object when setting it out.
-- **sourceId**: When passed to the layer, the source will not be created but only the layer and it will use the given source id.
-- **before**:`String` Pass the id of a layer, it will display the current layer before the layer defined by the id. [mapbox api](https://www.mapbox.com/mapbox-gl-js/api/#Map#addLayer)
+- **layout**: `Object` Mapbox layout object passed down to mapbox `addLayer` method [mapbox layout api](https://www.mapbox.com/mapbox-gl-style-spec/#layer-layout)
+- **paint**: `Object` Mapbox paint object passed down to mapbox `addLayer` method [mapbox paint api](https://www.mapbox.com/mapbox-gl-style-spec/#layer-paint)
+- **sourceOptions**: `Object` Options object merged to the object used when calling `GeoJSONSource` method
+- **layerOptions**: `Object` Passed down to the layer object when setting it out.
+- **sourceId**: `String` When passed to the layer, the source will not be created but only the layer and it will use the given source id.
+- **before**: `String` Pass the id of a layer, it will display the current layer before the layer defined by the id. [mapbox api](https://www.mapbox.com/mapbox-gl-js/api/#Map#addLayer)
 
 ### Example
 
@@ -146,7 +139,7 @@ import { GeoJSONLayer } from "react-mapbox-gl";
 - **data** *(required)* : `String | Object` The url to the geojson file or the geojson file itself.
 - **lineLayout** | **symbolLayout** | **circleLayout** | **fillLayout** : `Object` Layer layout informations. [mapbox layout api](https://www.mapbox.com/mapbox-gl-style-spec/#layer-layout)
 - **linePaint** | **symbolPaint** | **circlePaint** | **fillPaint** : `Object` Paint informations. [mapbox paint api](https://www.mapbox.com/mapbox-gl-style-spec/#layer-paint)
-- **sourceOptions**: Options object merged to the object used when calling `GeoJSONSource` method
+- **sourceOptions**: `Object` Options object merged to the object used when calling `GeoJSONSource` method
 - **before**:`String` Pass the id of a layer, it will display the current layer before the layer defined by the id. [mapbox api](https://www.mapbox.com/mapbox-gl-js/api/#Map#addLayer)
 
 ### Example
@@ -176,16 +169,12 @@ import { Feature } from "react-mapbox-gl";
 ### Properties
 - **coordinates** *(required)* : `Array<Number>` Display the feature at the given position.
 - **properties** : `Object` Properties object passed down to the feature at the creation of the source.
-- **onClick** : `Function` Triggered when user click on the feature
-  - Function::(args: Object)
-    - Args contain the feature object, the map object and the arguments passed by mapbox from the event `click`
-- **onHover** : `Function` Triggered when the mouse hover the feature element
-  - Function::(args: Object)
+- **onClick** : `(args: Object) => void` Triggered when user click on the feature
+  - Args contain the feature object, the map object and the arguments passed by mapbox from the event `click`
+- **onHover** : `(args: Object) => void` Triggered when the mouse hover the feature element
   - Args contain the feature object, the map object and the arguments passed by mapbox from the event `onmousemove`
-- **onEndHover** : `Function` Triggered at the end of the hover state
-  - Function::(args: Object)
-    - Args contain the map object and the arguments passed by Mapbox from the event `onmousemove`
-
+- **onEndHover** : `(args: Object) => void` Triggered at the end of the hover state
+  - Args contain the map object and the arguments passed by Mapbox from the event `onmousemove`
 
 ### Example
 
@@ -205,8 +194,7 @@ import { ZoomControl } from "react-mapbox-gl";
 ```
 
 ### Properties
-- **onControlClick** : `Function` triggered when user click on minus or plus button
-  - Function::(map: Object, zoomDiff: Number)
+- **onControlClick** : `(map: Object, zoomDiff: Number) => void` triggered when user click on minus or plus button
 - **style** : `Object` Style object merged with internal style into the container
 - **zoomDiff** : `Number` The shift number passed to the callback `onControlClick`
 - **position** *(Default: `topRight`)*: `String` The control position, Possible values :
@@ -214,7 +202,6 @@ import { ZoomControl } from "react-mapbox-gl";
   - `topLeft`
   - `bottomRight`
   - `bottomLeft`
-
 
 ### Example
 
@@ -244,7 +231,6 @@ import { ScaleControl } from "react-mapbox-gl";
   - `bottomRight`
   - `bottomLeft`
 
-
 ### Example
 
 ```
@@ -263,7 +249,7 @@ import { Popup } from "react-mapbox-gl";
 ```
 
 ### Properties
-- **coordinates** *(required)*: `Array of Number` Display the popup at the given position.
+- **coordinates** *(required)*: `Array<Number>` Display the popup at the given position.
 - **anchor**: `String` Set the anchor point of the popup, Possible values :
   - `top`
   - `bottom`
@@ -305,7 +291,7 @@ import { Marker } from "react-mapbox-gl";
 ```
 
 ### Properties
-- **coordinates** *(required)*: `Array of Number` Display the popup at the given position.
+- **coordinates** *(required)*: `Array<Number>` Display the popup at the given position.
 - **anchor**: `String` Same as Popup's anchor property.
 - **offset**: `String` Same as Popup's offset property.
 - **onClick**: `Function` Triggered whenever user click on the marker
