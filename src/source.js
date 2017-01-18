@@ -2,10 +2,6 @@ import React, { PropTypes } from 'react';
 
 export default class Source extends React.Component {
 
-  render() {
-    return null;
-  };
-
   static contextTypes = {
     map: PropTypes.object,
   };
@@ -34,4 +30,9 @@ export default class Source extends React.Component {
       map.removeSource(this.id);
     }
   }
+
+  render() {
+    return null;
+  };
+
 }

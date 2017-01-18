@@ -103,6 +103,36 @@ import { Layer } from "react-mapbox-gl";
 ```
 
 ----------
+# Source
+
+Add a source to the map (for layers to use, for example).
+
+### Import
+
+```
+import { Source } from "react-mapbox-gl";
+```
+
+### Properties
+- **id** *(required)*: `String`
+- **options** *(required)*: `Object` Source options.
+
+### Example
+
+```
+const RASTER_SOURCE_OPTIONS = {
+  "type": "raster",
+  "tiles": [
+    "https://someurl.com/512/{z}/{x}/{y}",
+  ],
+  "tileSize": 512,
+  data: {},
+};
+<Source id="example_id" sourceOptions={RASTER_SOURCE_OPTIONS} />
+<Layer type="raster" id="example_id" sourceId="example_id" />
+```
+
+----------
 # GeoJSONLayer
 
 Display on the map all the informations contained in a geojson file.
@@ -289,32 +319,4 @@ import { Marker } from "react-mapbox-gl";
   anchor="bottom">
   <img src={markerUrl}/>
 </Marker>
-```
-# Source
-
-Add a source to the map (for layers to use, for example).
-
-### Import
-
-```
-import { Source } from "react-mapbox-gl";
-```
-
-### Properties
-- **id** *(required)*: `String`
-- **options** *(required)*: `Object` Source options.
-
-### Example
-
-```
-const RASTER_SOURCE_OPTIONS = {
-  "type": "raster",
-  "tiles": [
-    "https://someurl.com/512/{z}/{x}/{y}",
-  ],
-  "tileSize": 512,
-  data: {},
-};
-<Source id="example_id" sourceOptions={RASTER_SOURCE_OPTIONS} />
-<Layer type="raster" id="example_id" sourceId="example_id" />
 ```
