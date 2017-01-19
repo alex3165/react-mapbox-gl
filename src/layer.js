@@ -163,7 +163,11 @@ export default class Layer extends React.PureComponent {
     const { map } = this.context;
 
     map.removeLayer(id);
-    map.removeSource(this.props.sourceId || id);
+    // if pointing to an existing source, don't remove
+    // as other layers may be dependent upon it
+    if (!this.props.sourceId) {
+      map.removeSource(id);
+    }
 
     map.off('click', this.onClick);
     map.off('mousemove', this.onMouseMove);
