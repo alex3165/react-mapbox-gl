@@ -187,6 +187,7 @@ export default class ReactMapboxGl extends Component {
     const center = map.getCenter();
     const zoom = map.getZoom();
     const bearing = map.getBearing();
+    const pitch = map.getPitch();
 
     const didZoomUpdate = (
       this.props.zoom !== nextProps.zoom &&
@@ -201,6 +202,11 @@ export default class ReactMapboxGl extends Component {
     const didBearingUpdate = (
       this.props.bearing !== nextProps.bearing &&
       nextProps.bearing !== bearing
+    );
+
+    const didPitchUpdate = (
+      this.props.pitch !== nextProps.pitch &&
+      nextProps.pitch !== pitch
     );
 
     if (nextProps.fitBounds) {
@@ -220,11 +226,12 @@ export default class ReactMapboxGl extends Component {
       }
     }
 
-    if (didZoomUpdate || didCenterUpdate || didBearingUpdate) {
+    if (didZoomUpdate || didCenterUpdate || didBearingUpdate || didPitchUpdate) {
       map[this.props.movingMethod]({
         zoom: didZoomUpdate ? nextProps.zoom[0] : zoom,
         center: didCenterUpdate ? nextProps.center : center,
         bearing: didBearingUpdate ? nextProps.bearing : bearing,
+        pitch: didPitchUpdate ? nextProps.pitch : pitch,
       });
     }
 
