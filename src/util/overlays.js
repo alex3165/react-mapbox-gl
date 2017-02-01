@@ -119,7 +119,7 @@ export const overlayState = (props, map, { offsetWidth, offsetHeight } = default
 };
 
 const moveTranslate = (point, fixed) => (
-  point ? `translate(${fixed ? point.x.toFixed(fixed) : point.x}px,${fixed ? point.y.toFixed(fixed) : point.y}px)` : ''
+  point ? `translate(${fixed >= 0 ? point.x.toFixed(fixed) : point.x}px,${fixed >= 0 ? point.y.toFixed(fixed) : point.y}px)` : ''
 );
 
 export const overlayTransform = (args) => {
