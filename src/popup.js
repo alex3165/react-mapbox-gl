@@ -13,6 +13,7 @@ export default class Popup extends React.Component {
     children: PropTypes.node,
     onClick: PropTypes.func,
     style: PropTypes.object,
+    maxDecimalPlaces: PropTypes.number,
   };
 
   static defaultProps = {
@@ -20,7 +21,7 @@ export default class Popup extends React.Component {
   };
 
   render() {
-    const { coordinates, anchor, offset, onClick, children, style } = this.props;
+    const { coordinates, anchor, offset, onClick, children, style, maxDecimalPlaces } = this.props;
 
     return (
       <ProjectedLayer
@@ -29,6 +30,7 @@ export default class Popup extends React.Component {
         offset={offset}
         anchor={anchor}
         coordinates={coordinates}
+        maxDecimalPlaces={maxDecimalPlaces}
         className={`mapboxgl-popup mapboxgl-popup-anchor-${anchor}`}>
         <div className="mapboxgl-popup-tip"></div>
         <div className="mapboxgl-popup-content">
