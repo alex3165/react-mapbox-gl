@@ -103,4 +103,3 @@ export default class ProjectedLayer extends React.Component {
     );
   }
 }
-
