@@ -59,7 +59,6 @@ export default class ClusterExample extends Component {
                 key={key}
                 style={styles.marker}
                 coordinates={feature.geometry.coordinates}
-                maxDecimalPlaces={0}
                 onClick={this.onMarkerClick.bind(this, feature.geometry.coordinates)}>
                 M
               </Marker>

@@ -13,7 +13,6 @@ export default class Marker extends React.Component {
     offset: OverlayPropTypes.offset,
     children: PropTypes.node,
     style: PropTypes.object,
-    maxDecimalPlaces: PropTypes.number,
   };
 
   render() {

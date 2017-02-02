@@ -106,7 +106,6 @@ export const OverlayPropTypes = {
 export const overlayState = (props, map, { offsetWidth, offsetHeight } = defaultElement) => {
   const position = projectCoordinates(map, props.coordinates);
   const offsets = normalizedOffsets(props.offset);
-  const maxDecimalPlaces = props.maxDecimalPlaces;
   const anchor = props.anchor
     || calculateAnchor(map, offsets, position, { offsetWidth, offsetHeight });
 
@@ -114,17 +113,16 @@ export const overlayState = (props, map, { offsetWidth, offsetHeight } = default
     anchor,
     position,
     offset: offsets[anchor],
-    maxDecimalPlaces,
   };
 };
 
-const moveTranslate = (point, fixed) => (
-  point ? `translate(${fixed >= 0 ? point.x.toFixed(fixed) : point.x}px,${fixed >= 0 ? point.y.toFixed(fixed) : point.y}px)` : ''
+const moveTranslate = point => (
+  point ? `translate(${point.x.toFixed(0)}px,${point.y.toFixed(0)}px)` : ''
 );
 
 export const overlayTransform = (args) => {
-  const { anchor, position, offset, maxDecimalPlaces } = args;
-  const res = [moveTranslate(position, maxDecimalPlaces)];
+  const { anchor, position, offset } = args;
+  const res = [moveTranslate(position)];
 
   if (offset && offset.x && offset.y) {
     res.push(moveTranslate(offset));

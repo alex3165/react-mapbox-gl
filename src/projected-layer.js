@@ -24,7 +24,6 @@ export default class ProjectedLayer extends React.Component {
     onMouseEnter: PropTypes.func,
     onMouseLeave: PropTypes.func,
     style: PropTypes.object,
-    maxDecimalPlaces: PropTypes.number,
   };
 
   static defaultProps = {
