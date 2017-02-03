@@ -124,7 +124,7 @@ export const overlayTransform = (args) => {
   const { anchor, position, offset } = args;
   const res = [moveTranslate(position)];
 
-  if (offset && offset.x && offset.y) {
+  if (offset && offset.x !== undefined && offset.y !== undefined) {
     res.push(moveTranslate(offset));
   }
 

@@ -143,6 +143,7 @@ export default class LondonCycle extends Component {
             station && (
               <Popup
                 key={station.get("id")}
+                offset={[0, -50]}
                 coordinates={station.get("position")}>
                 <div>
                   <span style={{
