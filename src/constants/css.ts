@@ -245,4 +245,4 @@ export default `
           display:none;
       }
   }
-`;
+` as string;

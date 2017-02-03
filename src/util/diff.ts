@@ -1,4 +1,4 @@
-import reduce from 'reduce-object';
+const reduce = require('reduce-object');
 
 const find = (obj, predicate) => (
   Object.keys(obj).find((key) => predicate(obj[key], key))
