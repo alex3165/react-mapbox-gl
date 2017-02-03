@@ -1,0 +1,12 @@
+{
+  "extends": ["tslint:latest", "tslint-react"],
+  "rules": {
+    "quotemark": [true, "single", "jsx-double"],
+    "ordered-imports": false,
+    "trailing-comma": [true, {"multiline": "never", "singleline": "never"}],
+    "interface-name": [true, "never-prefix"],
+    "no-console": false,
+    "object-literal-sort-keys": false,
+    "member-ordering": false
+  }
+}

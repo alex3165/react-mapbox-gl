@@ -1,7 +1,7 @@
 import reduce from 'reduce-object';
 
 const find = (obj, predicate) => (
-  Object.keys(obj).find(key => predicate(obj[key], key))
+  Object.keys(obj).find((key) => predicate(obj[key], key))
 );
 
 const diff = (obj1, obj2) => (

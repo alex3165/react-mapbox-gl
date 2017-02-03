@@ -1,52 +1,64 @@
-import React, { PropTypes } from 'react';
+import * as React from 'react';
+import { Map } from 'mapbox-gl';
+
 import {
-  OverlayPropTypes,
   overlayState,
   overlayTransform,
-  anchors,
+  anchors
 } from './util/overlays';
 
 const defaultStyle = {
-  zIndex: 3,
+  zIndex: 3
 };
 
-export default class ProjectedLayer extends React.Component {
-  static contextTypes = {
-    map: PropTypes.object,
+interface Props {
+  coordinates: number[];
+  anchor: any;
+  offset: any;
+  children: JSX.Element;
+  onClick: React.MouseEventHandler<HTMLDivElement>;
+  onMouseEnter: React.MouseEventHandler<HTMLDivElement>;
+  onMouseLeave: React.MouseEventHandler<HTMLDivElement>;
+  style: React.CSSProperties;
+  className: string;
+}
+
+// interface State {}
+
+interface Context {
+  map: Map;
+}
+
+export default class ProjectedLayer extends React.Component<Props, any> {
+  public context: Context;
+  private container: HTMLElement;
+  private prevent: boolean;
+
+  public static contextTypes = {
+    map: React.PropTypes.object
   };
 
-  static propTypes = {
-    coordinates: PropTypes.arrayOf(PropTypes.number).isRequired,
-    anchor: OverlayPropTypes.anchor,
-    offset: OverlayPropTypes.offset,
-    children: PropTypes.node,
-    onClick: PropTypes.func,
-    onMouseEnter: PropTypes.func,
-    onMouseLeave: PropTypes.func,
-    style: PropTypes.object,
-  };
-
-  static defaultProps = {
+  public static defaultProps = {
     anchor: anchors[0],
     offset: 0,
-    onClick: (...args) => args,
+    onClick: (...args: any[]) => args
   };
 
-  state = {};
+  public state = {};
 
-  setContainer = (el) => {
+  private setContainer = (el: HTMLElement) => {
     if (el) {
       this.container = el;
     }
-  };
+  }
 
-  handleMapMove = () => {
+  private handleMapMove = () => {
     if (!this.prevent) {
       this.setState(overlayState(this.props, this.context.map, this.container));
     }
   };
 
-  componentDidMount() {
+  public componentDidMount() {
     const { map } = this.context;
 
     map.on('move', this.handleMapMove);
@@ -55,7 +67,7 @@ export default class ProjectedLayer extends React.Component {
     this.handleMapMove();
   }
 
-  componentWillReceiveProps(nextProps) {
+  public componentWillReceiveProps(nextProps: Props) {
     const { coordinates } = this.props;
 
     if (
@@ -66,7 +78,7 @@ export default class ProjectedLayer extends React.Component {
     }
   }
 
-  componentWillUnmount() {
+  public componentWillUnmount() {
     const { map } = this.context;
 
     this.prevent = true;
@@ -74,7 +86,7 @@ export default class ProjectedLayer extends React.Component {
     map.off('move', this.handleMapMove);
   }
 
-  render() {
+  public render() {
     const {
       style,
       children,
@@ -97,8 +109,9 @@ export default class ProjectedLayer extends React.Component {
         onMouseEnter={onMouseEnter}
         onMouseLeave={onMouseLeave}
         style={finalStyle}
-        ref={this.setContainer}>
-        { children }
+        ref={this.setContainer}
+      >
+        {children}
       </div>
     );
   }

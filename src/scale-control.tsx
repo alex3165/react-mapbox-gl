@@ -1,4 +1,5 @@
-import React, { Component, PropTypes } from 'react';
+import * as React from 'react';
+import { Map } from 'mapbox-gl';
 
 const scales = [
   0.01, 0.02, 0.05,
@@ -7,7 +8,7 @@ const scales = [
   10, 20, 50,
   100, 200, 500,
   1000, 2 * 1000, 5 * 1000,
-  10 * 1000,
+  10 * 1000
 ];
 
 const positions = {
@@ -50,66 +51,85 @@ const KILOMETER_IN_METERS = 1000;
 
 const MIN_WIDTH_SCALE = 40;
 
-export default class ScaleControl extends Component {
-  static contextTypes = {
-    map: PropTypes.object,
+type Measurement = 'km' | 'mi';
+type Position = 'topRight' | 'topLeft' | 'bottomRight' | 'bottomLeft';
+
+interface Props {
+  measurement: Measurement;
+  position: Position;
+  style: React.CSSProperties;
+}
+
+interface State {
+  chosenScale: number;
+  scaleWidth: number;
+}
+
+interface Context {
+  map: Map;
+}
+
+export default class ScaleControl extends React.Component<Props, State> {
+  public context: Context;
+
+  public static contextTypes = {
+    map: React.PropTypes.object
   };
 
-  static propTypes = {
-    measurement: PropTypes.oneOf(MEASUREMENTS),
-    style: PropTypes.object,
-    position: PropTypes.string,
-  };
-
-  static defaultProps = {
+  public static defaultProps = {
     measurement: MEASUREMENTS[0],
-    position: POSITIONS[2],
+    position: POSITIONS[2]
   };
 
-  state = {
-    chosenScale: false,
-    scaleWidth: MIN_WIDTH_SCALE,
+  public state = {
+    chosenScale: 0,
+    scaleWidth: MIN_WIDTH_SCALE
   };
 
-  componentWillMount() {
-    const { map } = this.context;
-    this.setScale(map);
+  public componentWillMount() {
+    this.setScale();
 
-    map.on('zoomend', () => {
-      this.setScale(map);
-    });
+    this.context.map.on('zoomend', this.setScale);
   }
 
-  componentWillUnmount() {
-    if (this.state.map) {
-      this.state.map.off();
+  public componentWillUnmount() {
+    if (this.context.map) {
+      this.context.map.off('zoomend', this.setScale);
     }
   }
 
-  setScale = (map) => {
+  private setScale = () => {
+    const { map } = this.context;
     const { measurement } = this.props;
 
-    const clientWidth = map._canvas.clientWidth;
-    const { _ne, _sw } = map.getBounds();
+    const clientWidth = (map as any)._canvas.clientWidth;
+    const { ne, sw } = map.getBounds() as any;
 
     const totalWidth = this._getDistanceTwoPoints(
-      [_sw.lng, _ne.lat],
-      [_ne.lng, _ne.lat],
+      [sw.lng, ne.lat],
+      [sw.lng, ne.lat],
       measurement
     );
 
     const relativeWidth = totalWidth / clientWidth * MIN_WIDTH_SCALE;
 
-    const chosenScale = scales.reduce((acc, curr) => acc || (curr > relativeWidth && curr), 0);
-    const scaleWidth = chosenScale / totalWidth * map._canvas.width;
+    const chosenScale = scales.reduce((acc, curr) => {
+      if (curr > relativeWidth) {
+        return curr;
+      }
+
+      return acc;
+    }, 0);
+
+    const scaleWidth = chosenScale / totalWidth * (map as any)._canvas.width;
 
     this.setState({
       chosenScale,
-      scaleWidth,
+      scaleWidth
     });
   };
 
-  _getDistanceTwoPoints(x, y, measurement = 'km') {
+  private _getDistanceTwoPoints(x: number[], y: number[], measurement = 'km') {
     const [lng1, lat1] = x;
     const [lng2, lat2] = y;
 
@@ -129,11 +149,11 @@ export default class ScaleControl extends Component {
     return d;
   }
 
-  _deg2rad(deg) {
+  private _deg2rad(deg: number) {
     return deg * (Math.PI / 180);
   }
 
-  _displayMeasurement(measurement, chosenScale) {
+  private _displayMeasurement(measurement: Measurement, chosenScale: number) {
     if (chosenScale >= 1) {
       return `${chosenScale} ${measurement}`;
     }
@@ -145,23 +165,15 @@ export default class ScaleControl extends Component {
     return `${Math.floor(chosenScale * KILOMETER_IN_METERS)} m`;
   }
 
-  render() {
+  public render() {
     const { measurement, style, position } = this.props;
     const { chosenScale, scaleWidth } = this.state;
 
     return (
-      <div style={{
-        ...containerStyle,
-        ...positions[position],
-        ...style,
-      }}>
+      <div style={{ ...containerStyle, ...positions[position], ...style }}>
         <div
-          style={{
-            ...scaleStyle,
-            width: scaleWidth,
-          }}>
-        </div>
-
+          style={{ ...scaleStyle, width: scaleWidth }}
+        />
         <div style={{ paddingLeft: 10 }}>
           {this._displayMeasurement(measurement, chosenScale)}
         </div>

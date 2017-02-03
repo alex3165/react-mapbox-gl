@@ -1,3 +1,4 @@
+// tslint:disable
 export default `
   .mapboxgl-map {
       font: 12px/20px 'Helvetica Neue', Arial, Helvetica, sans-serif;
