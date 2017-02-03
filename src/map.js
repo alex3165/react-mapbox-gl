@@ -61,7 +61,7 @@ export default class ReactMapboxGl extends Component {
     ]),
     interactive: PropTypes.bool,
     dragRotate: PropTypes.bool,
-    touchZoomHandler: PropTypes.bool
+    touchZoomHandler: PropTypes.bool,
   };
 
   static defaultProps = {
