@@ -122,7 +122,6 @@ export default class AllShapes extends Component {
         accessToken={accessToken}
         center={this.state.center}
         movingMethod="jumpTo"
-        touchZoomHandler
         containerStyle={containerStyle}>
         <ScaleControl/>
         <ZoomControl/>

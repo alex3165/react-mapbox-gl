@@ -1,5 +1,4 @@
 import MapboxGl from 'mapbox-gl/dist/mapbox-gl.js';
-
 import React, { Component, PropTypes } from 'react';
 import isEqual from 'deep-equal';
 
@@ -61,7 +60,6 @@ export default class ReactMapboxGl extends Component {
     ]),
     interactive: PropTypes.bool,
     dragRotate: PropTypes.bool,
-    touchZoomHandler: PropTypes.bool,
   };
 
   static defaultProps = {
@@ -82,7 +80,6 @@ export default class ReactMapboxGl extends Component {
     attributionPosition: 'bottom-right',
     interactive: true,
     dragRotate: true,
-    touchZoomHandler: false,
   };
 
   static childContextTypes = {
@@ -114,7 +111,6 @@ export default class ReactMapboxGl extends Component {
       attributionPosition,
       interactive,
       dragRotate,
-      touchZoomHandler,
     } = this.props;
 
     MapboxGl.accessToken = accessToken;
@@ -141,10 +137,6 @@ export default class ReactMapboxGl extends Component {
 
     if (fitBounds) {
       map.fitBounds(fitBounds, fitBoundsOptions);
-    }
-
-    if (touchZoomHandler) {
-      map.touchZoomRotate.enable();
     }
 
     Object.keys(events).forEach((event, index) => {
