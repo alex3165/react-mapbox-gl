@@ -20,7 +20,7 @@ const events = {
   onZoomEnd: 'zoomend'
 };
 
-interface Events {
+export interface Events {
   onStyleLoad: Function;
   onResize: Function;
   onDblClick: Function;
@@ -38,7 +38,7 @@ interface Events {
   onZoomEnd: Function;
 }
 
-interface FitBoundsOptions {
+export interface FitBoundsOptions {
   linear?: boolean;
   easing?: Function;
   padding?: number;
@@ -46,7 +46,7 @@ interface FitBoundsOptions {
   maxZoom?: number;
 }
 
-interface Props {
+export interface Props {
   style: string | MapboxGl.Style;
   accessToken: string;
   center?: number[];
@@ -69,7 +69,7 @@ interface Props {
   children?: JSX.Element;
 }
 
-interface State {
+export interface State {
   map?: MapboxGl.Map;
 }
 

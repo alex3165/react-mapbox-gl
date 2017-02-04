@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-interface Props {
+export interface Props {
   coordinates: number[];
   properties: any;
   onClick?: Function;

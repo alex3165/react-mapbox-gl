@@ -51,18 +51,18 @@ const buttonStyleMinus = {
 const [PLUS, MINUS] = [0, 1];
 const POSITIONS = Object.keys(positions);
 
-interface Props {
+export interface Props {
   zoomDiff: number;
   onControlClick: (map: Map, zoomDiff: number) => void;
   position: 'topRight' | 'topLeft' | 'bottomRight' | 'bottomLeft';
   style: React.CSSProperties;
 }
 
-interface State {
+export interface State {
   hover?: number;
 }
 
-interface Context {
+export interface Context {
   map: Map;
 }
 
@@ -75,7 +75,7 @@ export default class ZoomControl extends React.Component<Props, State> {
     zoomDiff: 0.5,
     onControlClick: (map: Map, zoomDiff: number) => {
       map.zoomTo(map.getZoom() + zoomDiff);
-    },
+    }
   };
 
   public state = {

@@ -9,13 +9,13 @@ import {
   GeoJSONSourceRaw
 } from 'mapbox-gl';
 
-interface Context {
+export interface Context {
   map: Map;
 }
 
-type Sources = VectorSource | RasterSource | GeoJSONSource | ImageSource | VideoSource | GeoJSONSourceRaw;
+export type Sources = VectorSource | RasterSource | GeoJSONSource | ImageSource | VideoSource | GeoJSONSourceRaw;
 
-interface Props {
+export interface Props {
   id: string;
   sourceOptions: Sources;
 }

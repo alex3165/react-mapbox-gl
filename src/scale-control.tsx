@@ -51,21 +51,21 @@ const KILOMETER_IN_METERS = 1000;
 
 const MIN_WIDTH_SCALE = 40;
 
-type Measurement = 'km' | 'mi';
-type Position = 'topRight' | 'topLeft' | 'bottomRight' | 'bottomLeft';
+export type Measurement = 'km' | 'mi';
+export type Position = 'topRight' | 'topLeft' | 'bottomRight' | 'bottomLeft';
 
-interface Props {
+export interface Props {
   measurement: Measurement;
   position: Position;
   style: React.CSSProperties;
 }
 
-interface State {
+export interface State {
   chosenScale: number;
   scaleWidth: number;
 }
 
-interface Context {
+export interface Context {
   map: Map;
 }
 

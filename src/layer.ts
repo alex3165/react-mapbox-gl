@@ -11,8 +11,14 @@ const generateID = () => {
   return index;
 };
 
-type Sources = MapboxGL.VectorSource | MapboxGL.RasterSource | MapboxGL.GeoJSONSource | MapboxGL.GeoJSONSourceRaw;
-type Paint = (
+export type Sources = (
+  MapboxGL.VectorSource |
+  MapboxGL.RasterSource |
+  MapboxGL.GeoJSONSource |
+  MapboxGL.GeoJSONSourceRaw
+);
+
+export type Paint = (
   MapboxGL.BackgroundPaint |
   MapboxGL.FillPaint |
   MapboxGL.FillExtrusionPaint |
@@ -22,7 +28,7 @@ type Paint = (
   MapboxGL.CirclePaint
 );
 
-type Layout = (
+export type Layout = (
   MapboxGL.BackgroundLayout |
   MapboxGL.FillLayout |
   MapboxGL.FillExtrusionLayout |
@@ -32,7 +38,7 @@ type Layout = (
   MapboxGL.CircleLayout
 );
 
-interface Props {
+export interface Props {
   id?: string;
   type?: 'symbol' | 'line' | 'fill' | 'circle' | 'raster';
   sourceId?: string;
@@ -44,7 +50,7 @@ interface Props {
   children?: JSX.Element;
 }
 
-interface Context {
+export interface Context {
   map: MapboxGL.Map;
 }
 

@@ -8,7 +8,7 @@ const generateID = () => {
   return index;
 };
 
-interface Props {
+export interface Props {
   id?: string;
   data: GeoJSON.Feature<GeoJSON.GeometryObject> | GeoJSON.FeatureCollection<GeoJSON.GeometryObject> | string;
   sourceOptions: MapboxGL.VectorSource | MapboxGL.RasterSource | MapboxGL.GeoJSONSource | MapboxGL.GeoJSONSourceRaw;
@@ -23,7 +23,7 @@ interface Props {
   fillPaint?: MapboxGL.FillPaint;
 }
 
-interface Context {
+export interface Context {
   map: MapboxGL.Map;
 }
 

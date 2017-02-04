@@ -24,7 +24,7 @@ export interface Props {
   className: string;
 }
 
-interface Context {
+export interface Context {
   map: Map;
 }
 

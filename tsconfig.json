@@ -4,9 +4,8 @@
     "module": "commonjs",
     "target": "es6",
     "sourceMap": true,
-    "allowJs": true,
     "moduleResolution": "node",
-    "rootDir": "src",
+    "rootDirs": ["src"],
     "jsx": "preserve",
     "removeComments": true,
     "forceConsistentCasingInFileNames": true,
@@ -15,7 +14,8 @@
     "noImplicitAny": true,
     "strictNullChecks": true,
     "suppressImplicitAnyIndexErrors": true,
-    "noUnusedLocals": true
+    "noUnusedLocals": true,
+    "declaration": true
   },
   "include": [
     "src/**/*"
@@ -23,6 +23,8 @@
   "exclude": [
     "node_modules",
     "lib",
-    "src/__tests__"
+    "src/__tests__",
+    "example",
+    "lib"
   ]
 }

@@ -4,7 +4,7 @@ import {
   anchors
 } from './util/overlays';
 
-interface Props {
+export interface Props {
   coordinates: number[];
   anchor: any;
   offset: any;

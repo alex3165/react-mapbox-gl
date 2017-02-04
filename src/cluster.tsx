@@ -4,7 +4,7 @@ import { Props as MarkerProps } from './marker';
 
 const supercluster = require('supercluster'); //tslint:disable-line
 
-interface Props {
+export interface Props {
   ClusterMarkerFactory: (coordinates: number[], pointCount: number) => JSX.Element;
   clusterThreshold?: number;
   radius?: number;
@@ -16,16 +16,16 @@ interface Props {
   children?: Array<React.Component<MarkerProps, void>>;
 }
 
-interface State {
+export interface State {
   superC: any;
   clusterPoints: any[];
 }
 
-interface Context {
+export interface Context {
   map: MapboxGL.Map;
 }
 
-interface Point {
+export interface Point {
   geometry: {
     coordinates: number[];
   };
