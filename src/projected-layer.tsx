@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { Map } from 'mapbox-gl';
+import { Anchor } from './util/overlays';
 
 import {
   overlayState,
@@ -11,10 +12,10 @@ const defaultStyle = {
   zIndex: 3
 };
 
-interface Props {
+export interface Props {
   coordinates: number[];
-  anchor: any;
-  offset: any;
+  anchor: Anchor;
+  offset: number | number[] | Object;
   children: JSX.Element;
   onClick: React.MouseEventHandler<HTMLDivElement>;
   onMouseEnter: React.MouseEventHandler<HTMLDivElement>;
