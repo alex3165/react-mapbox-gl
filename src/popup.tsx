@@ -1,8 +1,7 @@
 import * as React from 'react';
 import ProjectedLayer from './projected-layer';
 import {
-  anchors,
-  OverlayPropTypes
+  anchors
 } from './util/overlays';
 
 interface Props {

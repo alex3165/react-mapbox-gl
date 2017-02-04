@@ -3,10 +3,8 @@
   "version": "0.29.2",
   "description": "A React binding of mapbox-gl-js",
   "main": "lib/index.js",
-  "jsnext:main": "es/index.js",
   "scripts": {
     "clean": "rm -rf dist",
-    "build:watch": "BABEL_ENV=commonjssimple babel src --watch --out-dir lib",
     "build": "tsc",
     "prepublish": "npm run clean && npm run build",
     "version": "npm run build",
@@ -56,6 +54,7 @@
   },
   "devDependencies": {
     "@types/mapbox-gl": "^0.29.0",
+    "@types/node": "^7.0.5",
     "@types/react": "^15.0.6",
     "@types/typescript": "^2.0.0",
     "jest": "^17.0.1",

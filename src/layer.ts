@@ -1,5 +1,5 @@
-import React, { PropTypes } from 'react';
-import isEqual from 'deep-equal';
+import * as React from 'react';
+const isEqual = require('deep-equal'); // tslint:disable-line
 import diff from './util/diff';
 
 let index = 0;
@@ -9,72 +9,83 @@ const generateID = () => {
   return index;
 };
 
-export default class Layer extends React.PureComponent {
-  static contextTypes = {
-    map: PropTypes.object,
+  // public static propTypes = {
+  //   id: PropTypes.string,
+
+  //   type: PropTypes.oneOf([
+  //     'symbol',
+  //     'line',
+  //     'fill',
+  //     'circle',
+  //     'raster'
+  //   ]),
+
+  //   layout: PropTypes.object,
+  //   paint: PropTypes.object,
+  //   sourceOptions: PropTypes.object,
+  //   layerOptions: PropTypes.object,
+  //   sourceId: PropTypes.string,
+  //   before: PropTypes.string
+  // };
+
+interface Props {
+  id?: string;
+  type?: 'symbol' | 'line' | 'fill' | 'circle' | 'raster';
+  sourceId?: string;
+  before?: string;
+}
+
+interface State {
+
+}
+
+export default class Layer extends React.PureComponent<Props, State> {
+  public static contextTypes = {
+    map: React.PropTypes.object
   };
 
-  static propTypes = {
-    id: PropTypes.string,
-
-    type: PropTypes.oneOf([
-      'symbol',
-      'line',
-      'fill',
-      'circle',
-      'raster',
-    ]),
-
-    layout: PropTypes.object,
-    paint: PropTypes.object,
-    sourceOptions: PropTypes.object,
-    layerOptions: PropTypes.object,
-    sourceId: PropTypes.string,
-    before: PropTypes.string,
-  };
-
-  static defaultProps = {
+  public static defaultProps = {
     type: 'symbol',
     layout: {},
-    paint: {},
+    paint: {}
   };
 
-  hover = [];
+  private hover: string[] = [];
 
-  id = this.props.id || `layer-${generateID()}`;
+  private id: string = this.props.id || `layer-${generateID()}`;
 
-  source = {
+  private source = {
     type: 'geojson',
     ...this.props.sourceOptions,
     data: {
       type: 'FeatureCollection',
-      features: [],
-    },
+      features: []
+    }
   };
 
-  geometry = (coordinates) => {
+  private geometry = (coordinates: number[]) => {
     switch (this.props.type) {
       case 'symbol':
       case 'circle': return {
         type: 'Point',
-        coordinates,
+        coordinates
       };
 
       case 'fill': return {
         type: coordinates.length > 1 ? 'MultiPolygon' : 'Polygon',
-        coordinates,
+        coordinates
       };
 
       case 'line': return {
         type: 'LineString',
-        coordinates,
+        coordinates
       };
 
       default: return null;
     }
-  };
+  }
 
-  feature = (props, id) => ({
+  private feature = (props, id) => ({
     type: 'Feature',
     geometry: this.geometry(props.coordinates),
     properties: {
@@ -83,7 +94,7 @@ export default class Layer extends React.PureComponent {
     },
   })
 
-  onClick = (evt) => {
+  private onClick = (evt) => {
     const children = [].concat(this.props.children);
     const { map } = this.context;
     const { id } = this;
@@ -100,7 +111,7 @@ export default class Layer extends React.PureComponent {
     });
   };
 
-  onMouseMove = (evt) => {
+  private onMouseMove = (evt) => {
     const children = [].concat(this.props.children);
     const { map } = this.context;
     const { id } = this;
@@ -131,9 +142,9 @@ export default class Layer extends React.PureComponent {
       });
 
     this.hover = hover;
-  };
+  }
 
-  componentWillMount() {
+  public componentWillMount() {
     const { id, source } = this;
     const { type, layout, paint, layerOptions, sourceId, before } = this.props;
     const { map } = this.context;
@@ -157,7 +168,7 @@ export default class Layer extends React.PureComponent {
     map.on('mousemove', this.onMouseMove);
   }
 
-  componentWillUnmount() {
+  public componentWillUnmount() {
     const { id } = this;
 
     const { map } = this.context;
@@ -173,7 +184,7 @@ export default class Layer extends React.PureComponent {
     map.off('mousemove', this.onMouseMove);
   }
 
-  componentWillReceiveProps(props) {
+  public componentWillReceiveProps(props) {
     const { paint, layout } = this.props;
     const { map } = this.context;
 
@@ -194,13 +205,13 @@ export default class Layer extends React.PureComponent {
     }
   }
 
-  shouldComponentUpdate(nextProps) {
+  public shouldComponentUpdate(nextProps) {
     return !isEqual(nextProps.children, this.props.children)
         || !isEqual(nextProps.paint, this.props.paint)
         || !isEqual(nextProps.layout, this.props.layout);
   }
 
-  render() {
+  public render() {
     const { map } = this.context;
 
     if (this.props.children) {
