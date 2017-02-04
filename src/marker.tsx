@@ -1,7 +1,7 @@
 import * as React from 'react';
 import ProjectedLayer from './projected-layer';
 
-interface Props {
+export interface Props {
   coordinates: number[];
   anchor: any;
   offset: any;

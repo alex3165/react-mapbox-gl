@@ -23,8 +23,6 @@ interface Props {
   className: string;
 }
 
-// interface State {}
-
 interface Context {
   map: Map;
 }

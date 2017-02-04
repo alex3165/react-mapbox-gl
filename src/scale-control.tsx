@@ -103,11 +103,11 @@ export default class ScaleControl extends React.Component<Props, State> {
     const { measurement } = this.props;
 
     const clientWidth = (map as any)._canvas.clientWidth;
-    const { ne, sw } = map.getBounds() as any;
+    const { _ne, _sw } = map.getBounds() as any;
 
     const totalWidth = this._getDistanceTwoPoints(
-      [sw.lng, ne.lat],
-      [sw.lng, ne.lat],
+      [_sw.lng, _ne.lat],
+      [_sw.lng, _ne.lat],
       measurement
     );
 

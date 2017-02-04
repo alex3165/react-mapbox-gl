@@ -1,47 +1,77 @@
-import React, { PropTypes, Component } from 'react';
-import supercluster from 'supercluster';
+import * as React from 'react';
+import * as MapboxGL from 'mapbox-gl';
+import { Props as MarkerProps } from './marker';
 
-export default class Cluster extends Component {
+const supercluster = require('supercluster'); //tslint:disable-line
 
-  static propTypes = {
-    ClusterMarkerFactory: PropTypes.func.isRequired,
-    clusterThreshold: PropTypes.number,
-    radius: PropTypes.number,
-    minZoom: PropTypes.number,
-    maxZoom: PropTypes.number,
-    extent: PropTypes.number,
-    nodeSize: PropTypes.number,
-    log: PropTypes.bool,
+interface Props {
+  ClusterMarkerFactory: (coordinates: number[], pointCount: number) => JSX.Element;
+  clusterThreshold?: number;
+  radius?: number;
+  maxZoom?: number;
+  minZoom?: number;
+  extent?: number;
+  nodeSize?: number;
+  log?: boolean;
+  children?: Array<React.Component<MarkerProps, void>>;
+}
+
+interface State {
+  superC: any;
+  clusterPoints: any[];
+}
+
+interface Context {
+  map: MapboxGL.Map;
+}
+
+interface Point {
+  geometry: {
+    coordinates: number[];
+  };
+  properties: {
+    point_count: number;
+  };
+}
+
+export default class Cluster extends React.Component<Props, State> {
+  public context: Context;
+
+  public static contextTypes = {
+    map: React.PropTypes.object
   };
 
-  static contextTypes = {
-    map: PropTypes.object,
-  };
-
-  static defaultProps = {
+  public static defaultProps = {
     clusterThreshold: 1,
     radius: 60,
     minZoom: 0,
     maxZoom: 16,
     extent: 512,
     nodeSize: 64,
-    log: false,
+    log: false
   };
 
-  state = {
-    clusterIndex: supercluster({
+  public state = {
+    superC: supercluster({
       radius: this.props.radius,
       maxZoom: this.props.maxZoom,
+      minZoom: this.props.minZoom,
+      extent: this.props.extent,
+      nodeSize: this.props.nodeSize,
+      log: this.props.log
     }),
-    clusterPoints: [],
+    clusterPoints: []
   };
 
-  componentWillMount() {
+  public componentWillMount() {
     const { map } = this.context;
-    const { clusterIndex } = this.state;
+    const { superC } = this.state;
+    const { children } = this.props;
 
-    const features = this.childrenToFeatures(this.props.children);
-    clusterIndex.load(features);
+    if (children) {
+      const features = this.childrenToFeatures(children as any);
+      superC.load(features);
+    }
 
     // TODO: Debounce ?
     map.on('move', this.mapChange);
@@ -49,13 +79,13 @@ export default class Cluster extends Component {
     this.mapChange();
   }
 
-  mapChange = () => {
+  private mapChange = () => {
     const { map } = this.context;
-    const { clusterIndex, clusterPoints } = this.state;
+    const { superC, clusterPoints } = this.state;
 
-    const { _sw, _ne } = map.getBounds();
+    const { _sw, _ne } = map.getBounds() as any;
     const zoom = map.getZoom();
-    const newPoints = clusterIndex.getClusters(
+    const newPoints = superC.getClusters(
       [_sw.lng, _sw.lat, _ne.lng, _ne.lat],
       Math.round(zoom)
     );
@@ -65,35 +95,41 @@ export default class Cluster extends Component {
     }
   };
 
-  feature(coordinates) {
+  private feature(coordinates: number[]) {
     return {
       type: 'Feature',
       geometry: {
         type: 'point',
-        coordinates,
+        coordinates
       },
       properties: {
-        point_count: 1,
-      },
+        point_count: 1
+      }
     };
   }
 
-  childrenToFeatures(children) {
-    return children.map(child => this.feature(child.props.coordinates));
-  }
+  private childrenToFeatures = (children: Array<React.Component<MarkerProps, any>>) => (
+    children.map((child) => this.feature(child && child.props.coordinates))
+  );
 
-  render() {
+  public render() {
     const { children, ClusterMarkerFactory, clusterThreshold } = this.props;
     const { clusterPoints } = this.state;
 
+    if (clusterPoints.length <= clusterThreshold) {
+      return (
+        <div>
+          {children}
+        </div>
+      );
+    }
+
     return (
       <div>
-        {
-          clusterPoints.length <= clusterThreshold ?
-          children :
-          clusterPoints.map(({ geometry, properties }) =>
+        {// tslint:disable-line
+          clusterPoints.map(({ geometry, properties }: Point) => (
             ClusterMarkerFactory(geometry.coordinates, properties.point_count))
-        }
+          )}
       </div>
     );
   }

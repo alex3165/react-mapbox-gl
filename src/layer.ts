@@ -1,4 +1,6 @@
 import * as React from 'react';
+import * as MapboxGL from 'mapbox-gl';
+
 const isEqual = require('deep-equal'); // tslint:disable-line
 import diff from './util/diff';
 
@@ -9,37 +11,46 @@ const generateID = () => {
   return index;
 };
 
-  // public static propTypes = {
-  //   id: PropTypes.string,
+type Sources = MapboxGL.VectorSource | MapboxGL.RasterSource | MapboxGL.GeoJSONSource | MapboxGL.GeoJSONSourceRaw;
+type Paint = (
+  MapboxGL.BackgroundPaint |
+  MapboxGL.FillPaint |
+  MapboxGL.FillExtrusionPaint |
+  MapboxGL.LinePaint |
+  MapboxGL.SymbolPaint |
+  MapboxGL.RasterPaint |
+  MapboxGL.CirclePaint
+);
 
-  //   type: PropTypes.oneOf([
-  //     'symbol',
-  //     'line',
-  //     'fill',
-  //     'circle',
-  //     'raster'
-  //   ]),
-
-  //   layout: PropTypes.object,
-  //   paint: PropTypes.object,
-  //   sourceOptions: PropTypes.object,
-  //   layerOptions: PropTypes.object,
-  //   sourceId: PropTypes.string,
-  //   before: PropTypes.string
-  // };
+type Layout = (
+  MapboxGL.BackgroundLayout |
+  MapboxGL.FillLayout |
+  MapboxGL.FillExtrusionLayout |
+  MapboxGL.LineLayout |
+  MapboxGL.SymbolLayout |
+  MapboxGL.RasterLayout |
+  MapboxGL.CircleLayout
+);
 
 interface Props {
   id?: string;
   type?: 'symbol' | 'line' | 'fill' | 'circle' | 'raster';
   sourceId?: string;
   before?: string;
+  sourceOptions?: Sources;
+  paint?: Paint;
+  layout?: Layout;
+  layerOptions?: MapboxGL.Layer;
+  children?: JSX.Element;
 }
 
-interface State {
-
+interface Context {
+  map: MapboxGL.Map;
 }
 
-export default class Layer extends React.PureComponent<Props, State> {
+export default class Layer extends React.PureComponent<Props, void> {
+  public context: Context;
+
   public static contextTypes = {
     map: React.PropTypes.object
   };
@@ -54,7 +65,7 @@ export default class Layer extends React.PureComponent<Props, State> {
 
   private id: string = this.props.id || `layer-${generateID()}`;
 
-  private source = {
+  private source: Sources = {
     type: 'geojson',
     ...this.props.sourceOptions,
     data: {
@@ -85,17 +96,17 @@ export default class Layer extends React.PureComponent<Props, State> {
     }
   }
 
-  private feature = (props, id) => ({
+  private feature = (props: any, id: string) => ({
     type: 'Feature',
     geometry: this.geometry(props.coordinates),
     properties: {
       ...props.properties,
-      id,
-    },
+      id
+    }
   })
 
-  private onClick = (evt) => {
-    const children = [].concat(this.props.children);
+  private onClick = (evt: any) => {
+    const children = ([] as any).concat(this.props.children);
     const { map } = this.context;
     const { id } = this;
     const features = map.queryRenderedFeatures(evt.point, { layers: [id] });
@@ -111,13 +122,13 @@ export default class Layer extends React.PureComponent<Props, State> {
     });
   };
 
-  private onMouseMove = (evt) => {
-    const children = [].concat(this.props.children);
+  private onMouseMove = (evt: any) => {
+    const children = ([] as any).concat(this.props.children);
     const { map } = this.context;
     const { id } = this;
 
     const oldHover = this.hover;
-    const hover = [];
+    const hover: string[] = [];
 
     const features = map.queryRenderedFeatures(evt.point, { layers: [id] });
 
@@ -133,7 +144,7 @@ export default class Layer extends React.PureComponent<Props, State> {
     });
 
     oldHover
-      .filter(prevHoverId => hover.indexOf(prevHoverId) === -1)
+      .filter((prevHoverId) => hover.indexOf(prevHoverId) === -1)
       .forEach((key) => {
         const onEndHover = children[key] && children[key].props.onEndHover;
         if (onEndHover) {
@@ -155,7 +166,7 @@ export default class Layer extends React.PureComponent<Props, State> {
       type,
       layout,
       paint,
-      ...layerOptions,
+      ...layerOptions
     };
 
     if (!sourceId) {
@@ -184,7 +195,7 @@ export default class Layer extends React.PureComponent<Props, State> {
     map.off('mousemove', this.onMouseMove);
   }
 
-  public componentWillReceiveProps(props) {
+  public componentWillReceiveProps(props: Props) {
     const { paint, layout } = this.props;
     const { map } = this.context;
 
@@ -205,7 +216,7 @@ export default class Layer extends React.PureComponent<Props, State> {
     }
   }
 
-  public shouldComponentUpdate(nextProps) {
+  public shouldComponentUpdate(nextProps: Props) {
     return !isEqual(nextProps.children, this.props.children)
         || !isEqual(nextProps.paint, this.props.paint)
         || !isEqual(nextProps.layout, this.props.layout);
@@ -215,16 +226,16 @@ export default class Layer extends React.PureComponent<Props, State> {
     const { map } = this.context;
 
     if (this.props.children) {
-      const children = [].concat(this.props.children);
+      const children = ([] as any).concat(this.props.children);
 
       const features = children
-        .map(({ props }, id) => this.feature(props, id))
+        .map(({ props }: any, id: string) => this.feature(props, id))
         .filter(Boolean);
 
       const source = map.getSource(this.props.sourceId || this.id);
-      source.setData({
+      (source as MapboxGL.GeoJSONSource).setData({
         type: 'FeatureCollection',
-        features,
+        features
       });
     }
 

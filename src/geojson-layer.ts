@@ -1,6 +1,5 @@
-import React, { PropTypes } from 'react';
-import isEqual from 'deep-equal';
-import diff from './util/diff';
+import * as React from 'react';
+import * as MapboxGL from 'mapbox-gl/dist/mapbox-gl';
 
 let index = 0;
 const generateID = () => {
@@ -9,44 +8,43 @@ const generateID = () => {
   return index;
 };
 
-export default class GeoJSONLayer extends React.PureComponent {
-  static contextTypes = {
-    map: PropTypes.object,
+interface Props {
+  id?: string;
+  data: GeoJSON.Feature<GeoJSON.GeometryObject> | GeoJSON.FeatureCollection<GeoJSON.GeometryObject> | string;
+  sourceOptions: MapboxGL.VectorSource | MapboxGL.RasterSource | MapboxGL.GeoJSONSource | MapboxGL.GeoJSONSourceRaw;
+  before?: string;
+  fillLayout?: MapboxGL.FillLayout;
+  symbolLayout?: MapboxGL.SymbolLayout;
+  circleLayout?: MapboxGL.CircleLayout;
+  lineLayout?: MapboxGL.LineLayout;
+  linePaint?: MapboxGL.LinePaint;
+  symbolPaint?: MapboxGL.SymbolPaint;
+  circlePaint?: MapboxGL.CirclePaint;
+  fillPaint?: MapboxGL.FillPaint;
+}
+
+interface Context {
+  map: MapboxGL.Map;
+}
+
+export default class GeoJSONLayer extends React.Component<Props, void> {
+  public context: Context;
+
+  public static contextTypes = {
+    map: React.PropTypes.object
   };
 
-  static propTypes = {
-    id: PropTypes.string,
+  private id: string = this.props.id || `geojson-${generateID()}`;
 
-    data: PropTypes.oneOfType([
-      PropTypes.string,
-      PropTypes.object,
-    ]).isRequired,
-
-    lineLayout: PropTypes.object,
-    symbolLayout: PropTypes.object,
-    circleLayout: PropTypes.object,
-    fillLayout: PropTypes.object,
-
-    linePaint: PropTypes.object,
-    symbolPaint: PropTypes.object,
-    circlePaint: PropTypes.object,
-    fillPaint: PropTypes.object,
-
-    sourceOptions: PropTypes.string,
-    before: PropTypes.string,
-  };
-
-  id = this.props.id || `geojson-${generateID()}`;
-
-  source = {
+  private source = {
     type: 'geojson',
     ...this.props.sourceOptions,
-    data: this.props.data,
+    data: this.props.data
   };
 
-  layerIds = [];
+  private layerIds: string[] = [];
 
-  createLayer = (type) => {
+  private createLayer = (type: string) => {
     const { id, layerIds } = this;
     const { before } = this.props;
     const { map } = this.context;
@@ -62,11 +60,11 @@ export default class GeoJSONLayer extends React.PureComponent {
       source: id,
       type,
       paint,
-      layout,
+      layout
     }, before);
-  };
+  }
 
-  componentWillMount() {
+  public componentWillMount() {
     const { id, source } = this;
     const { map } = this.context;
 
@@ -78,52 +76,26 @@ export default class GeoJSONLayer extends React.PureComponent {
     this.createLayer('circle');
   }
 
-  componentWillUnmount() {
+  public componentWillUnmount() {
     const { id, layerIds } = this;
     const { map } = this.context;
 
     map.removeSource(id);
 
-    layerIds.forEach(key => map.removeLayer(key));
+    layerIds.forEach(map.removeLayer);
   }
 
-  componentWillReceiveProps(props) {
+  public componentWillReceiveProps(props: Props) {
     const { id } = this;
-    const { data, paint, layout } = this.props;
+    const { data } = this.props;
     const { map } = this.context;
 
-    if (!isEqual(props.paint, paint)) {
-      const paintDiff = diff(paint, props.paint);
-
-      Object.keys(paintDiff).forEach((key) => {
-        map.setPaintProperty(this.id, key, paintDiff[key]);
-      });
-    }
-
-    if (!isEqual(props.layout, layout)) {
-      const layoutDiff = diff(layout, props.layout);
-
-      Object.keys(layoutDiff).forEach((key) => {
-        map.setLayoutProperty(this.id, key, layoutDiff[key]);
-      });
-    }
-
     if (props.data !== data) {
-      map
-        .getSource(id)
-        .setData(props.data);
+      (map.getSource(id) as MapboxGL.GeoJSONSource).setData(props.data);
     }
   }
 
-  shouldComponentUpdate(nextProps) {
-    return (
-      !isEqual(nextProps.paint, this.props.paint) ||
-      !isEqual(nextProps.layout, this.props.layout) ||
-      nextProps.data !== this.props.data
-    );
-  }
-
-  render() {
+  public render() {
     return null;
   }
 }

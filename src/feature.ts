@@ -1,17 +1,13 @@
-import React, { PropTypes } from 'react';
+import * as React from 'react';
 
-class Feature extends React.PureComponent {
-  render() {
-    return null;
-  }
+interface Props {
+  coordinates: number[];
+  properties: any;
+  onClick?: Function;
+  onHover?: Function;
+  onEndHover?: Function;
 }
 
-Feature.propTypes = {
-  coordinates: PropTypes.array.isRequired,
-  onClick: PropTypes.func,
-  onHover: PropTypes.func,
-  onEndHover: PropTypes.func,
-  properties: PropTypes.object,
-};
+const Feature: React.StatelessComponent<Props> = () => null;
 
 export default Feature;

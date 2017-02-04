@@ -1,4 +1,4 @@
-import { LngLat, Point } from 'mapbox-gl/dist/mapbox-gl.js';
+import { LngLat, Point } from 'mapbox-gl/dist/mapbox-gl';
 // import * as React from 'react';
 // export const OverlayPropTypes = {
 //   anchor: PropTypes.oneOf(anchors),
