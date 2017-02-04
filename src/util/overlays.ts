@@ -13,9 +13,9 @@ export interface PointDef {
 }
 
 export interface OverlayProps {
-  anchor: Anchor;
-  offset: PointDef;
-  position: PointDef;
+  anchor?: Anchor;
+  offset?: PointDef;
+  position?: PointDef;
 }
 
 export const anchors = [
@@ -47,11 +47,13 @@ const defaultElement = { offsetWidth: 0, offsetHeight: 0 } as HTMLElement;
 
 const isPointLike = (input: Point | any[]): boolean => (input instanceof Point || Array.isArray(input));
 
-const projectCoordinates = (map: MapboxGL.Map, coordinates: number[]) => map.project(LngLat.convert(coordinates));
+const projectCoordinates = (map: MapboxGL.Map, coordinates: number[]) => (
+  map.project(LngLat.convert(coordinates))
+);
 
 const calculateAnchor = (
   map: MapboxGL.Map,
-  offsets,
+  offsets: any,
   position: PointDef,
   { offsetHeight, offsetWidth }: HTMLElement = defaultElement
 ) => {
@@ -59,13 +61,13 @@ const calculateAnchor = (
 
   if (position.y + offsets.bottom.y - offsetHeight < 0) {
     anchor = [anchors[1]];
-  } else if (position.y + offsets.top.y + offsetHeight > map.transform.height) {
+  } else if (position.y + offsets.top.y + offsetHeight > (map as any).transform.height) {
     anchor = [anchors[2]];
   }
 
   if (position.x < offsetWidth / 2) {
     anchor.push(anchors[3]);
-  } else if (position.x > map.transform.width - offsetWidth / 2) {
+  } else if (position.x > (map as any).transform.width - offsetWidth / 2) {
     anchor.push(anchors[4]);
   }
 
@@ -116,7 +118,7 @@ export const overlayState = (props: Props, map: MapboxGL.Map, container: HTMLEle
   const position = projectCoordinates(map, props.coordinates);
   const offsets = normalizedOffsets(props.offset);
   const anchor = props.anchor
-    || calculateAnchor(map, offsets, position, container);
+    || calculateAnchor(map, offsets, position as any, container);
 
   return {
     anchor,
@@ -130,7 +132,7 @@ const moveTranslate = (point: PointDef ) => (
 );
 
 export const overlayTransform = ({ anchor, position, offset }: OverlayProps) => {
-  const res = [moveTranslate(position)];
+  const res = [moveTranslate(position as any)];
 
   if (offset && offset.x !== undefined && offset.y !== undefined) {
     res.push(moveTranslate(offset));

@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Map } from 'mapbox-gl';
-import { Anchor } from './util/overlays';
+import { Anchor, PointDef, OverlayProps } from './util/overlays';
 
 import {
   overlayState,
@@ -15,7 +15,7 @@ const defaultStyle = {
 export interface Props {
   coordinates: number[];
   anchor: Anchor;
-  offset: number | number[] | Object;
+  offset: number | number[] | PointDef;
   children: JSX.Element;
   onClick: React.MouseEventHandler<HTMLDivElement>;
   onMouseEnter: React.MouseEventHandler<HTMLDivElement>;
@@ -43,7 +43,7 @@ export default class ProjectedLayer extends React.Component<Props, any> {
     onClick: (...args: any[]) => args
   };
 
-  public state = {};
+  public state: OverlayProps = {};
 
   private setContainer = (el: HTMLElement) => {
     if (el) {
@@ -98,7 +98,7 @@ export default class ProjectedLayer extends React.Component<Props, any> {
     const finalStyle = {
       ...defaultStyle,
       ...style,
-      transform: overlayTransform(this.state).join(' '),
+      transform: overlayTransform(this.state as OverlayProps).join(' '),
     };
 
     return (
