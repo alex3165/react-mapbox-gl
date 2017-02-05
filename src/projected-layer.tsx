@@ -14,13 +14,13 @@ const defaultStyle = {
 
 export interface Props {
   coordinates: number[];
-  anchor: Anchor;
-  offset: number | number[] | PointDef;
-  children: JSX.Element;
-  onClick: React.MouseEventHandler<HTMLDivElement>;
-  onMouseEnter: React.MouseEventHandler<HTMLDivElement>;
-  onMouseLeave: React.MouseEventHandler<HTMLDivElement>;
-  style: React.CSSProperties;
+  anchor?: Anchor;
+  offset?: number | number[] | PointDef;
+  children?: JSX.Element;
+  onClick?: React.MouseEventHandler<HTMLDivElement>;
+  onMouseEnter?: React.MouseEventHandler<HTMLDivElement>;
+  onMouseLeave?: React.MouseEventHandler<HTMLDivElement>;
+  style?: React.CSSProperties;
   className: string;
 }
 
@@ -55,7 +55,7 @@ export default class ProjectedLayer extends React.Component<Props, any> {
     if (!this.prevent) {
       this.setState(overlayState(this.props, this.context.map, this.container));
     }
-  };
+  }
 
   public componentDidMount() {
     const { map } = this.context;
@@ -92,13 +92,13 @@ export default class ProjectedLayer extends React.Component<Props, any> {
       className,
       onClick,
       onMouseEnter,
-      onMouseLeave,
+      onMouseLeave
     } = this.props;
 
     const finalStyle = {
       ...defaultStyle,
       ...style,
-      transform: overlayTransform(this.state as OverlayProps).join(' '),
+      transform: overlayTransform(this.state as OverlayProps).join(' ')
     };
 
     return (

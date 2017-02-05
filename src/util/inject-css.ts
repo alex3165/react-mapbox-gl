@@ -9,6 +9,6 @@ const injectCSS = (window: Window) => {
     styleElement.innerHTML = cssRules;
     head.appendChild(styleElement);
   }
-}
+};
 
 export default injectCSS;

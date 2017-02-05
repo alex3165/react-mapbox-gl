@@ -7,6 +7,7 @@
     "interface-name": [true, "never-prefix"],
     "no-console": false,
     "object-literal-sort-keys": false,
-    "member-ordering": false
+    "member-ordering": false,
+    "object-literal-key-quotes": false
   }
 }

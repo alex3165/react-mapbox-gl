@@ -126,7 +126,7 @@ export default class Layer extends React.PureComponent<Props, void> {
         onClick({ ...evt, feature, map });
       }
     });
-  };
+  }
 
   private onMouseMove = (evt: any) => {
     const children = ([] as any).concat(this.props.children);
@@ -248,4 +248,3 @@ export default class Layer extends React.PureComponent<Props, void> {
     return null;
   }
 }
-

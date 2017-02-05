@@ -11,11 +11,13 @@ const scales = [
   10 * 1000
 ];
 
+const defaultPosition = { top: 10, right: 10, bottom: 'auto', left: 'auto' };
+
 const positions = {
-  topRight: { top: 10, right: 10, bottom: 'auto', left: 'auto' },
-  topLeft: { top: 10, left: 10, bottom: 'auto', right: 'auto' },
-  bottomRight: { bottom: 10, right: 10, top: 'auto', left: 'auto' },
-  bottomLeft: { bottom: 10, left: 10, top: 'auto', right: 'auto' },
+  topRight: defaultPosition,
+  topLeft: defaultPosition,
+  bottomRight: defaultPosition,
+  bottomLeft: defaultPosition
 };
 
 const containerStyle = {
@@ -29,7 +31,7 @@ const containerStyle = {
   display: 'flex',
   flexDirection: 'row',
   alignItems: 'baseline',
-  padding: '3px 7px',
+  padding: '3px 7px'
 };
 
 const scaleStyle = {
@@ -38,7 +40,7 @@ const scaleStyle = {
   borderTop: 'none',
   height: 7,
   borderBottomLeftRadius: 1,
-  borderBottomRightRadius: 1,
+  borderBottomRightRadius: 1
 };
 
 const POSITIONS = Object.keys(positions);
@@ -127,7 +129,7 @@ export default class ScaleControl extends React.Component<Props, State> {
       chosenScale,
       scaleWidth
     });
-  };
+  }
 
   private _getDistanceTwoPoints(x: number[], y: number[], measurement = 'km') {
     const [lng1, lat1] = x;

@@ -3,13 +3,13 @@ import ProjectedLayer from './projected-layer';
 
 export interface Props {
   coordinates: number[];
-  anchor: any;
-  offset: any;
-  children: JSX.Element;
-  onClick: React.MouseEventHandler<HTMLDivElement>;
-  onMouseEnter: React.MouseEventHandler<HTMLDivElement>;
-  onMouseLeave: React.MouseEventHandler<HTMLDivElement>;
-  style: React.CSSProperties;
+  anchor?: any;
+  offset?: any;
+  children?: JSX.Element;
+  onClick?: React.MouseEventHandler<HTMLDivElement>;
+  onMouseEnter?: React.MouseEventHandler<HTMLDivElement>;
+  onMouseLeave?: React.MouseEventHandler<HTMLDivElement>;
+  style?: React.CSSProperties;
 }
 
 export default class Marker extends React.Component<Props, void> {

@@ -39,7 +39,7 @@ const anchorTranslates = {
   'top-left': 'translate(0,0)',
   'top-right': 'translate(-100%,0)',
   'bottom-left': 'translate(0,-100%)',
-  'bottom-right': 'translate(-100%,-100%)',
+  'bottom-right': 'translate(-100%,-100%)'
 };
 
 // Hack /o\
@@ -95,7 +95,7 @@ const normalizedOffsets = (offset: any): any => {
       'top-left': new (Point as any)(cornerOffset, cornerOffset),
       'top-right': new (Point as any)(-cornerOffset, cornerOffset),
       'bottom-left': new (Point as any)(cornerOffset, -cornerOffset),
-      'bottom-right': new (Point as any)(-cornerOffset, -cornerOffset),
+      'bottom-right': new (Point as any)(-cornerOffset, -cornerOffset)
     };
   }
 

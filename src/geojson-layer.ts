@@ -99,4 +99,3 @@ export default class GeoJSONLayer extends React.Component<Props, void> {
     return null;
   }
 }
-

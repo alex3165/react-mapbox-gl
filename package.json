@@ -5,7 +5,8 @@
   "main": "lib/index.js",
   "scripts": {
     "clean": "rm -rf dist",
-    "lint": "tslint",
+    "test": "jest",
+    "lint": "tslint --project tsconfig.json",
     "build": "tsc",
     "build:watch": "tsc --watch",
     "prepublish": "npm run clean && npm run build",
@@ -13,10 +14,14 @@
     "postversion": "git push && git push --tags"
   },
   "jest": {
-    "testPathIgnorePatterns": [
-      "/node_modules/",
-      "/lib/",
-      "/es/"
+    "transform": {
+      ".(ts|tsx)": "<rootDir>/node_modules/ts-jest/preprocessor.js"
+    },
+    "testRegex": "(/__tests__/.*|\\.(test|spec))\\.(ts|tsx|js)$",
+    "moduleFileExtensions": [
+      "ts",
+      "tsx",
+      "js"
     ],
     "verbose": true
   },
@@ -55,9 +60,12 @@
     "react-dom": "^15.0.1"
   },
   "devDependencies": {
+    "@types/jest": "^18.1.1",
     "@types/mapbox-gl": "^0.29.0",
     "@types/node": "^7.0.5",
     "@types/react": "^15.0.6",
+    "@types/react-addons-test-utils": "^0.14.17",
+    "@types/recompose": "^0.20.3",
     "@types/typescript": "^2.0.0",
     "jest": "^17.0.1",
     "react": "^15.4.0",
@@ -65,6 +73,7 @@
     "react-dom": "^15.4.0",
     "react-test-renderer": "^15.4.0",
     "recompose": "^0.20.2",
+    "ts-jest": "^18.0.3",
     "tslint": "^4.4.2",
     "tslint-react": "^2.3.0"
   }
