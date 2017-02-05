@@ -7,7 +7,7 @@ import {
   ImageSource,
   VideoSource,
   GeoJSONSourceRaw
-} from 'mapbox-gl';
+} from 'mapbox-gl/dist/mapbox-gl';
 
 export interface Context {
   map: Map;
@@ -41,6 +41,22 @@ export default class Source extends React.Component<Props, void> {
     if (map.getSource(this.id)) {
       map.removeSource(this.id);
     }
+  }
+
+  public componentWillReceiveProps(props: Props) {
+    const { id } = this;
+    const { sourceOptions } = this.props;
+    const { map } = this.context;
+
+    if ((props.sourceOptions as GeoJSONSourceRaw).data !== (sourceOptions as GeoJSONSourceRaw).data) {
+      (map
+        .getSource(id) as GeoJSONSource)
+        .setData((props.sourceOptions as GeoJSONSourceRaw).data as any);
+    }
+  }
+
+  public shouldComponentUpdate(nextProps: Props) {
+    return (nextProps.sourceOptions as GeoJSONSourceRaw).data !== (this.props.sourceOptions as GeoJSONSourceRaw).data;
   }
 
   public render() {
