@@ -7,6 +7,7 @@
     "clean": "rm -rf dist",
     "lint": "tslint",
     "build": "tsc",
+    "build:watch": "tsc --watch",
     "prepublish": "npm run clean && npm run build",
     "version": "npm run build",
     "postversion": "git push && git push --tags"

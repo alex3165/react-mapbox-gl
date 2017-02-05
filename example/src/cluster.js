@@ -40,7 +40,7 @@ export default class ClusterExample extends Component {
   }
 
   clusterMarker = (coordinates, pointCount) => (
-    <Marker coordinates={coordinates} style={styles.clusterMarker}>
+    <Marker coordinates={coordinates} key={coordinates.toString()} style={styles.clusterMarker}>
       { pointCount }
     </Marker>
   );

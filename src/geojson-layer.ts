@@ -82,7 +82,7 @@ export default class GeoJSONLayer extends React.Component<Props, void> {
 
     map.removeSource(id);
 
-    layerIds.forEach(map.removeLayer);
+    layerIds.forEach((lId) => map.removeLayer(lId));
   }
 
   public componentWillReceiveProps(props: Props) {
