@@ -31,6 +31,22 @@ export default class Source extends React.Component {
     }
   }
 
+  componentWillReceiveProps(props) {
+    const { id } = this;
+    const { sourceOptions } = this.props;
+    const { map } = this.context;
+
+    if (props.sourceOptions.data !== sourceOptions.data) {
+      map
+        .getSource(id)
+        .setData(props.sourceOptions.data);
+    }
+  }
+
+  shouldComponentUpdate(nextProps) {
+    return nextProps.sourceOptions.data !== this.props.sourceOptions.data;
+  }
+
   render() {
     return null;
   }
