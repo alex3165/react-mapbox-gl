@@ -11,13 +11,11 @@ const scales = [
   10 * 1000
 ];
 
-const defaultPosition = { top: 10, right: 10, bottom: 'auto', left: 'auto' };
-
 const positions = {
-  topRight: defaultPosition,
-  topLeft: defaultPosition,
-  bottomRight: defaultPosition,
-  bottomLeft: defaultPosition
+  topRight: { top: 10, right: 10, bottom: 'auto', left: 'auto' },
+  topLeft: { top: 10, left: 10, bottom: 'auto', right: 'auto' },
+  bottomRight: { bottom: 10, right: 10, top: 'auto', left: 'auto' },
+  bottomLeft: { bottom: 10, left: 10, top: 'auto', right: 'auto' }
 };
 
 const containerStyle = {
@@ -109,14 +107,14 @@ export default class ScaleControl extends React.Component<Props, State> {
 
     const totalWidth = this._getDistanceTwoPoints(
       [_sw.lng, _ne.lat],
-      [_sw.lng, _ne.lat],
+      [_ne.lng, _ne.lat],
       measurement
     );
 
     const relativeWidth = totalWidth / clientWidth * MIN_WIDTH_SCALE;
 
     const chosenScale = scales.reduce((acc, curr) => {
-      if (curr > relativeWidth) {
+      if (!acc && curr > relativeWidth) {
         return curr;
       }
 
