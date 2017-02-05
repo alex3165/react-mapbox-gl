@@ -6,7 +6,7 @@
     "sourceMap": true,
     "moduleResolution": "node",
     "rootDirs": ["src"],
-    "jsx": "preserve",
+    "jsx": "react",
     "removeComments": true,
     "forceConsistentCasingInFileNames": true,
     "noImplicitReturns": true,

@@ -93,7 +93,7 @@ export default class Cluster extends React.Component<Props, State> {
     if (newPoints.length !== clusterPoints.length) {
       this.setState({ clusterPoints: newPoints });
     }
-  };
+  }
 
   private feature(coordinates: number[]) {
     return {
