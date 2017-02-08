@@ -1,6 +1,6 @@
 import * as MapboxGl from 'mapbox-gl/dist/mapbox-gl';
 import * as React from 'react';
-const isEqual = require('deep-equal'); // tslint:disable-line
+import isEqual from 'deep-equal';
 
 const events = {
   onStyleLoad: 'style.load', // Should remain first

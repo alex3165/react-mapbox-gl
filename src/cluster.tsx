@@ -1,8 +1,7 @@
 import * as React from 'react';
 import * as MapboxGL from 'mapbox-gl';
 import { Props as MarkerProps } from './marker';
-
-const supercluster = require('supercluster'); //tslint:disable-line
+import supercluster from 'supercluster';
 
 export interface Props {
   ClusterMarkerFactory: (coordinates: number[], pointCount: number) => JSX.Element;
