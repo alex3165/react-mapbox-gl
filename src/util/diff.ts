@@ -1,7 +1,7 @@
 const reduce = require('reduce-object'); // tslint:disable-line
 
 const find = (obj: any, predicate: (...args: any[]) => boolean) => (
-  Object.keys(obj).find((key) => predicate(obj[key], key))
+  Object.keys(obj).filter((key) => predicate(obj[key], key))[0]
 );
 
 const diff = (obj1: any, obj2: any) => (

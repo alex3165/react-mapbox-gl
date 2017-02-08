@@ -237,10 +237,10 @@ export default class ReactMapboxGl extends React.Component<Props & Events, State
       const didFitBoundsUpdate = (
         fitBounds !== nextProps.fitBounds || // Check for reference equality
         nextProps.fitBounds.length !== (fitBounds && fitBounds.length) || // Added element
-        !!fitBounds.find((c, i) => { // Check for equality
+        !!fitBounds.filter((c, i) => { // Check for equality
           const nc = nextProps.fitBounds && nextProps.fitBounds[i];
           return c[0] !== (nc && nc[0]) || c[1] !== (nc && nc[1]);
-        })
+        })[0]
       );
 
       if (didFitBoundsUpdate) {
