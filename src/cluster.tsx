@@ -4,7 +4,7 @@ import { Props as MarkerProps } from './marker';
 import supercluster from 'supercluster';
 
 export interface Props {
-  ClusterMarkerFactory: (coordinates: number[], pointCount: number) => JSX.Element;
+  ClusterMarkerFactory(coordinates: number[], pointCount: number): JSX.Element;
   clusterThreshold?: number;
   radius?: number;
   maxZoom?: number;
