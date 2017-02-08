@@ -2,6 +2,7 @@ import * as React from 'react';
 import * as MapboxGL from 'mapbox-gl';
 import { Props as MarkerProps } from './marker';
 import supercluster from 'supercluster';
+import * as GeoJSON from 'geojson';
 
 export interface Props {
   ClusterMarkerFactory(coordinates: number[], pointCount: number): JSX.Element;
@@ -25,8 +26,10 @@ export interface Context {
 }
 
 export interface Point {
+  type: string;
   geometry: {
-    coordinates: number[];
+    type: string;
+    coordinates: GeoJSON.Position;
   };
   properties: {
     point_count: number;
@@ -94,7 +97,7 @@ export default class Cluster extends React.Component<Props, State> {
     }
   }
 
-  private feature(coordinates: number[]) {
+  private feature(coordinates: GeoJSON.Position): Point {
     return {
       type: 'Feature',
       geometry: {
