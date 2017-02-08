@@ -7,7 +7,10 @@ export interface Props {
   onHover?: Function;
   onEndHover?: Function;
 }
-
-const Feature: React.StatelessComponent<Props> = () => null;
+class Feature extends React.Component<Props, void> {
+  public render() {
+    return null;
+  }
+}
 
 export default Feature;

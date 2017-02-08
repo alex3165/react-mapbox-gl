@@ -105,25 +105,24 @@ export default class Layer extends React.PureComponent<Props, void> {
   private feature = (props: any, id: string) => ({
     type: 'Feature',
     geometry: this.geometry(props.coordinates),
-    properties: {
-      ...props.properties,
-      id
-    }
+    properties: { ...props.properties },
+    id
   })
 
   private onClick = (evt: any) => {
     const children = ([] as any).concat(this.props.children);
     const { map } = this.context;
-    const { id } = this;
-    const features = map.queryRenderedFeatures(evt.point, { layers: [id] });
+    const features = map.queryRenderedFeatures(evt.point, { layers: [this.id] });
 
     features.forEach((feature) => {
-      const { properties } = feature;
-      const child = children[properties.id];
+      const { id } = feature;
+      if (children && id) {
+        const child = children[id];
 
-      const onClick = child && child.props.onClick;
-      if (onClick) {
-        onClick({ ...evt, feature, map });
+        const onClick = child && child.props.onClick;
+        if (onClick) {
+          onClick({ ...evt, feature, map });
+        }
       }
     });
   }
@@ -131,21 +130,22 @@ export default class Layer extends React.PureComponent<Props, void> {
   private onMouseMove = (evt: any) => {
     const children = ([] as any).concat(this.props.children);
     const { map } = this.context;
-    const { id } = this;
 
     const oldHover = this.hover;
     const hover: string[] = [];
 
-    const features = map.queryRenderedFeatures(evt.point, { layers: [id] });
+    const features = map.queryRenderedFeatures(evt.point, { layers: [this.id] });
 
     features.forEach((feature) => {
-      const { properties } = feature;
-      const child = children[properties.id];
-      hover.push(properties.id);
+      const { id } = feature;
+      if (children && id) {
+        const child = children[id];
+        hover.push(id);
 
-      const onHover = child && child.props.onHover;
-      if (onHover) {
-        onHover({ ...evt, feature, map });
+        const onHover = child && child.props.onHover;
+        if (onHover) {
+          onHover({ ...evt, feature, map });
+        }
       }
     });
 
