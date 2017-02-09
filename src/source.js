@@ -13,6 +13,21 @@ export default class Source extends React.Component {
 
   id = this.props.id;
 
+  compareTileUrls(nextTileUrls) {
+    const tileUrls = this.props.sourceOptions.tiles;
+    let changed = false;
+    changed = tileUrls.some((tileUrl, index, array) => {
+      if (array.length !== nextTileUrls.length) {
+        return true;
+      }
+      if (nextTileUrls[index] !== tileUrl) {
+        return true;
+      }
+      return false;
+    });
+    return changed;
+  }
+
   source = {
     ...this.props.sourceOptions,
   };
@@ -31,15 +46,27 @@ export default class Source extends React.Component {
     }
   }
 
-  componentWillReceiveProps(props) {
+  componentWillReceiveProps(nextProps) {
     const { id } = this;
     const { sourceOptions } = this.props;
     const { map } = this.context;
-
-    if (props.sourceOptions.data !== sourceOptions.data) {
+    let newTiles = false;
+    if (typeof this.props.sourceOptions.tiles !== typeof nextProps.sourceOptions.tiles) {
+      newTiles = true;
+    } else if (Array.isArray(this.props.sourceOptions.tiles)) {
+      newTiles = this.compareTileUrls(nextProps.sourceOptions.tiles);
+    }
+    if (newTiles === true) {
+      this.source = nextProps.sourceOptions;
+      this.map = nextProps.id;
+      map
+        .removeSource(id);
+      map.addSource(this.id, this.source);
+    }
+    if (nextProps.sourceOptions.data !== sourceOptions.data) {
       map
         .getSource(id)
-        .setData(props.sourceOptions.data);
+        .setData(nextProps.sourceOptions.data);
     }
   }
 
