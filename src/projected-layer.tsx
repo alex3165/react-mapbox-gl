@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { Map } from 'mapbox-gl';
 import { Anchor, PointDef, OverlayProps } from './util/overlays';
+import * as GeoJSON from 'geojson';
 
 import {
   overlayState,
@@ -13,7 +14,7 @@ const defaultStyle = {
 };
 
 export interface Props {
-  coordinates: number[];
+  coordinates: GeoJSON.Position;
   anchor?: Anchor;
   offset?: number | number[] | PointDef;
   children?: JSX.Element;

@@ -5,7 +5,7 @@ import supercluster from 'supercluster';
 import * as GeoJSON from 'geojson';
 
 export interface Props {
-  ClusterMarkerFactory(coordinates: number[], pointCount: number): JSX.Element;
+  ClusterMarkerFactory(coordinates: GeoJSON.Position, pointCount: number): JSX.Element;
   clusterThreshold?: number;
   radius?: number;
   maxZoom?: number;

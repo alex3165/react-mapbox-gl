@@ -1,7 +1,8 @@
 import * as React from 'react';
+import * as GeoJSON from 'geojson';
 
 export interface Props {
-  coordinates: number[];
+  coordinates: GeoJSON.Position;
   properties: any;
   onClick?: Function;
   onHover?: Function;

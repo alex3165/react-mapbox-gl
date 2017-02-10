@@ -2,6 +2,7 @@ import * as React from 'react';
 import * as MapboxGL from 'mapbox-gl';
 import isEqual from 'deep-equal';
 import diff from './util/diff';
+import * as GeoJSON from 'geojson';
 
 let index = 0;
 const generateID = () => {
@@ -79,7 +80,7 @@ export default class Layer extends React.PureComponent<Props, void> {
     }
   };
 
-  private geometry = (coordinates: number[]) => {
+  private geometry = (coordinates: GeoJSON.Position) => {
     switch (this.props.type) {
       case 'symbol':
       case 'circle': return {

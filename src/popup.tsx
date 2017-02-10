@@ -3,9 +3,10 @@ import ProjectedLayer from './projected-layer';
 import {
   anchors
 } from './util/overlays';
+import * as GeoJSON from 'geojson';
 
 export interface Props {
-  coordinates: number[];
+  coordinates: GeoJSON.Position;
   anchor?: any;
   offset?: any;
   children?: JSX.Element;

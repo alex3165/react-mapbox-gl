@@ -1,8 +1,9 @@
 import * as React from 'react';
 import ProjectedLayer from './projected-layer';
+import * as GeoJSON from 'geojson';
 
 export interface Props {
-  coordinates: number[];
+  coordinates: GeoJSON.Position;
   anchor?: any;
   offset?: any;
   children?: JSX.Element;
