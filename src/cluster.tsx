@@ -128,7 +128,7 @@ export default class Cluster extends React.Component<Props, State> {
 
     return (
       <div>
-        {// tslint:disable-line
+        {// tslint:disable-line:jsx-no-multiline-js
           clusterPoints.map(({ geometry, properties }: Point) => (
             ClusterMarkerFactory(geometry.coordinates, properties.point_count))
           )}
