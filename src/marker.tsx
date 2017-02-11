@@ -13,15 +13,13 @@ export interface Props {
   style?: React.CSSProperties;
 }
 
-export default class Marker extends React.Component<Props, void> {
-  public render() {
-    return (
-      <ProjectedLayer
-        {...{ ...this.props, children: undefined}}
-        className="mapboxgl-marker"
-      >
-        {this.props.children}
-      </ProjectedLayer>
-    );
-  }
-}
+const Marker: React.StatelessComponent<Props> = (props) => (
+  <ProjectedLayer
+    {...{ ...props, children: undefined}}
+    className="mapboxgl-marker"
+  >
+    {props.children}
+  </ProjectedLayer>
+);
+
+export default Marker;

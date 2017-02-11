@@ -1,16 +1,11 @@
 import * as React from 'react';
 import * as MapboxGL from 'mapbox-gl/dist/mapbox-gl';
-
-let index = 0;
-const generateID = () => {
-  const newId = index + 1;
-  index = newId;
-  return index;
-};
+import { generateID } from './util/uid';
+import { Sources, SourceOptionData } from './util/types';
 
 export interface Props {
   id?: string;
-  data: GeoJSON.Feature<GeoJSON.GeometryObject> | GeoJSON.FeatureCollection<GeoJSON.GeometryObject> | string;
+  data: SourceOptionData;
   sourceOptions: MapboxGL.VectorSource | MapboxGL.RasterSource | MapboxGL.GeoJSONSource | MapboxGL.GeoJSONSourceRaw;
   before?: string;
   fillLayout?: MapboxGL.FillLayout;
@@ -39,7 +34,7 @@ export default class GeoJSONLayer extends React.Component<Props, void> {
 
   private id: string = this.props.id || `geojson-${generateID()}`;
 
-  private source = {
+  private source: Sources = {
     type: 'geojson',
     ...this.props.sourceOptions,
     data: this.props.data

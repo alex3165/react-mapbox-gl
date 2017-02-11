@@ -1,4 +1,4 @@
-import * as React from 'react';
+import { Component } from 'react';
 import * as GeoJSON from 'geojson';
 
 export interface Props {
@@ -8,7 +8,8 @@ export interface Props {
   onHover?: Function;
   onEndHover?: Function;
 }
-class Feature extends React.Component<Props, void> {
+
+class Feature extends Component<Props, void> {
   public render() {
     return null;
   }

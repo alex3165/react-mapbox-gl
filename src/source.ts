@@ -1,19 +1,15 @@
 import * as React from 'react';
 import {
   Map,
-  VectorSource,
-  RasterSource,
   GeoJSONSource,
-  ImageSource,
-  VideoSource,
   GeoJSONSourceRaw
 } from 'mapbox-gl/dist/mapbox-gl';
-
+import { SourceOptionData } from './util/types';
 export interface Context {
   map: Map;
 }
 
-export type Sources = VectorSource | RasterSource | GeoJSONSource | ImageSource | VideoSource | GeoJSONSourceRaw;
+export type Sources = GeoJSONSourceRaw;
 
 export interface Props {
   id: string;
@@ -48,15 +44,15 @@ export default class Source extends React.Component<Props, void> {
     const { sourceOptions } = this.props;
     const { map } = this.context;
 
-    if ((props.sourceOptions as GeoJSONSourceRaw).data !== (sourceOptions as GeoJSONSourceRaw).data) {
-      (map
-        .getSource(id) as GeoJSONSource)
-        .setData((props.sourceOptions as GeoJSONSourceRaw).data as any);
+    if (props.sourceOptions.data !== sourceOptions.data) {
+      const source = map.getSource(id) as GeoJSONSource;
+      const data = props.sourceOptions.data as SourceOptionData;
+      source.setData(data);
     }
   }
 
   public shouldComponentUpdate(nextProps: Props) {
-    return (nextProps.sourceOptions as GeoJSONSourceRaw).data !== (this.props.sourceOptions as GeoJSONSourceRaw).data;
+    return nextProps.sourceOptions.data !== this.props.sourceOptions.data;
   }
 
   public render() {

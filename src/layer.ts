@@ -3,20 +3,8 @@ import * as MapboxGL from 'mapbox-gl';
 import isEqual from 'deep-equal';
 import diff from './util/diff';
 import * as GeoJSON from 'geojson';
-
-let index = 0;
-const generateID = () => {
-  const newId = index + 1;
-  index = newId;
-  return index;
-};
-
-export type Sources = (
-  MapboxGL.VectorSource |
-  MapboxGL.RasterSource |
-  MapboxGL.GeoJSONSource |
-  MapboxGL.GeoJSONSourceRaw
-);
+import { generateID } from './util/uid';
+import { Sources } from './util/types';
 
 export type Paint = (
   MapboxGL.BackgroundPaint |
@@ -102,7 +90,7 @@ export default class Layer extends React.PureComponent<Props, void> {
     }
   }
 
-  private feature = (props: any, id: string) => ({
+  private makeFeature = (props: any, id: string) => ({
     type: 'Feature',
     geometry: this.geometry(props.coordinates),
     properties: { ...props.properties },
@@ -235,7 +223,7 @@ export default class Layer extends React.PureComponent<Props, void> {
       const children = ([] as any).concat(this.props.children);
 
       const features = children
-        .map(({ props }: any, id: string) => this.feature(props, id))
+        .map(({ props }: any, id: string) => this.makeFeature(props, id))
         .filter(Boolean);
 
       const source = map.getSource(this.props.sourceId || this.id);
