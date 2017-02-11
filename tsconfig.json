@@ -14,7 +14,8 @@
     "noImplicitAny": true,
     "strictNullChecks": true,
     "noUnusedLocals": true,
-    "declaration": true
+    "declaration": true,
+    "suppressImplicitAnyIndexErrors": true
   },
   "include": [
     "src/**/*"
