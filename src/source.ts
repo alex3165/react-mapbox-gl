@@ -4,16 +4,16 @@ import {
   GeoJSONSource,
   GeoJSONSourceRaw
 } from 'mapbox-gl/dist/mapbox-gl';
-import { SourceOptionData } from './util/types';
+import { SourceOptionData, TilesJson } from './util/types';
+
 export interface Context {
   map: Map;
 }
 
-export type Sources = GeoJSONSourceRaw;
-
 export interface Props {
   id: string;
-  sourceOptions: Sources;
+  geoJsonSource?: GeoJSONSourceRaw;
+  tileJsonSource?: TilesJson;
 }
 
 export default class Source extends React.Component<Props, void> {
@@ -27,8 +27,10 @@ export default class Source extends React.Component<Props, void> {
 
   public componentWillMount() {
     const { map } = this.context;
-    if (!map.getSource(this.id)) {
-      map.addSource(this.id, this.props.sourceOptions);
+    const { geoJsonSource, tileJsonSource } = this.props;
+
+    if (!map.getSource(this.id) && (geoJsonSource || tileJsonSource)) {
+      map.addSource(this.id, (geoJsonSource || tileJsonSource) as any);
     }
   }
 
@@ -41,18 +43,30 @@ export default class Source extends React.Component<Props, void> {
 
   public componentWillReceiveProps(props: Props) {
     const { id } = this;
-    const { sourceOptions } = this.props;
+    const { geoJsonSource, tileJsonSource } = this.props;
     const { map } = this.context;
 
-    if (props.sourceOptions.data !== sourceOptions.data) {
-      const source = map.getSource(id) as GeoJSONSource;
-      const data = props.sourceOptions.data as SourceOptionData;
-      source.setData(data);
-    }
-  }
+    // Update tilesJsonSource
+    if (tileJsonSource && props.tileJsonSource) {
+      const hasNewTilesSource = (
+        tileJsonSource.url !== props.tileJsonSource.url ||
+        // Check for reference equality on tiles array
+        tileJsonSource.tiles !== props.tileJsonSource.tiles ||
+        tileJsonSource.minzoom !== props.tileJsonSource.minzoom ||
+        tileJsonSource.maxzoom !== props.tileJsonSource.maxzoom
+      );
 
-  public shouldComponentUpdate(nextProps: Props) {
-    return nextProps.sourceOptions.data !== this.props.sourceOptions.data;
+      if (hasNewTilesSource) {
+        map.removeSource(id);
+        map.addSource(id, props.tileJsonSource as any);
+      }
+    }
+
+    // Update geoJsonSource data
+    if ((geoJsonSource && props.geoJsonSource) && props.geoJsonSource.data !== geoJsonSource.data) {
+      const source = map.getSource(id) as GeoJSONSource;
+      source.setData(props.geoJsonSource.data as SourceOptionData);
+    }
   }
 
   public render() {

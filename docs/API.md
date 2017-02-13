@@ -108,7 +108,8 @@ import { Source } from "react-mapbox-gl";
 
 ### Properties
 - **id** *(required)*: `String`
-- **options** *(required)*: `Object` Source options.
+- **geoJsonSource** : `Object` GeoJson source, see [mapbox-gl GeoJson](https://www.mapbox.com/mapbox-gl-js/style-spec/#sources-geojson) for options
+- **tileJsonSource** : `Object` TileJson source, see [mapbox-gl TileJson](https://www.mapbox.com/mapbox-gl-js/style-spec/#sources) for options
 
 ### Example
 
@@ -118,10 +119,10 @@ const RASTER_SOURCE_OPTIONS = {
   "tiles": [
     "https://someurl.com/512/{z}/{x}/{y}",
   ],
-  "tileSize": 512,
-  data: {},
+  "tileSize": 512
 };
-<Source id="example_id" sourceOptions={RASTER_SOURCE_OPTIONS} />
+
+<Source id="example_id" tileJsonSource={RASTER_SOURCE_OPTIONS} />
 <Layer type="raster" id="example_id" sourceId="example_id" />
 ```
 
