@@ -62,6 +62,7 @@
   "devDependencies": {
     "@types/jest": "^18.1.1",
     "@types/mapbox-gl": "^0.29.0",
+    "@types/node": "^7.0.5",
     "@types/react": "^15.0.6",
     "@types/react-addons-test-utils": "^0.14.17",
     "@types/recompose": "^0.20.3",
