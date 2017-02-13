@@ -2,7 +2,7 @@
 ![London cycle example gif](docs/london-cycle-example.gif "London cycle example gif")
 
 React wrapper of [mapbox-gl-js](https://www.mapbox.com/mapbox-gl-js/api/) which bring the API to a react friendly way.
-On top of the layers provided by `react-mapbox-gl` add some React layers, projected using `map.project`.
+On top of the layers provided, `react-mapbox-gl` add some React rendered layers, projected using `map.project`.
 
 Include the following elements:
 - ReactMapboxGl
