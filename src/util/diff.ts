@@ -1,4 +1,4 @@
-import reduce from 'reduce-object';
+const reduce = require('reduce-object'); // tslint:disable-line
 
 const find = (obj: any, predicate: (...args: any[]) => boolean) => (
   Object.keys(obj).filter((key) => predicate(obj[key], key))[0]

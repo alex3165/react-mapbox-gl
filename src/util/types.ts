@@ -12,3 +12,12 @@ export type SourceOptionData = (
   GeoJSON.FeatureCollection<GeoJSON.GeometryObject> |
   string
 );
+
+export interface Feature {
+  type: string;
+  geometry: {
+    type: string;
+    coordinates: GeoJSON.Position;
+  };
+  properties: any;
+};

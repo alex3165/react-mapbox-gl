@@ -5,6 +5,7 @@ import diff from './util/diff';
 import * as GeoJSON from 'geojson';
 import { generateID } from './util/uid';
 import { Sources } from './util/types';
+import { Feature } from './util/types';
 
 export type Paint = (
   MapboxGL.BackgroundPaint |
@@ -86,24 +87,26 @@ export default class Layer extends React.PureComponent<Props, void> {
         coordinates
       };
 
-      default: return null;
+      default: return {
+        type: 'Point',
+        coordinates
+      };
     }
   }
 
-  private makeFeature = (props: any, id: string) => ({
+  private makeFeature = (props: any, id: string): Feature => ({
     type: 'Feature',
     geometry: this.geometry(props.coordinates),
-    properties: { ...props.properties },
-    id
+    properties: { ...props.properties, id }
   })
 
   private onClick = (evt: any) => {
     const children = ([] as any).concat(this.props.children);
     const { map } = this.context;
-    const features = map.queryRenderedFeatures(evt.point, { layers: [this.id] });
+    const features = map.queryRenderedFeatures(evt.point, { layers: [this.id] }) as Feature[];
 
     features.forEach((feature) => {
-      const { id } = feature;
+      const { id } = feature.properties;
       if (children && id) {
         const child = children[id];
 
@@ -122,10 +125,10 @@ export default class Layer extends React.PureComponent<Props, void> {
     const oldHover = this.hover;
     const hover: string[] = [];
 
-    const features = map.queryRenderedFeatures(evt.point, { layers: [this.id] });
+    const features = map.queryRenderedFeatures(evt.point, { layers: [this.id] }) as Feature[];
 
     features.forEach((feature) => {
-      const { id } = feature;
+      const { id } = feature.properties;
       if (children && id) {
         const child = children[id];
         hover.push(id);
