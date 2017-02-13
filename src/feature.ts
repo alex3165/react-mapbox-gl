@@ -3,7 +3,7 @@ import * as GeoJSON from 'geojson';
 
 export interface Props {
   coordinates: GeoJSON.Position;
-  properties: any;
+  properties?: any;
   onClick?: Function;
   onHover?: Function;
   onEndHover?: Function;

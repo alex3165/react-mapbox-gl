@@ -7,25 +7,8 @@ import { generateID } from './util/uid';
 import { Sources } from './util/types';
 import { Feature } from './util/types';
 
-export type Paint = (
-  MapboxGL.BackgroundPaint |
-  MapboxGL.FillPaint |
-  MapboxGL.FillExtrusionPaint |
-  MapboxGL.LinePaint |
-  MapboxGL.SymbolPaint |
-  MapboxGL.RasterPaint |
-  MapboxGL.CirclePaint
-);
-
-export type Layout = (
-  MapboxGL.BackgroundLayout |
-  MapboxGL.FillLayout |
-  MapboxGL.FillExtrusionLayout |
-  MapboxGL.LineLayout |
-  MapboxGL.SymbolLayout |
-  MapboxGL.RasterLayout |
-  MapboxGL.CircleLayout
-);
+export type Paint = any;
+export type Layout = any;
 
 export interface Props {
   id?: string;

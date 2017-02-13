@@ -21,21 +21,21 @@ const events = {
 };
 
 export interface Events {
-  onStyleLoad: Function;
-  onResize: Function;
-  onDblClick: Function;
-  onClick: Function;
-  onMouseMove: Function;
-  onMoveStart: Function;
-  onMove: Function;
-  onMoveEnd: Function;
-  onMouseUp: Function;
-  onDragStart: Function;
-  onDragEnd: Function;
-  onDrag: Function;
-  onZoomStart: Function;
-  onZoom: Function;
-  onZoomEnd: Function;
+  onStyleLoad?: Function;
+  onResize?: Function;
+  onDblClick?: Function;
+  onClick?: Function;
+  onMouseMove?: Function;
+  onMoveStart?: Function;
+  onMove?: Function;
+  onMoveEnd?: Function;
+  onMouseUp?: Function;
+  onDragStart?: Function;
+  onDragEnd?: Function;
+  onDrag?: Function;
+  onZoomStart?: Function;
+  onZoom?: Function;
+  onZoomEnd?: Function;
 }
 
 export interface FitBoundsOptions {
