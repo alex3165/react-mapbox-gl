@@ -23,8 +23,7 @@ export {
   ScaleControl,
   Marker,
   Source,
-  Cluster,
+  Cluster
 };
 
 export default Map;
-

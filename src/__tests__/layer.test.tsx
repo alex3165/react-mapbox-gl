@@ -1,16 +1,18 @@
-import React from 'react';
+import * as React from 'react';
 import Layer from '../layer';
-import TestUtils from 'react-addons-test-utils';
+import * as TestUtils from 'react-addons-test-utils';
 import { withContext } from 'recompose';
 
 describe('Layer', () => {
-  let LayerWithContext;
-  let addLayerMock;
-  let addSourceMock;
+  let LayerWithContext: any;
+  let addLayerMock = jest.fn();
+  let addSourceMock = jest.fn();
+  let children: any[];
 
   beforeEach(() => {
     addLayerMock = jest.fn();
     addSourceMock = jest.fn();
+    children = [{ props: {}}];
 
     LayerWithContext = withContext({
       map: React.PropTypes.object
@@ -25,9 +27,10 @@ describe('Layer', () => {
   });
 
   it('Should render layer with default options', () => {
-    const LayerComponent = TestUtils.renderIntoDocument(
+    TestUtils.renderIntoDocument(
       <LayerWithContext
-        children={[{ props: {}}]}/>
+        children={children}
+      /> as React.ReactElement<any>
     );
 
     expect(addLayerMock.mock.calls[0]).toEqual([{
@@ -40,16 +43,17 @@ describe('Layer', () => {
   });
 
   it('Should render layer with default source', () => {
-    const LayerComponent = TestUtils.renderIntoDocument(
+    TestUtils.renderIntoDocument(
       <LayerWithContext
-        children={[{ props: {}}]}/>
+        children={children}
+      /> as React.ReactElement<any>
     );
 
     expect(addSourceMock.mock.calls[0]).toEqual(['layer-2', {
       type: 'geojson',
       data: {
         type: 'FeatureCollection',
-        features: [],
+        features: []
       }
     }]);
   });

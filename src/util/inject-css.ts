@@ -1,6 +1,6 @@
 import cssRules from '../constants/css';
 
-export default function injectCSS(window) {
+const injectCSS = (window: Window) => {
   if (window && typeof window === 'object' && window.document) {
     const { document } = window;
     const head = (document.head || document.getElementsByTagName('head')[0]);
@@ -9,4 +9,6 @@ export default function injectCSS(window) {
     styleElement.innerHTML = cssRules;
     head.appendChild(styleElement);
   }
-}
+};
+
+export default injectCSS;

@@ -1,6 +1,6 @@
-import MapboxGl from 'mapbox-gl/dist/mapbox-gl.js';
-import React, { Component, PropTypes } from 'react';
-import isEqual from 'deep-equal';
+import * as MapboxGl from 'mapbox-gl/dist/mapbox-gl';
+import * as React from 'react';
+const isEqual = require('deep-equal'); //tslint:disable-line
 
 const events = {
   onStyleLoad: 'style.load', // Should remain first
@@ -17,82 +17,102 @@ const events = {
   onDragEnd: 'dragend',
   onZoomStart: 'zoomstart',
   onZoom: 'zoom',
-  onZoomEnd: 'zoomend',
+  onZoomEnd: 'zoomend'
 };
 
-export default class ReactMapboxGl extends Component {
-  static propTypes = {
-    // Events propTypes
-    ...Object.keys(events)
-      .reduce((acc, event) => (
-        Object.assign({}, acc, { [event]: PropTypes.func })
-      ), {}),
+export interface Events {
+  onStyleLoad: Function;
+  onResize: Function;
+  onDblClick: Function;
+  onClick: Function;
+  onMouseMove: Function;
+  onMoveStart: Function;
+  onMove: Function;
+  onMoveEnd: Function;
+  onMouseUp: Function;
+  onDragStart: Function;
+  onDragEnd: Function;
+  onDrag: Function;
+  onZoomStart: Function;
+  onZoom: Function;
+  onZoomEnd: Function;
+}
 
-    // Main propTypes
-    style: PropTypes.oneOfType([
-      PropTypes.string,
-      PropTypes.object,
-    ]).isRequired,
-    accessToken: PropTypes.string.isRequired,
-    center: PropTypes.arrayOf(PropTypes.number),
-    zoom: PropTypes.arrayOf(PropTypes.number),
-    minZoom: PropTypes.number,
-    maxZoom: PropTypes.number,
-    maxBounds: PropTypes.array,
-    fitBounds: PropTypes.array,
-    fitBoundsOptions: PropTypes.object,
-    bearing: PropTypes.number,
-    pitch: PropTypes.number,
-    containerStyle: PropTypes.object,
-    hash: PropTypes.bool,
-    preserveDrawingBuffer: PropTypes.bool,
-    scrollZoom: PropTypes.bool,
-    movingMethod: PropTypes.oneOf([
-      'jumpTo',
-      'easeTo',
-      'flyTo',
-    ]),
-    attributionPosition: PropTypes.oneOf([
-      'top-left',
-      'top-right',
-      'bottom-left',
-      'bottom-right',
-    ]),
-    interactive: PropTypes.bool,
-    dragRotate: PropTypes.bool,
-  };
+export interface FitBoundsOptions {
+  linear?: boolean;
+  easing?: Function;
+  padding?: number;
+  offset?: MapboxGl.Point | number[];
+  maxZoom?: number;
+}
 
-  static defaultProps = {
+export interface Props {
+  style: string | MapboxGl.Style;
+  accessToken: string;
+  center?: number[];
+  zoom?: number[];
+  minZoom?: number;
+  maxZoom?: number;
+  maxBounds?: MapboxGl.LngLatBounds | number[][];
+  fitBounds?: number[][];
+  fitBoundsOptions?: FitBoundsOptions;
+  bearing?: number;
+  pitch?: number;
+  containerStyle?: React.CSSProperties;
+  hash?: boolean;
+  preserveDrawingBuffer?: boolean;
+  scrollZoom?: boolean;
+  interactive?: boolean;
+  dragRotate?: boolean;
+  movingMethod?: 'jumpTo' | 'easeTo' | 'flyTo';
+  attributionControl?: boolean;
+  children?: JSX.Element;
+}
+
+export interface State {
+  map?: MapboxGl.Map;
+}
+
+// Satisfy typescript pitfall with defaultProps
+const defaultZoom = [11];
+const defaultMovingMethod = 'flyTo';
+
+export default class ReactMapboxGl extends React.Component<Props & Events, State> {
+  public static defaultProps = {
     hash: false,
-    onStyleLoad: (...args) => args,
+    onStyleLoad: (...args: any[]) => args,
     preserveDrawingBuffer: false,
     center: [
       -0.2416815,
-      51.5285582,
+      51.5285582
     ],
-    zoom: [11],
+    zoom: defaultZoom,
     minZoom: 0,
     maxZoom: 20,
     bearing: 0,
     scrollZoom: true,
-    movingMethod: 'flyTo',
+    movingMethod: defaultMovingMethod,
     pitch: 0,
     attributionPosition: 'bottom-right',
     interactive: true,
-    dragRotate: true,
+    dragRotate: true
   };
 
-  static childContextTypes = {
-    map: React.PropTypes.object,
+  public static childContextTypes = {
+    map: React.PropTypes.object
   };
 
-  state = {};
+  public state = {
+    map: undefined
+  };
 
-  getChildContext = () => ({
-    map: this.state.map,
-  });
+  public getChildContext = () => ({
+    map: this.state.map
+  })
 
-  componentDidMount() {
+  private container: HTMLElement;
+
+  public componentDidMount() {
     const {
       style,
       hash,
@@ -108,17 +128,18 @@ export default class ReactMapboxGl extends Component {
       fitBoundsOptions,
       bearing,
       scrollZoom,
-      attributionPosition,
+      attributionControl,
       interactive,
-      dragRotate,
+      dragRotate
     } = this.props;
 
-    MapboxGl.accessToken = accessToken;
+    (MapboxGl as any).accessToken = accessToken;
 
     const map = new MapboxGl.Map({
       preserveDrawingBuffer,
       hash,
-      zoom: zoom[0],
+      // Duplicated default because Typescript can't figure out there is a defaultProps and zoom will never be undefined
+      zoom: zoom ? zoom[0] : defaultZoom[0],
       minZoom,
       maxZoom,
       maxBounds,
@@ -128,11 +149,9 @@ export default class ReactMapboxGl extends Component {
       pitch,
       style,
       scrollZoom,
-      attributionControl: {
-        position: attributionPosition,
-      },
+      attributionControl,
       interactive,
-      dragRotate,
+      dragRotate
     });
 
     if (fitBounds) {
@@ -143,7 +162,7 @@ export default class ReactMapboxGl extends Component {
       const propEvent = this.props[event];
 
       if (propEvent) {
-        map.on(events[event], (...args) => {
+        map.on(events[event], (...args: any[]) => {
           propEvent(map, ...args);
 
           if (index === 0) {
@@ -154,8 +173,8 @@ export default class ReactMapboxGl extends Component {
     });
   }
 
-  componentWillUnmount() {
-    const { map } = this.state;
+  public componentWillUnmount() {
+    const { map } = this.state as State;
 
     if (map) {
       // Remove all events attached to the map
@@ -168,7 +187,7 @@ export default class ReactMapboxGl extends Component {
     }
   }
 
-  shouldComponentUpdate(nextProps, nextState) {
+  public shouldComponentUpdate(nextProps: Props, nextState: State) {
     return (
       nextProps.children !== this.props.children ||
       nextProps.containerStyle !== this.props.containerStyle ||
@@ -178,8 +197,8 @@ export default class ReactMapboxGl extends Component {
     );
   }
 
-  componentWillReceiveProps(nextProps) {
-    const { map } = this.state;
+  public componentWillReceiveProps(nextProps: Props) {
+    const { map } = this.state as State;
     if (!map) {
       return null;
     }
@@ -191,12 +210,15 @@ export default class ReactMapboxGl extends Component {
 
     const didZoomUpdate = (
       this.props.zoom !== nextProps.zoom &&
-      nextProps.zoom[0] !== zoom
+      (nextProps.zoom && nextProps.zoom[0]) !== zoom
     );
 
     const didCenterUpdate = (
       this.props.center !== nextProps.center &&
-      (nextProps.center[0] !== center.lng || nextProps.center[1] !== center.lat)
+      (
+        (nextProps.center && nextProps.center[0]) !== center.lng ||
+        (nextProps.center && nextProps.center[1]) !== center.lat
+      )
     );
 
     const didBearingUpdate = (
@@ -215,10 +237,10 @@ export default class ReactMapboxGl extends Component {
       const didFitBoundsUpdate = (
         fitBounds !== nextProps.fitBounds || // Check for reference equality
         nextProps.fitBounds.length !== (fitBounds && fitBounds.length) || // Added element
-        !!fitBounds.find((c, i) => { // Check for equality
-          const nc = nextProps.fitBounds[i];
-          return c[0] !== nc[0] || c[1] !== nc[1];
-        })
+        !!fitBounds.filter((c, i) => { // Check for equality
+          const nc = nextProps.fitBounds && nextProps.fitBounds[i];
+          return c[0] !== (nc && nc[0]) || c[1] !== (nc && nc[1]);
+        })[0]
       );
 
       if (didFitBoundsUpdate) {
@@ -227,11 +249,12 @@ export default class ReactMapboxGl extends Component {
     }
 
     if (didZoomUpdate || didCenterUpdate || didBearingUpdate || didPitchUpdate) {
-      map[this.props.movingMethod]({
-        zoom: didZoomUpdate ? nextProps.zoom[0] : zoom,
+      const mm: string = this.props.movingMethod || defaultMovingMethod;
+      map[mm]({
+        zoom: (didZoomUpdate && nextProps.zoom) ? nextProps.zoom[0] : zoom,
         center: didCenterUpdate ? nextProps.center : center,
         bearing: didBearingUpdate ? nextProps.bearing : bearing,
-        pitch: didPitchUpdate ? nextProps.pitch : pitch,
+        pitch: didPitchUpdate ? nextProps.pitch : pitch
       });
     }
 
@@ -242,15 +265,17 @@ export default class ReactMapboxGl extends Component {
     return null;
   }
 
-  render() {
+  private setRef = (x: HTMLElement) => {
+    this.container = x;
+  }
+
+  public render() {
     const { containerStyle, children } = this.props;
     const { map } = this.state;
 
     return (
-      <div ref={(x) => { this.container = x; }} style={containerStyle}>
-        {
-          map && children
-        }
+      <div ref={this.setRef} style={containerStyle}>
+        {map && children}
       </div>
     );
   }
