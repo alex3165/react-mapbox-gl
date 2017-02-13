@@ -1,6 +1,6 @@
 {
   "name": "react-mapbox-gl-example",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "private": true,
   "description": "An example for react-mapbox-gl",
   "license": "MIT",

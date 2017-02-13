@@ -1,3 +1,7 @@
+## 1.0.0 (February 13 2017)
+
+- All the source code is now written in Typescript, you can now get the type definitions for each component in a Typescript environment.
+
 ## 0.19.0 (December 12 2016)
 
 - Implement the `Popup` and the `Marker` Components using React. These components now keep track of the context.
