@@ -75,10 +75,10 @@ export default class Cluster extends React.Component<Props, State> {
     const { map } = this.context;
     const { superC, clusterPoints } = this.state;
 
-    const { _sw, _ne } = map.getBounds() as any;
+    const bounds = map.getBounds();
     const zoom = map.getZoom();
     const newPoints = superC.getClusters(
-      [_sw.lng, _sw.lat, _ne.lng, _ne.lat],
+      [bounds.getWest(), bounds.getSouth(), bounds.getEast(), bounds.getNorth()],
       Math.round(zoom)
     );
 

@@ -20,22 +20,24 @@ const events = {
   onZoomEnd: 'zoomend'
 };
 
+export type MapEvent = (map: MapboxGl.Map, evt: React.SyntheticEvent<any>) => void;
+
 export interface Events {
-  onStyleLoad?: Function;
-  onResize?: Function;
-  onDblClick?: Function;
-  onClick?: Function;
-  onMouseMove?: Function;
-  onMoveStart?: Function;
-  onMove?: Function;
-  onMoveEnd?: Function;
-  onMouseUp?: Function;
-  onDragStart?: Function;
-  onDragEnd?: Function;
-  onDrag?: Function;
-  onZoomStart?: Function;
-  onZoom?: Function;
-  onZoomEnd?: Function;
+  onStyleLoad?: MapEvent;
+  onResize?: MapEvent;
+  onDblClick?: MapEvent;
+  onClick?: MapEvent;
+  onMouseMove?: MapEvent;
+  onMoveStart?: MapEvent;
+  onMove?: MapEvent;
+  onMoveEnd?: MapEvent;
+  onMouseUp?: MapEvent;
+  onDragStart?: MapEvent;
+  onDragEnd?: MapEvent;
+  onDrag?: MapEvent;
+  onZoomStart?: MapEvent;
+  onZoom?: MapEvent;
+  onZoomEnd?: MapEvent;
 }
 
 export interface FitBoundsOptions {
@@ -162,8 +164,8 @@ export default class ReactMapboxGl extends React.Component<Props & Events, State
       const propEvent = this.props[event];
 
       if (propEvent) {
-        map.on(events[event], (...args: any[]) => {
-          propEvent(map, ...args);
+        map.on(events[event], (evt: React.SyntheticEvent<any>) => {
+          propEvent(map, evt);
 
           if (index === 0) {
             this.setState({ map });
