@@ -90,7 +90,7 @@ export default class Layer extends React.PureComponent<Props, void> {
 
     features.forEach((feature) => {
       const { id } = feature.properties;
-      if (children && id) {
+      if (children) {
         const child = children[id];
 
         const onClick = child && child.props.onClick;
@@ -112,7 +112,7 @@ export default class Layer extends React.PureComponent<Props, void> {
 
     features.forEach((feature) => {
       const { id } = feature.properties;
-      if (children && id) {
+      if (children) {
         const child = children[id];
         hover.push(id);
 
