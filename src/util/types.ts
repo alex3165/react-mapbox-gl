@@ -21,3 +21,12 @@ export interface Feature {
   };
   properties: any;
 };
+
+export interface TilesJson {
+  type: string;
+  tiles?: string[];
+  url?: string;
+  maxzoom: number;
+  minzoom: number;
+  tileSize?: number;
+};
