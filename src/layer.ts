@@ -176,7 +176,7 @@ export default class Layer extends React.PureComponent<Props, void> {
   }
 
   public componentWillReceiveProps(props: Props) {
-    const { paint, layout } = this.props;
+    const { paint, layout,  before } = this.props;
     const { map } = this.context;
 
     if (!isEqual(props.paint, paint)) {
@@ -193,6 +193,10 @@ export default class Layer extends React.PureComponent<Props, void> {
       Object.keys(layoutDiff).forEach((key) => {
         map.setLayoutProperty(this.id, key, layoutDiff[key]);
       });
+    }
+
+    if (before !== props.before) {
+      map.moveLayer(this.id, props.before);
     }
   }
 
