@@ -1,7 +1,7 @@
 import * as React from 'react';
 import Layer from '../layer';
-import * as TestUtils from 'react-addons-test-utils';
 import { withContext } from 'recompose';
+import { mount } from 'enzyme';
 
 describe('Layer', () => {
   let LayerWithContext: any;
@@ -27,7 +27,7 @@ describe('Layer', () => {
   });
 
   it('Should render layer with default options', () => {
-    TestUtils.renderIntoDocument(
+    mount(
       <LayerWithContext
         children={children}
       /> as React.ReactElement<any>
@@ -43,7 +43,7 @@ describe('Layer', () => {
   });
 
   it('Should render layer with default source', () => {
-    TestUtils.renderIntoDocument(
+    mount(
       <LayerWithContext
         children={children}
       /> as React.ReactElement<any>
