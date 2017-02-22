@@ -32,9 +32,17 @@ describe('Map', () => {
       <ReactMapboxGl style="" accessToken="" fitBounds={fitBoundsValues} fitBoundsOptions={fitBoundsOptions}/>
     );
 
-    expect(fitBounds.mock.calls[0]).toEqual([
+    expect(fitBounds).toBeCalledWith(
       fitBoundsValues,
       fitBoundsOptions
-    ]);
+    );
+  });
+
+  it('Should listen onStyleLoad event', () => {
+    TestUtils.renderIntoDocument(
+      <ReactMapboxGl style="" accessToken="" onStyleLoad={jest.fn()}/>
+    );
+
+    expect(on).toBeCalledWith('style.load', jasmine.any(Function));
   });
 });
