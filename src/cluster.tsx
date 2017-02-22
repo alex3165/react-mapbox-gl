@@ -108,7 +108,7 @@ export default class Cluster extends React.Component<Props, State> {
     const { children, ClusterMarkerFactory, clusterThreshold } = this.props;
     const { clusterPoints } = this.state;
 
-    if (clusterPoints.length <= clusterThreshold) {
+    if (clusterThreshold !== undefined && (clusterPoints.length <= clusterThreshold)) {
       return (
         <div>
           {children}
