@@ -1,4 +1,6 @@
-# react-mapbox-gl
+# React-mapbox-gl
+[![Build Status](https://travis-ci.org/alex3165/react-mapbox-gl.svg?branch=master)](https://travis-ci.org/alex3165/react-mapbox-gl)
+<br/><br/>
 ![London cycle example gif](docs/london-cycle-example.gif "London cycle example gif")
 
 React wrapper of [mapbox-gl-js](https://www.mapbox.com/mapbox-gl-js/api/) which bring the API to a react friendly way.
