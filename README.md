@@ -1,4 +1,4 @@
-# React-mapbox-gl [Doc]((docs/API.md))
+# React-mapbox-gl [Doc](docs/API.md)
 [![Build Status](https://travis-ci.org/alex3165/react-mapbox-gl.svg?branch=master)](https://travis-ci.org/alex3165/react-mapbox-gl)
 [![npm version](https://img.shields.io/npm/v/react-mapbox-gl.svg?style=flat)](https://www.npmjs.com/package/react-mapbox-gl)
 <br/><br/>
