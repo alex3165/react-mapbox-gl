@@ -1,4 +1,4 @@
-# React-mapbox-gl
+# React-mapbox-gl [Doc]((docs/API.md))
 [![Build Status](https://travis-ci.org/alex3165/react-mapbox-gl.svg?branch=master)](https://travis-ci.org/alex3165/react-mapbox-gl)
 [![npm version](https://img.shields.io/npm/v/react-mapbox-gl.svg?style=flat)](https://www.npmjs.com/package/react-mapbox-gl)
 <br/><br/>
@@ -27,14 +27,15 @@ Include the following elements:
 
 
 ## Do you need `mapbox-gl-js` and `react-mapbox-gl`
-Mapbox-gl expose a map rendered in a canvas using web gl this mean:
-- All the shapes are in vector
+Mapbox-gl expose a map rendered in a canvas using WebGl which mean:
+- Vector tiles
 - Fast rendering
 - Smooth transitions
-- All the data are on the client side, you can interact with anything on the map
-- You can customize everything on the map using [mapbox studio](https://www.mapbox.com/mapbox-studio/)
+- Data on the client side (interact with anything on the map)
+- Highly customizable using [mapbox studio](https://www.mapbox.com/mapbox-studio/)
+- Considerable bundle size
 
-See all the features of the map exposed by [mapbox-gl-js](https://www.mapbox.com/maps/)
+Details of all the features exposed: [mapbox-gl-js](https://www.mapbox.com/maps/)
 
 
 ## How to start
@@ -93,4 +94,4 @@ See https://github.com/alex3165/react-mapbox-gl/issues/57 for more informations.
   - Run example `npm run start`
   - Default port: `8080`
 
-## [API](docs/API.md)
+## [API Documentation](docs/API.md)
