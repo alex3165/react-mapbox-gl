@@ -48,15 +48,17 @@ export interface FitBoundsOptions {
   maxZoom?: number;
 }
 
+export type FitBounds = [[number, number], [number, number]];
+
 export interface Props {
   style: string | MapboxGl.Style;
   accessToken: string;
-  center?: number[];
+  center?: [number, number];
   zoom?: number[];
   minZoom?: number;
   maxZoom?: number;
-  maxBounds?: MapboxGl.LngLatBounds | number[][];
-  fitBounds?: number[][];
+  maxBounds?: MapboxGl.LngLatBounds | FitBounds;
+  fitBounds?: FitBounds;
   fitBoundsOptions?: FitBoundsOptions;
   bearing?: number;
   pitch?: number;
@@ -78,16 +80,14 @@ export interface State {
 // Satisfy typescript pitfall with defaultProps
 const defaultZoom = [11];
 const defaultMovingMethod = 'flyTo';
+const defaultCenter = [-0.2416815, 51.5285582];
 
 export default class ReactMapboxGl extends React.Component<Props & Events, State> {
   public static defaultProps = {
     hash: false,
     onStyleLoad: (...args: any[]) => args,
     preserveDrawingBuffer: false,
-    center: [
-      -0.2416815,
-      51.5285582
-    ],
+    center: defaultCenter,
     zoom: defaultZoom,
     minZoom: 0,
     maxZoom: 20,
@@ -113,6 +113,10 @@ export default class ReactMapboxGl extends React.Component<Props & Events, State
   })
 
   private container: HTMLElement;
+
+  private calcCenter = (bounds: FitBounds): [number, number] => (
+    [(bounds[0][0] + bounds[1][0]) / 2, (bounds[0][1] + bounds[1][1]) / 2]
+  );
 
   public componentDidMount() {
     const {
@@ -147,7 +151,7 @@ export default class ReactMapboxGl extends React.Component<Props & Events, State
       maxBounds,
       bearing,
       container: this.container,
-      center,
+      center: fitBounds && center === defaultCenter ? this.calcCenter(fitBounds) : center,
       pitch,
       style,
       scrollZoom,

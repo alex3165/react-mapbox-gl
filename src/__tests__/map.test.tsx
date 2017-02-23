@@ -1,15 +1,16 @@
 let fitBounds = jest.fn();
 let on = jest.fn();
+const Map = jest.fn(() => ({
+  fitBounds,
+  on
+}));
 
 jest.mock('mapbox-gl/dist/mapbox-gl', () => ({
-  Map: () => ({
-    fitBounds,
-    on
-  })
+  Map
 }));
 
 import * as React from 'react';
-import ReactMapboxGl from '../map';
+import ReactMapboxGl, { FitBounds } from '../map';
 import { mount } from 'enzyme';
 
 describe('Map', () => {
@@ -18,6 +19,7 @@ describe('Map', () => {
   beforeEach(() => {
     fitBounds = jest.fn();
     on = jest.fn();
+
     mapState = {
       getCenter: jest.fn(() => ({ lng: 1, lat: 2 })),
       getZoom: jest.fn(() => 2),
@@ -33,7 +35,7 @@ describe('Map', () => {
   });
 
   it('Should call fitBounds with the right parameters', () => {
-    const fitBoundsValues = [[0, 1], [2, 3]];
+    const fitBoundsValues: FitBounds = [[0, 1], [2, 3]];
     const fitBoundsOptions = { linear: true };
 
     mount(
@@ -44,6 +46,17 @@ describe('Map', () => {
       fitBoundsValues,
       fitBoundsOptions
     );
+  });
+
+  it('Should calc the center from fitbounds if center is not given', () => {
+    const fitBoundsValues: FitBounds = [[0, 3], [2, 9]];
+
+    mount(
+      <ReactMapboxGl style="" accessToken="" fitBounds={fitBoundsValues}/>
+    );
+
+    const lastCall = Map.mock.calls[Map.mock.calls.length - 1];
+    expect(lastCall[0].center).toEqual([1, 6]);
   });
 
   it('Should listen onStyleLoad event', () => {
