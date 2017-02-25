@@ -1,10 +1,12 @@
 import * as React from 'react';
 import ProjectedLayer from './projected-layer';
 import * as GeoJSON from 'geojson';
+import { getClassName } from './util/classname';
+import { Anchor } from './util/overlays';
 
 export interface Props {
   coordinates: GeoJSON.Position;
-  anchor?: any;
+  anchor?: Anchor;
   offset?: any;
   children?: JSX.Element;
   onClick?: React.MouseEventHandler<HTMLDivElement>;
@@ -14,12 +16,12 @@ export interface Props {
   className?: string;
 }
 
-const defaultClassName = 'mapboxgl-marker';
+const defaultClassName = ['mapboxgl-marker'];
 
 const Marker: React.StatelessComponent<Props> = (props) => (
   <ProjectedLayer
     {...{ ...props, children: undefined}}
-    className={`${props.className} ${defaultClassName}`}
+    className={getClassName(defaultClassName, props.className)}
   >
     {props.children}
   </ProjectedLayer>

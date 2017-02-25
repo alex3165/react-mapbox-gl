@@ -7,6 +7,7 @@
   "scripts": {
     "clean": "rm -rf dist",
     "test": "jest",
+    "test:watch": "jest --watch",
     "lint": "tslint --project tsconfig.json",
     "build": "npm run lint && npm run test && tsc",
     "build:watch": "tsc --watch",

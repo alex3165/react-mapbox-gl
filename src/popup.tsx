@@ -5,6 +5,7 @@ import {
   Anchor
 } from './util/overlays';
 import * as GeoJSON from 'geojson';
+import { getClassName } from './util/classname';
 
 export interface Props {
   coordinates: GeoJSON.Position;
@@ -18,16 +19,20 @@ export interface Props {
   className?: string;
 }
 
+const defaultClassName = ['mapboxgl-popup'];
+
 export default class Popup extends React.Component<Props, void> {
   public static defaultProps = {
     anchor: anchors[0]
   };
 
   public render() {
+    const anchorClass = `mapboxgl-popup-anchor-${this.props.anchor}`;
+
     return (
       <ProjectedLayer
         {...{ ...this.props, children: undefined }}
-        className={`mapboxgl-popup mapboxgl-popup-anchor-${this.props.anchor} ${this.props.className}`}
+        className={getClassName(defaultClassName.concat(anchorClass), this.props.className)}
       >
         <div className="mapboxgl-popup-tip"/>
         <div className="mapboxgl-popup-content">

@@ -30,16 +30,16 @@ export const anchors = [
   'bottom-right'
 ];
 
-const anchorTranslates = {
-  'center': 'translate(-50%,-50%)',
-  'top': 'translate(-50%,0)',
-  'left': 'translate(0,-50%)',
-  'right': 'translate(-100%,-50%)',
-  'bottom': 'translate(-50%,-100%)',
-  'top-left': 'translate(0,0)',
-  'top-right': 'translate(-100%,0)',
-  'bottom-left': 'translate(0,-100%)',
-  'bottom-right': 'translate(-100%,-100%)'
+export const anchorTranslates = {
+  'center': 'translate(-50%, -50%)',
+  'top': 'translate(-50%, 0)',
+  'left': 'translate(0, -50%)',
+  'right': 'translate(-100%, -50%)',
+  'bottom': 'translate(-50%, -100%)',
+  'top-left': 'translate(0, 0)',
+  'top-right': 'translate(-100%, 0)',
+  'bottom-left': 'translate(0, -100%)',
+  'bottom-right': 'translate(-100%, -100%)'
 };
 
 // Hack /o\
@@ -101,17 +101,17 @@ const normalizedOffsets = (offset: any): any => {
 
   if (isPointLike(offset)) {
     // input specifies a single offset to be applied to all positions
-    return anchors.reduce((res, anchor) => ({
-      ...res,
-      [anchor]: (Point as any).convert(offset)
-    }), {});
+    return anchors.reduce((res, anchor) => {
+      res[anchor] = (Point as any).convert(offset);
+      return res;
+    }, {});
   }
 
   // input specifies an offset per position
-  return anchors.reduce((res, anchor) => ({
-    ...res,
-    [anchor]: (Point as any).convert(offset[anchor] || [0, 0])
-  }), {});
+  return anchors.reduce((res, anchor) => {
+    res[anchor] = (Point as any).convert(offset[anchor] || [0, 0]);
+    return res;
+  }, {});
 };
 
 export const overlayState = (props: Props, map: MapboxGL.Map, container: HTMLElement) => {
@@ -128,7 +128,7 @@ export const overlayState = (props: Props, map: MapboxGL.Map, container: HTMLEle
 };
 
 const moveTranslate = (point: PointDef ) => (
-  point ? `translate(${point.x.toFixed(0)}px,${point.y.toFixed(0)}px)` : ''
+  point ? `translate(${point.x.toFixed(0)}px, ${point.y.toFixed(0)}px)` : ''
 );
 
 export const overlayTransform = ({ anchor, position, offset }: OverlayProps) => {

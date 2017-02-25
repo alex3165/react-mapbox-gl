@@ -163,8 +163,10 @@ export default class AllShapes extends Component {
 
         <Marker
           onClick={this._markerClick}
+          anchor="top"
           onMouseEnter={this._markerMouseEnter}
           onMouseLeave={this._markerMouseLeave}
+          className="test"
           coordinates={markerCoord}>
             <h1>TEST</h1>
         </Marker>

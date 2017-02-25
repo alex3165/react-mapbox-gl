@@ -50,7 +50,7 @@ const styles = {
 export default class Main extends Component {
 
   state = {
-    index: 3
+    index: 1
   };
 
   indexToExample = index => examples[index].component;
