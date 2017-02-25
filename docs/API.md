@@ -268,6 +268,7 @@ import { Popup } from "react-mapbox-gl";
   - When `Object` is passed, it must contain keys for different anchor positions and values as the offset (`Number` or `Array<Number>`)
 - **onClick**: `Function` Triggered whenever user click on the marker
 - **style**: `Object` Apply style to the marker container
+- **className**: `String` Apply the className to the container of the Marker
 
 ### Example
 
@@ -298,6 +299,7 @@ import { Marker } from "react-mapbox-gl";
 - **offset**: `String` Same as Popup's offset property.
 - **onClick**: `Function` Triggered whenever user click on the marker
 - **style**: `Object` Apply style to the marker container
+- **className**: `String` Apply the className to the container of the Marker
 
 ### Example
 

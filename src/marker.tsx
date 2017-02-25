@@ -11,12 +11,15 @@ export interface Props {
   onMouseEnter?: React.MouseEventHandler<HTMLDivElement>;
   onMouseLeave?: React.MouseEventHandler<HTMLDivElement>;
   style?: React.CSSProperties;
+  className?: string;
 }
+
+const defaultClassName = 'mapboxgl-marker';
 
 const Marker: React.StatelessComponent<Props> = (props) => (
   <ProjectedLayer
     {...{ ...props, children: undefined}}
-    className="mapboxgl-marker"
+    className={`${props.className} ${defaultClassName}`}
   >
     {props.children}
   </ProjectedLayer>
