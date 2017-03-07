@@ -14,6 +14,7 @@ export interface Props {
   id: string;
   geoJsonSource?: GeoJSONSourceRaw;
   tileJsonSource?: TilesJson;
+  onSourceAdded?: (source: GeoJSONSource | TilesJson) => any;
 }
 
 export default class Source extends React.Component<Props, void> {
@@ -27,10 +28,14 @@ export default class Source extends React.Component<Props, void> {
 
   public componentWillMount() {
     const { map } = this.context;
-    const { geoJsonSource, tileJsonSource } = this.props;
+    const { geoJsonSource, tileJsonSource, onSourceAdded } = this.props;
 
     if (!map.getSource(this.id) && (geoJsonSource || tileJsonSource)) {
       map.addSource(this.id, (geoJsonSource || tileJsonSource) as any);
+
+      if (onSourceAdded) {
+        onSourceAdded(map.getSource(this.id) as GeoJSONSource | TilesJson);
+      }
     }
   }
 
