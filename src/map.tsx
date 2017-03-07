@@ -42,18 +42,18 @@ export interface Events {
 
 export interface FitBoundsOptions {
   linear?: boolean;
-  easing?: Function;
+  easing?: (time: number) => number;
   padding?: number;
   offset?: MapboxGl.Point | number[];
   maxZoom?: number;
 }
 
-export type FitBounds = [[number, number], [number, number]];
+export type FitBounds = number[][];
 
 export interface Props {
   style: string | MapboxGl.Style;
   accessToken: string;
-  center?: [number, number];
+  center?: number[];
   zoom?: number[];
   minZoom?: number;
   maxZoom?: number;
@@ -114,7 +114,7 @@ export default class ReactMapboxGl extends React.Component<Props & Events, State
 
   private container: HTMLElement;
 
-  private calcCenter = (bounds: FitBounds): [number, number] => (
+  private calcCenter = (bounds: FitBounds): number[] => (
     [(bounds[0][0] + bounds[1][0]) / 2, (bounds[0][1] + bounds[1][1]) / 2]
   );
 
