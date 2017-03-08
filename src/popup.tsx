@@ -6,11 +6,12 @@ import {
 } from './util/overlays';
 import * as GeoJSON from 'geojson';
 import { getClassName } from './util/classname';
+import { PointDef } from './util/overlays';
 
 export interface Props {
   coordinates: GeoJSON.Position;
   anchor?: Anchor;
-  offset?: any;
+  offset?: number | number[] | PointDef;
   children?: JSX.Element;
   onClick?: React.MouseEventHandler<HTMLDivElement>;
   onMouseEnter?: React.MouseEventHandler<HTMLDivElement>;
