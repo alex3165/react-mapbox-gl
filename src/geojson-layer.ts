@@ -1,16 +1,16 @@
 import * as React from 'react';
 import * as MapboxGL from 'mapbox-gl/dist/mapbox-gl';
-const isEqual = require('deep-equal');
+const isEqual = require('deep-equal'); //tslint:disable-line
 import diff from './util/diff';
 import { generateID } from './util/uid';
 import { Sources, SourceOptionData } from './util/types';
 
-const type_to_layer_LUT = {
+const typeToLayerLUT = {
   'fill': 'fill',
   'fill-extrusion': 'fillExtrusion',
   'symbol': 'symbol',
   'circle': 'circle',
-  'line': 'line',
+  'line': 'line'
 };
 
 export interface Props {
@@ -64,12 +64,11 @@ export default class GeoJSONLayer extends React.Component<Props, void> {
     const layerId = `${id}-${type}`;
     layerIds.push(layerId);
 
-
-    const paint: Paints = this.props[`${type_to_layer_LUT[type]}Paint` ] || {};
+    const paint: Paints = this.props[`${typeToLayerLUT[type]}Paint` ] || {};
 
     // deafult undefined layers to invisible
     const visibility = Object.keys(paint).length ? 'visible' : 'none';
-    const layout: Layouts = this.props[`${type_to_layer_LUT[type]}Layout`] || { visibility };
+    const layout: Layouts = this.props[`${typeToLayerLUT[type]}Layout`] || { visibility };
 
     map.addLayer({
       id: layerId,
@@ -111,27 +110,31 @@ export default class GeoJSONLayer extends React.Component<Props, void> {
       (map.getSource(id) as MapboxGL.GeoJSONSource).setData(props.data);
     }
 
-    for (let type in type_to_layer_LUT) {
-      const prop = type_to_layer_LUT[type] + "Paint";
+    for (const type in typeToLayerLUT) {
+      if (typeToLayerLUT.hasOwnProperty(type)) {
+        const prop = typeToLayerLUT[type] + 'Paint';
 
-      if (!isEqual(props[prop], this.props[prop])) {
-        const paintDiff = diff(this.props[prop], props[prop]);
+        if (!isEqual(props[prop], this.props[prop])) {
+          const paintDiff = diff(this.props[prop], props[prop]);
 
-        Object.keys(paintDiff).forEach((key) => {
-          map.setPaintProperty(`${this.id}-${type}`, key, paintDiff[key]);
-        });
+          Object.keys(paintDiff).forEach((key) => {
+            map.setPaintProperty(`${this.id}-${type}`, key, paintDiff[key]);
+          });
+        }
       }
     }
 
-    for (let type in type_to_layer_LUT) {
-      const prop = type_to_layer_LUT[type] + "Layout";
+    for (const type in typeToLayerLUT) {
+      if (typeToLayerLUT.hasOwnProperty(type)) {
+        const prop = typeToLayerLUT[type] + 'Layout';
 
-      if (!isEqual(props[prop], this.props[prop])) {
-        const layoutDiff = diff(this.props[prop], props[prop]);
+        if (!isEqual(props[prop], this.props[prop])) {
+          const layoutDiff = diff(this.props[prop], props[prop]);
 
-        Object.keys(layoutDiff).forEach((key) => {
-          map.setLayoutProperty(`${this.id}-${type}`, key, layoutDiff[key]);
-        });
+          Object.keys(layoutDiff).forEach((key) => {
+            map.setLayoutProperty(`${this.id}-${type}`, key, layoutDiff[key]);
+          });
+        }
       }
     }
   }
