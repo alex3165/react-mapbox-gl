@@ -29,6 +29,7 @@ export default class GeoJSONExample extends Component {
         <ZoomControl/>
         <GeoJSONLayer
           data={geojson}
+          circleLayout={{ visibility: "visible" }}
           symbolLayout={{
             "text-field": "{place}",
             "text-font": ["Open Sans Semibold", "Arial Unicode MS Bold"],
