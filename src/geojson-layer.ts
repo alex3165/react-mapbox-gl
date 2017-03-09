@@ -1,25 +1,39 @@
 import * as React from 'react';
 import * as MapboxGL from 'mapbox-gl/dist/mapbox-gl';
+const isEqual = require('deep-equal');
+import diff from './util/diff';
 import { generateID } from './util/uid';
 import { Sources, SourceOptionData } from './util/types';
+
+const type_to_layer_LUT = {
+  'fill': 'fill',
+  'fill-extrusion': 'fillExtrusion',
+  'symbol': 'symbol',
+  'circle': 'circle',
+  'line': 'line',
+};
 
 export interface Props {
   id?: string;
   data: SourceOptionData;
   sourceOptions: MapboxGL.VectorSource | MapboxGL.RasterSource | MapboxGL.GeoJSONSource | MapboxGL.GeoJSONSourceRaw;
   before?: string;
+
   fillLayout?: MapboxGL.FillLayout;
+  fillExtrusionLayout?: MapboxGL.FillExtrusionLayout;
   symbolLayout?: MapboxGL.SymbolLayout;
   circleLayout?: MapboxGL.CircleLayout;
   lineLayout?: MapboxGL.LineLayout;
-  linePaint?: MapboxGL.LinePaint;
+
+  fillPaint?: MapboxGL.FillPaint;
+  fillExtrusionPaint?: MapboxGL.FillExtrusionPaint;
   symbolPaint?: MapboxGL.SymbolPaint;
   circlePaint?: MapboxGL.CirclePaint;
-  fillPaint?: MapboxGL.FillPaint;
+  linePaint?: MapboxGL.LinePaint;
 }
 
-type Paints = MapboxGL.LinePaint | MapboxGL.SymbolPaint | MapboxGL.CirclePaint | MapboxGL.FillPaint;
-type Layouts = MapboxGL.FillLayout | MapboxGL.LineLayout | MapboxGL.CircleLayout | MapboxGL.SymbolLayout;
+type Paints = MapboxGL.LinePaint | MapboxGL.SymbolPaint | MapboxGL.CirclePaint | MapboxGL.FillExtrusionPaint;
+type Layouts = MapboxGL.FillLayout | MapboxGL.LineLayout | MapboxGL.CircleLayout | MapboxGL.FillExtrusionLayout;
 
 export interface Context {
   map: MapboxGL.Map;
@@ -50,8 +64,12 @@ export default class GeoJSONLayer extends React.Component<Props, void> {
     const layerId = `${id}-${type}`;
     layerIds.push(layerId);
 
-    const paint: Paints = this.props[`${type}Paint`] || {};
-    const layout: Layouts = this.props[`${type}Layout`] || {};
+
+    const paint: Paints = this.props[`${type_to_layer_LUT[type]}Paint` ] || {};
+
+    // deafult undefined layers to invisible
+    const visibility = Object.keys(paint).length ? 'visible' : 'none';
+    const layout: Layouts = this.props[`${type_to_layer_LUT[type]}Layout`] || { visibility };
 
     map.addLayer({
       id: layerId,
@@ -71,6 +89,7 @@ export default class GeoJSONLayer extends React.Component<Props, void> {
     this.createLayer('symbol');
     this.createLayer('line');
     this.createLayer('fill');
+    this.createLayer('fill-extrusion');
     this.createLayer('circle');
   }
 
@@ -90,6 +109,30 @@ export default class GeoJSONLayer extends React.Component<Props, void> {
 
     if (props.data !== data) {
       (map.getSource(id) as MapboxGL.GeoJSONSource).setData(props.data);
+    }
+
+    for (let type in type_to_layer_LUT) {
+      const prop = type_to_layer_LUT[type] + "Paint";
+
+      if (!isEqual(props[prop], this.props[prop])) {
+        const paintDiff = diff(this.props[prop], props[prop]);
+
+        Object.keys(paintDiff).forEach((key) => {
+          map.setPaintProperty(`${this.id}-${type}`, key, paintDiff[key]);
+        });
+      }
+    }
+
+    for (let type in type_to_layer_LUT) {
+      const prop = type_to_layer_LUT[type] + "Layout";
+
+      if (!isEqual(props[prop], this.props[prop])) {
+        const layoutDiff = diff(this.props[prop], props[prop]);
+
+        Object.keys(layoutDiff).forEach((key) => {
+          map.setLayoutProperty(`${this.id}-${type}`, key, layoutDiff[key]);
+        });
+      }
     }
   }
 
