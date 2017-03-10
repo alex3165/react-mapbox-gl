@@ -66,7 +66,7 @@ export default class GeoJSONLayer extends React.Component<Props, void> {
 
     const paint: Paints = this.props[`${typeToLayerLUT[type]}Paint` ] || {};
 
-    // deafult undefined layers to invisible
+    // default undefined layers to invisible
     const visibility = Object.keys(paint).length ? 'visible' : 'none';
     const layout: Layouts = this.props[`${typeToLayerLUT[type]}Layout`] || { visibility };
 
