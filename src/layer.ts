@@ -6,6 +6,7 @@ import * as GeoJSON from 'geojson';
 import { generateID } from './util/uid';
 import { Sources } from './util/types';
 import { Feature } from './util/types';
+import { Props as FeatureProps } from './feature';
 
 export type Paint = any;
 export type Layout = any;
@@ -26,7 +27,7 @@ export interface Context {
   map: MapboxGL.Map;
 }
 
-export default class Layer extends React.PureComponent<Props, void> {
+export default class Layer extends React.Component<Props, void> {
   public context: Context;
 
   public static contextTypes = {
@@ -84,7 +85,7 @@ export default class Layer extends React.PureComponent<Props, void> {
   })
 
   private onClick = (evt: any) => {
-    const children = ([] as any).concat(this.props.children);
+    const children: Array<React.ReactElement<FeatureProps>> = ([] as any).concat(this.props.children);
     const { map } = this.context;
     const features = map.queryRenderedFeatures(evt.point, { layers: [this.id] }) as Feature[];
 
@@ -102,7 +103,7 @@ export default class Layer extends React.PureComponent<Props, void> {
   }
 
   private onMouseMove = (evt: any) => {
-    const children = ([] as any).concat(this.props.children);
+    const children: Array<React.ReactElement<FeatureProps>> = ([] as any).concat(this.props.children);
     const { map } = this.context;
 
     const oldHover = this.hover;
@@ -116,9 +117,9 @@ export default class Layer extends React.PureComponent<Props, void> {
         const child = children[id];
         hover.push(id);
 
-        const onHover = child && child.props.onHover;
-        if (onHover) {
-          onHover({ ...evt, feature, map });
+        const onMouseEnter = child && child.props.onMouseEnter;
+        if (onMouseEnter) {
+          onMouseEnter({ ...evt, feature, map });
         }
       }
     });
@@ -126,9 +127,10 @@ export default class Layer extends React.PureComponent<Props, void> {
     oldHover
       .filter((prevHoverId) => hover.indexOf(prevHoverId) === -1)
       .forEach((key) => {
-        const onEndHover = children[key] && children[key].props.onEndHover;
-        if (onEndHover) {
-          onEndHover({ ...evt, map });
+        const child = children[key as any];
+        const onMouseLeave = child && child.props.onMouseLeave;
+        if (onMouseLeave) {
+          onMouseLeave({ ...evt, map });
         }
       });
 

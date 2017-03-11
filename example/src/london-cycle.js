@@ -131,8 +131,8 @@ export default class LondonCycle extends Component {
                 .map((station, index) => (
                   <Feature
                     key={station.get("id")}
-                    onHover={this._onToggleHover.bind(this, "pointer")}
-                    onEndHover={this._onToggleHover.bind(this, "")}
+                    onMouseEnter={this._onToggleHover.bind(this, "pointer")}
+                    onMouseLeave={this._onToggleHover.bind(this, "")}
                     onClick={this._markerClick.bind(this, station)}
                     coordinates={station.get("position")}/>
                 )).toArray()
