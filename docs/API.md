@@ -133,6 +133,9 @@ const RASTER_SOURCE_OPTIONS = {
 
 Display on the map all the informations contained in a geojson file.
 
+_Note:_ GeoJSONLayer will not render any layers (`line`, `circle`, `fill`, etc...)
+unless an associated `[layer]Layout` or `[layer]Paint` prop is provided.
+
 ### Import
 ```
 import { GeoJSONLayer } from "react-mapbox-gl";
