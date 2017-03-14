@@ -1,3 +1,9 @@
+## 1.3.5 (March 14 2017)
+
+- Breaking change : `onHover` is now `onMouseEnter`, `onEndHover` is now `onMouseLeave`
+- Breaking change: `GEOJSONLayer` is not displaying all the layers in your geojson source, you have to specify which source to display by passing the correct props, see [note](https://github.com/alex3165/react-mapbox-gl/blob/master/docs/API.md#geojsonlayer)
+- Fix issue when unmounting all the features `setData` is not called and the features doesn't disappear. [PR](https://github.com/alex3165/react-mapbox-gl/pull/152)
+
 ## 1.0.0 (February 13 2017)
 
 - All the source code is now written in Typescript, you can now get the type definitions for each component in a Typescript environment.
