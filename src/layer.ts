@@ -208,20 +208,17 @@ export default class Layer extends React.PureComponent<Props, void> {
 
   public render() {
     const { map } = this.context;
+    const children = ([] as any).concat(this.props.children || []);
 
-    if (this.props.children) {
-      const children = ([] as any).concat(this.props.children);
+    const features = children
+      .map(({ props }: any, id: string) => this.makeFeature(props, id))
+      .filter(Boolean);
 
-      const features = children
-        .map(({ props }: any, id: string) => this.makeFeature(props, id))
-        .filter(Boolean);
-
-      const source = map.getSource(this.props.sourceId || this.id);
-      (source as MapboxGL.GeoJSONSource).setData({
-        type: 'FeatureCollection',
-        features
-      });
-    }
+    const source = map.getSource(this.props.sourceId || this.id);
+    (source as MapboxGL.GeoJSONSource).setData({
+      type: 'FeatureCollection',
+      features
+    });
 
     return null;
   }
