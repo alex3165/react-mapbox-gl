@@ -177,9 +177,9 @@ import { Feature } from "react-mapbox-gl";
 - **properties** : `Object` Properties object passed down to the feature at the creation of the source.
 - **onClick** : `(args: Object) => void` Triggered when user click on the feature
   - Args contain the feature object, the map object and the arguments passed by mapbox from the event `click`
-- **onHover** : `(args: Object) => void` Triggered when the mouse hover the feature element
+- **onMouseEnter** : `(args: Object) => void` Triggered when the mouse enter the feature element
   - Args contain the feature object, the map object and the arguments passed by mapbox from the event `onmousemove`
-- **onEndHover** : `(args: Object) => void` Triggered at the end of the hover state
+- **onMouseLeave** : `(args: Object) => void` Triggered when the mouse leave the feature element
   - Args contain the map object and the arguments passed by Mapbox from the event `onmousemove`
 
 ### Example

@@ -4,9 +4,9 @@ import * as GeoJSON from 'geojson';
 export interface Props {
   coordinates: GeoJSON.Position;
   properties?: any;
-  onClick?: (args: any) => any;
-  onHover?: (args: any) => any;
-  onEndHover?: (args: any) => any;
+  onClick?: React.MouseEventHandler<HTMLElement>;
+  onMouseEnter?: React.MouseEventHandler<HTMLElement>;
+  onMouseLeave?: React.MouseEventHandler<HTMLElement>;
 }
 
 class Feature extends Component<Props, void> {
