@@ -1,4 +1,4 @@
-## 1.3.5 (March 14 2017)
+## 1.4.0 (March 14 2017)
 
 - Breaking change : `onHover` is now `onMouseEnter`, `onEndHover` is now `onMouseLeave`
 - Breaking change: `GEOJSONLayer` is not displaying all the layers in your geojson source, you have to specify which source to display by passing the correct props, see [note](https://github.com/alex3165/react-mapbox-gl/blob/master/docs/API.md#geojsonlayer)
