@@ -7,12 +7,18 @@ describe('Layer', () => {
   let LayerWithContext: any;
   let addLayerMock = jest.fn();
   let addSourceMock = jest.fn();
+  let setDataMock = jest.fn();
   let children: any[];
+  let childrenWithOneFeature: any[];
+  let feature: Object;
 
   beforeEach(() => {
     addLayerMock = jest.fn();
     addSourceMock = jest.fn();
+    setDataMock = jest.fn();
+    feature = { coordinates: [-123, 45] };
     children = [{ props: {}}];
+    childrenWithOneFeature = [{ props: feature }];
 
     LayerWithContext = withContext({
       map: React.PropTypes.object
@@ -21,7 +27,7 @@ describe('Layer', () => {
         addSource: addSourceMock,
         addLayer: addLayerMock,
         on: jest.fn(),
-        getSource: jest.fn().mockReturnValue({ setData: jest.fn() })
+        getSource: jest.fn().mockReturnValue({ setData: setDataMock })
       }
     }))(Layer);
   });
@@ -58,4 +64,35 @@ describe('Layer', () => {
     }]);
   });
 
+  it('Should set features based on children', () => {
+    const layer = mount(
+      <LayerWithContext
+        children={childrenWithOneFeature}
+      /> as React.ReactElement<any>
+    );
+
+    expect(setDataMock.mock.calls[0]).toEqual([{
+      'type': 'FeatureCollection',
+      'features': [{
+        'geometry': {...feature, 'type': 'Point'},
+        'properties': {id: 0},
+        'type': 'Feature'
+      }]
+    }])
+  });
+
+  it('Should set features to empty array when children disappear', () => {
+    const layer = mount(
+      <LayerWithContext
+        children={childrenWithOneFeature}
+      /> as React.ReactElement<any>
+    );
+
+    layer.setProps({ children: undefined });
+
+    expect(setDataMock.mock.calls[1]).toEqual([{
+      'type': 'FeatureCollection',
+      'features': []
+    }])
+  });
 });
