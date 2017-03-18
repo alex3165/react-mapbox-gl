@@ -216,11 +216,14 @@ export default class Layer extends React.Component<Props, void> {
       .map(({ props }: any, id: string) => this.makeFeature(props, id))
       .filter(Boolean);
 
-    const source = map.getSource(this.props.sourceId || this.id);
-    (source as MapboxGL.GeoJSONSource).setData({
-      type: 'FeatureCollection',
-      features
-    });
+    const source = map.getSource(this.props.sourceId || this.id) as MapboxGL.GeoJSONSource;
+
+    if (source.setData) {
+      source.setData({
+        type: 'FeatureCollection',
+        features
+      });
+    }
 
     return null;
   }
