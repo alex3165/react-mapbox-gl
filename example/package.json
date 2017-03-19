@@ -6,7 +6,8 @@
   "license": "MIT",
   "scripts": {
     "start": "nodemon --watch ../lib server.js",
-    "build": "NODE_ENV=prod webpack"
+    "build": "NODE_ENV=prod webpack",
+    "build:watch": "NODE_ENV=dev webpack --watch"
   },
   "dependencies": {
     "immutable": "^3.8.0",

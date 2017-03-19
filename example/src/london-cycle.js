@@ -13,7 +13,7 @@ function getCycleStations() {
     .then(data => {
       return new Promise((resolve, reject) => {
         parseString(data, (err, res) => {
-          if(!err) {
+          if (!err) {
             resolve(res.stations.station);
           } else {
             reject(err);
@@ -24,8 +24,8 @@ function getCycleStations() {
 }
 
 const maxBounds = [
-  [-0.481747846041145,51.3233379650232], // South West
-  [0.23441119994140536,51.654967740310525], // North East
+  [-0.481747846041145, 51.3233379650232], // South West
+  [0.23441119994140536, 51.654967740310525], // North East
 ];
 
 export default class LondonCycle extends Component {
@@ -58,17 +58,17 @@ export default class LondonCycle extends Component {
     this.setState({
       center: feature.geometry.coordinates,
       zoom: [14],
-      station
+      station,
     });
-  };
+  }
 
   _onDrag = () => {
     if (this.state.station) {
       this.setState({
-        station: null
+        station: null,
       });
     }
-  };
+  }
 
   _onToggleHover(cursor, { map }) {
     map.getCanvas().style.cursor = cursor;
@@ -94,7 +94,8 @@ export default class LondonCycle extends Component {
       });
     } else {
       this.setState({
-        fitBounds: [[32.958984, -5.353521], [43.50585, 5.615985]] // this won't focus on the area as there is a maxBounds
+        // this won't focus on the area as there is a maxBounds
+        fitBounds: [[32.958984, -5.353521], [43.50585, 5.615985]]
       });
     }
 
@@ -128,13 +129,13 @@ export default class LondonCycle extends Component {
             layout={{ "icon-image": "marker-15" }}>
             {
               stations
-                .map((station, index) => (
+                .map((st, index) => (
                   <Feature
-                    key={station.get("id")}
+                    key={st.get("id")}
                     onMouseEnter={this._onToggleHover.bind(this, "pointer")}
                     onMouseLeave={this._onToggleHover.bind(this, "")}
-                    onClick={this._markerClick.bind(this, station)}
-                    coordinates={station.get("position")}/>
+                    onClick={this._markerClick.bind(this, st)}
+                    coordinates={st.get("position")}/>
                 )).toArray()
             }
           </Layer>
