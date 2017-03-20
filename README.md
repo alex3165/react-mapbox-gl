@@ -95,3 +95,6 @@ See https://github.com/alex3165/react-mapbox-gl/issues/57 for more informations.
   - Default port: `8080`
 
 ## [API Documentation](docs/API.md)
+
+## Contribution
+- Ideally before posting an issue you can try to reproduce the bug you encounter using this [boilerplate](https://github.com/alex3165/react-mapbox-gl-debug)
