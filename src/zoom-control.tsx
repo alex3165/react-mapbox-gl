@@ -113,11 +113,12 @@ export default class ZoomControl extends React.Component<Props, State> {
   }
 
   public render() {
-    const { position, style } = this.props;
+    const { position, style, className } = this.props;
     const { hover } = this.state;
 
     return (
       <div
+        className={className}
         style={{ ...containerStyle, ...positions[position], ...style }}
       >
         <button
