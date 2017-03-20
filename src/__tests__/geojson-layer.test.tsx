@@ -7,6 +7,9 @@ describe('GeoJSONLayer', () => {
   let GeoJSONLayerWithContext: any;
   let addLayerMock = jest.fn();
 
+  const fillPaint = {'fill-color': '#001122'};
+  const data = { 'type': 'FeatureCollection', 'features': [] };
+  
   beforeEach(() => {
     addLayerMock = jest.fn();
 
@@ -23,8 +26,8 @@ describe('GeoJSONLayer', () => {
   it('Should call addLayer with provided layerOptions', () => {
     mount(
       <GeoJSONLayerWithContext
-        fillPaint={{'fill-color': '#001122'}}
-        data={{ "type": "FeatureCollection", "features": []}}
+        fillPaint={fillPaint}
+        data={data}
         layerOptions={{minzoom: 13}}
       /> as React.ReactElement<any>
     );
@@ -43,8 +46,8 @@ describe('GeoJSONLayer', () => {
   it('Should call addLayer when no layerOptions provided', () => {
     mount(
       <GeoJSONLayerWithContext
-        fillPaint={{'fill-color': '#001122'}}
-        data={{ "type": "FeatureCollection", "features": []}}
+        fillPaint={fillPaint}
+        data={data}
       /> as React.ReactElement<any>
     );
 
