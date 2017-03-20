@@ -203,6 +203,7 @@ import { ZoomControl } from "react-mapbox-gl";
 ### Properties
 - **onControlClick** : `(map: Object, zoomDiff: Number) => void` triggered when user click on minus or plus button
 - **style** : `Object` Style object merged with internal style into the container
+- **className**: `String` Custom style using className for the container 
 - **zoomDiff** : `Number` The shift number passed to the callback `onControlClick`
 - **position** *(Default: `topRight`)*: `String` The control position, Possible values :
   - `topRight`
