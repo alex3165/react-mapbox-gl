@@ -146,6 +146,7 @@ import { GeoJSONLayer } from "react-mapbox-gl";
 - **lineLayout** | **symbolLayout** | **circleLayout** | **fillLayout** | **fillExtrusionLayout** : `Object` Layer layout informations. [mapbox layout api](https://www.mapbox.com/mapbox-gl-style-spec/#layer-layout)
 - **linePaint** | **symbolPaint** | **circlePaint** | **fillPaint** | **fillExtrusionPaint** : `Object` Paint informations. [mapbox paint api](https://www.mapbox.com/mapbox-gl-style-spec/#layer-paint)
 - **sourceOptions**: `Object` Options object merged to the object used when calling `GeoJSONSource` method
+- **layerOptions**: `Object` Passed down to the layer object when setting it out.
 - **before**:`String` Pass the id of a layer, it will display the current layer before the layer defined by the id. [mapbox api](https://www.mapbox.com/mapbox-gl-js/api/#Map#addLayer)
 
 ### Example

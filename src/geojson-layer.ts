@@ -30,6 +30,8 @@ export interface Props {
   symbolPaint?: MapboxGL.SymbolPaint;
   circlePaint?: MapboxGL.CirclePaint;
   linePaint?: MapboxGL.LinePaint;
+
+  layerOptions?: MapboxGL.Layer;
 }
 
 type Paints = MapboxGL.LinePaint | MapboxGL.SymbolPaint | MapboxGL.CirclePaint | MapboxGL.FillExtrusionPaint;
@@ -58,7 +60,7 @@ export default class GeoJSONLayer extends React.Component<Props, void> {
 
   private createLayer = (type: string) => {
     const { id, layerIds } = this;
-    const { before } = this.props;
+    const { before, layerOptions } = this.props;
     const { map } = this.context;
 
     const layerId = `${id}-${type}`;
@@ -75,7 +77,8 @@ export default class GeoJSONLayer extends React.Component<Props, void> {
       source: id,
       type,
       paint,
-      layout
+      layout,
+      ...layerOptions
     }, before);
   }
 
