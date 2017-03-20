@@ -56,6 +56,7 @@ export interface Props {
   onControlClick: (map: Map, zoomDiff: number) => void;
   position: 'topRight' | 'topLeft' | 'bottomRight' | 'bottomLeft';
   style: React.CSSProperties;
+  className: string;
 }
 
 export interface State {
