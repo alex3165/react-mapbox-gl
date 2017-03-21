@@ -299,7 +299,7 @@ import { Marker } from "react-mapbox-gl";
 ```
 
 ### Properties
-- **coordinates** *(required)*: `Array<Number>` Display the popup at the given position.
+- **coordinates** *(required)*: `Array<Number>` Display the marker at the given position.
 - **anchor**: `String` Same as Popup's anchor property.
 - **offset**: `String` Same as Popup's offset property.
 - **onClick**: `Function` Triggered whenever user click on the marker
