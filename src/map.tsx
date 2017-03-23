@@ -70,6 +70,7 @@ export interface Props {
   dragRotate?: boolean;
   movingMethod?: 'jumpTo' | 'easeTo' | 'flyTo';
   attributionControl?: boolean;
+  logoPosition?: 'top-left' | 'top-right' | 'bottom-left' | 'bottom-right';
   children?: JSX.Element;
 }
 
@@ -95,7 +96,7 @@ export default class ReactMapboxGl extends React.Component<Props & Events, State
     scrollZoom: true,
     movingMethod: defaultMovingMethod,
     pitch: 0,
-    attributionPosition: 'bottom-right',
+    logoPosition: 'bottom-left',
     interactive: true,
     dragRotate: true
   };
@@ -135,13 +136,14 @@ export default class ReactMapboxGl extends React.Component<Props & Events, State
       bearing,
       scrollZoom,
       attributionControl,
+      logoPosition,
       interactive,
       dragRotate
     } = this.props;
 
     (MapboxGl as any).accessToken = accessToken;
 
-    const map = new MapboxGl.Map({
+    const opts: MapboxGl.MapboxOptions = {
       preserveDrawingBuffer,
       hash,
       // Duplicated default because Typescript can't figure out there is a defaultProps and zoom will never be undefined
@@ -158,6 +160,12 @@ export default class ReactMapboxGl extends React.Component<Props & Events, State
       attributionControl,
       interactive,
       dragRotate
+    };
+
+    const map = new MapboxGl.Map({
+      ...opts,
+      // logoposition is not part of the typings of mapbox-gl, this does the trick
+      logoPosition
     });
 
     if (fitBounds) {
