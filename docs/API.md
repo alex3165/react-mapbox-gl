@@ -271,9 +271,9 @@ import { Popup } from "react-mapbox-gl";
   - When `Number` is passed, the popup will be offset by that number for all anchor positions.
   - When an `Array<Number>` is passed (e.g. [-12, 30]), the popup will be offset by that point.
   - When `Object` is passed, it must contain keys for different anchor positions and values as the offset (`Number` or `Array<Number>`)
-- **onClick**: `Function` Triggered whenever user click on the marker
+- **onClick**: `Function` Triggered whenever user click on the popup
 - **style**: `Object` Apply style to the marker container
-- **className**: `String` Apply the className to the container of the Marker
+- **className**: `String` Apply the className to the container of the popup
 
 ### Example
 
