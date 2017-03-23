@@ -76,6 +76,7 @@ export interface Props {
 
 export interface State {
   map?: MapboxGl.Map;
+  shouldRecompute: number;
 }
 
 // Satisfy typescript pitfall with defaultProps
@@ -102,15 +103,18 @@ export default class ReactMapboxGl extends React.Component<Props & Events, State
   };
 
   public static childContextTypes = {
-    map: React.PropTypes.object
+    map: React.PropTypes.object,
+    shouldRecompute: React.PropTypes.number
   };
 
   public state = {
-    map: undefined
+    map: undefined,
+    shouldRecompute: 0
   };
 
   public getChildContext = () => ({
-    map: this.state.map
+    map: this.state.map,
+    shouldRecompute: this.state.shouldRecompute
   })
 
   private container: HTMLElement;
@@ -172,6 +176,8 @@ export default class ReactMapboxGl extends React.Component<Props & Events, State
       map.fitBounds(fitBounds, fitBoundsOptions);
     }
 
+    let first = true;
+
     Object.keys(events).forEach((event, index) => {
       const propEvent = this.props[event];
 
@@ -179,8 +185,9 @@ export default class ReactMapboxGl extends React.Component<Props & Events, State
         map.on(events[event], (evt: React.SyntheticEvent<any>) => {
           propEvent(map, evt);
 
-          if (index === 0) {
+          if (index === 0 && first) {
             this.setState({ map });
+            first = false;
           }
         });
       }
@@ -274,6 +281,9 @@ export default class ReactMapboxGl extends React.Component<Props & Events, State
 
     if (!isEqual(this.props.style, nextProps.style)) {
       map.setStyle(nextProps.style);
+      this.setState({
+        shouldRecompute: this.state.shouldRecompute + 1
+      });
     }
 
     return null;

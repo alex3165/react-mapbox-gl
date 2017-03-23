@@ -25,13 +25,15 @@ export interface Props {
 
 export interface Context {
   map: MapboxGL.Map;
+  shouldRecompute: number;
 }
 
 export default class Layer extends React.Component<Props, void> {
   public context: Context;
 
   public static contextTypes = {
-    map: React.PropTypes.object
+    map: React.PropTypes.object,
+    shouldRecompute: React.PropTypes.number
   };
 
   public static defaultProps = {
@@ -137,10 +139,9 @@ export default class Layer extends React.Component<Props, void> {
     this.hover = hover;
   }
 
-  public componentWillMount() {
+  private addSourceAndLayer = (map: MapboxGL.Map) => {
     const { id, source } = this;
     const { type, layout, paint, layerOptions, sourceId, before } = this.props;
-    const { map } = this.context;
 
     const layer = {
       id,
@@ -156,6 +157,11 @@ export default class Layer extends React.Component<Props, void> {
     }
 
     map.addLayer(layer, before);
+  }
+
+  public componentWillMount() {
+    const { map } = this.context;
+    this.addSourceAndLayer(map);
 
     map.on('click', this.onClick);
     map.on('mousemove', this.onMouseMove);
@@ -177,9 +183,16 @@ export default class Layer extends React.Component<Props, void> {
     map.off('mousemove', this.onMouseMove);
   }
 
-  public componentWillReceiveProps(props: Props) {
-    const { paint, layout, before, layerOptions } = this.props;
-    const { map } = this.context;
+  public componentWillUpdate(props: Props, _: void, context: Context) {
+    const { paint, layout,  before, layerOptions } = this.props;
+    const { map, shouldRecompute } = this.context;
+
+    // map style has changed
+    if (context.shouldRecompute !== shouldRecompute) {
+      console.log('RECOMPUTE', context.shouldRecompute, shouldRecompute);
+      this.addSourceAndLayer(map);
+      return;
+    }
 
     if (!isEqual(props.paint, paint)) {
       const paintDiff = diff(paint, props.paint);

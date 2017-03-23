@@ -2,5 +2,6 @@ import React from "react";
 import {render} from "react-dom";
 
 import Main from "./main";
+import Error from "./App_with_errors";
 
-render(<Main/>, document.getElementById("root"));
+render(<Error/>, document.getElementById("root"));
