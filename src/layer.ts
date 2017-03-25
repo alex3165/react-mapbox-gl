@@ -165,8 +165,9 @@ export default class Layer extends React.Component<Props, void> {
     const { id } = this;
 
     const { map } = this.context;
-
-    map.removeLayer(id);
+    if (map.getLayer(id)) {
+      map.removeLayer(id);
+    }
     // if pointing to an existing source, don't remove
     // as other layers may be dependent upon it
     if (!this.props.sourceId) {
