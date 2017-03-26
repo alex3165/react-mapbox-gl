@@ -18,7 +18,7 @@ const positions = {
   bottomLeft: { bottom: 10, left: 10, top: 'auto', right: 'auto' }
 };
 
-const containerStyle = {
+const containerStyle: React.CSSProperties = {
   position: 'absolute',
   zIndex: 10,
   boxShadow: '0px 1px 4px rgba(0, 0, 0, .3)',

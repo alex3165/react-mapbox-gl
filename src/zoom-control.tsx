@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Map } from 'mapbox-gl';
 
-const containerStyle = {
+const containerStyle: React.CSSProperties = {
   position: 'absolute',
   zIndex: 10,
   display: 'flex',
