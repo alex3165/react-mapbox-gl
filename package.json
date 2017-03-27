@@ -64,8 +64,9 @@
   "devDependencies": {
     "@types/core-js": "=0.9.36",
     "@types/enzyme": "^2.7.4",
+    "@types/geojson": "^1.0.0",
     "@types/jest": "^18.1.1",
-    "@types/mapbox-gl": "^0.29.0",
+    "@types/mapbox-gl": "^0.29.2",
     "@types/node": "=7.0.5",
     "@types/react": "^15.0.6",
     "@types/recompose": "^0.20.3",
@@ -75,6 +76,7 @@
     "react-addons-test-utils": "^15.4.2",
     "react-dom": "^15.4.0",
     "recompose": "^0.20.2",
+    "remove-flow-types-loader": "^1.0.0",
     "ts-jest": "^18.0.3",
     "tslint": "^4.4.2",
     "tslint-react": "^2.3.0",

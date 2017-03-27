@@ -1,4 +1,4 @@
-jest.mock('mapbox-gl/dist/mapbox-gl', () => ({
+jest.mock('mapbox-gl', () => ({
   default: {},
   LngLat: {}
 }));
