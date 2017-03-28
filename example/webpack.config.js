@@ -10,7 +10,8 @@ module.exports = {
       '.js', '.jsx'
     ],
     alias: {
-      'react-mapbox-gl': path.join(__dirname, '../lib/index.js')
+      'react-mapbox-gl': path.join(__dirname, '../lib/index.js'),
+      'mapbox-gl': path.join(__dirname, '../node_modules/mapbox-gl/dist/mapbox-gl-dev.js')
     }
   },
   module: {

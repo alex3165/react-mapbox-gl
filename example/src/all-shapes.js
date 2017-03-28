@@ -4,7 +4,7 @@ import route from "./route.json";
 import config from "./config.json";
 import style from "./style.json";
 
-const { accessToken } = config;
+const {accessToken} = config;
 
 const containerStyle = {
   height: "100vh",
@@ -44,9 +44,12 @@ const markerCoord = [
   51.5285582
 ];
 
-const mappedRoute = route.points.map(point => [ point.lat, point.lng ]);
+const mappedRoute = route.points.map(point => [point.lat, point.lng]);
 
 export default class AllShapes extends Component {
+  intervalHandle = null
+  timeoutHandle = null
+  mounted = false;
 
   state = {
     popup: null,
@@ -55,22 +58,33 @@ export default class AllShapes extends Component {
     routeIndex: 0
   };
 
-  componentWillMount() {
-    setTimeout(() => {
-      this.setState({
-        center: [-0.120736, 51.5118219],
-        circleRadius: 10
-      });
+  componentDidMount() {
+    this.mounted = true;
+    this.timeoutHandle = setTimeout(() => {
+      if (this.mounted) {
+        this.setState({
+          center: [-0.120736, 51.5118219],
+          circleRadius: 10
+        });
+      }
     }, 6000);
 
-    setInterval(() => {
-      this.setState({
-        routeIndex: this.state.routeIndex + 1
-      });
+    this.intervalHandle = setInterval(() => {
+      if (this.mounted) {
+        this.setState({
+          routeIndex: this.state.routeIndex + 1
+        });
+      }
     }, 8000);
   }
 
-  _onClickMarker = ({ feature }) => {
+  componentWillUnmount() {
+    this.mounted = false;
+    clearInterval(this.intervalHandle);
+    clearTimeout(this.timeoutHandle);
+  }
+
+  _onClickMarker = ({feature}) => {
     this.setState({
       center: feature.geometry.coordinates
     });
@@ -84,7 +98,7 @@ export default class AllShapes extends Component {
     console.log("Style loaded: ", map);
   }
 
-  _onHover({ map }) {
+  _onHover({map}) {
     map.getCanvas().style.cursor = "pointer";
   }
 
@@ -92,7 +106,7 @@ export default class AllShapes extends Component {
     console.log("Zoom level changed to ", map.getZoom());
   }
 
-  _onEndHover({ map }) {
+  _onEndHover({map}) {
     map.getCanvas().style.cursor = "";
   }
 
@@ -108,86 +122,36 @@ export default class AllShapes extends Component {
     console.log('Marker mouse leave');
   }
 
-  _polygonClicked = ({ feature }) => {
+  _polygonClicked = ({feature}) => {
     console.log("Polygon clicked", feature.geometry.coordinates);
   };
 
   render() {
     return (
-      <ReactMapboxGl
-        style={style}
-        onClick={this._onClickMap}
-        onZoom={this._onZoom}
-        onStyleLoad={this._onStyleLoad}
-        accessToken={accessToken}
-        center={this.state.center}
-        movingMethod="jumpTo"
-        containerStyle={containerStyle}>
+      <ReactMapboxGl style={ style } onClick={ this._onClickMap } onZoom={ this._onZoom } onStyleLoad={ this._onStyleLoad } accessToken={ accessToken }
+        center={ this.state.center } movingMethod="jumpTo" containerStyle={ containerStyle }>
         <ScaleControl/>
         <ZoomControl/>
-        <Layer
-          type="symbol"
-          layout={{ "icon-image": "harbor-15" }}>
-          <Feature
-            coordinates={markerCoord}
-            onHover={this._onHover}
-            onEndHover={this._onEndHover}
-            onClick={this._onClickMarker}/>
+        <Layer type="symbol" layout={ { "icon-image": "harbor-15" } }>
+          <Feature coordinates={ markerCoord } onHover={ this._onHover } onEndHover={ this._onEndHover } onClick={ this._onClickMarker } />
         </Layer>
-
-        <Layer
-          id="mapbox-route-example"
-          type="line"
-          sourceId="route"
-          layout={{
-            "line-join": "round",
-            "line-cap": "round"
-          }}
-          paint={{
-            "line-color": "#888",
-            "line-width": 8
-          }}/>
-
-        <Layer
-          type="line"
-          layout={{ "line-cap": "round", "line-join": "round" }}
-          paint={{ "line-color": "#4790E5", "line-width": 12 }}>
-          <Feature coordinates={mappedRoute}/>
+        <Layer id="mapbox-route-example" type="line" sourceId="route" layout={ { "line-join": "round", "line-cap": "round" } } paint={ { "line-color": "#888", "line-width": 8 } } />
+        <Layer type="line" layout={ { "line-cap": "round", "line-join": "round" } } paint={ { "line-color": "#4790E5", "line-width": 12 } }>
+          <Feature coordinates={ mappedRoute } />
         </Layer>
-
-        <Layer
-          type="circle"
-          paint={{ "circle-radius": this.state.circleRadius, "circle-color": "#E54E52", "circle-opacity": .8 }}>
-          <Feature coordinates={mappedRoute[this.state.routeIndex]}/>
+        <Layer type="circle" paint={ { "circle-radius": this.state.circleRadius, "circle-color": "#E54E52", "circle-opacity": .8 } }>
+          <Feature coordinates={ mappedRoute[this.state.routeIndex] } />
         </Layer>
-
-        <Marker
-          onClick={this._markerClick}
-          anchor="top"
-          onMouseEnter={this._markerMouseEnter}
-          onMouseLeave={this._markerMouseLeave}
-          className="test"
-          coordinates={markerCoord}>
-            <h1>TEST</h1>
+        <Marker onClick={ this._markerClick } anchor="top" onMouseEnter={ this._markerMouseEnter } onMouseLeave={ this._markerMouseLeave } className="test" coordinates={ markerCoord }>
+          <h1>TEST</h1>
         </Marker>
-
-        <Layer
-          type="fill"
-          paint={{ "fill-color": "#6F788A", "fill-opacity": .7 }}>
-          <Feature
-            onClick={this._polygonClicked}
-            coordinates={polygonCoords}/>
+        <Layer type="fill" paint={ { "fill-color": "#6F788A", "fill-opacity": .7 } }>
+          <Feature onClick={ this._polygonClicked } coordinates={ polygonCoords } />
         </Layer>
-
-        <Layer
-          type="fill"
-          paint={{ "fill-color": "#3bb2d0", "fill-opacity": .5 }}>
-          <Feature
-            onClick={this._polygonClicked}
-            coordinates={multiPolygonCoords}/>
+        <Layer type="fill" paint={ { "fill-color": "#3bb2d0", "fill-opacity": .5 } }>
+          <Feature onClick={ this._polygonClicked } coordinates={ multiPolygonCoords } />
         </Layer>
-
       </ReactMapboxGl>
-    );
+      );
   }
 }
