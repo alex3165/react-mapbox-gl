@@ -178,7 +178,7 @@ export default class Layer extends React.Component<Props, void> {
   }
 
   public componentWillReceiveProps(props: Props) {
-    const { paint, layout,  before } = this.props;
+    const { paint, layout, before, layerOptions } = this.props;
     const { map } = this.context;
 
     if (!isEqual(props.paint, paint)) {
@@ -195,6 +195,10 @@ export default class Layer extends React.Component<Props, void> {
       Object.keys(layoutDiff).forEach((key) => {
         map.setLayoutProperty(this.id, key, layoutDiff[key]);
       });
+    }
+
+    if (!isEqual(props.layerOptions ? props.layerOptions.filter : null, layerOptions ? layerOptions.filter : null)) {
+      (map as any).setFilter(this.id, props.layerOptions ? props.layerOptions.filter : null);
     }
 
     if (before !== props.before) {
