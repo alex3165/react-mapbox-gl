@@ -63,6 +63,16 @@ const clusterCountOpts = {
 };
 
 export default class ClusterWithLayers extends Component {
+    onSourceLoaded = (s) => {
+        console.log('ON SRC LOAD', s);
+    }
+
+    onSourceAdded = (s) => {
+        console.log('ON SRC +', s);
+    // setTimeout(() => {
+    //     s.setData(places)
+    // }, 100);
+    }
 
     render() {
         let clusterLayers = layerTypes.map((layer, i) => {
@@ -89,15 +99,9 @@ export default class ClusterWithLayers extends Component {
             return <Layer {...layerProps} />;
         });
 
-
         return (
             <ReactMapboxGl style={ style } zoom={ [4] } accessToken={ config.accessToken } containerStyle={ containerStyle }>
-              <Source id={ PLACES_SOURCE_ID } geoJsonSource={ PLACES_SOURCE_OPTIONS } onSourceAdded={ (s) => {
-                                                                                                          setTimeout(() => {
-                                                                                                              s.setData(places)
-                                                                                                          },100);
-                                                                                                      
-                                                                                                      } } />
+              <Source id={ PLACES_SOURCE_ID } geoJsonSource={ PLACES_SOURCE_OPTIONS } onSourceLoaded={ this.onSourceLoaded } onSourceAdded={ this.onSourceAdded } />
               <Layer {...unclusterePointsProps} />
               { clusterLayers }
               <Layer {...clusterCountOpts} />
