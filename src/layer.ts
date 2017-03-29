@@ -197,8 +197,8 @@ export default class Layer extends React.Component<Props, void> {
       });
     }
 
-    if (!isEqual(props.layerOptions ? props.layerOptions.filter : null, layerOptions ? layerOptions.filter : null)) {
-      (map as any).setFilter(this.id, props.layerOptions ? props.layerOptions.filter : null);
+    if ((props.layerOptions && layerOptions) && !isEqual(props.layerOptions.filter, layerOptions.filter)) {
+      (map as any).setFilter(this.id, props.layerOptions.filter);
     }
 
     if (before !== props.before) {
