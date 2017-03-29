@@ -1,6 +1,0 @@
-{
-  "globalDependencies": {
-    "geojson": "registry:dt/geojson#1.0.0+20170130182553",
-    "mapbox-gl": "registry:dt/mapbox-gl#0.30.0+20170316144853"
-  }
-}
