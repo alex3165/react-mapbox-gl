@@ -1,9 +1,5 @@
 import * as React from 'react';
-import {
-  Map,
-  GeoJSONSource,
-  GeoJSONSourceRaw
-} from 'mapbox-gl/dist/mapbox-gl';
+import { Map, GeoJSONSource, GeoJSONSourceRaw } from 'mapbox-gl';
 import { SourceOptionData, TilesJson } from './util/types';
 
 export interface Context {
@@ -15,9 +11,11 @@ export interface Props {
   geoJsonSource?: GeoJSONSourceRaw;
   tileJsonSource?: TilesJson;
   onSourceAdded?: (source: GeoJSONSource | TilesJson) => any;
+  onSourceLoaded?: (source: GeoJSONSource | TilesJson) => any;
 }
 
-export default class Source extends React.Component<Props, void> {
+export default class Source extends React.Component<Props,
+  void> {
   public context: Context;
 
   public static contextTypes = {
@@ -32,11 +30,29 @@ export default class Source extends React.Component<Props, void> {
 
     if (!map.getSource(this.id) && (geoJsonSource || tileJsonSource)) {
       map.addSource(this.id, (geoJsonSource || tileJsonSource) as any);
+      map.on('load', this.onData);
 
       if (onSourceAdded) {
         onSourceAdded(map.getSource(this.id) as GeoJSONSource | TilesJson);
       }
     }
+  }
+
+  private onData = (event: any) => {
+    const { map } = this.context;
+
+    console.debug('onData', event.isSourceLoaded, event);
+    const source = map.getSource(this.props.id) as GeoJSONSource;
+
+    const { onSourceLoaded } = this.props;
+    if (onSourceLoaded) {
+      onSourceLoaded(source);
+    }
+    // Will fix datasource being empty
+    if (this.props.geoJsonSource && this.props.geoJsonSource.data) {
+      source.setData(this.props.geoJsonSource.data as SourceOptionData);
+    }
+    map.off('load', this.onData);
   }
 
   public componentWillUnmount() {
@@ -58,8 +74,7 @@ export default class Source extends React.Component<Props, void> {
         // Check for reference equality on tiles array
         tileJsonSource.tiles !== props.tileJsonSource.tiles ||
         tileJsonSource.minzoom !== props.tileJsonSource.minzoom ||
-        tileJsonSource.maxzoom !== props.tileJsonSource.maxzoom
-      );
+        tileJsonSource.maxzoom !== props.tileJsonSource.maxzoom);
 
       if (hasNewTilesSource) {
         map.removeSource(id);

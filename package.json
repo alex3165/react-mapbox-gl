@@ -3,7 +3,6 @@
   "version": "1.4.2",
   "description": "A React binding of mapbox-gl-js",
   "main": "lib/index.js",
-  "typings": "lib/index.d.ts",
   "scripts": {
     "clean": "rm -rf dist",
     "test": "jest",
@@ -53,7 +52,7 @@
   "homepage": "https://github.com/alex3165/react-mapbox-gl#readme",
   "dependencies": {
     "deep-equal": "^1.0.1",
-    "mapbox-gl": "^0.32.1",
+    "mapbox-gl": "^0.34.0",
     "reduce-object": "^0.1.3",
     "supercluster": "^2.2.0"
   },
@@ -64,18 +63,20 @@
   "devDependencies": {
     "@types/core-js": "=0.9.36",
     "@types/enzyme": "^2.7.4",
+    "@types/geojson": "^1.0.0",
     "@types/jest": "^18.1.1",
-    "@types/mapbox-gl": "^0.29.0",
+    "@types/mapbox-gl": "^0.29.2",
     "@types/node": "=7.0.5",
     "@types/react": "^15.0.6",
     "@types/recompose": "^0.20.3",
     "enzyme": "^2.7.1",
-    "jest": "^17.0.1",
+    "jest": "^19.0.2",
     "react": "^15.4.0",
     "react-addons-test-utils": "^15.4.2",
     "react-dom": "^15.4.0",
     "recompose": "^0.20.2",
-    "ts-jest": "^18.0.3",
+    "remove-flow-types-loader": "^1.0.0",
+    "ts-jest": "^19.0.6",
     "tslint": "^4.4.2",
     "tslint-react": "^2.3.0",
     "typescript": "^2.1.5"
