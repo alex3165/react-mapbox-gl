@@ -25,15 +25,13 @@ export interface Props {
 
 export interface Context {
   map: MapboxGL.Map;
-  shouldRecompute: number;
 }
 
 export default class Layer extends React.Component<Props, void> {
   public context: Context;
 
   public static contextTypes = {
-    map: React.PropTypes.object,
-    shouldRecompute: React.PropTypes.number
+    map: React.PropTypes.object
   };
 
   public static defaultProps = {
@@ -90,6 +88,7 @@ export default class Layer extends React.Component<Props, void> {
     const children: Array<React.ReactElement<FeatureProps>> = ([] as any).concat(this.props.children);
     const { map } = this.context;
     const features = map.queryRenderedFeatures(evt.point, { layers: [this.id] }) as Feature[];
+    console.log('FEATURES', features);
 
     features.forEach((feature) => {
       const { id } = feature.properties;
@@ -112,6 +111,7 @@ export default class Layer extends React.Component<Props, void> {
     const hover: string[] = [];
 
     const features = map.queryRenderedFeatures(evt.point, { layers: [this.id] }) as Feature[];
+    console.log('FEATURES', features);
 
     features.forEach((feature) => {
       const { id } = feature.properties;
@@ -139,7 +139,7 @@ export default class Layer extends React.Component<Props, void> {
     this.hover = hover;
   }
 
-  private addSourceAndLayer = (map: MapboxGL.Map) => {
+  private initialize = (map: MapboxGL.Map) => {
     const { id, source } = this;
     const { type, layout, paint, layerOptions, sourceId, before } = this.props;
 
@@ -157,21 +157,12 @@ export default class Layer extends React.Component<Props, void> {
     }
 
     map.addLayer(layer, before);
-  }
-
-  public componentWillMount() {
-    const { map } = this.context;
-    this.addSourceAndLayer(map);
 
     map.on('click', this.onClick);
     map.on('mousemove', this.onMouseMove);
   }
 
-  public componentWillUnmount() {
-    const { id } = this;
-
-    const { map } = this.context;
-
+  private clear = (map: MapboxGL.Map, id: string) => {
     map.removeLayer(id);
     // if pointing to an existing source, don't remove
     // as other layers may be dependent upon it
@@ -183,14 +174,25 @@ export default class Layer extends React.Component<Props, void> {
     map.off('mousemove', this.onMouseMove);
   }
 
+  public componentWillMount() {
+    const { map } = this.context;
+    this.initialize(map);
+  }
+
+  public componentWillUnmount() {
+    this.clear(this.context.map, this.id);
+  }
+
   public componentWillUpdate(props: Props, _: void, context: Context) {
     const { paint, layout,  before, layerOptions } = this.props;
-    const { map, shouldRecompute } = this.context;
+    const { map } = this.context;
 
     // map style has changed
-    if (context.shouldRecompute !== shouldRecompute) {
-      console.log('RECOMPUTE', context.shouldRecompute, shouldRecompute);
-      this.addSourceAndLayer(map);
+    if (context.map !== map) {
+      debugger;
+      // console.log('RECOMPUTE');
+      this.clear(map, this.id);
+      this.initialize(context.map);
       return;
     }
 

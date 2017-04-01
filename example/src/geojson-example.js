@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import ReactMapboxGl, { GeoJSONLayer, ScaleControl, ZoomControl } from "react-mapbox-gl";
+import ReactMapboxGl, { GeoJSONLayer, ScaleControl, ZoomControl } from "../../lib";
 import geojson from "./geojson.json";
 import config from "./config.json";
 
