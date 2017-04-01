@@ -25,13 +25,15 @@ export interface Props {
 
 export interface Context {
   map: MapboxGL.Map;
+  updateStyle: number;
 }
 
 export default class Layer extends React.Component<Props, void> {
   public context: Context;
 
   public static contextTypes = {
-    map: React.PropTypes.object
+    map: React.PropTypes.object,
+    updateStyle: React.PropTypes.number
   };
 
   public static defaultProps = {
@@ -88,19 +90,20 @@ export default class Layer extends React.Component<Props, void> {
     const children: Array<React.ReactElement<FeatureProps>> = ([] as any).concat(this.props.children);
     const { map } = this.context;
     const features = map.queryRenderedFeatures(evt.point, { layers: [this.id] }) as Feature[];
-    console.log('FEATURES', features);
 
-    features.forEach((feature) => {
-      const { id } = feature.properties;
-      if (children) {
-        const child = children[id];
+    if (features) {
+      features.forEach((feature) => {
+        const { id } = feature.properties;
+        if (children) {
+          const child = children[id];
 
-        const onClick = child && child.props.onClick;
-        if (onClick) {
-          onClick({ ...evt, feature, map });
+          const onClick = child && child.props.onClick;
+          if (onClick) {
+            onClick({ ...evt, feature, map });
+          }
         }
-      }
-    });
+      });
+    }
   }
 
   private onMouseMove = (evt: any) => {
@@ -111,20 +114,21 @@ export default class Layer extends React.Component<Props, void> {
     const hover: string[] = [];
 
     const features = map.queryRenderedFeatures(evt.point, { layers: [this.id] }) as Feature[];
-    console.log('FEATURES', features);
 
-    features.forEach((feature) => {
-      const { id } = feature.properties;
-      if (children) {
-        const child = children[id];
-        hover.push(id);
+    if (features) {
+      features.forEach((feature) => {
+        const { id } = feature.properties;
+        if (children) {
+          const child = children[id];
+          hover.push(id);
 
-        const onMouseEnter = child && child.props.onMouseEnter;
-        if (onMouseEnter) {
-          onMouseEnter({ ...evt, feature, map });
+          const onMouseEnter = child && child.props.onMouseEnter;
+          if (onMouseEnter) {
+            onMouseEnter({ ...evt, feature, map });
+          }
         }
-      }
-    });
+      });
+    }
 
     oldHover
       .filter((prevHoverId) => hover.indexOf(prevHoverId) === -1)
@@ -185,10 +189,10 @@ export default class Layer extends React.Component<Props, void> {
 
   public componentWillUpdate(props: Props, _: void, context: Context) {
     const { paint, layout,  before, layerOptions } = this.props;
-    const { map } = this.context;
+    const { map, updateStyle } = this.context;
 
     // map style has changed
-    if (context.map !== map) {
+    if (context.updateStyle !== updateStyle) {
       debugger;
       // console.log('RECOMPUTE');
       this.clear(map, this.id);

@@ -76,6 +76,7 @@ export interface Props {
 
 export interface State {
   map?: MapboxGl.Map;
+  updateStyle: number;
 }
 
 // Satisfy typescript pitfall with defaultProps
@@ -102,15 +103,18 @@ export default class ReactMapboxGl extends React.Component<Props & Events, State
   };
 
   public static childContextTypes = {
-    map: React.PropTypes.object
+    map: React.PropTypes.object,
+    updateStyle: React.PropTypes.number
   };
 
   public state = {
-    map: undefined
+    map: undefined,
+    updateStyle: 0
   };
 
   public getChildContext = () => ({
-    map: this.state.map
+    map: this.state.map,
+    updateStyle: this.state.updateStyle
   })
 
   private container: HTMLElement;
@@ -180,7 +184,10 @@ export default class ReactMapboxGl extends React.Component<Props & Events, State
           propEvent(map, evt);
 
           if (index === 0) {
-            this.setState({ map });
+            this.setState({
+              map,
+              updateStyle: this.state.updateStyle + 1
+            });
           }
         });
       }
