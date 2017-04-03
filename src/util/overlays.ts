@@ -1,5 +1,5 @@
-import { LngLat, Point } from 'mapbox-gl/dist/mapbox-gl';
-import * as MapboxGL from 'mapbox-gl/dist/mapbox-gl';
+import { LngLat, Point } from 'mapbox-gl';
+import * as MapboxGL from 'mapbox-gl';
 import { Props } from '../projected-layer';
 
 export type Anchor = (

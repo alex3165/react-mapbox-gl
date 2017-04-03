@@ -20,7 +20,7 @@ export interface Feature {
     coordinates: GeoJSON.Position;
   };
   properties: any;
-};
+}
 
 export interface TilesJson {
   type: string;
@@ -29,4 +29,4 @@ export interface TilesJson {
   maxzoom: number;
   minzoom: number;
   tileSize?: number;
-};
+}
