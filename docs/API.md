@@ -112,6 +112,7 @@ import { Source } from "react-mapbox-gl";
 - **geoJsonSource** : `Object` GeoJson source, see [mapbox-gl GeoJson](https://www.mapbox.com/mapbox-gl-js/style-spec/#sources-geojson) for options
 - **tileJsonSource** : `Object` TileJson source, see [mapbox-gl TileJson](https://www.mapbox.com/mapbox-gl-js/style-spec/#sources) for options
 - **onSourceAdded** : `Function` Executed once the source is added to the map, the source is passed as a first argument.
+- **onSourceLoaded** : `Function` Executed once the source data has been loaded for the first time (after [mapbox-gl map.event:load](https://www.mapbox.com/mapbox-gl-js/api/#map.event:load)), the source is passed as a first argument.
 
 ### Example
 
