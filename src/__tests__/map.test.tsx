@@ -5,7 +5,7 @@ const Map = jest.fn(() => ({
   on
 }));
 
-jest.mock('mapbox-gl/dist/mapbox-gl', () => ({
+jest.mock('mapbox-gl', () => ({
   Map
 }));
 

@@ -3,7 +3,7 @@ import {
   Map,
   GeoJSONSource,
   GeoJSONSourceRaw
-} from 'mapbox-gl/dist/mapbox-gl';
+} from 'mapbox-gl';
 import { SourceOptionData, TilesJson } from './util/types';
 
 export interface Context {

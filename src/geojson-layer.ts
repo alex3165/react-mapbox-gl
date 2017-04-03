@@ -1,5 +1,5 @@
 import * as React from 'react';
-import * as MapboxGL from 'mapbox-gl/dist/mapbox-gl';
+import * as MapboxGL from 'mapbox-gl';
 const isEqual = require('deep-equal'); //tslint:disable-line
 import diff from './util/diff';
 import { generateID } from './util/uid';
