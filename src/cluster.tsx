@@ -102,7 +102,7 @@ export default class Cluster extends React.Component<Props, State> {
 
   private childrenToFeatures = (children: Array<React.Component<MarkerProps, any>>) => (
     children.map((child) => this.feature(child && child.props.coordinates))
-  );
+  )
 
   public render() {
     const { children, ClusterMarkerFactory, clusterThreshold } = this.props;
