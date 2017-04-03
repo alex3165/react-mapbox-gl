@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import ReactMapboxGl, { GeoJSONLayer, ScaleControl, ZoomControl } from "react-mapbox-gl";
+import ReactMapboxGl, { GeoJSONLayer, ScaleControl, ZoomControl } from "../../lib";
 import geojson from "./geojson.json";
 import config from "./config.json";
 
@@ -19,11 +19,12 @@ export default class GeoJSONExample extends Component {
   render() {
     return (
       <ReactMapboxGl
+        // eslint-disable-next-line
         style="mapbox://styles/mapbox/light-v8"
         accessToken={accessToken}
         center={this.state.center}
         movingMethod="jumpTo"
-        containerStyle={{ height: "100vh", width: "100%" }}>
+        containerStyle={containerStyle}>
 
         <ScaleControl/>
         <ZoomControl/>

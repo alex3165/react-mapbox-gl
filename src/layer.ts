@@ -89,17 +89,19 @@ export default class Layer extends React.Component<Props, void> {
     const { map } = this.context;
     const features = map.queryRenderedFeatures(evt.point, { layers: [this.id] }) as Feature[];
 
-    features.forEach((feature) => {
-      const { id } = feature.properties;
-      if (children) {
-        const child = children[id];
+    if (features) {
+      features.forEach((feature) => {
+        const { id } = feature.properties;
+        if (children) {
+          const child = children[id];
 
-        const onClick = child && child.props.onClick;
-        if (onClick) {
-          onClick({ ...evt, feature, map });
+          const onClick = child && child.props.onClick;
+          if (onClick) {
+            onClick({ ...evt, feature, map });
+          }
         }
-      }
-    });
+      });
+    }
   }
 
   private onMouseMove = (evt: any) => {
@@ -111,18 +113,20 @@ export default class Layer extends React.Component<Props, void> {
 
     const features = map.queryRenderedFeatures(evt.point, { layers: [this.id] }) as Feature[];
 
-    features.forEach((feature) => {
-      const { id } = feature.properties;
-      if (children) {
-        const child = children[id];
-        hover.push(id);
+    if (features) {
+      features.forEach((feature) => {
+        const { id } = feature.properties;
+        if (children) {
+          const child = children[id];
+          hover.push(id);
 
-        const onMouseEnter = child && child.props.onMouseEnter;
-        if (onMouseEnter) {
-          onMouseEnter({ ...evt, feature, map });
+          const onMouseEnter = child && child.props.onMouseEnter;
+          if (onMouseEnter) {
+            onMouseEnter({ ...evt, feature, map });
+          }
         }
-      }
-    });
+      });
+    }
 
     oldHover
       .filter((prevHoverId) => hover.indexOf(prevHoverId) === -1)
@@ -137,10 +141,9 @@ export default class Layer extends React.Component<Props, void> {
     this.hover = hover;
   }
 
-  public componentWillMount() {
+  private initialize = (map: MapboxGL.Map) => {
     const { id, source } = this;
     const { type, layout, paint, layerOptions, sourceId, before } = this.props;
-    const { map } = this.context;
 
     const layer = {
       id,
@@ -161,11 +164,7 @@ export default class Layer extends React.Component<Props, void> {
     map.on('mousemove', this.onMouseMove);
   }
 
-  public componentWillUnmount() {
-    const { id } = this;
-
-    const { map } = this.context;
-
+  private clear = (map: MapboxGL.Map, id: string) => {
     map.removeLayer(id);
     // if pointing to an existing source, don't remove
     // as other layers may be dependent upon it
@@ -177,8 +176,16 @@ export default class Layer extends React.Component<Props, void> {
     map.off('mousemove', this.onMouseMove);
   }
 
+  public componentWillMount() {
+    this.initialize(this.context.map);
+  }
+
+  public componentWillUnmount() {
+    this.clear(this.context.map, this.id);
+  }
+
   public componentWillReceiveProps(props: Props) {
-    const { paint, layout, before, layerOptions } = this.props;
+    const { paint, layout,  before, layerOptions } = this.props;
     const { map } = this.context;
 
     if (!isEqual(props.paint, paint)) {

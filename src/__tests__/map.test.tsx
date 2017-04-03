@@ -64,7 +64,7 @@ describe('Map', () => {
       <ReactMapboxGl style="" accessToken="" onStyleLoad={jest.fn()}/>
     );
 
-    expect(on).toBeCalledWith('style.load', jasmine.any(Function));
+    expect(on).toBeCalledWith('load', jasmine.any(Function));
   });
 
   it('Should update the map center position', () => {

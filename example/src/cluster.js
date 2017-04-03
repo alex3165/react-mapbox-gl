@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import style from './style.json';
 import config from './config.json';
 import places from './places.json';
-import ReactMapboxGl, { Marker, Cluster } from "react-mapbox-gl";
+import ReactMapboxGl, { Marker, Cluster } from "../../lib";
 
 const containerStyle = {
   height: '100vh',
