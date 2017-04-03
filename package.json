@@ -25,6 +25,7 @@
       "tsx",
       "js"
     ],
+    "browser": true,
     "verbose": true
   },
   "files": [

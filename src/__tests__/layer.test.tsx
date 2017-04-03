@@ -78,7 +78,7 @@ describe('Layer', () => {
         'properties': {id: 0},
         'type': 'Feature'
       }]
-    }])
+    }]);
   });
 
   it('Should set features to empty array when children disappear', () => {
@@ -93,6 +93,6 @@ describe('Layer', () => {
     expect(setDataMock.mock.calls[1]).toEqual([{
       'type': 'FeatureCollection',
       'features': []
-    }])
+    }]);
   });
 });
