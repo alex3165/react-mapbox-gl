@@ -1,5 +1,6 @@
 import * as MapboxGl from 'mapbox-gl';
 import * as React from 'react';
+const isEqual = require('deep-equal'); //tslint:disable-line		
 
 const events = {
   onStyleLoad: 'load', // Should remain first
@@ -205,6 +206,7 @@ export default class ReactMapboxGl extends React.Component<Props & Events, State
       nextProps.children !== this.props.children ||
       nextProps.containerStyle !== this.props.containerStyle ||
       nextState.map !== this.state.map ||
+      nextProps.style !== this.props.style ||
       nextProps.fitBounds !== this.props.fitBounds
     );
   }
@@ -268,6 +270,10 @@ export default class ReactMapboxGl extends React.Component<Props & Events, State
         bearing: didBearingUpdate ? nextProps.bearing : bearing,
         pitch: didPitchUpdate ? nextProps.pitch : pitch
       });
+    }
+
+    if (!isEqual(this.props.style, nextProps.style)) {
+      map.setStyle(nextProps.style);		
     }
 
     return null;
