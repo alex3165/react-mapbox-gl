@@ -47,6 +47,9 @@ const markerCoord = [
 const mappedRoute = route.points.map(point => [ point.lat, point.lng ]);
 
 export default class AllShapes extends Component {
+  intervalHandle = null
+  timeoutHandle = null
+  mounted = false
 
   state = {
     popup: null,
@@ -56,18 +59,29 @@ export default class AllShapes extends Component {
   };
 
   componentWillMount() {
-    setTimeout(() => {
-      this.setState({
-        center: [-0.120736, 51.5118219],
-        circleRadius: 10
-      });
+    this.mounted = true;
+    this.timeoutHandle = setTimeout(() => {
+      if (this.mounted) {
+        this.setState({
+          center: [-0.120736, 51.5118219],
+          circleRadius: 10
+        });
+      }
     }, 6000);
 
-    setInterval(() => {
-      this.setState({
-        routeIndex: this.state.routeIndex + 1
-      });
+    this.intervalHandle = setInterval(() => {
+      if (this.mounted) {
+        this.setState({
+          routeIndex: this.state.routeIndex + 1
+        });
+      }
     }, 8000);
+  }
+
+  componentWillUnmount() {
+    this.mounted = false;
+    clearInterval(this.intervalHandle);
+    clearTimeout(this.timeoutHandle);
   }
 
   _onClickMarker = ({ feature }) => {

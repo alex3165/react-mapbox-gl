@@ -1,4 +1,4 @@
-import * as MapboxGl from 'mapbox-gl/dist/mapbox-gl';
+import * as MapboxGl from 'mapbox-gl';
 import * as React from 'react';
 const isEqual = require('deep-equal'); //tslint:disable-line
 
@@ -117,7 +117,7 @@ export default class ReactMapboxGl extends React.Component<Props & Events, State
 
   private calcCenter = (bounds: FitBounds): number[] => (
     [(bounds[0][0] + bounds[1][0]) / 2, (bounds[0][1] + bounds[1][1]) / 2]
-  );
+  )
 
   public componentDidMount() {
     const {
