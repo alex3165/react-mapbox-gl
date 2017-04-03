@@ -183,11 +183,8 @@ export default class ReactMapboxGl extends React.Component<Props & Events, State
         map.on(events[event], (evt: React.SyntheticEvent<any>) => {
           propEvent(map, evt);
 
-          if (index === 0) {
-            this.setState({
-              map,
-              updateStyle: this.state.updateStyle + 1
-            });
+          if (index === 0 && this.state.updateStyle === 0) {
+            this.setState({ map });
           }
         });
       }
@@ -281,6 +278,9 @@ export default class ReactMapboxGl extends React.Component<Props & Events, State
 
     if (!isEqual(this.props.style, nextProps.style)) {
       map.setStyle(nextProps.style);
+      this.setState({
+        updateStyle: this.state.updateStyle + 1
+      });
     }
 
     return null;
