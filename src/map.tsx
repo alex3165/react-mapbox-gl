@@ -273,7 +273,7 @@ export default class ReactMapboxGl extends React.Component<Props & Events, State
     }
 
     if (!isEqual(this.props.style, nextProps.style)) {
-      map.setStyle(nextProps.style);		
+      map.setStyle(nextProps.style);
     }
 
     return null;
