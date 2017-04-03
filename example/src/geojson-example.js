@@ -19,11 +19,12 @@ export default class GeoJSONExample extends Component {
   render() {
     return (
       <ReactMapboxGl
+        // eslint-disable-next-line
         style="mapbox://styles/mapbox/light-v8"
         accessToken={accessToken}
         center={this.state.center}
         movingMethod="jumpTo"
-        containerStyle={{ height: "100vh", width: "100%" }}>
+        containerStyle={containerStyle}>
 
         <ScaleControl/>
         <ZoomControl/>

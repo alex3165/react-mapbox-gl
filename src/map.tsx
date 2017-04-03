@@ -1,9 +1,8 @@
 import * as MapboxGl from 'mapbox-gl';
 import * as React from 'react';
-const isEqual = require('deep-equal'); //tslint:disable-line
 
 const events = {
-  onStyleLoad: 'style.load', // Should remain first
+  onStyleLoad: 'load', // Should remain first
   onResize: 'resize',
   onDblClick: 'dblclick',
   onClick: 'click',
@@ -76,7 +75,6 @@ export interface Props {
 
 export interface State {
   map?: MapboxGl.Map;
-  updateStyle: number;
 }
 
 // Satisfy typescript pitfall with defaultProps
@@ -103,19 +101,16 @@ export default class ReactMapboxGl extends React.Component<Props & Events, State
   };
 
   public static childContextTypes = {
-    map: React.PropTypes.object,
-    updateStyle: React.PropTypes.number
+    map: React.PropTypes.object
   };
 
   public state = {
-    map: undefined,
-    updateStyle: 0
+    map: undefined
   };
 
   public getChildContext = () => ({
-    map: this.state.map,
-    updateStyle: this.state.updateStyle
-  })
+    map: this.state.map
+  });
 
   private container: HTMLElement;
 
@@ -183,7 +178,7 @@ export default class ReactMapboxGl extends React.Component<Props & Events, State
         map.on(events[event], (evt: React.SyntheticEvent<any>) => {
           propEvent(map, evt);
 
-          if (index === 0 && this.state.updateStyle === 0) {
+          if (index === 0) {
             this.setState({ map });
           }
         });
@@ -210,7 +205,6 @@ export default class ReactMapboxGl extends React.Component<Props & Events, State
       nextProps.children !== this.props.children ||
       nextProps.containerStyle !== this.props.containerStyle ||
       nextState.map !== this.state.map ||
-      nextProps.style !== this.props.style ||
       nextProps.fitBounds !== this.props.fitBounds
     );
   }
@@ -273,13 +267,6 @@ export default class ReactMapboxGl extends React.Component<Props & Events, State
         center: didCenterUpdate ? nextProps.center : center,
         bearing: didBearingUpdate ? nextProps.bearing : bearing,
         pitch: didPitchUpdate ? nextProps.pitch : pitch
-      });
-    }
-
-    if (!isEqual(this.props.style, nextProps.style)) {
-      map.setStyle(nextProps.style);
-      this.setState({
-        updateStyle: this.state.updateStyle + 1
       });
     }
 

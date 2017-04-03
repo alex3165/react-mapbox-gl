@@ -25,15 +25,13 @@ export interface Props {
 
 export interface Context {
   map: MapboxGL.Map;
-  updateStyle: number;
 }
 
 export default class Layer extends React.Component<Props, void> {
   public context: Context;
 
   public static contextTypes = {
-    map: React.PropTypes.object,
-    updateStyle: React.PropTypes.number
+    map: React.PropTypes.object
   };
 
   public static defaultProps = {
@@ -179,26 +177,16 @@ export default class Layer extends React.Component<Props, void> {
   }
 
   public componentWillMount() {
-    const { map } = this.context;
-    this.initialize(map);
+    this.initialize(this.context.map);
   }
 
   public componentWillUnmount() {
     this.clear(this.context.map, this.id);
   }
 
-  public componentWillUpdate(props: Props, _: void, context: Context) {
+  public componentWillReceiveProps(props: Props) {
     const { paint, layout,  before, layerOptions } = this.props;
-    const { map, updateStyle } = this.context;
-
-    // map style has changed
-    if (context.updateStyle !== updateStyle) {
-      debugger;
-      // console.log('RECOMPUTE');
-      this.clear(map, this.id);
-      this.initialize(context.map);
-      return;
-    }
+    const { map } = this.context;
 
     if (!isEqual(props.paint, paint)) {
       const paintDiff = diff(paint, props.paint);

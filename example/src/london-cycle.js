@@ -46,8 +46,8 @@ export default class LondonCycle extends Component {
             id: station.id[0],
             name: station.name[0],
             position: [ parseFloat(station.long[0]), parseFloat(station.lat[0]) ],
-            bikes: parseInt(station.nbBikes[0]),
-            slots: parseInt(station.nbDocks[0])
+            bikes: parseInt(station.nbBikes[0], 10),
+            slots: parseInt(station.nbDocks[0], 10)
           }))
         }, new Map()))
       }));
@@ -86,8 +86,6 @@ export default class LondonCycle extends Component {
   toggle = true;
 
   _onFitBoundsClick = () => {
-    const { stations } = this.state;
-
     if (this.toggle) {
       this.setState({
         fitBounds: [[-0.122555629777, 51.4734862092], [-0.114842, 51.50621]]
@@ -103,7 +101,7 @@ export default class LondonCycle extends Component {
   };
 
   render() {
-    const { stations, station, skip, end, popupShowLabel, fitBounds } = this.state;
+    const { stations, station, popupShowLabel, fitBounds } = this.state;
 
     return (
       <div>
