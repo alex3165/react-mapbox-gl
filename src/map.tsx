@@ -110,7 +110,7 @@ export default class ReactMapboxGl extends React.Component<Props & Events, State
 
   public getChildContext = () => ({
     map: this.state.map
-  });
+  })
 
   private container: HTMLElement;
 
