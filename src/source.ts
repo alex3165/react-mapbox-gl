@@ -47,11 +47,11 @@ export default class Source extends React.Component<Props, void> {
     const source = map.getSource(this.props.id) as GeoJSONSource;
 
     const { onSourceLoaded } = this.props;
-    if (onSourceLoaded) {
+    if (source && onSourceLoaded) {
       onSourceLoaded(source);
     }
     // Will fix datasource being empty
-    if (this.props.geoJsonSource && this.props.geoJsonSource.data) {
+    if (source && this.props.geoJsonSource && this.props.geoJsonSource.data) {
       source.setData(this.props.geoJsonSource.data as SourceOptionData);
     }
     map.off('load', this.onData);
