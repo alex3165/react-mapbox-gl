@@ -1,7 +1,7 @@
 import * as React from 'react';
 import * as MapboxGL from 'mapbox-gl';
-const isEqual = require('deep-equal'); //tslint:disable-line
-import diff from './util/diff';
+// const isEqual = require('deep-equal'); //tslint:disable-line
+// import diff from './util/diff';
 import * as GeoJSON from 'geojson';
 import { generateID } from './util/uid';
 import { Sources } from './util/types';
@@ -141,6 +141,13 @@ export default class Layer extends React.Component<Props, void> {
     this.hover = hover;
   }
 
+  private addLayer = (map: MapboxGL.Map, layer: any, before?: any) => {
+    map.addLayer(layer, before);
+
+    map.on('click', this.onClick);
+    map.on('mousemove', this.onMouseMove);
+  }
+
   private initialize = (map: MapboxGL.Map) => {
     const { id, source } = this;
     const { type, layout, paint, layerOptions, sourceId, before } = this.props;
@@ -156,19 +163,31 @@ export default class Layer extends React.Component<Props, void> {
 
     if (!sourceId) {
       map.addSource(id, source);
+      this.addLayer(map, layer, before);
     }
-
-    map.addLayer(layer, before);
-
-    map.on('click', this.onClick);
-    map.on('mousemove', this.onMouseMove);
+    if (sourceId && !map.getSource(sourceId)) {
+      const onSourceLoaded = (e: any) => {
+        if (e.isSourceLoaded && e.sourceId === sourceId) {
+          if (map.getLayer(id)) {
+            map.removeLayer(id);
+          }
+          // map.off('sourcedata');
+          this.addLayer(map, layer, before);
+        }
+      };
+      map.on('sourcedata', onSourceLoaded);
+    } else {
+      this.addLayer(map, layer, before);
+    }
   }
 
   private clear = (map: MapboxGL.Map, id: string) => {
-    map.removeLayer(id);
+    if (map.getLayer(id)) {
+      map.removeLayer(id);
+    }
     // if pointing to an existing source, don't remove
     // as other layers may be dependent upon it
-    if (!this.props.sourceId) {
+    if (!this.props.sourceId && map.getSource(id)) {
       map.removeSource(id);
     }
 
@@ -184,40 +203,40 @@ export default class Layer extends React.Component<Props, void> {
     this.clear(this.context.map, this.id);
   }
 
-  public componentWillReceiveProps(props: Props) {
-    const { paint, layout,  before, layerOptions } = this.props;
-    const { map } = this.context;
+  // public componentWillReceiveProps(props: Props) {
+  //   const { /*paint, layout,*/ before /*, layerOptions*/ } = this.props;
+  //   const { map } = this.context;
 
-    if (!isEqual(props.paint, paint)) {
-      const paintDiff = diff(paint, props.paint);
+  //   // if (!isEqual(props.paint, paint)) {
+  //   //   const paintDiff = diff(paint, props.paint);
 
-      Object.keys(paintDiff).forEach((key) => {
-        map.setPaintProperty(this.id, key, paintDiff[key]);
-      });
-    }
+  //   //   Object.keys(paintDiff).forEach((key) => {
+  //   //     map.setPaintProperty(this.id, key, paintDiff[key]);
+  //   //   });
+  //   // }
 
-    if (!isEqual(props.layout, layout)) {
-      const layoutDiff = diff(layout, props.layout);
+  //   // if (!isEqual(props.layout, layout)) {
+  //   //   const layoutDiff = diff(layout, props.layout);
 
-      Object.keys(layoutDiff).forEach((key) => {
-        map.setLayoutProperty(this.id, key, layoutDiff[key]);
-      });
-    }
+  //   //   Object.keys(layoutDiff).forEach((key) => {
+  //   //     map.setLayoutProperty(this.id, key, layoutDiff[key]);
+  //   //   });
+  //   // }
 
-    if ((props.layerOptions && layerOptions) && !isEqual(props.layerOptions.filter, layerOptions.filter)) {
-      (map as any).setFilter(this.id, props.layerOptions.filter);
-    }
+  //   // if ((props.layerOptions && layerOptions) && !isEqual(props.layerOptions.filter, layerOptions.filter)) {
+  //   //   (map as any).setFilter(this.id, props.layerOptions.filter);
+  //   // }
 
-    if (before !== props.before) {
-      map.moveLayer(this.id, props.before);
-    }
-  }
+  //   if (before !== props.before) {
+  //     map.moveLayer(this.id, props.before);
+  //   }
+  // }
 
-  public shouldComponentUpdate(nextProps: Props) {
-    return !isEqual(nextProps.children, this.props.children)
-        || !isEqual(nextProps.paint, this.props.paint)
-        || !isEqual(nextProps.layout, this.props.layout);
-  }
+  // public shouldComponentUpdate(nextProps: Props) {
+  //   return !isEqual(nextProps.children, this.props.children)
+  //     || !isEqual(nextProps.paint, this.props.paint)
+  //     || !isEqual(nextProps.layout, this.props.layout);
+  // }
 
   public render() {
     const { map } = this.context;
@@ -229,7 +248,7 @@ export default class Layer extends React.Component<Props, void> {
 
     const source = map.getSource(this.props.sourceId || this.id) as MapboxGL.GeoJSONSource;
 
-    if (source.setData) {
+    if (source && source.setData) {
       source.setData({
         type: 'FeatureCollection',
         features

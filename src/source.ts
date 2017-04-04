@@ -30,8 +30,12 @@ export default class Source extends React.Component<Props, void> {
 
   private onSourceData = (e: any) => {
     const { map } = this.context;
+    const { id, props } = this;
     if (e.isSourceLoaded && e.sourceId === this.props.id) {
       map.off('sourcedata', this.onSourceData);
+      if (props.onSourceLoaded) {
+        props.onSourceLoaded(map.getSource(id) as GeoJSONSource | TilesJson);
+      }
     }
   }
 
@@ -103,7 +107,7 @@ export default class Source extends React.Component<Props, void> {
     map.off('load', this.onMapLoaded);
   }
 
-  public componentDidMount(props: Props) {
+  public componentDidMount() {
     const { map } = this.context;
     if (map.loaded()) {
       this.onMapLoaded();

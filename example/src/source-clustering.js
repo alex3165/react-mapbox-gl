@@ -112,9 +112,9 @@ export default class SourceClustering extends Component {
           onSourceLoaded={this.onSourceLoaded}
           onSourceAdded={this.onSourceAdded}
         />
-        {/*<Layer {...unclusteredPointsProps} />
+        <Layer {...unclusteredPointsProps} />
         {this.typesToLayer()}
-        <Layer {...clusterCountOpts} />*/}
+        <Layer {...clusterCountOpts} />
       </ReactMapboxGl>
     );
   }
