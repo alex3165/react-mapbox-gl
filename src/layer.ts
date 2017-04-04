@@ -141,7 +141,7 @@ export default class Layer extends React.Component<Props, void> {
     this.hover = hover;
   }
 
-  public initialize = (map: MapboxGL.Map) => {
+  private initialize = (map: MapboxGL.Map) => {
     const { id, source } = this;
     const { type, layout, paint, layerOptions, sourceId, before } = this.props;
 
