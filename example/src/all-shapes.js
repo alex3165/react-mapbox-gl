@@ -53,7 +53,7 @@ export default class AllShapes extends Component {
 
   state = {
     popup: null,
-    center: [0.2174037, 51.6476704],
+    center: [-0.120736, 51.5118219],
     circleRadius: 30,
     routeIndex: 0
   };
@@ -63,11 +63,11 @@ export default class AllShapes extends Component {
     this.timeoutHandle = setTimeout(() => {
       if (this.mounted) {
         this.setState({
-          center: [-0.120736, 51.5118219],
+          center: [-0.13, 51.52],
           circleRadius: 10
         });
       }
-    }, 6000);
+    }, 3000);
 
     this.intervalHandle = setInterval(() => {
       if (this.mounted) {
