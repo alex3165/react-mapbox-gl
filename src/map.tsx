@@ -3,7 +3,7 @@ import * as React from 'react';
 const isEqual = require('deep-equal'); //tslint:disable-line		
 
 const events = {
-  onStyleLoad: 'load', // Should remain first
+  // onStyleLoad: 'load', // Should remain first
   onResize: 'resize',
   onDblClick: 'dblclick',
   onClick: 'click',
@@ -125,6 +125,7 @@ export default class ReactMapboxGl extends React.Component<Props & Events, State
       hash,
       preserveDrawingBuffer,
       accessToken,
+      onStyleLoad,
       center,
       pitch,
       zoom,
@@ -172,16 +173,21 @@ export default class ReactMapboxGl extends React.Component<Props & Events, State
       map.fitBounds(fitBounds, fitBoundsOptions);
     }
 
+    map.on('load', (evt: React.SyntheticEvent<any>) => {
+      console.log('map load');
+      this.setState({ map });
+
+      if (onStyleLoad) {
+        onStyleLoad(map, evt);
+      }
+    });
+
     Object.keys(events).forEach((event, index) => {
       const propEvent = this.props[event];
 
       if (propEvent) {
         map.on(events[event], (evt: React.SyntheticEvent<any>) => {
           propEvent(map, evt);
-
-          if (index === 0) {
-            this.setState({ map });
-          }
         });
       }
     });
@@ -201,15 +207,15 @@ export default class ReactMapboxGl extends React.Component<Props & Events, State
     }
   }
 
-  public shouldComponentUpdate(nextProps: Props, nextState: State) {
-    return (
-      nextProps.children !== this.props.children ||
-      nextProps.containerStyle !== this.props.containerStyle ||
-      nextState.map !== this.state.map ||
-      nextProps.style !== this.props.style ||
-      nextProps.fitBounds !== this.props.fitBounds
-    );
-  }
+  // public shouldComponentUpdate(nextProps: Props, nextState: State) {
+  //   return (
+  //     nextProps.children !== this.props.children ||
+  //     nextProps.containerStyle !== this.props.containerStyle ||
+  //     nextState.map !== this.state.map ||
+  //     nextProps.style !== this.props.style ||
+  //     nextProps.fitBounds !== this.props.fitBounds
+  //   );
+  // }
 
   public componentWillReceiveProps(nextProps: Props) {
     const { map } = this.state as State;

@@ -141,7 +141,7 @@ export default class Layer extends React.Component<Props, void> {
     this.hover = hover;
   }
 
-  private initialize = (map: MapboxGL.Map) => {
+  public initialize = (map: MapboxGL.Map) => {
     const { id, source } = this;
     const { type, layout, paint, layerOptions, sourceId, before } = this.props;
 
@@ -159,12 +159,31 @@ export default class Layer extends React.Component<Props, void> {
     }
 
     map.addLayer(layer, before);
+  }
+
+  private onStyleDataChange = () => {
+    // if the style of the map has been updated and we don't have layer anymore,
+    // add it back to the map and force re-rendering to redraw it
+    if (!this.context.map.getLayer(this.id)) {
+      this.initialize(this.context.map);
+      this.forceUpdate();
+    }
+  }
+
+  public componentWillMount() {
+    const { map } = this.context;
+
+    this.initialize(map);
 
     map.on('click', this.onClick);
     map.on('mousemove', this.onMouseMove);
+    map.on('styledata', this.onStyleDataChange);
   }
 
-  private clear = (map: MapboxGL.Map, id: string) => {
+  public componentWillUnmount() {
+    const { map } = this.context;
+    const { id } = this;
+
     map.removeLayer(id);
     // if pointing to an existing source, don't remove
     // as other layers may be dependent upon it
@@ -174,14 +193,7 @@ export default class Layer extends React.Component<Props, void> {
 
     map.off('click', this.onClick);
     map.off('mousemove', this.onMouseMove);
-  }
-
-  public componentWillMount() {
-    this.initialize(this.context.map);
-  }
-
-  public componentWillUnmount() {
-    this.clear(this.context.map, this.id);
+    map.off('styledata', this.onStyleDataChange);
   }
 
   public componentWillReceiveProps(props: Props) {
@@ -213,14 +225,9 @@ export default class Layer extends React.Component<Props, void> {
     }
   }
 
-  public shouldComponentUpdate(nextProps: Props) {
-    return !isEqual(nextProps.children, this.props.children)
-        || !isEqual(nextProps.paint, this.props.paint)
-        || !isEqual(nextProps.layout, this.props.layout);
-  }
-
   public render() {
     const { map } = this.context;
+
     const children = ([] as any).concat(this.props.children || []);
 
     const features = children
@@ -229,7 +236,7 @@ export default class Layer extends React.Component<Props, void> {
 
     const source = map.getSource(this.props.sourceId || this.id) as MapboxGL.GeoJSONSource;
 
-    if (source.setData) {
+    if (source && source.setData) {
       source.setData({
         type: 'FeatureCollection',
         features
