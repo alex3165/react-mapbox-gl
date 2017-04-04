@@ -3,6 +3,7 @@ import AllShapes from "./all-shapes";
 import LondonCycle from "./london-cycle";
 import GeoJSONExample from "./geojson-example";
 import Cluster from './cluster';
+import SourceClustering from './source-clustering';
 
 const examples = [
   {
@@ -20,6 +21,10 @@ const examples = [
   {
     component: Cluster,
     label: 'Cluster'
+  },
+  {
+    component: SourceClustering,
+    label: 'Source Clustering'
   }
 ];
 
@@ -83,7 +88,7 @@ export default class Main extends Component {
             )
           }
         </nav>
-        <Component/>
+        <Component />
       </div>
     );
   }

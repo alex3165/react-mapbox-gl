@@ -29,7 +29,15 @@ describe('Source', () => {
       map: {
         addSource: addSourceMock,
         removeSource: removeSourceMock,
-        on: jest.fn(),
+        loaded: jest.fn(() => true),
+        on: jest.fn((eventName, callback) => {
+          setTimeout(() => {
+            callback({
+              isSourceLoaded: true,
+              sourceId: this.id
+            });
+          }, 200);
+        }),
         off: jest.fn(),
         getSource: jest.fn(() => this.id)
       }
