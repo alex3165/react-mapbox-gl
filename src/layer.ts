@@ -202,7 +202,7 @@ export default class Layer extends React.Component<Props, void> {
     // add it back to the map and force re-rendering to redraw it
     if (!this.context.map.getLayer(this.id)) {
       this.initialize(this.context.map);
-      this.forceUpdate(); // throws warning
+      this.forceUpdate();
     }
   }
 

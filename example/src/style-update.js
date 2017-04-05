@@ -61,7 +61,6 @@ const POSITION_CIRCLE_PAINT = {
 };
 
 class StyleUpdate extends Component {
-  mounted = false
 
   state = {
     styleIndex: 0
