@@ -32,10 +32,16 @@ export default class Source extends React.Component<Props, void> {
     const { map } = this.context;
     const { id, props } = this;
     if (e.isSourceLoaded && e.sourceId === this.props.id) {
-      map.off('sourcedata', this.onSourceData);
-      if (props.onSourceLoaded) {
-        props.onSourceLoaded(map.getSource(id) as GeoJSONSource | TilesJson);
+      // Refresh data (sometimes unloade without apparent reason)
+      const source = map.getSource(id) as GeoJSONSource | TilesJson;
+      if (source && props.geoJsonSource && props.geoJsonSource.data) {
+        const geoJSONSource = source as GeoJSONSource;
+        geoJSONSource.setData(props.geoJsonSource.data);
       }
+      if (source && props.onSourceLoaded) {
+        props.onSourceLoaded(source);
+      }
+      map.off('sourcedata', this.onSourceData);
     }
   }
 

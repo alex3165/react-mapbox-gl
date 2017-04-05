@@ -149,7 +149,6 @@ export default class Layer extends React.Component<Props, void> {
   }
 
   private initialize = (map: MapboxGL.Map) => {
-    map.on('styledata', this.onStyleDataChange);
     const { id, source } = this;
     const { type, layout, paint, layerOptions, sourceId, before } = this.props;
 
@@ -202,19 +201,18 @@ export default class Layer extends React.Component<Props, void> {
     // if the style of the map has been updated and we don't have layer anymore,
     // add it back to the map and force re-rendering to redraw it
     if (!this.context.map.getLayer(this.id)) {
-      console.log('WTF');
-      // this.initialize(this.context.map);
-      // this.forceUpdate(); // throws warning
+      this.initialize(this.context.map);
+      this.forceUpdate(); // throws warning
     }
   }
 
   public componentWillMount() {
+    this.context.map.on('styledata', this.onStyleDataChange);
     this.initialize(this.context.map);
   }
 
   public componentWillUnmount() {
-    const { map } = this.context;
-    map.off('styledata', this.onStyleDataChange);
+    this.context.map.off('styledata', this.onStyleDataChange);
     this.clear(this.context.map, this.id);
   }
 

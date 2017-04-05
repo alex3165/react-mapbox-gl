@@ -65,11 +65,11 @@ const clusterCountOpts = {
 export default class SourceClustering extends Component {
 
   onSourceLoaded = (s) => {
-    console.log('ON Source Loaded', s);
+    console.log('ON Source Loaded', s._data);
   }
 
   onSourceAdded = (s) => {
-    console.log('ON Source Added', s);
+    console.log('ON Source Added', s._data);
   }
 
   typesToLayer = () => {
