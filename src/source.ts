@@ -35,8 +35,7 @@ export default class Source extends React.Component<Props, void> {
       // Refresh data (sometimes unloade without apparent reason)
       const source = map.getSource(id) as GeoJSONSource | TilesJson;
       if (source && props.geoJsonSource && props.geoJsonSource.data) {
-        const geoJSONSource = source as GeoJSONSource;
-        geoJSONSource.setData(props.geoJsonSource.data);
+        (source as GeoJSONSource).setData(props.geoJsonSource.data);
       }
       if (source && props.onSourceLoaded) {
         props.onSourceLoaded(source);
