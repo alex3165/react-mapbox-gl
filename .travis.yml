@@ -3,8 +3,13 @@ language: node_js
 node_js:
   - '6'
 
-install:
-  - npm install
+install: ./scripts/install.sh
 
-script:
-  - npm run build
+script: ./scripts/build.sh
+
+deploy:
+  provider: pages
+  skip_cleanup: true
+  github_token: $GITHUB_TOKEN
+  on:
+    tags: true
