@@ -3,6 +3,7 @@ import AllShapes from "./all-shapes";
 import LondonCycle from "./london-cycle";
 import GeoJSONExample from "./geojson-example";
 import Cluster from './cluster';
+import StyleUpdate from './style-update';
 
 const examples = [
   {
@@ -20,6 +21,10 @@ const examples = [
   {
     component: Cluster,
     label: 'Cluster'
+  },
+  {
+    component: StyleUpdate,
+    label: 'Style update'
   }
 ];
 
