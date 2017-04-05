@@ -66,7 +66,7 @@ export default class GeoJSONLayer extends React.Component<Props, void> {
     const layerId = `${id}-${type}`;
     layerIds.push(layerId);
 
-    const paint: Paints = this.props[`${typeToLayerLUT[type]}Paint` ] || {};
+    const paint: Paints = this.props[`${typeToLayerLUT[type]}Paint`] || {};
 
     // default undefined layers to invisible
     const visibility = Object.keys(paint).length ? 'visible' : 'none';
@@ -99,9 +99,10 @@ export default class GeoJSONLayer extends React.Component<Props, void> {
     const { id, layerIds } = this;
     const { map } = this.context;
 
-    map.removeSource(id);
-
-    layerIds.forEach((lId) => map.removeLayer(lId));
+    if (map && map.getStyle()) {
+      map.removeSource(id);
+      layerIds.forEach((lId) => map.removeLayer(lId));
+    }
   }
 
   public componentWillReceiveProps(props: Props) {

@@ -1,7 +1,7 @@
 import * as React from 'react';
 import * as MapboxGL from 'mapbox-gl';
-// const isEqual = require('deep-equal'); //tslint:disable-line
-// import diff from './util/diff';
+const isEqual = require('deep-equal'); //tslint:disable-line
+import diff from './util/diff';
 import * as GeoJSON from 'geojson';
 import { generateID } from './util/uid';
 import { Sources } from './util/types';
@@ -149,6 +149,7 @@ export default class Layer extends React.Component<Props, void> {
   }
 
   private initialize = (map: MapboxGL.Map) => {
+    map.on('styledata', this.onStyleDataChange);
     const { id, source } = this;
     const { type, layout, paint, layerOptions, sourceId, before } = this.props;
 
@@ -171,7 +172,7 @@ export default class Layer extends React.Component<Props, void> {
           if (map.getLayer(id)) {
             map.removeLayer(id);
           }
-          // map.off('sourcedata');
+          map.off('sourcedata');
           this.addLayer(map, layer, before);
         }
       };
@@ -182,17 +183,29 @@ export default class Layer extends React.Component<Props, void> {
   }
 
   private clear = (map: MapboxGL.Map, id: string) => {
-    if (map.getLayer(id)) {
-      map.removeLayer(id);
-    }
-    // if pointing to an existing source, don't remove
-    // as other layers may be dependent upon it
-    if (!this.props.sourceId && map.getSource(id)) {
-      map.removeSource(id);
-    }
+    if (map && map.getStyle()) {
+      if (map.getLayer(id)) {
+        map.removeLayer(id);
+      }
+      // if pointing to an existing source, don't remove
+      // as other layers may be dependent upon it
+      if (!this.props.sourceId && map.getSource(id)) {
+        map.removeSource(id);
+      }
 
-    map.off('click', this.onClick);
-    map.off('mousemove', this.onMouseMove);
+      map.off('click', this.onClick);
+      map.off('mousemove', this.onMouseMove);
+    }
+  }
+
+  private onStyleDataChange = () => {
+    // if the style of the map has been updated and we don't have layer anymore,
+    // add it back to the map and force re-rendering to redraw it
+    if (!this.context.map.getLayer(this.id)) {
+      console.log('WTF');
+      // this.initialize(this.context.map);
+      // this.forceUpdate(); // throws warning
+    }
   }
 
   public componentWillMount() {
@@ -200,46 +213,43 @@ export default class Layer extends React.Component<Props, void> {
   }
 
   public componentWillUnmount() {
+    const { map } = this.context;
+    map.off('styledata', this.onStyleDataChange);
     this.clear(this.context.map, this.id);
   }
 
-  // public componentWillReceiveProps(props: Props) {
-  //   const { /*paint, layout,*/ before /*, layerOptions*/ } = this.props;
-  //   const { map } = this.context;
+  public componentWillReceiveProps(props: Props) {
+    const { paint, layout, before, layerOptions } = this.props;
+    const { map } = this.context;
 
-  //   // if (!isEqual(props.paint, paint)) {
-  //   //   const paintDiff = diff(paint, props.paint);
+    if (!isEqual(props.paint, paint)) {
+      const paintDiff = diff(paint, props.paint);
 
-  //   //   Object.keys(paintDiff).forEach((key) => {
-  //   //     map.setPaintProperty(this.id, key, paintDiff[key]);
-  //   //   });
-  //   // }
+      Object.keys(paintDiff).forEach((key) => {
+        map.setPaintProperty(this.id, key, paintDiff[key]);
+      });
+    }
 
-  //   // if (!isEqual(props.layout, layout)) {
-  //   //   const layoutDiff = diff(layout, props.layout);
+    if (!isEqual(props.layout, layout)) {
+      const layoutDiff = diff(layout, props.layout);
 
-  //   //   Object.keys(layoutDiff).forEach((key) => {
-  //   //     map.setLayoutProperty(this.id, key, layoutDiff[key]);
-  //   //   });
-  //   // }
+      Object.keys(layoutDiff).forEach((key) => {
+        map.setLayoutProperty(this.id, key, layoutDiff[key]);
+      });
+    }
 
-  //   // if ((props.layerOptions && layerOptions) && !isEqual(props.layerOptions.filter, layerOptions.filter)) {
-  //   //   (map as any).setFilter(this.id, props.layerOptions.filter);
-  //   // }
+    if ((props.layerOptions && layerOptions) && !isEqual(props.layerOptions.filter, layerOptions.filter)) {
+      (map as any).setFilter(this.id, props.layerOptions.filter);
+    }
 
-  //   if (before !== props.before) {
-  //     map.moveLayer(this.id, props.before);
-  //   }
-  // }
-
-  // public shouldComponentUpdate(nextProps: Props) {
-  //   return !isEqual(nextProps.children, this.props.children)
-  //     || !isEqual(nextProps.paint, this.props.paint)
-  //     || !isEqual(nextProps.layout, this.props.layout);
-  // }
+    if (before !== props.before) {
+      map.moveLayer(this.id, props.before);
+    }
+  }
 
   public render() {
     const { map } = this.context;
+
     const children = ([] as any).concat(this.props.children || []);
 
     const features = children

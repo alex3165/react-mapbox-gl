@@ -3,7 +3,6 @@ import * as React from 'react';
 const isEqual = require('deep-equal'); //tslint:disable-line		
 
 const events = {
-  onStyleLoad: 'load', // Should remain first
   onResize: 'resize',
   onDblClick: 'dblclick',
   onClick: 'click',
@@ -125,6 +124,7 @@ export default class ReactMapboxGl extends React.Component<Props & Events, State
       hash,
       preserveDrawingBuffer,
       accessToken,
+      onStyleLoad,
       center,
       pitch,
       zoom,
@@ -172,16 +172,20 @@ export default class ReactMapboxGl extends React.Component<Props & Events, State
       map.fitBounds(fitBounds, fitBoundsOptions);
     }
 
+    map.on('load', (evt: React.SyntheticEvent<any>) => {
+      this.setState({ map });
+
+      if (onStyleLoad) {
+        onStyleLoad(map, evt);
+      }
+    });
+
     Object.keys(events).forEach((event, index) => {
       const propEvent = this.props[event];
 
       if (propEvent) {
         map.on(events[event], (evt: React.SyntheticEvent<any>) => {
           propEvent(map, evt);
-
-          if (index === 0) {
-            this.setState({ map });
-          }
         });
       }
     });
@@ -191,24 +195,17 @@ export default class ReactMapboxGl extends React.Component<Props & Events, State
     const { map } = this.state as State;
 
     if (map) {
+      // https://www.mapbox.com/mapbox-gl-js/api/#map#remove
+      // cleans everything including DOM elements, event bindings, web workers, and WebGL resources.
+      map.remove();
       // Remove all events attached to the map
-      map.off();
+      // map.off();
 
-      // NOTE: We need to defer removing the map to after all children have unmounted
-      setTimeout(() => {
-        map.remove();
-      });
+      // // NOTE: We need to defer removing the map to after all children have unmounted
+      // setTimeout(() => {
+      //   map.remove();
+      // });
     }
-  }
-
-  public shouldComponentUpdate(nextProps: Props, nextState: State) {
-    return (
-      nextProps.children !== this.props.children ||
-      nextProps.containerStyle !== this.props.containerStyle ||
-      nextState.map !== this.state.map ||
-      nextProps.style !== this.props.style ||
-      nextProps.fitBounds !== this.props.fitBounds
-    );
   }
 
   public componentWillReceiveProps(nextProps: Props) {

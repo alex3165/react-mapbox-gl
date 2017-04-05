@@ -101,10 +101,12 @@ export default class Source extends React.Component<Props, void> {
 
   public componentWillUnmount() {
     const { map } = this.context;
-    if (map.getSource(this.id)) {
-      map.removeSource(this.id);
+    if (map && map.getStyle()) {
+      if (this.id && map.getSource(this.id)) {
+        map.removeSource(this.id);
+      }
+      map.off('load', this.onMapLoaded);
     }
-    map.off('load', this.onMapLoaded);
   }
 
   public componentDidMount() {
