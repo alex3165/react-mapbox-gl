@@ -1,7 +1,7 @@
 #!/bin/bash
 set -ev
 
-npm install --ignore-scripts
+npm install
 
 if [ "${TRAVIS_TAG}" ]; then
     pushd example
