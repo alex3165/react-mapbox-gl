@@ -11,7 +11,7 @@
     "lint": "tslint --project tsconfig.json",
     "build": "npm run lint && npm run test && tsc",
     "build:watch": "tsc --watch",
-    "prepublish": "npm run clean && npm run build",
+    "prepublishOnly": "npm run clean && npm run build",
     "version": "npm run build",
     "postversion": "git push && git push --tags"
   },
