@@ -72,7 +72,7 @@
     "@types/recompose": "^0.22.0",
     "enzyme": "^2.8.0",
     "jest": "^19.0.2",
-    "mapbox-gl": "^0.34.0",
+    "mapbox-gl": "^0.35.0",
     "react": "^15.4.2",
     "react-addons-test-utils": "^15.4.2",
     "react-dom": "^15.4.2",
