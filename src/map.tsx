@@ -16,7 +16,10 @@ const events = {
   onDragEnd: 'dragend',
   onZoomStart: 'zoomstart',
   onZoom: 'zoom',
-  onZoomEnd: 'zoomend'
+  onZoomEnd: 'zoomend',
+  onPitch: 'pitch',
+  onPitchStart: 'pitchstart',
+  onPitchEnd: 'pitchend'
 };
 
 export type MapEvent = (map: MapboxGl.Map, evt: React.SyntheticEvent<any>) => void;
@@ -37,6 +40,9 @@ export interface Events {
   onZoomStart?: MapEvent;
   onZoom?: MapEvent;
   onZoomEnd?: MapEvent;
+  onPitch?: MapEvent;
+  onPitchStart?: MapEvent;
+  onPitchEnd?: MapEvent;
 }
 
 export interface FitBoundsOptions {
