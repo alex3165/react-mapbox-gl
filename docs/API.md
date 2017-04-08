@@ -44,10 +44,18 @@ import ReactMapboxGl from "react-mapbox-gl";
 - **onStyleLoad**: `(map: Object, event: Object) => void` : Listener of Mapbox event : `map.on("style.load")`
 - **onMouseMove**: `(map: Object, event: Object) => void` : Listen the mouse moving on the map
 - **onMove**: `(map: Object, event: Object) => void` : Executed whenever the center of the map change
+- **onMoveStart**: `(map: Object, event: Object) => void` : Executed when the move of the map start
 - **onMoveEnd**: `(map: Object, event: Object) => void` : Executed when the move of the map end
 - **onMouseUp** : `(map: Object, event: Object) => void` : Simple binding of Mapbox `mouseup` event
 - **onDrag** : `(map: Object, event: Object) => void` : Simple binding of mapbox `ondrag` event
+- **onDragStart** : `(map: Object, event: Object) => void` : Simple binding of mapbox `ondragstart` event
+- **onDragEnd** : `(map: Object, event: Object) => void` : Simple binding of mapbox `ondragend` event
 - **onZoom**: `(map: Object, event: Object) => void` : Executed repeatedly during transitions between zoom levels
+- **onZoomStart**: `(map: Object, event: Object) => void` : Executed at the start of a transition between zoom levels
+- **onZoomEnd**: `(map: Object, event: Object) => void` : Executed at the end of a transition between zoom levels
+- **onPitch**: `(map: Object, event: Object) => void` : Executed when a pitch event is fired
+- **onPitchStart**: `(map: Object, event: Object) => void` : Executed when the map pitch event start
+- **onPitchEnd**: `(map: Object, event: Object) => void` : Executed when the map pitch event end
 - **dragRotate** *(Default: `true`)*: `Boolean` Set to `false` to disable drag rotation, see [mapbox DragRotateHandler](https://www.mapbox.com/mapbox-gl-js/api/#DragRotateHandler)
 
 ### Example
