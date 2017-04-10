@@ -1,6 +1,6 @@
 {
   "name": "react-mapbox-gl",
-  "version": "1.7.2",
+  "version": "1.7.3",
   "description": "A React binding of mapbox-gl-js",
   "main": "lib/index.js",
   "typings": "lib/index.d.ts",
