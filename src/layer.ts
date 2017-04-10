@@ -107,11 +107,11 @@ export default class Layer extends React.Component<Props, void> {
   }
 
   private onMouseMove = (evt: any) => {
-    const features = evt.features as Feature[];
     const children: Array<React.ReactElement<FeatureProps>> = ([] as any).concat(this.props.children);
     const { map } = this.context;
     const oldHover = this.hover;
     const hover: string[] = [];
+    const features = map.queryRenderedFeatures(evt.point, { layers: [this.id] }) as Feature[];
 
     if (features) {
       features.forEach((feature) => {
@@ -176,7 +176,7 @@ export default class Layer extends React.Component<Props, void> {
     this.initialize(map);
 
     map.on('click', this.id, this.onClick);
-    map.on('mousemove', this.id, this.onMouseMove);
+    map.on('mousemove', this.onMouseMove);
     map.on('styledata', this.onStyleDataChange);
   }
 
