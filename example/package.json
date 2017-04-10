@@ -5,6 +5,7 @@
   "description": "An example for react-mapbox-gl",
   "license": "MIT",
   "scripts": {
+    "link": "./link-react-mapbox-gl.sh",
     "start": "react-scripts start",
     "build": "react-scripts build"
   },
@@ -12,6 +13,7 @@
     "immutable": "^3.8.1",
     "react": "^15.4.2",
     "react-dom": "^15.4.2",
+    "react-mapbox-gl": "^1.7.0",
     "xml2js": "^0.4.17"
   },
   "devDependencies": {
