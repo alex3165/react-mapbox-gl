@@ -24,7 +24,7 @@ export interface Props {
 }
 
 export interface Context {
-  map: MapboxGL.Map;
+  map: ReactMapboxGL.Map;
 }
 
 export default class Layer extends React.Component<Props, void> {
@@ -139,14 +139,14 @@ export default class Layer extends React.Component<Props, void> {
     this.hover = hover;
   }
 
-  private addLayer = (map: MapboxGL.Map, layer: any, before?: any) => {
+  private addLayer = (map: ReactMapboxGL.Map, layer: any, before?: any) => {
     map.addLayer(layer, before);
 
     map.on('click', this.onClick);
     map.on('mousemove', this.onMouseMove);
   }
 
-  private initialize = (map: MapboxGL.Map) => {
+  private initialize = (map: ReactMapboxGL.Map) => {
     const { id, source } = this;
     const { type, layout, paint, layerOptions, sourceId, before } = this.props;
 
@@ -179,7 +179,7 @@ export default class Layer extends React.Component<Props, void> {
     }
   }
 
-  private clear = (map: MapboxGL.Map, id: string) => {
+  private clear = (map: ReactMapboxGL.Map, id: string) => {
     if (map && map.getStyle()) {
       if (map.getLayer(id)) {
         map.removeLayer(id);

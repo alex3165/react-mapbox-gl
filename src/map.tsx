@@ -22,7 +22,7 @@ const events = {
   onPitchEnd: 'pitchend'
 };
 
-export type MapEvent = (map: MapboxGl.Map, evt: React.SyntheticEvent<any>) => void;
+export type MapEvent = (map: ReactMapboxGL.Map, evt: React.SyntheticEvent<any>) => void;
 
 export interface Events {
   onStyleLoad?: MapEvent;
@@ -80,7 +80,7 @@ export interface Props {
 }
 
 export interface State {
-  map?: MapboxGl.Map;
+  map?: ReactMapboxGL.Map;
 }
 
 // Satisfy typescript pitfall with defaultProps

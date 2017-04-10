@@ -38,7 +38,7 @@ type Paints = MapboxGL.LinePaint | MapboxGL.SymbolPaint | MapboxGL.CirclePaint |
 type Layouts = MapboxGL.FillLayout | MapboxGL.LineLayout | MapboxGL.CircleLayout | MapboxGL.FillExtrusionLayout;
 
 export interface Context {
-  map: MapboxGL.Map;
+  map: ReactMapboxGL.Map;
 }
 
 export default class GeoJSONLayer extends React.Component<Props, void> {
