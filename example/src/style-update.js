@@ -1,5 +1,5 @@
-import React, { Component } from 'react';
-import ReactMap, { Layer, Feature } from '../../lib';
+import React, { Component } from "react";
+import ReactMap, { Layer, Feature } from "react-mapbox-gl";
 
 const accessToken = "pk.eyJ1IjoiYWxleDMxNjUiLCJhIjoiY2l4b3V0Z3RpMDAxczJ4cWk2YnEzNTVzYSJ9.MFPmOyHy8DM5_CVaqPYhOg";
 const streetsStyle = "mapbox://styles/mapbox/streets-v9";
