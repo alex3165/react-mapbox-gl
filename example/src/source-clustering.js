@@ -43,8 +43,8 @@ const unclusteredPointsProps = {
 };
 
 const layerTypes = [
-  [150, '#f28cb1'],
-  [20, '#f1f075'],
+  [15, '#f28cb1'],
+  [5, '#f1f075'],
   [0, '#51bbd6']
 ];
 
