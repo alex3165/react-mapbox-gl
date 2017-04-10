@@ -11,8 +11,8 @@
   },
   "dependencies": {
     "immutable": "^3.8.1",
-    "react": "^15.4.2",
-    "react-dom": "^15.4.2",
+    "react": "^15.5.3",
+    "react-dom": "^15.5.3",
     "react-mapbox-gl": "^1.7.0",
     "xml2js": "^0.4.17"
   },

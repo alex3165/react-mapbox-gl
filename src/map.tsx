@@ -1,5 +1,7 @@
 import * as MapboxGl from 'mapbox-gl';
 import * as React from 'react';
+const PropTypes = require('prop-types'); // tslint:disable-line
+
 const isEqual = require('deep-equal'); //tslint:disable-line		
 
 const events = {
@@ -107,7 +109,7 @@ export default class ReactMapboxGl extends React.Component<Props & Events, State
   };
 
   public static childContextTypes = {
-    map: React.PropTypes.object
+    map: PropTypes.object
   };
 
   public state = {

@@ -1,4 +1,5 @@
 import * as React from 'react';
+const PropTypes = require('prop-types'); // tslint:disable-line
 import {
   Map,
   GeoJSONSource,
@@ -22,7 +23,7 @@ export default class Source extends React.Component<Props, void> {
   public context: Context;
 
   public static contextTypes = {
-    map: React.PropTypes.object
+    map: PropTypes.object
   };
 
   private id = this.props.id;
