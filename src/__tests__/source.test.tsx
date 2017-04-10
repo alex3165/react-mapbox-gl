@@ -1,4 +1,5 @@
 import * as React from 'react';
+const PropTypes = require('prop-types'); // tslint:disable-line
 import Source from '../source';
 import { withContext } from 'recompose';
 import { mount } from 'enzyme';
@@ -24,7 +25,7 @@ describe('Source', () => {
     setDataMock = jest.fn();
 
     SourceWithContext = withContext({
-      map: React.PropTypes.object
+      map: PropTypes.object
     }, () => ({
       map: {
         addSource: addSourceMock,

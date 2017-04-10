@@ -1,4 +1,5 @@
 import * as React from 'react';
+const PropTypes = require('prop-types'); // tslint:disable-line
 import Layer from '../layer';
 import { withContext } from 'recompose';
 import { mount } from 'enzyme';
@@ -21,7 +22,7 @@ describe('Layer', () => {
     childrenWithOneFeature = [{ props: feature }];
 
     LayerWithContext = withContext({
-      map: React.PropTypes.object
+      map: PropTypes.object
     }, () => ({
       map: {
         addSource: addSourceMock,

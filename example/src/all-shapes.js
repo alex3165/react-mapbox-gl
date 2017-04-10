@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import ReactMapboxGl, { Layer, Feature, ScaleControl, ZoomControl, Marker } from "../../lib";
+import ReactMapboxGl, { Layer, Feature, ScaleControl, ZoomControl, Marker } from "react-mapbox-gl";
 import route from "./route.json";
 import config from "./config.json";
 import style from "./style.json";

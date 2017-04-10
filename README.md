@@ -90,11 +90,8 @@ See https://github.com/alex3165/react-mapbox-gl/issues/57 for more informations.
 - Clone the repository
 - Go to the example folder
 - Install the dependencies: `npm install`
-- Run the example
-  - Build the library `npm run build`
-  - Go to example folder `cd example`
-  - Run example `npm run start`
-  - Default port: `8080`
+- link react-mapbox-gl: `npm run link`
+- start: `npm run start` (default port: 3000)
 
 ## [API Documentation](docs/API.md)
 

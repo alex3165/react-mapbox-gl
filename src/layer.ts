@@ -1,4 +1,6 @@
 import * as React from 'react';
+const PropTypes = require('prop-types'); // tslint:disable-line
+
 import * as MapboxGL from 'mapbox-gl';
 const isEqual = require('deep-equal'); //tslint:disable-line
 import diff from './util/diff';
@@ -31,7 +33,7 @@ export default class Layer extends React.Component<Props, void> {
   public context: Context;
 
   public static contextTypes = {
-    map: React.PropTypes.object
+    map: PropTypes.object
   };
 
   public static defaultProps = {

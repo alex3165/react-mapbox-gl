@@ -1,4 +1,6 @@
 import * as React from 'react';
+const PropTypes = require('prop-types'); // tslint:disable-line
+
 import { Map } from 'mapbox-gl';
 
 const scales = [
@@ -73,7 +75,7 @@ export default class ScaleControl extends React.Component<Props, State> {
   public context: Context;
 
   public static contextTypes = {
-    map: React.PropTypes.object
+    map: PropTypes.object
   };
 
   public static defaultProps = {

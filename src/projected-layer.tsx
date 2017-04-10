@@ -1,4 +1,6 @@
 import * as React from 'react';
+const PropTypes = require('prop-types'); // tslint:disable-line
+
 import { Map } from 'mapbox-gl';
 import { Anchor, PointDef, OverlayProps } from './util/overlays';
 import * as GeoJSON from 'geojson';
@@ -35,7 +37,7 @@ export default class ProjectedLayer extends React.Component<Props, any> {
   private prevent: boolean;
 
   public static contextTypes = {
-    map: React.PropTypes.object
+    map: PropTypes.object
   };
 
   public static defaultProps = {

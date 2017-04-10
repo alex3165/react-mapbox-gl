@@ -1,4 +1,5 @@
 import * as React from 'react';
+const PropTypes = require('prop-types'); // tslint:disable-line
 import GeoJSONLayer from '../geojson-layer';
 import { withContext } from 'recompose';
 import { mount } from 'enzyme';
@@ -9,12 +10,12 @@ describe('GeoJSONLayer', () => {
 
   const fillPaint = {'fill-color': '#001122'};
   const data = { 'type': 'FeatureCollection', 'features': [] };
-  
+
   beforeEach(() => {
     addLayerMock = jest.fn();
 
     GeoJSONLayerWithContext = withContext({
-      map: React.PropTypes.object
+      map: PropTypes.object
     }, () => ({
       map: {
         addSource: jest.fn(),
