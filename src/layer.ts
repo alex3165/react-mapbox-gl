@@ -26,7 +26,7 @@ export interface Props {
 }
 
 export interface Context {
-  map: MapboxGL.Map;
+  map: ReactMapboxGL.Map;
 }
 
 export default class Layer extends React.Component<Props, void> {
@@ -141,7 +141,14 @@ export default class Layer extends React.Component<Props, void> {
     this.hover = hover;
   }
 
-  private initialize = (map: MapboxGL.Map) => {
+  private addLayer = (map: ReactMapboxGL.Map, layer: any, before?: any) => {
+    map.addLayer(layer, before);
+
+    map.on('click', this.onClick);
+    map.on('mousemove', this.onMouseMove);
+  }
+
+  private initialize = (map: ReactMapboxGL.Map) => {
     const { id, source } = this;
     const { type, layout, paint, layerOptions, sourceId, before } = this.props;
 
@@ -156,9 +163,38 @@ export default class Layer extends React.Component<Props, void> {
 
     if (!sourceId) {
       map.addSource(id, source);
+      this.addLayer(map, layer, before);
     }
+    if (sourceId && !map.getSource(sourceId)) {
+      const onSourceLoaded = (e: any) => {
+        if (e.isSourceLoaded && e.sourceId === sourceId) {
+          if (map.getLayer(id)) {
+            map.removeLayer(id);
+          }
+          map.off('sourcedata');
+          this.addLayer(map, layer, before);
+        }
+      };
+      map.on('sourcedata', onSourceLoaded);
+    } else {
+      this.addLayer(map, layer, before);
+    }
+  }
 
-    map.addLayer(layer, before);
+  private clear = (map: ReactMapboxGL.Map, id: string) => {
+    if (map && map.getStyle()) {
+      if (map.getLayer(id)) {
+        map.removeLayer(id);
+      }
+      // if pointing to an existing source, don't remove
+      // as other layers may be dependent upon it
+      if (!this.props.sourceId && map.getSource(id)) {
+        map.removeSource(id);
+      }
+
+      map.off('click', this.onClick);
+      map.off('mousemove', this.onMouseMove);
+    }
   }
 
   private onStyleDataChange = () => {
@@ -171,33 +207,17 @@ export default class Layer extends React.Component<Props, void> {
   }
 
   public componentWillMount() {
-    const { map } = this.context;
-
-    this.initialize(map);
-
-    map.on('click', this.id, this.onClick);
-    map.on('mousemove', this.id, this.onMouseMove);
-    map.on('styledata', this.onStyleDataChange);
+    this.context.map.on('styledata', this.onStyleDataChange);
+    this.initialize(this.context.map);
   }
 
   public componentWillUnmount() {
-    const { map } = this.context;
-    const { id } = this;
-
-    map.removeLayer(id);
-    // if pointing to an existing source, don't remove
-    // as other layers may be dependent upon it
-    if (!this.props.sourceId) {
-      map.removeSource(id);
-    }
-
-    map.off('click', this.onClick);
-    map.off('mousemove', this.onMouseMove);
-    map.off('styledata', this.onStyleDataChange);
+    this.context.map.off('styledata', this.onStyleDataChange);
+    this.clear(this.context.map, this.id);
   }
 
   public componentWillReceiveProps(props: Props) {
-    const { paint, layout,  before, layerOptions } = this.props;
+    const { paint, layout, before, layerOptions } = this.props;
     const { map } = this.context;
 
     if (!isEqual(props.paint, paint)) {
@@ -217,7 +237,7 @@ export default class Layer extends React.Component<Props, void> {
     }
 
     if ((props.layerOptions && layerOptions) && !isEqual(props.layerOptions.filter, layerOptions.filter)) {
-      map.setFilter(this.id, props.layerOptions.filter);
+      map.setFilter(this.id, props.layerOptions.filter ? props.layerOptions.filter : []);
     }
 
     if (before !== props.before) {

@@ -3,6 +3,7 @@ import AllShapes from "./all-shapes";
 import LondonCycle from "./london-cycle";
 import GeoJSONExample from "./geojson-example";
 import Cluster from './cluster';
+import SourceClustering from './source-clustering';
 import StyleUpdate from './style-update';
 
 const examples = [
@@ -21,6 +22,10 @@ const examples = [
   {
     component: Cluster,
     label: 'Cluster'
+  },
+  {
+    component: SourceClustering,
+    label: 'Source Clustering'
   },
   {
     component: StyleUpdate,
@@ -52,11 +57,28 @@ const styles = {
   }
 };
 
+const DEFAULT_USER_POSITION = [-0.2416815, 51.5285582];
+
 export default class Main extends Component {
 
   state = {
-    index: 1
+    index: 1,
+    userPosition: DEFAULT_USER_POSITION
   };
+
+  componentWillMount() {
+    navigator.geolocation.getCurrentPosition(geo => {
+      let { latitude, longitude } = geo.coords;
+      // It may occurr that the component has been unmounted before the geolocation finishes
+      // if this method is called in a children component
+      // throwing a warning
+      this.setState({
+        userPosition: [longitude, latitude]
+      });
+    }, err => {
+      console.error('Cannot retrieve your current position', err);
+    })
+  }
 
   indexToExample = index => examples[index].component;
 
@@ -88,7 +110,7 @@ export default class Main extends Component {
             )
           }
         </nav>
-        <Component/>
+        <Component userPosition={this.state.userPosition} />
       </div>
     );
   }

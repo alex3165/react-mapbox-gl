@@ -59,23 +59,11 @@ const POSITION_CIRCLE_PAINT = {
     'circle-color': '#0066EE',
     'circle-stroke-color': '#FFFFFF'
 };
-const DEFAULT_USER_POSITION = [-0.2416815, 51.5285582];
 
 class StyleUpdate extends Component {
-  state = {
-    styleIndex: 0,
-    userPosition: DEFAULT_USER_POSITION
-  }
 
-  componentWillMount() {
-    navigator.geolocation.getCurrentPosition(geo => {
-      let {latitude, longitude} = geo.coords;
-      this.setState({
-        userPosition: [longitude, latitude]
-      });
-    }, err => {
-      console.error('Cannot retrieve your current position', err);
-    })
+  state = {
+    styleIndex: 0
   }
 
   nextStyle = () => {
@@ -95,10 +83,10 @@ class StyleUpdate extends Component {
           style={this.getStyle()}
           accessToken={accessToken}
           containerStyle={styles.container}
-          center={this.state.userPosition}
+          center={this.props.userPosition}
         >
           <Layer type="circle" id="position-marker" paint={POSITION_CIRCLE_PAINT}>
-            <Feature coordinates={this.state.userPosition} />
+            <Feature coordinates={this.props.userPosition} />
           </Layer>
         </ReactMap>
         

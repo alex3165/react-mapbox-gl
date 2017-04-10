@@ -1,7 +1,5 @@
 import * as React from 'react';
 const PropTypes = require('prop-types'); // tslint:disable-line
-
-import * as MapboxGL from 'mapbox-gl';
 import { Props as MarkerProps } from './marker';
 const supercluster = require('supercluster'); // tslint:disable-line
 import * as GeoJSON from 'geojson';
@@ -25,7 +23,7 @@ export interface State {
 }
 
 export interface Context {
-  map: MapboxGL.Map;
+  map: ReactMapboxGL.Map;
 }
 
 export default class Cluster extends React.Component<Props, State> {
