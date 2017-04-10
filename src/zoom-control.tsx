@@ -1,4 +1,5 @@
 import * as React from 'react';
+const PropTypes = require('prop-types'); // tslint:disable-line
 import { Map } from 'mapbox-gl';
 
 const containerStyle: React.CSSProperties = {
@@ -84,7 +85,7 @@ export default class ZoomControl extends React.Component<Props, State> {
   };
 
   public static contextTypes = {
-    map: React.PropTypes.object
+    map: PropTypes.object
   };
 
   private onMouseOut = () => {

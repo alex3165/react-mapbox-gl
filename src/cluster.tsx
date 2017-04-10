@@ -1,4 +1,6 @@
 import * as React from 'react';
+const PropTypes = require('prop-types'); // tslint:disable-line
+
 import * as MapboxGL from 'mapbox-gl';
 import { Props as MarkerProps } from './marker';
 const supercluster = require('supercluster'); // tslint:disable-line
@@ -30,7 +32,7 @@ export default class Cluster extends React.Component<Props, State> {
   public context: Context;
 
   public static contextTypes = {
-    map: React.PropTypes.object
+    map: PropTypes.object
   };
 
   public static defaultProps = {
