@@ -141,9 +141,10 @@ export default class Layer extends React.Component<Props, void> {
     this.hover = hover;
   }
 
-  private initialize = (map: MapboxGL.Map) => {
+  private initialize = () => {
     const { id, source } = this;
     const { type, layout, paint, layerOptions, sourceId, before } = this.props;
+    const { map } = this.context;
 
     const layer = {
       id,
@@ -165,7 +166,7 @@ export default class Layer extends React.Component<Props, void> {
     // if the style of the map has been updated and we don't have layer anymore,
     // add it back to the map and force re-rendering to redraw it
     if (!this.context.map.getLayer(this.id)) {
-      this.initialize(this.context.map);
+      this.initialize();
       this.forceUpdate();
     }
   }
@@ -173,7 +174,7 @@ export default class Layer extends React.Component<Props, void> {
   public componentWillMount() {
     const { map } = this.context;
 
-    this.initialize(map);
+    this.initialize();
 
     map.on('click', this.id, this.onClick);
     map.on('mousemove', this.onMouseMove);
@@ -236,7 +237,7 @@ export default class Layer extends React.Component<Props, void> {
 
     const source = map.getSource(this.props.sourceId || this.id) as MapboxGL.GeoJSONSource;
 
-    if (source && source.setData) {
+    if (source && !this.props.sourceId && source.setData) {
       source.setData({
         type: 'FeatureCollection',
         features
