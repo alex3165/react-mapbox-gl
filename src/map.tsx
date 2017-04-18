@@ -2,7 +2,7 @@ import * as MapboxGl from 'mapbox-gl';
 import * as React from 'react';
 const PropTypes = require('prop-types'); // tslint:disable-line
 
-const isEqual = require('deep-equal'); //tslint:disable-line		
+const isEqual = require('deep-equal'); //tslint:disable-line
 
 const events = {
   onResize: 'resize',
@@ -79,6 +79,7 @@ export interface Props {
   attributionControl?: boolean;
   logoPosition?: 'top-left' | 'top-right' | 'bottom-left' | 'bottom-right';
   children?: JSX.Element;
+  renderWorldCopies?: boolean;
 }
 
 export interface State {
@@ -105,7 +106,8 @@ export default class ReactMapboxGl extends React.Component<Props & Events, State
     pitch: 0,
     logoPosition: 'bottom-left',
     interactive: true,
-    dragRotate: true
+    dragRotate: true,
+    renderWorldCopies: true
   };
 
   public static childContextTypes = {
@@ -146,7 +148,8 @@ export default class ReactMapboxGl extends React.Component<Props & Events, State
       attributionControl,
       logoPosition,
       interactive,
-      dragRotate
+      dragRotate,
+      renderWorldCopies
     } = this.props;
 
     (MapboxGl as any).accessToken = accessToken;
@@ -167,7 +170,8 @@ export default class ReactMapboxGl extends React.Component<Props & Events, State
       scrollZoom,
       attributionControl,
       interactive,
-      dragRotate
+      dragRotate,
+      renderWorldCopies
     };
 
     const map = new MapboxGl.Map({

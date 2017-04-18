@@ -40,6 +40,7 @@ import ReactMapboxGl from "react-mapbox-gl";
   - `top-right`
   - `bottom-left`
   - `bottom-right`
+- **renderWorldCopies** *(Default: `true`)*: `Boolean` If `true`, multiple copies of the world will be rendered, when zoomed out.
 - **onClick**: `(map: Object, event: Object) => void` : Triggered whenever user click on the map
 - **onStyleLoad**: `(map: Object, event: Object) => void` : Listener of Mapbox event : `map.on("style.load")`
 - **onMouseMove**: `(map: Object, event: Object) => void` : Listen the mouse moving on the map
@@ -212,7 +213,7 @@ import { ZoomControl } from "react-mapbox-gl";
 ### Properties
 - **onControlClick** : `(map: Object, zoomDiff: Number) => void` triggered when user click on minus or plus button
 - **style** : `Object` Style object merged with internal style into the container
-- **className**: `String` Custom style using className for the container 
+- **className**: `String` Custom style using className for the container
 - **zoomDiff** : `Number` The shift number passed to the callback `onControlClick`
 - **position** *(Default: `topRight`)*: `String` The control position, Possible values :
   - `topRight`

@@ -215,6 +215,9 @@ declare namespace mapboxgl {
 
 		pitch?: number;
 
+		/** If true, multiple copies of the world will be rendered, when zoomed out. */
+		renderWorldCopies?: boolean;
+
 		/** If true, enable the "scroll to zoom" interaction */
 		scrollZoom?: boolean;
 
