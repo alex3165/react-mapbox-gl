@@ -52,15 +52,13 @@
     "url": "https://github.com/alex3165/react-mapbox-gl/issues"
   },
   "homepage": "https://github.com/alex3165/react-mapbox-gl#readme",
-  "dependencies": {
+  "peerDependencies": {
+    "react": "^15.5.3",
+    "react-dom": "^15.5.3",
     "deep-equal": "^1.0.1",
     "mapbox-gl": "^0.36.0",
     "reduce-object": "^0.1.3",
     "supercluster": "^2.3.0"
-  },
-  "peerDependencies": {
-    "react": "^15.5.3",
-    "react-dom": "^15.5.3"
   },
   "devDependencies": {
     "@types/core-js": "^0.9.41",
@@ -80,6 +78,10 @@
     "ts-jest": "^19.0.10",
     "tslint": "^5.0.0",
     "tslint-react": "^2.5.0",
-    "typescript": "^2.2.2"
+    "typescript": "^2.2.2",
+    "deep-equal": "^1.0.1",
+    "mapbox-gl": "^0.36.0",
+    "reduce-object": "^0.1.3",
+    "supercluster": "^2.3.0"
   }
 }
