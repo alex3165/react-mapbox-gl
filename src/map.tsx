@@ -207,13 +207,9 @@ export default class ReactMapboxGl extends React.Component<Props & Events, State
     const { map } = this.state as State;
 
     if (map) {
-      // Remove all events attached to the map
-      map.off();
-
-      // NOTE: We need to defer removing the map to after all children have unmounted
-      setTimeout(() => {
-        map.remove();
-      });
+      // https://www.mapbox.com/mapbox-gl-js/api/#map#remove
+      // cleans everything including DOM elements, event bindings, web workers, and WebGL resources.
+      map.remove();
     }
   }
 
