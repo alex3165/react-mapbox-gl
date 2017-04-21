@@ -64,7 +64,7 @@
   },
   "devDependencies": {
     "@types/core-js": "^0.9.41",
-    "@types/enzyme": "^2.7.7",
+    "@types/enzyme": "^2.7.9",
     "@types/geojson": "^1.0.1",
     "@types/jest": "^19.2.2",
     "@types/node": "^7.0.5",
