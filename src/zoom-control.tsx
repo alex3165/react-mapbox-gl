@@ -124,12 +124,14 @@ export default class ZoomControl extends React.Component<Props, State> {
         style={{ ...containerStyle, ...positions[position], ...style }}
       >
         <button
+          type="button"
           style={{ ...buttonStyle, ...buttonStylePlus, ...(hover === PLUS ? buttonStyleHovered : {}) }}
           onMouseOver={this.plusOver}
           onMouseOut={this.onMouseOut}
           onClick={this.onClickPlus}
         />
         <button
+          type="button"
           style={{ ...buttonStyle, ...buttonStyleMinus, ...(hover === MINUS ? buttonStyleHovered : {}) }}
           onMouseOver={this.minusOver}
           onMouseOut={this.onMouseOut}
