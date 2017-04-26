@@ -77,7 +77,7 @@
     "recompose": "^0.23.0",
     "ts-jest": "^19.0.10",
     "tslint": "^5.0.0",
-    "tslint-react": "^2.5.0",
+    "tslint-react": "^3.0.0",
     "typescript": "^2.2.2",
     "deep-equal": "^1.0.1",
     "mapbox-gl": "^0.36.0",
