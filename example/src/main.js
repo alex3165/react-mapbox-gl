@@ -4,6 +4,8 @@ import LondonCycle from "./london-cycle";
 import GeoJSONExample from "./geojson-example";
 import Cluster from './cluster';
 import StyleUpdate from './style-update';
+import CustomVectorTiles from './custom-vector-tiles';
+import CustomRasterTiles from './custom-raster-tiles';
 
 const examples = [
   {
@@ -25,6 +27,14 @@ const examples = [
   {
     component: StyleUpdate,
     label: 'Style update'
+  },
+  {
+    component: CustomVectorTiles,
+    label: 'Custom vector tiles'
+  },
+  {
+    component: CustomRasterTiles,
+    label: 'Custom raster tiles'
   }
 ];
 
