@@ -8,6 +8,11 @@ const containerStyle = {
   width: "100%"
 };
 
+const linkStyle = {
+  color: "#000",
+  textDecoration: "none"
+}
+
 export default class CustomRasterTiles extends Component {
   state = {
     popup: null,
@@ -26,9 +31,9 @@ export default class CustomRasterTiles extends Component {
         attributionControl={true}>
         <ZoomControl/>
         <Attribution width={450} height={30}>
-          <a href="https://www.mapbox.com/about/maps/" target="_blank">© Mapbox</a>
-          <a href="http://www.openstreetmap.org/about/" target="_blank">© OpenStreetMap</a>
-          <a href="http://stamen.com" target="_blank">© Stamen</a>
+          <a href="https://www.mapbox.com/about/maps/" target="_blank" style={linkStyle}>© Mapbox</a> &nbsp;
+          <a href="http://www.openstreetmap.org/about/" target="_blank" style={linkStyle}>© OpenStreetMap</a> &nbsp;
+          <a href="http://stamen.com" target="_blank" style={linkStyle}>© Stamen</a>
         </Attribution>
       </ReactMapboxGl>
     );

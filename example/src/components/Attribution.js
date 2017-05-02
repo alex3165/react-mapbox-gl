@@ -17,12 +17,11 @@ export default class Attribution extends Component {
         <div
           style={{
             position: 'absolute',
-            right: 4,
-            bottom: 4,
+            right: 0,
+            bottom: 0,
             lineHeight: 'initial',
-            fontFamily: 'Helvetica',
-            background: 'white',
-            padding: 4,
+            background: 'rgba(255,255,255,0.5)',
+            padding: 5,
             pointerEvents: 'all'
           }}
         >
