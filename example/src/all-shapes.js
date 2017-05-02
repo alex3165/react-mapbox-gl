@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import ReactMapboxGl, { Layer, Feature, ScaleControl, ZoomControl, Marker } from "react-mapbox-gl";
+import ReactMapboxGl, { Layer, Feature, ZoomControl, Marker } from "react-mapbox-gl";
 import route from "./route.json";
 import config from "./config.json";
 import style from "./style.json";
@@ -136,8 +136,9 @@ export default class AllShapes extends Component {
         accessToken={accessToken}
         center={this.state.center}
         movingMethod="jumpTo"
-        containerStyle={containerStyle}>
-        <ScaleControl/>
+        containerStyle={containerStyle}
+        attributionControl={true}
+        >
         <ZoomControl/>
         <Layer
           type="symbol"

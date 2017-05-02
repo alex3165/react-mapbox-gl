@@ -40,6 +40,7 @@ export default class Main extends Component {
                   to={ item.path }
                   style={ styles.item }
                   activeStyle={ styles.activeItem }
+                  exact={ item.path === "/" }
                   >{ item.label }</NavLink>
                 )
               )
@@ -50,7 +51,7 @@ export default class Main extends Component {
               <Route key={ item.path }
                 path={ item.path }
                 component={ item.component }
-                exact={ item.path == "/" } />
+                exact={ item.path === "/" } />
             ))
           }
         </div>
