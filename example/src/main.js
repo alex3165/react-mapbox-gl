@@ -1,42 +1,6 @@
 import React, { Component } from "react";
-import AllShapes from "./all-shapes";
-import LondonCycle from "./london-cycle";
-import GeoJSONExample from "./geojson-example";
-import Cluster from './cluster';
-import StyleUpdate from './style-update';
-import CustomVectorTiles from './custom-vector-tiles';
-import CustomRasterTiles from './custom-raster-tiles';
-
-const examples = [
-  {
-    component: LondonCycle,
-    label: "London cycle"
-  },
-  {
-    component: AllShapes,
-    label: "All shapes"
-  },
-  {
-    component: GeoJSONExample,
-    label: "GEOJson"
-  },
-  {
-    component: Cluster,
-    label: 'Cluster'
-  },
-  {
-    component: StyleUpdate,
-    label: 'Style update'
-  },
-  {
-    component: CustomVectorTiles,
-    label: 'Custom vector tiles'
-  },
-  {
-    component: CustomRasterTiles,
-    label: 'Custom raster tiles'
-  }
-];
+import { BrowserRouter as Router, NavLink, Route } from 'react-router-dom';
+import { default as routes } from './routes'
 
 const styles = {
   nav: {
@@ -54,7 +18,9 @@ const styles = {
   item: {
     margin: "0px 10px",
     cursor: "pointer",
-    paddingBottom: 6
+    paddingBottom: 6,
+    color: "#000",
+    textDecoration: "none"
   },
   activeItem: {
     color: "#4790E5",
@@ -63,43 +29,32 @@ const styles = {
 };
 
 export default class Main extends Component {
-
-  state = {
-    index: 1
-  };
-
-  indexToExample = index => examples[index].component;
-
-  onClick(index) {
-    if (this.state.index !== index) {
-      this.setState({ index });
-    }
-  }
-
   render() {
-    const Component = this.indexToExample(this.state.index);
-
     return (
-      <div>
-        <nav style={styles.nav}>
+      <Router>
+        <div>
+          <nav style={styles.nav}>
+            {
+              routes.map(item => (
+                <NavLink key={ item.path }
+                  to={ item.path }
+                  style={ styles.item }
+                  activeStyle={ styles.activeItem }
+                  >{ item.label }</NavLink>
+                )
+              )
+            }
+          </nav>
           {
-            examples.map((item, index) =>
-              <div
-                key={index}
-                style={{
-                  ...styles.item,
-                  ...(index === this.state.index && styles.activeItem)
-                }}
-                onClick={this.onClick.bind(this, index)}>
-                {
-                  item.label
-                }
-              </div>
-            )
+            routes.map(item => (
+              <Route key={ item.path }
+                path={ item.path }
+                component={ item.component }
+                exact={ item.path == "/" } />
+            ))
           }
-        </nav>
-        <Component/>
-      </div>
+        </div>
+      </Router>
     );
   }
 }

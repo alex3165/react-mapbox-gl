@@ -17,6 +17,7 @@ export default class GeoJSONExample extends Component {
   };
 
   render() {
+    console.log(geojson)
     return (
       <ReactMapboxGl
         // eslint-disable-next-line
