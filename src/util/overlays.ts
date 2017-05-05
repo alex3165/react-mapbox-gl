@@ -43,7 +43,7 @@ export const anchorTranslates = {
 };
 
 // Hack /o\
-const defaultElement = { offsetWidth: 0, offsetHeight: 0 } as HTMLElement;
+const defaultElement = { offsetWidth: 0, offsetHeight: 0 };
 
 const isPointLike = (input: Point | any[]): boolean => (input instanceof Point || Array.isArray(input));
 
@@ -55,7 +55,7 @@ const calculateAnchor = (
   map: MapboxGL.Map,
   offsets: any,
   position: PointDef,
-  { offsetHeight, offsetWidth }: HTMLElement = defaultElement
+  { offsetHeight, offsetWidth } = defaultElement
 ) => {
   let anchor: string[] = [];
 

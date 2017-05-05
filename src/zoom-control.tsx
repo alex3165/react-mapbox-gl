@@ -9,7 +9,7 @@ const containerStyle: React.CSSProperties = {
   flexDirection: 'column',
   boxShadow: '0px 1px 4px rgba(0, 0, 0, .3)',
   border: '1px solid rgba(0, 0, 0, 0.1)'
-} as React.CSSProperties;
+};
 
 const positions = {
   topRight: { top: 10, right: 10, bottom: 'auto', left: 'auto' },

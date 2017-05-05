@@ -32,7 +32,7 @@ const containerStyle: React.CSSProperties = {
   flexDirection: 'row',
   alignItems: 'baseline',
   padding: '3px 7px'
-} as React.CSSProperties;
+};
 
 const scaleStyle = {
   border: '2px solid #7e8490',
