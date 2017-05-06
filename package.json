@@ -75,7 +75,7 @@
     "react-addons-test-utils": "^15.4.2",
     "react-dom": "^15.5.3",
     "recompose": "^0.23.0",
-    "ts-jest": "^19.0.10",
+    "ts-jest": "^20.0.0",
     "tslint": "^5.0.0",
     "tslint-react": "^3.0.0",
     "typescript": "^2.2.2",
