@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { BrowserRouter as Router, NavLink, Route } from 'react-router-dom';
+import GithubRibbon from './components/GithubRibbon.js'
 import { default as routes } from './routes'
 
 const styles = {
@@ -34,6 +35,7 @@ export default class Main extends Component {
       <Router>
         <div>
           <nav style={styles.nav}>
+            <GithubRibbon href="https://github.com/alex3165/react-mapbox-gl" />
             {
               routes.map(item => (
                 <NavLink key={ item.path }
