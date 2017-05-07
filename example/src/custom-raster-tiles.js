@@ -28,7 +28,7 @@ export default class CustomRasterTiles extends Component {
         center={this.state.center}
         movingMethod="jumpTo"
         containerStyle={containerStyle}
-        attributionControl={true}>
+        attributionControl={false}>
         <ZoomControl/>
         <Attribution width={450} height={30}>
           <a href="https://www.mapbox.com/about/maps/" target="_blank" style={linkStyle}>© Mapbox</a> &nbsp;

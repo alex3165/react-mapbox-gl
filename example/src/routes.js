@@ -5,6 +5,7 @@ import Cluster from './cluster';
 import StyleUpdate from './style-update';
 import CustomVectorTiles from './custom-vector-tiles';
 import CustomRasterTiles from './custom-raster-tiles';
+import MarkerPopupExample from './components/MarkerPopupExample.js';
 
 export default [
   {
@@ -41,5 +42,10 @@ export default [
     component: CustomRasterTiles,
     label: 'Custom raster tiles',
     path: "/custom-raster-tiles"
+  },
+  {
+    component: MarkerPopupExample,
+    label: 'Marker Popup',
+    path: "/marker-popup"
   }
 ];
