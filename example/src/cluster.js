@@ -51,7 +51,8 @@ export default class ClusterExample extends Component {
         style={style}
         zoom={[4]}
         accessToken={config.accessToken}
-        containerStyle={containerStyle}>
+        containerStyle={containerStyle}
+        attributionControl={true}>
         <Cluster ClusterMarkerFactory={this.clusterMarker} clusterThreshold={8}>
           {
             places.features.map((feature, key) =>

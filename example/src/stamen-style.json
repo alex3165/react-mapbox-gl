@@ -1,0 +1,23 @@
+{
+  "version": 8,
+  "name": "Testing Stamen raster source",
+  "sources": {
+    "raster-stamen-source": {
+      "type": "raster",
+      "tileSize": 256,
+      "scheme": "xyz",
+      "tiles": ["https://stamen-tiles.a.ssl.fastly.net/toner/{z}/{x}/{y}.png"]
+    }
+  },
+  "layers": [
+    {
+      "id": "raster-stamen",
+      "type": "raster",
+      "source": "raster-stamen-source",
+      "source-layer": "raster_stamen_full",
+      "paint": {
+        "raster-opacity": 1
+      }
+    }
+  ]
+}

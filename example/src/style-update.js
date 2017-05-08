@@ -96,14 +96,15 @@ class StyleUpdate extends Component {
           accessToken={accessToken}
           containerStyle={styles.container}
           center={this.state.userPosition}
+          attributionControl={true}
         >
           <Layer type="circle" id="position-marker" paint={POSITION_CIRCLE_PAINT}>
             <Feature coordinates={this.state.userPosition} />
           </Layer>
         </ReactMap>
-        
+
         <button style={styles.button} onClick={this.nextStyle}>Switch Style</button>
-        
+
         <div style={styles.indicator}>
           { `Using style: "${this.getStyleKey()}"` }
         </div>

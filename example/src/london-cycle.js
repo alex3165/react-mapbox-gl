@@ -115,7 +115,8 @@ export default class LondonCycle extends Component {
           maxBounds={maxBounds}
           accessToken={accessToken}
           onDrag={this._onDrag}
-          containerStyle={styles.container}>
+          containerStyle={styles.container}
+          attributionControl={true}>
 
           <ZoomControl
             zoomDiff={1}

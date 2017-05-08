@@ -1,4 +1,4 @@
 cd ..
-npm link
+yarn link
 cd example
-npm link react-mapbox-gl
+yarn link react-mapbox-gl
