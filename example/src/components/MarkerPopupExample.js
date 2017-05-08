@@ -14,7 +14,7 @@ const containerStyle = {
 
 const ActivePopup = (marker) => {
   return (
-    <Popup coordinates={marker.coordinates} anchor="bottom">
+    <Popup coordinates={marker.coordinates} anchor="top">
       <h3>{marker.text}</h3>
     </Popup>
   )
@@ -70,7 +70,7 @@ export default class MarkerPopupExample extends Component {
         <ZoomControl/>
         { this.state.markers.map((marker) => {
             return (
-              <Marker coordinates={marker.coordinates} key={marker.key} onClick={ this.markerClick.bind(null, marker) }>
+              <Marker coordinates={marker.coordinates} key={marker.key} onClick={ this.markerClick.bind(null, marker) } anchor="bottom">
                 <Pin fill={marker.color}/>
               </Marker>
             )
