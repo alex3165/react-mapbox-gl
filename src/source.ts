@@ -28,7 +28,23 @@ export default class Source extends React.Component<Props, void> {
 
   private id = this.props.id;
 
+  private onStyleDataChange = () => {
+    // if the style of the map has been updated we won't have any sources anymore,
+    // add it back to the map and force re-rendering to redraw it
+    if (!this.context.map.getLayer(this.id)) {
+      this.initialize();
+      this.forceUpdate();
+    }
+  }
+
   public componentWillMount() {
+    const { map } = this.context;
+   
+    map.on('styledata', this.onStyleDataChange);
+    this.initialize();
+  }
+
+  private initialize = () => {
     const { map } = this.context;
     const { geoJsonSource, tileJsonSource, onSourceAdded } = this.props;
 
@@ -60,6 +76,9 @@ export default class Source extends React.Component<Props, void> {
 
   public componentWillUnmount() {
     const { map } = this.context;
+
+    map.off('styledata', this.onStyleDataChange);
+
     if (map.getSource(this.id)) {
       map.removeSource(this.id);
     }
