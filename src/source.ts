@@ -39,7 +39,7 @@ export default class Source extends React.Component<Props, void> {
 
   public componentWillMount() {
     const { map } = this.context;
-   
+
     map.on('styledata', this.onStyleDataChange);
     this.initialize();
   }
