@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import ReactMap, { Layer, Feature } from "react-mapbox-gl";
+import ReactMap, { Layer, Source, Feature } from "react-mapbox-gl";
 
 const accessToken = "pk.eyJ1IjoiYWxleDMxNjUiLCJhIjoiY2l4b3V0Z3RpMDAxczJ4cWk2YnEzNTVzYSJ9.MFPmOyHy8DM5_CVaqPYhOg";
 const streetsStyle = "mapbox://styles/mapbox/streets-v9";
@@ -52,6 +52,21 @@ const styles = {
   }
 }
 
+const GEOJSON_SOURCE_OPTIONS = {
+  "type": "geojson",
+  "data": {
+    "type": "Feature",
+    "geometry": {
+      "type": "Point",
+      "coordinates": [-77.0323, 38.9131]
+    },
+    "properties": {
+      "title": "Mapbox DC",
+      "marker-symbol": "monument"
+    }
+  }
+}
+
 const POSITION_CIRCLE_PAINT = {
     'circle-stroke-width': 2,
     'circle-radius': 10, //pixels
@@ -97,6 +112,8 @@ class StyleUpdate extends Component {
           containerStyle={styles.container}
           center={this.state.userPosition}
         >
+          <Source id="example_id" geoJsonSource={GEOJSON_SOURCE_OPTIONS} />
+          <Layer type="circle" id="example_id_marker" paint={POSITION_CIRCLE_PAINT} sourceId={'example_id'} /> 
           <Layer type="circle" id="position-marker" paint={POSITION_CIRCLE_PAINT}>
             <Feature coordinates={this.state.userPosition} />
           </Layer>
