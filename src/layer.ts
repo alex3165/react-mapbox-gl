@@ -80,7 +80,7 @@ export default class Layer extends React.Component<Props, void> {
     }
   }
 
-  private makeFeature = (props: any, id: string): Feature => ({
+  private makeFeature = (props: any, id: number): Feature => ({
     type: 'Feature',
     geometry: this.geometry(props.coordinates),
     properties: { ...props.properties, id }
@@ -228,16 +228,22 @@ export default class Layer extends React.Component<Props, void> {
 
   public render() {
     const { map } = this.context;
+    const { sourceId } = this.props;
+    let { children } = this.props;
 
-    const children = ([] as any).concat(this.props.children || []);
+    if (!children) {
+      children = [] as any;
+    }
 
-    const features = children
-      .map(({ props }: any, id: string) => this.makeFeature(props, id))
+    children = Array.isArray(children) ? children.reduce((arr, next) => arr.concat(next), [] as any) : [children];
+
+    const features = (children! as Array<React.ReactElement<any>>)
+      .map(({ props }, id) => this.makeFeature(props, id))
       .filter(Boolean);
 
-    const source = map.getSource(this.props.sourceId || this.id) as MapboxGL.GeoJSONSource;
+    const source = map.getSource(sourceId || this.id) as MapboxGL.GeoJSONSource;
 
-    if (source && !this.props.sourceId && source.setData) {
+    if (source && !sourceId && source.setData) {
       source.setData({
         type: 'FeatureCollection',
         features
