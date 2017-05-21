@@ -20,11 +20,9 @@ const defaultClassName = ['mapboxgl-marker'];
 
 const Marker: React.StatelessComponent<Props> = (props) => (
   <ProjectedLayer
-    {...{ ...props, children: undefined}}
+    {...{ ...props}}
     className={getClassName(defaultClassName, props.className)}
-  >
-    {props.children}
-  </ProjectedLayer>
+  />
 );
 
 export default Marker;

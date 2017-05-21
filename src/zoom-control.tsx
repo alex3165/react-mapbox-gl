@@ -9,7 +9,7 @@ const containerStyle: React.CSSProperties = {
   flexDirection: 'column',
   boxShadow: '0px 1px 4px rgba(0, 0, 0, .3)',
   border: '1px solid rgba(0, 0, 0, 0.1)'
-} as React.CSSProperties;
+};
 
 const positions = {
   topRight: { top: 10, right: 10, bottom: 'auto', left: 'auto' },
@@ -124,12 +124,14 @@ export default class ZoomControl extends React.Component<Props, State> {
         style={{ ...containerStyle, ...positions[position], ...style }}
       >
         <button
+          type="button"
           style={{ ...buttonStyle, ...buttonStylePlus, ...(hover === PLUS ? buttonStyleHovered : {}) }}
           onMouseOver={this.plusOver}
           onMouseOut={this.onMouseOut}
           onClick={this.onClickPlus}
         />
         <button
+          type="button"
           style={{ ...buttonStyle, ...buttonStyleMinus, ...(hover === MINUS ? buttonStyleHovered : {}) }}
           onMouseOver={this.minusOver}
           onMouseOut={this.onMouseOut}

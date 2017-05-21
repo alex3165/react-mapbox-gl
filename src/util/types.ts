@@ -14,7 +14,7 @@ export type SourceOptionData = (
 );
 
 export interface Feature {
-  type: string;
+  type: 'Feature';
   geometry: {
     type: string;
     coordinates: GeoJSON.Position;

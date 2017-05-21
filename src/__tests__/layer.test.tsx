@@ -10,7 +10,7 @@ describe('Layer', () => {
   let setDataMock = jest.fn();
   let children: any[];
   let childrenWithOneFeature: any[];
-  let feature: Object;
+  let feature: any;
 
   beforeEach(() => {
     addLayerMock = jest.fn();
@@ -94,5 +94,23 @@ describe('Layer', () => {
       'type': 'FeatureCollection',
       'features': []
     }]);
+  });
+
+  it('Should flatten features', () => {
+    const childrens = [
+      <div>Test</div>,
+      [
+          <div>Test</div>,
+          <div>Test</div>
+      ]
+    ];
+
+    const layer = mount(
+      <LayerWithContext
+        children={childrens}
+      /> as React.ReactElement<any>
+    );
+
+    expect(setDataMock.mock.calls[0][0].features).toHaveLength(3);
   });
 });

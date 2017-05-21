@@ -12,7 +12,6 @@ export interface Props {
   coordinates: GeoJSON.Position;
   anchor?: Anchor;
   offset?: number | number[] | PointDef;
-  children?: JSX.Element;
   onClick?: React.MouseEventHandler<HTMLDivElement>;
   onMouseEnter?: React.MouseEventHandler<HTMLDivElement>;
   onMouseLeave?: React.MouseEventHandler<HTMLDivElement>;
@@ -29,11 +28,12 @@ export default class Popup extends React.Component<Props, void> {
 
   public render() {
     const anchorClass = `mapboxgl-popup-anchor-${this.props.anchor}`;
+    const props = { ...this.props, children: undefined };
 
     return (
       <ProjectedLayer
-        {...{ ...this.props, children: undefined }}
         className={getClassName(defaultClassName.concat(anchorClass), this.props.className)}
+        {...props as any}
       >
         <div className="mapboxgl-popup-tip"/>
         <div className="mapboxgl-popup-content">
