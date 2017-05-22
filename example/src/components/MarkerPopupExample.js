@@ -2,10 +2,11 @@ import React, { Component } from "react";
 import ReactMapboxGl, { ZoomControl, Marker, Popup } from "react-mapbox-gl";
 
 import config from "../config.json";
-const { accessToken } = config;
 import style from "../style.json";
 
 import Pin from "./Pin.js";
+
+const { accessToken } = config;
 
 const containerStyle = {
   height: "100vh",

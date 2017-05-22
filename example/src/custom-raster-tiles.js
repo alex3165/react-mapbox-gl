@@ -31,9 +31,9 @@ export default class CustomRasterTiles extends Component {
         attributionControl={false}>
         <ZoomControl/>
         <Attribution width={450} height={30}>
-          <a href="https://www.mapbox.com/about/maps/" target="_blank" style={linkStyle}>© Mapbox</a> &nbsp;
-          <a href="http://www.openstreetmap.org/about/" target="_blank" style={linkStyle}>© OpenStreetMap</a> &nbsp;
-          <a href="http://stamen.com" target="_blank" style={linkStyle}>© Stamen</a>
+          <a href="https://www.mapbox.com/about/maps/" target="_blank" rel="noopener noreferrer" style={linkStyle}>© Mapbox</a> &nbsp;
+          <a href="http://www.openstreetmap.org/about/" target="_blank" rel="noopener noreferrer" style={linkStyle}>© OpenStreetMap</a> &nbsp;
+          <a href="http://stamen.com" target="_blank" rel="noopener noreferrer" style={linkStyle}>© Stamen</a>
         </Attribution>
       </ReactMapboxGl>
     );

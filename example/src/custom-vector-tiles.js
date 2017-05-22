@@ -31,9 +31,9 @@ export default class CustomVectorTiles extends Component {
         attributionControl={false}>
         <ZoomControl/>
         <Attribution width={450} height={30}>
-          <a href="https://www.mapbox.com/about/maps/" target="_blank" style={linkStyle}>© Mapbox</a> &nbsp;
-          <a href="http://www.openstreetmap.org/about/" target="_blank" style={linkStyle}>© OpenStreetMap</a> &nbsp;
-          <a href="http://tileserver.com" target="_blank" style={linkStyle}>© TileServer</a>
+          <a href="https://www.mapbox.com/about/maps/" target="_blank" rel="noopener noreferrer" style={linkStyle}>© Mapbox</a> &nbsp;
+          <a href="http://www.openstreetmap.org/about/" target="_blank" rel="noopener noreferrer" style={linkStyle}>© OpenStreetMap</a> &nbsp;
+          <a href="http://tileserver.com" target="_blank" rel="noopener noreferrer" style={linkStyle}>© TileServer</a>
         </Attribution>
       </ReactMapboxGl>
     );
