@@ -19,7 +19,8 @@ const styles = {
     justifyContent: 'center',
     alignItems: 'center',
     color: 'white',
-    border: '2px solid #56C498'
+    border: '2px solid #56C498',
+    pointerEvents: 'none'
   },
   marker: {
     width: 30,
@@ -29,7 +30,8 @@ const styles = {
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
-    border: '2px solid #C9C9C9'
+    border: '2px solid #C9C9C9',
+    pointerEvents: 'none'
   }
 }
 
