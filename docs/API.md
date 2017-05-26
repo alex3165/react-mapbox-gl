@@ -256,6 +256,32 @@ import { ScaleControl } from "react-mapbox-gl";
 ```
 
 ----------
+# RotationControl
+
+Display the current map rotation, also reset the rotation to it's origin value on click.
+
+### Import
+
+```
+import { RotationControl } from "react-mapbox-gl";
+```
+
+### Properties
+- **style** : `Object` Style object merged with internal style into the container
+- **className** : `string` Get passed to the container div
+- **position** *(Default: `bottomRight`)*: `String` The control position, Possible values :
+  - `topRight`
+  - `topLeft`
+  - `bottomRight`
+  - `bottomLeft`
+
+### Example
+
+```
+<RotationControl/>
+```
+
+----------
 # Popup
 
 The popup component allow you to display a popup tooltip on top of the map using mapbox-gl-js.
