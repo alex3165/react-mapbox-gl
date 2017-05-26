@@ -10,7 +10,7 @@ import ScaleControl from './scale-control';
 import Marker from './marker';
 import Source from './source';
 import Cluster from './cluster';
-import RotationControl from './rotation-control'
+import RotationControl from './rotation-control';
 
 injectCSS(window);
 

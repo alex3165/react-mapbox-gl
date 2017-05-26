@@ -4,12 +4,12 @@ import { Map } from 'mapbox-gl';
 
 const containerStyle: React.CSSProperties = {
   position: 'absolute',
-  zIndex: 11,
+  zIndex: 10,
   display: 'flex',
   flexDirection: 'column',
   boxShadow: '0px 1px 4px rgba(0, 0, 0, .3)',
   border: '1px solid rgba(0, 0, 0, 0.1)'
-} as React.CSSProperties;
+};
 
 const positions = {
   topRight: { top: 62, right: 10, bottom: 'auto', left: 'auto' },
@@ -41,13 +41,18 @@ const buttonStyleCompass = {
   borderTopRightRadius: 2
 };
 
+const Icon = () => (
+  <svg viewBox="0 0 20 20">
+    <polygon fill="#333333" points="6,9 10,1 14,9"/>
+    <polygon fill="#CCCCCC" points="6,11 10,19 14,11"/>
+  </svg>
+);
+
 const compassSpan = {
   width: 20,
   height: 20,
-  backgroundImage: 'url("data:image/svg+xml;charset=utf8,%3Csvg%20xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27%20viewBox%3D%270%200%2020%2020%27%3E%0A%09%3Cpolygon%20fill%3D%27%23333333%27%20points%3D%276%2C9%2010%2C1%2014%2C9%27%2F%3E%0A%09%3Cpolygon%20fill%3D%27%23CCCCCC%27%20points%3D%276%2C11%2010%2C19%2014%2C11%20%27%2F%3E%0A%3C%2Fsvg%3E")',
-  backgroundRepeat: 'no-repeat',
   display: 'inline-block'
-}
+};
 
 const [COMPASS] = [0];
 const POSITIONS = Object.keys(positions);
@@ -82,6 +87,14 @@ export default class RotationControl extends React.Component<Props, State> {
     map: PropTypes.object
   };
 
+  public componentDidMount() {
+    this.context.map.on('rotate', this.onMapRotate);
+  }
+
+  public componentWillUnmount() {
+    this.context.map.off('rotate', this.onMapRotate);
+  }
+
   public compassIcon: any;
 
   private onMouseOut = () => {
@@ -101,16 +114,13 @@ export default class RotationControl extends React.Component<Props, State> {
   }
 
   private onMapRotate = () => {
-    const rotate = `rotate(${this.context.map.transform.angle * (180 / Math.PI)}deg)`; // tslint:disable-line
+    const map = this.context.map as any;
+    const rotate = `rotate(${map.transform.angle * (180 / Math.PI)}deg)`; // tslint:disable-line
     this.compassIcon.style.transform = rotate;
   }
 
-  public componentDidMount = () => {
-    this.context.map.on('rotate', this.onMapRotate);
-  }
-
-  public componentWillUnmount = () => {
-    this.context.map.off('rotate', this.onMapRotate);
+  private assignRef = (icon: any) => {
+    this.compassIcon = icon;
   }
 
   public render() {
@@ -128,8 +138,8 @@ export default class RotationControl extends React.Component<Props, State> {
           onMouseOut={this.onMouseOut}
           onClick={this.onClickCompass}
         >
-          <span ref={(icon) => this.compassIcon = icon}
-            style={compassSpan}>
+          <span ref={this.assignRef} style={compassSpan}>
+            <Icon/>
           </span>
         </button>
       </div>

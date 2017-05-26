@@ -1,5 +1,12 @@
 import React, { Component } from "react";
-import ReactMapboxGl, { Layer, Feature, ScaleControl, ZoomControl, Marker } from "react-mapbox-gl";
+import ReactMapboxGl, {
+  Layer,
+  Feature,
+  ScaleControl,
+  ZoomControl,
+  RotationControl,
+  Marker
+} from "react-mapbox-gl";
 import route from "./route.json";
 import config from "./config.json";
 import style from "./style.json";
@@ -139,6 +146,8 @@ export default class AllShapes extends Component {
         containerStyle={containerStyle}>
         <ScaleControl/>
         <ZoomControl/>
+        <RotationControl style={{ top: 80 }}/>
+
         <Layer
           type="symbol"
           layout={{ "icon-image": "harbor-15" }}>
