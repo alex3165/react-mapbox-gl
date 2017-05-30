@@ -21,6 +21,7 @@ Include the following elements:
 - GeoJSONLayer
 - ZoomControl
 - ScaleControl
+- RotationControl
 - Marker (Projected component)
 - Popup (Projected component)
 - Cluster

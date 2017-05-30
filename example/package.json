@@ -10,7 +10,8 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "predeploy": "npm run build",
-    "deploy": "gh-pages -d build"
+    "deploy": "gh-pages -d build",
+    "postinstall": "npm run link"
   },
   "dependencies": {
     "immutable": "^3.8.1",
