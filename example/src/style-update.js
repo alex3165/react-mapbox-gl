@@ -76,6 +76,8 @@ const POSITION_CIRCLE_PAINT = {
 };
 const DEFAULT_USER_POSITION = [-0.2416815, 51.5285582];
 
+const Map = ReactMap({ accessToken });
+
 class StyleUpdate extends Component {
   state = {
     styleIndex: 0,
@@ -108,7 +110,6 @@ class StyleUpdate extends Component {
       <div style={styles.app}>
         <ReactMap
           style={this.getStyle()}
-          accessToken={accessToken}
           containerStyle={styles.container}
           center={this.state.userPosition}
         >

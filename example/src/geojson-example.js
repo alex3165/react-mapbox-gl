@@ -10,6 +10,8 @@ const containerStyle = {
   width: "100%"
 };
 
+const Map = ReactMapboxGl({ accessToken });
+
 export default class GeoJSONExample extends Component {
   state = {
     popup: null,
@@ -18,10 +20,8 @@ export default class GeoJSONExample extends Component {
 
   render() {
     return (
-      <ReactMapboxGl
-        // eslint-disable-next-line
+      <Map
         style="mapbox://styles/mapbox/light-v8"
-        accessToken={accessToken}
         center={this.state.center}
         movingMethod="jumpTo"
         containerStyle={containerStyle}>
@@ -38,7 +38,7 @@ export default class GeoJSONExample extends Component {
             "text-anchor": "top"
           }}/>
 
-      </ReactMapboxGl>
+      </Map>
     );
   }
 }

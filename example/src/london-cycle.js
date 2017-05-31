@@ -28,6 +28,13 @@ const maxBounds = [
   [0.23441119994140536, 51.654967740310525], // North East
 ];
 
+const Mapbox = ReactMapboxGl({
+  minZoom: 8,
+  maxZoom: 15,
+  maxBounds,
+  accessToken
+});
+
 export default class LondonCycle extends Component {
 
   state = {
@@ -105,15 +112,11 @@ export default class LondonCycle extends Component {
 
     return (
       <div>
-        <ReactMapboxGl
+        <Mapbox
           style={style}
           fitBounds={fitBounds}
           center={this.state.center}
           zoom={this.state.zoom}
-          minZoom={8}
-          maxZoom={15}
-          maxBounds={maxBounds}
-          accessToken={accessToken}
           onDrag={this._onDrag}
           containerStyle={styles.container}>
 
@@ -160,7 +163,7 @@ export default class LondonCycle extends Component {
               </Popup>
             )
           }
-        </ReactMapboxGl>
+        </Mapbox>
         {
           station && (
             <div style={styles.stationDescription}>
