@@ -33,6 +33,16 @@ const Map = ReactMapboxGl({
   - `bottom-left`
 - **renderWorldCopies** *(Default: `true`)*: `Boolean` If `true`, multiple copies of the world will be rendered, when zoomed out.
 - **dragRotate** *(Default: `true`)*: `Boolean` Set to `false` to disable drag rotation, see [mapbox DragRotateHandler](https://www.mapbox.com/mapbox-gl-js/api/#DragRotateHandler)
+- **trackResize** *(Default: `true`)*: `boolean` If  `true`, the map will automatically resize when the browser window resizes.
+- **touchZoomRotate** *(Default: `true`)*: `boolean` If  `true`, the "pinch to rotate and zoom" interaction is enabled. An  Object value is passed as options to TouchZoomRotateHandler#enable .
+- **doubleClickZoom** *(Default: `true`)*: `boolean` If  `true`, the "double click to zoom" interaction is enabled (see DoubleClickZoomHandler).
+- **keyboard** *(Default: `true`)*: `boolean` If  `true` , keyboard shortcuts are enabled (see KeyboardHandler).
+- **dragPan** *(Default: `true`)*: `boolean` If  `true` , the "drag to pan" interaction is enabled (see DragPanHandler).
+- **refreshExpiredTiles** *(Default: `true`)*: `boolean` If  `false` , the map won't attempt to re-request tiles once they expire per their HTTP cacheControl / expires headers.
+- **failIfMajorPerformanceCaveat** *(Default: `false`)*: `boolean` If  `true` , map creation will fail if the performance of Mapbox GL JS would be dramatically worse than expected (i.e. a software renderer would be used).
+- **classes**: `string[]` Mapbox style class names with which to initialize the map. Keep in mind that these classes are used for controlling a style layer's paint properties, so are not reflected in an HTML element's  class attribute. To learn more about Mapbox style classes, read about Layers in the style specification.
+- **bearingSnap** *(Default: `7`)*: `number` The threshold, measured in degrees, that determines when the map's bearing (rotation) will snap to north. For example, with a  bearingSnap of 7, if the user rotates the map within 7 degrees of north, the map will automatically snap to exact north.
+
 
 ### Component Properties
 - **style** *(required)* : `String | Object`  Mapbox map style, if changed, the style will be updated using `setStyle`.
