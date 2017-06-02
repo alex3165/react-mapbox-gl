@@ -30,7 +30,6 @@
   },
   "files": [
     "lib",
-    "es",
     "src",
     "vendor"
   ],

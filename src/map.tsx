@@ -281,13 +281,7 @@ const ReactMapboxFactory = ({
       const { map } = this.state as State;
 
       if (map) {
-        // Remove all events attached to the map
-        map.off();
-
-        // NOTE: We need to defer removing the map to after all children have unmounted
-        setTimeout(() => {
-          map.remove();
-        });
+        map.remove();
       }
     }
 

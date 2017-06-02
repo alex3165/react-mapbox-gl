@@ -184,6 +184,9 @@ export default class Layer extends React.Component<Props, void> {
   public componentWillUnmount() {
     const { map } = this.context;
     const { id } = this;
+    if (!map || !map.getStyle()) {
+      return;
+    }
 
     map.removeLayer(id);
     // if pointing to an existing source, don't remove
