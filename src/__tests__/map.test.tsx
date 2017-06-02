@@ -29,17 +29,19 @@ describe('Map', () => {
   });
 
   it('Should render the map correctly', () => {
+    const MapboxMap = ReactMapboxGl({ accessToken: '' });
     mount(
-      <ReactMapboxGl style="" accessToken=""/>
+      <MapboxMap style=""/>
     );
   });
 
   it('Should call fitBounds with the right parameters', () => {
     const fitBoundsValues: FitBounds = [[0, 1], [2, 3]];
     const fitBoundsOptions = { linear: true };
+    const MapboxMap = ReactMapboxGl({ accessToken: '' });
 
     mount(
-      <ReactMapboxGl style="" accessToken="" fitBounds={fitBoundsValues} fitBoundsOptions={fitBoundsOptions}/>
+      <MapboxMap style="" fitBounds={fitBoundsValues} fitBoundsOptions={fitBoundsOptions}/>
     );
 
     expect(fitBounds).toBeCalledWith(
@@ -50,9 +52,10 @@ describe('Map', () => {
 
   it('Should calc the center from fitbounds if center is not given', () => {
     const fitBoundsValues: FitBounds = [[0, 3], [2, 9]];
+    const MapboxMap = ReactMapboxGl({ accessToken: '' });
 
     mount(
-      <ReactMapboxGl style="" accessToken="" fitBounds={fitBoundsValues}/>
+      <MapboxMap style="" fitBounds={fitBoundsValues}/>
     );
 
     const lastCall = Map.mock.calls[Map.mock.calls.length - 1];
@@ -60,8 +63,10 @@ describe('Map', () => {
   });
 
   it('Should listen onStyleLoad event', () => {
+    const MapboxMap = ReactMapboxGl({ accessToken: '' });
+
     mount(
-      <ReactMapboxGl style="" accessToken="" onStyleLoad={jest.fn()}/>
+      <MapboxMap style="" onStyleLoad={jest.fn()}/>
     );
 
     expect(on).toBeCalledWith('load', jasmine.any(Function));
@@ -70,9 +75,10 @@ describe('Map', () => {
   it('Should update the map center position', () => {
     const flyTo = jest.fn();
     const center = [3, 4];
+    const MapboxMap = ReactMapboxGl({ accessToken: '' });
 
     const wrapper = mount(
-      <ReactMapboxGl style="" accessToken="" center={[1, 2]}/>
+      <MapboxMap style="" center={[1, 2]}/>
     );
 
     wrapper.setState({ map: {
@@ -87,9 +93,10 @@ describe('Map', () => {
 
   it('Should update the zoom on broken reference equality', () => {
     const flyTo = jest.fn();
+    const MapboxMap = ReactMapboxGl({ accessToken: '' });
 
     const wrapper = mount(
-      <ReactMapboxGl style="" accessToken="" zoom={[1]}/>
+      <MapboxMap style="" zoom={[1]}/>
     );
 
     wrapper.setState({ map: {
@@ -102,11 +109,12 @@ describe('Map', () => {
   });
 
   it('Should not update zoom when using same reference equality', () => {
+    const MapboxMap = ReactMapboxGl({ accessToken: '' });
     const flyTo = jest.fn();
     const zoom = [3];
 
     const wrapper = mount(
-      <ReactMapboxGl style="" accessToken="" zoom={zoom}/>
+      <MapboxMap style="" zoom={zoom}/>
     );
 
     wrapper.setState({ map: {

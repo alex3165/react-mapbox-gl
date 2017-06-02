@@ -35,6 +35,10 @@ const styles = {
   }
 }
 
+const Map = ReactMapboxGl({
+  accessToken: config.accessToken
+});
+
 export default class ClusterExample extends Component {
 
   onMarkerClick(coords) {
@@ -49,10 +53,9 @@ export default class ClusterExample extends Component {
 
   render() {
     return (
-      <ReactMapboxGl
+      <Map
         style={style}
         zoom={[4]}
-        accessToken={config.accessToken}
         containerStyle={containerStyle}>
         <Cluster ClusterMarkerFactory={this.clusterMarker} clusterThreshold={8}>
           {
@@ -67,7 +70,7 @@ export default class ClusterExample extends Component {
             )
           }
         </Cluster>
-      </ReactMapboxGl>
+      </Map>
     );
   }
 }

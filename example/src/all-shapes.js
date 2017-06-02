@@ -53,6 +53,8 @@ const markerCoord = [
 
 const mappedRoute = route.points.map(point => [ point.lat, point.lng ]);
 
+const Map = ReactMapboxGl({ accessToken });
+
 export default class AllShapes extends Component {
   intervalHandle = null
   timeoutHandle = null
@@ -135,12 +137,11 @@ export default class AllShapes extends Component {
 
   render() {
     return (
-      <ReactMapboxGl
+      <Map
         style={style}
         onClick={this._onClickMap}
         onZoom={this._onZoom}
         onStyleLoad={this._onStyleLoad}
-        accessToken={accessToken}
         center={this.state.center}
         movingMethod="jumpTo"
         containerStyle={containerStyle}>
@@ -210,7 +211,7 @@ export default class AllShapes extends Component {
             coordinates={multiPolygonCoords}/>
         </Layer>
 
-      </ReactMapboxGl>
+      </Map>
     );
   }
 }

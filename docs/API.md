@@ -1,46 +1,55 @@
 # ReactMapboxGl
+Factory function that return a React Mapbox component. Parameters of the factory function are static, properties of your component are dynamic and get updated if they changes between rendering.
 
-Display a mapbox webgl map
-> Render the children elements only when the style of the map is loaded
+> To use the original Mapbox API use `onStyleLoad` property, the callback function will receive the map object as a first arguments, then you can add your own logic alongside react-mapbox-gl. [mapbox gl API](https://www.mapbox.com/mapbox-gl-js/api/).
 
-To use the original Mapbox API use `onStyleLoad` property, the callback function will receive the map object as a first arguments, then you can add your own logic using [mapbox gl API](https://www.mapbox.com/mapbox-gl-js/api/).
-
-### Import
-
-```
+### How to use
+```jsx
 import ReactMapboxGl from "react-mapbox-gl";
+
+...
+
+const Map = ReactMapboxGl({
+  accessToken: "pk.eyJ1IjoiZmFicmljOCIsImEiOiJjaWc5aTV1ZzUwMDJwdzJrb2w0dXRmc2d0In0.p6GGlfyV-WksaDV_KdN27A"
+});
+
+<Map style="mapbox://styles/mapbox/streets-v8"/>
 ```
 
-### Properties
-- **style** *(required)* : `String | Object`  Mapbox map style, if changed, the style will be updated using `setStyle`.
+### Factory parameters
 - **accessToken** *(required)* : `String` Mapbox access token.
+- **minZoom** *(Default: `0`)*: `Number` Minimum zoom level. Must be between 0 and 20.
+- **maxZoom** *(Default: `20`)*: `Number` Maximum zoom level. Must be between 0 and 20.
+- **maxBounds** : `LngLatBounds | Array<Array<number>>` If set, the map is constrained to the given bounds [SouthWest, NorthEast]
+- **scrollZoom** *(Default: `true`)*: See [mapbox scrollZoom](https://www.mapbox.com/mapbox-gl-js/api/#Map)
+- **hash** *(Default: `false`)*: `Boolean`, [See mapbox doc](https://www.mapbox.com/mapbox-gl-js/api/#Map)
+- **preserveDrawingBuffer** *(Default: `false`)*: `Boolean`, [See mapbox doc](https://www.mapbox.com/mapbox-gl-js/api/#Map)
+- **interactive** *(Default: `true`)*: `Boolean` Set to `false` to disable interaction with the map.
+- **attributionControl** *(Default: `true`)*: `Boolean` Set to `false` to remove the attribution on the map.
+- **logoPosition** *(Default: `bottom-left`)*: `string` Set the position of the mapbox logo. Possible values:
+  - `top-left`
+  - `top-right`
+  - `bottom-right`
+  - `bottom-left`
+- **renderWorldCopies** *(Default: `true`)*: `Boolean` If `true`, multiple copies of the world will be rendered, when zoomed out.
+- **dragRotate** *(Default: `true`)*: `Boolean` Set to `false` to disable drag rotation, see [mapbox DragRotateHandler](https://www.mapbox.com/mapbox-gl-js/api/#DragRotateHandler)
+
+### Component Properties
+- **style** *(required)* : `String | Object`  Mapbox map style, if changed, the style will be updated using `setStyle`.
 - **center** *(Default: `[ -0.2416815, 51.5285582 ]`)*: `Array<Number>` Center the map at the position at initialisation
   - Re-center the map if the value change regarding the prev value or the actual center position [flyTo](https://www.mapbox.com/mapbox-gl-js/api/#Map.flyTo)
 - **zoom** *(Default: `[11]`)*: `Array<Number>` Zoom level of the map at initialisation wrapped in an array.
   - Check for reference equality between the previous value of zoom and the new one in order to update it or not.
-- **minZoom** *(Default: `0`)*: `Number` Minimum zoom level. Must be between 0 and 20.
-- **maxZoom** *(Default: `20`)*: `Number` Maximum zoom level. Must be between 0 and 20.
-- **maxBounds** : `LngLatBounds | Array<Array<number>>` If set, the map is constrained to the given bounds [SouthWest, NorthEast]
 - **fitBounds** : `Array<Array<number>>` If set, the map will center on the given coordinates, [fitBounds](https://www.mapbox.com/mapbox-gl-js/api/#Map#fitBounds)
 - **fitBoundsOptions** : `FitBoundsOptions` Options for [fitBounds](https://www.mapbox.com/mapbox-gl-js/api/#Map#fitBounds)
 - **bearing** *(Default: `0`)*: `Number` Bearing (rotation) of the map at initialisation measured in degrees counter-clockwise from north.
   - Check the previous value and the new one, if the value changed update the bearing value [flyTo](https://www.mapbox.com/mapbox-gl-js/api/#Map.flyTo)
 - **pitch** *(Default: `0`)*: `Number` Pitch (tilt) of the map at initialisation, range : `0 - 60`
-- **scrollZoom** *(Default: `true`)*: See [mapbox scrollZoom](https://www.mapbox.com/mapbox-gl-js/api/#Map)
 - **containerStyle** : `Object` The style of the container of the map
-- **hash** *(Default: `false`)*: `Boolean`, [See mapbox doc](https://www.mapbox.com/mapbox-gl-js/api/#Map)
-- **preserveDrawingBuffer** *(Default: `false`)*: `Boolean`, [See mapbox doc](https://www.mapbox.com/mapbox-gl-js/api/#Map)
-- **interactive** *(Default: `true`)*: `Boolean` Set to `false` to disable interaction with the map.
 - **movingMethod** *(Default: `flyTo`)*: `String` define the method used when changing the center or zoom position. Possible value :
   - `jumpTo`
   - `easeTo`
   - `flyTo`
-- **attributionPosition**: `String` The corner of the map to include the mandatory Mapbox attribution. Possible values:
-  - `top-left`
-  - `top-right`
-  - `bottom-left`
-  - `bottom-right`
-- **renderWorldCopies** *(Default: `true`)*: `Boolean` If `true`, multiple copies of the world will be rendered, when zoomed out.
 - **onClick**: `(map: Object, event: Object) => void` : Triggered whenever user click on the map
 - **onStyleLoad**: `(map: Object, event: Object) => void` : Listener of Mapbox event : `map.on("style.load")`
 - **onMouseMove**: `(map: Object, event: Object) => void` : Listen the mouse moving on the map
@@ -57,28 +66,24 @@ import ReactMapboxGl from "react-mapbox-gl";
 - **onPitch**: `(map: Object, event: Object) => void` : Executed when a pitch event is fired
 - **onPitchStart**: `(map: Object, event: Object) => void` : Executed when the map pitch event start
 - **onPitchEnd**: `(map: Object, event: Object) => void` : Executed when the map pitch event end
-- **dragRotate** *(Default: `true`)*: `Boolean` Set to `false` to disable drag rotation, see [mapbox DragRotateHandler](https://www.mapbox.com/mapbox-gl-js/api/#DragRotateHandler)
-
-### Example
-
-```
-<ReactMapboxGl
-  style="mapbox://styles/mapbox/streets-v8"
-  accessToken="pk.eyJ1IjoiZmFicmljOCIsImEiOiJjaWc5aTV1ZzUwMDJwdzJrb2w0dXRmc2d0In0.p6GGlfyV-WksaDV_KdN27A"/>
-```
 
 ----------
 # Layer
-
 Create a new Mapbox layer and create all the sources depending on the children `Feature` components.
 
 If you change the value of the paint or the layout property of the layer, it will automatically update this property using respectively either `setLayoutProperty` or `setPaintProperty`.
 > Only work with the first depth of the object.
 
-### Import
-
-```
+### How to use
+```jsx
 import { Layer } from "react-mapbox-gl";
+
+...
+
+<Layer
+  type="symbol"
+  layout={{ "icon-image": "harbor-15" }}>
+</Layer>
 ```
 
 ### Properties
@@ -96,24 +101,26 @@ import { Layer } from "react-mapbox-gl";
 - **sourceId**: `String` When passed to the layer, the source will not be created but only the layer and it will use the given source id.
 - **before**: `String` Pass the id of a layer, it will display the current layer before the layer defined by the id. [mapbox api](https://www.mapbox.com/mapbox-gl-js/api/#Map#addLayer)
 
-### Example
-
-```
-<Layer
-  type="symbol"
-  layout={{ "icon-image": "harbor-15" }}>
-</Layer>
-```
-
 ----------
 # Source
-
 Add a source to the map (for layers to use, for example).
 
-### Import
-
-```
+### How to use
+```jsx
 import { Source } from "react-mapbox-gl";
+
+...
+
+const RASTER_SOURCE_OPTIONS = {
+  "type": "raster",
+  "tiles": [
+    "https://someurl.com/512/{z}/{x}/{y}",
+  ],
+  "tileSize": 512
+};
+
+<Source id="source_id" tileJsonSource={RASTER_SOURCE_OPTIONS} />
+<Layer type="raster" id="layer_id" sourceId="source_id" />
 ```
 
 ### Properties
@@ -123,45 +130,19 @@ import { Source } from "react-mapbox-gl";
 - **onSourceAdded** : `Function` Executed once the source is added to the map, the source is passed as a first argument.
 - **onSourceLoaded** : `Function` Executed once the source data has been loaded for the first time (after [mapbox-gl map.event:load](https://www.mapbox.com/mapbox-gl-js/api/#map.event:load)), the source is passed as a first argument.
 
-### Example
-
-```
-const RASTER_SOURCE_OPTIONS = {
-  "type": "raster",
-  "tiles": [
-    "https://someurl.com/512/{z}/{x}/{y}",
-  ],
-  "tileSize": 512
-};
-
-<Source id="example_id" tileJsonSource={RASTER_SOURCE_OPTIONS} />
-<Layer type="raster" id="example_id" sourceId="example_id" />
-```
-
 ----------
 # GeoJSONLayer
-
 Display on the map all the informations contained in a geojson file.
 
 _Note:_ GeoJSONLayer will not render any layers (`line`, `circle`, `fill`, etc...)
 unless an associated `[layer]Layout` or `[layer]Paint` prop is provided.
 
-### Import
-```
+### How to use
+```jsx
 import { GeoJSONLayer } from "react-mapbox-gl";
-```
 
-### Properties
-- **data** *(required)* : `String | Object` The url to the geojson file or the geojson file itself.
-- **lineLayout** | **symbolLayout** | **circleLayout** | **fillLayout** | **fillExtrusionLayout** : `Object` Layer layout informations. [mapbox layout api](https://www.mapbox.com/mapbox-gl-style-spec/#layer-layout)
-- **linePaint** | **symbolPaint** | **circlePaint** | **fillPaint** | **fillExtrusionPaint** : `Object` Paint informations. [mapbox paint api](https://www.mapbox.com/mapbox-gl-style-spec/#layer-paint)
-- **sourceOptions**: `Object` Options object merged to the object used when calling `GeoJSONSource` method
-- **layerOptions**: `Object` Passed down to the layer object when setting it out.
-- **before**:`String` Pass the id of a layer, it will display the current layer before the layer defined by the id. [mapbox api](https://www.mapbox.com/mapbox-gl-js/api/#Map#addLayer)
+...
 
-### Example
-
-```
 <GeoJSONLayer
   data={geojson}
   symbolLayout={{
@@ -172,15 +153,25 @@ import { GeoJSONLayer } from "react-mapbox-gl";
   }}/>
 ```
 
+### Properties
+- **data** *(required)* : `String | Object` The url to the geojson file or the geojson file itself.
+- **lineLayout** | **symbolLayout** | **circleLayout** | **fillLayout** | **fillExtrusionLayout** : `Object` Layer layout informations. [mapbox layout api](https://www.mapbox.com/mapbox-gl-style-spec/#layer-layout)
+- **linePaint** | **symbolPaint** | **circlePaint** | **fillPaint** | **fillExtrusionPaint** : `Object` Paint informations. [mapbox paint api](https://www.mapbox.com/mapbox-gl-style-spec/#layer-paint)
+- **sourceOptions**: `Object` Options object merged to the object used when calling `GeoJSONSource` method
+- **layerOptions**: `Object` Passed down to the layer object when setting it out.
+- **before**:`String` Pass the id of a layer, it will display the current layer before the layer defined by the id. [mapbox api](https://www.mapbox.com/mapbox-gl-js/api/#Map#addLayer)
+
 ----------
 # Feature
-
 Display a feature on the map, can only be used when wrapped in a `Layer` component. The type of the feature is defined at the `Layer` level. If you want to create a new type, create an associated new layer.
 
-### Import
-
-```
+### How to use
+```jsx
 import { Feature } from "react-mapbox-gl";
+
+...
+
+<Feature coordinates={[-0.13235092163085938,51.518250335096376]}/>
 ```
 
 ### Properties
@@ -193,22 +184,19 @@ import { Feature } from "react-mapbox-gl";
 - **onMouseLeave** : `(args: Object) => void` Triggered when the mouse leave the feature element
   - Args contain the map object and the arguments passed by Mapbox from the event `onmousemove`
 
-### Example
-
-```
-<Feature coordinates={[-0.13235092163085938,51.518250335096376]}/>
-```
-
 ----------
 # ZoomControl
-
 A custom react zoom control component.
 
-### Import
-
-```
+### How to use
+```jsx
 import { ZoomControl } from "react-mapbox-gl";
+
+...
+
+<ZoomControl/>
 ```
+
 
 ### Properties
 - **onControlClick** : `(map: Object, zoomDiff: Number) => void` triggered when user click on minus or plus button
@@ -221,21 +209,17 @@ import { ZoomControl } from "react-mapbox-gl";
   - `bottomRight`
   - `bottomLeft`
 
-### Example
-
-```
-<ZoomControl/>
-```
-
 ----------
 # ScaleControl
-
 A custom react scale feedback control component.
 
-### Import
-
-```
+### How to use
+```jsx
 import { ScaleControl } from "react-mapbox-gl";
+
+...
+
+<ScaleControl/>
 ```
 
 ### Properties
@@ -249,21 +233,18 @@ import { ScaleControl } from "react-mapbox-gl";
   - `bottomRight`
   - `bottomLeft`
 
-### Example
-
-```
-<ScaleControl/>
-```
-
 ----------
 # RotationControl
-
 Display the current map rotation, also reset the rotation to it's origin value on click.
 
-### Import
+### How to use
 
-```
+```jsx
 import { RotationControl } from "react-mapbox-gl";
+
+...
+
+<RotationControl/>
 ```
 
 ### Properties
@@ -275,21 +256,23 @@ import { RotationControl } from "react-mapbox-gl";
   - `bottomRight`
   - `bottomLeft`
 
-### Example
-
-```
-<RotationControl/>
-```
-
 ----------
 # Popup
-
 The popup component allow you to display a popup tooltip on top of the map using mapbox-gl-js.
 
-### Import
-
-```
+### How to use
+```jsx
 import { Popup } from "react-mapbox-gl";
+
+...
+
+<Popup
+  coordinates={[-0.13235092163085938,51.518250335096376]}
+  offset={{
+    'bottom-left': [12, -38],  'bottom': [0, -38], 'bottom-right': [-12, -38]
+  }}>
+  <h1>Popup</h1>
+</Popup>
 ```
 
 ### Properties
@@ -312,27 +295,21 @@ import { Popup } from "react-mapbox-gl";
 - **style**: `Object` Apply style to the marker container
 - **className**: `String` Apply the className to the container of the popup
 
-### Example
-
-```
-<Popup
-  coordinates={[-0.13235092163085938,51.518250335096376]}
-  offset={{
-    'bottom-left': [12, -38],  'bottom': [0, -38], 'bottom-right': [-12, -38]
-  }}>
-  <h1>Popup</h1>
-</Popup>
-```
-
 ----------
 # Marker
-
 Add an html marker to the map.
 
-### Import
-
-```
+### How to use
+```jsx
 import { Marker } from "react-mapbox-gl";
+
+...
+
+<Marker
+  coordinates={[-0.2416815, 51.5285582]}
+  anchor="bottom">
+  <img src={markerUrl}/>
+</Marker>
 ```
 
 ### Properties
@@ -343,40 +320,16 @@ import { Marker } from "react-mapbox-gl";
 - **style**: `Object` Apply style to the marker container
 - **className**: `String` Apply the className to the container of the Marker
 
-### Example
-
-```
-<Marker
-  coordinates={[-0.2416815, 51.5285582]}
-  anchor="bottom">
-  <img src={markerUrl}/>
-</Marker>
-```
-
 ________
 # Cluster
+Create a cluster of `Marker`.
 
-Create a cluster of `Marker`
-
-### Import
-
-```
+### How to use
+```jsx
 import { Cluster } from "react-mapbox-gl";
-```
 
-### Properties
-- **ClusterMarkerFactory** *(required)*: `(coordinates: number[], pointCount: number) => Marker` A function called for every cluster, the function must return a Marker component
-- **clusterThreshold**: *Default: 1*: `Number` Limit of number of cluster points to display wheter clustered marker or marker.
-- **radius**: *Default: 60*:`Number` Cluster radius, in pixels.
-- **minZoom**: *Default: 0*:`Number` Minimum zoom level at which clusters are generated.
-- **maxZoom**: *Default: 16*:`Number` Maximum zoom level at which clusters are generated.
-- **extent**: *Default: 512*:`Number` (Tiles) Tile extent. Radius is calculated relative to this value.
-- **nodeSize**: *Default: 64*:`Number` Size of the KD-tree leaf node. Affects performance.
-- **log**: *Default: false*:`Boolean` Whether timing info should be logged.
+...
 
-### Example
-
-```
 clusterMarker = (coordinates) => (
   <Marker coordinates={coordinates} style={styles.clusterMarker}>
     C
@@ -399,3 +352,13 @@ clusterMarker = (coordinates) => (
   }
 </Cluster>
 ```
+
+### Properties
+- **ClusterMarkerFactory** *(required)*: `(coordinates: number[], pointCount: number) => Marker` A function called for every cluster, the function must return a Marker component
+- **clusterThreshold**: *Default: 1*: `Number` Limit of number of cluster points to display wheter clustered marker or marker.
+- **radius**: *Default: 60*:`Number` Cluster radius, in pixels.
+- **minZoom**: *Default: 0*:`Number` Minimum zoom level at which clusters are generated.
+- **maxZoom**: *Default: 16*:`Number` Maximum zoom level at which clusters are generated.
+- **extent**: *Default: 512*:`Number` (Tiles) Tile extent. Radius is calculated relative to this value.
+- **nodeSize**: *Default: 64*:`Number` Size of the KD-tree leaf node. Affects performance.
+- **log**: *Default: false*:`Boolean` Whether timing info should be logged.
