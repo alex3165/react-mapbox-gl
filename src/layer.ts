@@ -218,7 +218,7 @@ export default class Layer extends React.Component<Props, void> {
     }
 
     if ((props.layerOptions && layerOptions) && !isEqual(props.layerOptions.filter, layerOptions.filter)) {
-      map.setFilter(this.id, props.layerOptions.filter);
+      map.setFilter(this.id, props.layerOptions.filter as any);
     }
 
     if (before !== props.before) {

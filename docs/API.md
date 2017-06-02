@@ -33,6 +33,16 @@ const Map = ReactMapboxGl({
   - `bottom-left`
 - **renderWorldCopies** *(Default: `true`)*: `Boolean` If `true`, multiple copies of the world will be rendered, when zoomed out.
 - **dragRotate** *(Default: `true`)*: `Boolean` Set to `false` to disable drag rotation, see [mapbox DragRotateHandler](https://www.mapbox.com/mapbox-gl-js/api/#DragRotateHandler)
+- **trackResize** *(Default: `true`)*: `boolean` If  `true`, the map will automatically resize when the browser window resizes.
+- **touchZoomRotate** *(Default: `true`)*: `boolean` If  `true`, the "pinch to rotate and zoom" interaction is enabled. An  Object value is passed as options to TouchZoomRotateHandler#enable .
+- **doubleClickZoom** *(Default: `true`)*: `boolean` If  `true`, the "double click to zoom" interaction is enabled (see DoubleClickZoomHandler).
+- **keyboard** *(Default: `true`)*: `boolean` If  `true` , keyboard shortcuts are enabled (see KeyboardHandler).
+- **dragPan** *(Default: `true`)*: `boolean` If  `true` , the "drag to pan" interaction is enabled (see DragPanHandler).
+- **refreshExpiredTiles** *(Default: `true`)*: `boolean` If  `false` , the map won't attempt to re-request tiles once they expire per their HTTP cacheControl / expires headers.
+- **failIfMajorPerformanceCaveat** *(Default: `false`)*: `boolean` If  `true` , map creation will fail if the performance of Mapbox GL JS would be dramatically worse than expected (i.e. a software renderer would be used).
+- **classes**: `string[]` Mapbox style class names with which to initialize the map. Keep in mind that these classes are used for controlling a style layer's paint properties, so are not reflected in an HTML element's  class attribute. To learn more about Mapbox style classes, read about Layers in the style specification.
+- **bearingSnap** *(Default: `7`)*: `number` The threshold, measured in degrees, that determines when the map's bearing (rotation) will snap to north. For example, with a  bearingSnap of 7, if the user rotates the map within 7 degrees of north, the map will automatically snap to exact north.
+
 
 ### Component Properties
 - **style** *(required)* : `String | Object`  Mapbox map style, if changed, the style will be updated using `setStyle`.
@@ -50,22 +60,55 @@ const Map = ReactMapboxGl({
   - `jumpTo`
   - `easeTo`
   - `flyTo`
-- **onClick**: `(map: Object, event: Object) => void` : Triggered whenever user click on the map
-- **onStyleLoad**: `(map: Object, event: Object) => void` : Listener of Mapbox event : `map.on("style.load")`
-- **onMouseMove**: `(map: Object, event: Object) => void` : Listen the mouse moving on the map
-- **onMove**: `(map: Object, event: Object) => void` : Executed whenever the center of the map change
-- **onMoveStart**: `(map: Object, event: Object) => void` : Executed when the move of the map start
-- **onMoveEnd**: `(map: Object, event: Object) => void` : Executed when the move of the map end
-- **onMouseUp** : `(map: Object, event: Object) => void` : Simple binding of Mapbox `mouseup` event
-- **onDrag** : `(map: Object, event: Object) => void` : Simple binding of mapbox `ondrag` event
-- **onDragStart** : `(map: Object, event: Object) => void` : Simple binding of mapbox `ondragstart` event
-- **onDragEnd** : `(map: Object, event: Object) => void` : Simple binding of mapbox `ondragend` event
-- **onZoom**: `(map: Object, event: Object) => void` : Executed repeatedly during transitions between zoom levels
-- **onZoomStart**: `(map: Object, event: Object) => void` : Executed at the start of a transition between zoom levels
-- **onZoomEnd**: `(map: Object, event: Object) => void` : Executed at the end of a transition between zoom levels
-- **onPitch**: `(map: Object, event: Object) => void` : Executed when a pitch event is fired
-- **onPitchStart**: `(map: Object, event: Object) => void` : Executed when the map pitch event start
-- **onPitchEnd**: `(map: Object, event: Object) => void` : Executed when the map pitch event end
+
+### Events
+All mapbox map events are implemented, see events section on mapbox documentation [api](https://www.mapbox.com/mapbox-gl-js/api),
+The events name are transformed to camelcase:
+```js
+const events = {
+  onResize: 'resize',
+  onDblClick: 'dblclick',
+  onClick: 'click',
+  onMouseMove: 'mousemove',
+  onMouseOut: 'mouseout',
+  onMoveStart: 'movestart',
+  onMove: 'move',
+  onMoveEnd: 'moveend',
+  onMouseUp: 'mouseup',
+  onMouseDown: 'mousedown',
+  onDragStart: 'dragstart',
+  onDrag: 'drag',
+  onDragEnd: 'dragend',
+  onZoomStart: 'zoomstart',
+  onZoom: 'zoom',
+  onZoomEnd: 'zoomend',
+  onPitch: 'pitch',
+  onPitchStart: 'pitchstart',
+  onPitchEnd: 'pitchend',
+  onWebGlContextLost: 'webglcontextlost',
+  onWebGlContextRestored: 'webglcontextrestored',
+  onRemove: 'remove',
+  onContextMenu: 'contextmenu',
+  onRender: 'render',
+  onError: 'error',
+  onSourceData: 'sourcedata',
+  onDataLoading: 'dataloading',
+  onStyleDataLoading: 'styledataloading',
+  onTouchCancel: 'touchcancel',
+  onData: 'data',
+  onSourceDataLoading: 'sourcedataloading',
+  onTouchMove: 'touchmove',
+  onTouchEnd: 'touchend',
+  onTouchStart: 'touchstart',
+  onStyleData: 'styledata',
+  onBoxZoomStart: 'boxzoomstart',
+  onBoxZoomEnd: 'boxzoomend',
+  onBoxZoomCancel: 'boxzoomcancel',
+  onRotateStart: 'rotatestart',
+  onRotate: 'rotate',
+  onRotateEnd: 'rotateend'
+};
+```
 
 ----------
 # Layer
