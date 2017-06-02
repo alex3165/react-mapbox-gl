@@ -196,6 +196,7 @@ const ReactMapboxFactory = ({
       map: undefined
     };
 
+    // tslint:disable-next-line:variable-name
     private _isMounted = true;
 
     public getChildContext = () => ({
