@@ -108,7 +108,7 @@ class StyleUpdate extends Component {
   render() {
     return (
       <div style={styles.app}>
-        <ReactMap
+        <Map
           style={this.getStyle()}
           containerStyle={styles.container}
           center={this.state.userPosition}
@@ -118,7 +118,7 @@ class StyleUpdate extends Component {
           <Layer type="circle" id="position-marker" paint={POSITION_CIRCLE_PAINT}>
             <Feature coordinates={this.state.userPosition} />
           </Layer>
-        </ReactMap>
+        </Map>
         
         <button style={styles.button} onClick={this.nextStyle}>Switch Style</button>
         

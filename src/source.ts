@@ -77,6 +77,10 @@ export default class Source extends React.Component<Props, void> {
   public componentWillUnmount() {
     const { map } = this.context;
 
+    if (!map || !map.getStyle()) {
+      return;
+    }
+
     map.off('styledata', this.onStyleDataChange);
 
     if (map.getSource(this.id)) {

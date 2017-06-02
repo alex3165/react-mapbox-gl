@@ -196,6 +196,9 @@ const ReactMapboxFactory = ({
       map: undefined
     };
 
+    // tslint:disable-next-line:variable-name
+    private _isMounted = true;
+
     public getChildContext = () => ({
       map: this.state.map
     })
@@ -259,7 +262,9 @@ const ReactMapboxFactory = ({
       }
 
       map.on('load', (evt: React.SyntheticEvent<any>) => {
-        this.setState({ map });
+        if (this._isMounted) {
+          this.setState({ map });
+        }
 
         if (onStyleLoad) {
           onStyleLoad(map, evt);
@@ -279,15 +284,10 @@ const ReactMapboxFactory = ({
 
     public componentWillUnmount() {
       const { map } = this.state as State;
+      this._isMounted = false;
 
       if (map) {
-        // Remove all events attached to the map
-        map.off();
-
-        // NOTE: We need to defer removing the map to after all children have unmounted
-        setTimeout(() => {
-          map.remove();
-        });
+        map.remove();
       }
     }
 
