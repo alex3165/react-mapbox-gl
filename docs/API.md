@@ -50,22 +50,55 @@ const Map = ReactMapboxGl({
   - `jumpTo`
   - `easeTo`
   - `flyTo`
-- **onClick**: `(map: Object, event: Object) => void` : Triggered whenever user click on the map
-- **onStyleLoad**: `(map: Object, event: Object) => void` : Listener of Mapbox event : `map.on("style.load")`
-- **onMouseMove**: `(map: Object, event: Object) => void` : Listen the mouse moving on the map
-- **onMove**: `(map: Object, event: Object) => void` : Executed whenever the center of the map change
-- **onMoveStart**: `(map: Object, event: Object) => void` : Executed when the move of the map start
-- **onMoveEnd**: `(map: Object, event: Object) => void` : Executed when the move of the map end
-- **onMouseUp** : `(map: Object, event: Object) => void` : Simple binding of Mapbox `mouseup` event
-- **onDrag** : `(map: Object, event: Object) => void` : Simple binding of mapbox `ondrag` event
-- **onDragStart** : `(map: Object, event: Object) => void` : Simple binding of mapbox `ondragstart` event
-- **onDragEnd** : `(map: Object, event: Object) => void` : Simple binding of mapbox `ondragend` event
-- **onZoom**: `(map: Object, event: Object) => void` : Executed repeatedly during transitions between zoom levels
-- **onZoomStart**: `(map: Object, event: Object) => void` : Executed at the start of a transition between zoom levels
-- **onZoomEnd**: `(map: Object, event: Object) => void` : Executed at the end of a transition between zoom levels
-- **onPitch**: `(map: Object, event: Object) => void` : Executed when a pitch event is fired
-- **onPitchStart**: `(map: Object, event: Object) => void` : Executed when the map pitch event start
-- **onPitchEnd**: `(map: Object, event: Object) => void` : Executed when the map pitch event end
+
+### Events
+All mapbox map events are implemented, see events section on mapbox documentation [api](https://www.mapbox.com/mapbox-gl-js/api),
+The events name are transformed to camelcase:
+```js
+const events = {
+  onResize: 'resize',
+  onDblClick: 'dblclick',
+  onClick: 'click',
+  onMouseMove: 'mousemove',
+  onMouseOut: 'mouseout',
+  onMoveStart: 'movestart',
+  onMove: 'move',
+  onMoveEnd: 'moveend',
+  onMouseUp: 'mouseup',
+  onMouseDown: 'mousedown',
+  onDragStart: 'dragstart',
+  onDrag: 'drag',
+  onDragEnd: 'dragend',
+  onZoomStart: 'zoomstart',
+  onZoom: 'zoom',
+  onZoomEnd: 'zoomend',
+  onPitch: 'pitch',
+  onPitchStart: 'pitchstart',
+  onPitchEnd: 'pitchend',
+  onWebGlContextLost: 'webglcontextlost',
+  onWebGlContextRestored: 'webglcontextrestored',
+  onRemove: 'remove',
+  onContextMenu: 'contextmenu',
+  onRender: 'render',
+  onError: 'error',
+  onSourceData: 'sourcedata',
+  onDataLoading: 'dataloading',
+  onStyleDataLoading: 'styledataloading',
+  onTouchCancel: 'touchcancel',
+  onData: 'data',
+  onSourceDataLoading: 'sourcedataloading',
+  onTouchMove: 'touchmove',
+  onTouchEnd: 'touchend',
+  onTouchStart: 'touchstart',
+  onStyleData: 'styledata',
+  onBoxZoomStart: 'boxzoomstart',
+  onBoxZoomEnd: 'boxzoomend',
+  onBoxZoomCancel: 'boxzoomcancel',
+  onRotateStart: 'rotatestart',
+  onRotate: 'rotate',
+  onRotateEnd: 'rotateend'
+};
+```
 
 ----------
 # Layer

@@ -76,7 +76,7 @@ export default class GeoJSONLayer extends React.Component<Props, void> {
     map.addLayer({
       id: layerId,
       source: id,
-      type,
+      type: type as any,
       paint,
       layout,
       ...layerOptions

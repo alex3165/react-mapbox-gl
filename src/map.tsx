@@ -9,10 +9,12 @@ const events = {
   onDblClick: 'dblclick',
   onClick: 'click',
   onMouseMove: 'mousemove',
-  onMoveStart: 'mousestart',
+  onMouseOut: 'mouseout',
+  onMoveStart: 'movestart',
   onMove: 'move',
   onMoveEnd: 'moveend',
   onMouseUp: 'mouseup',
+  onMouseDown: 'mousedown',
   onDragStart: 'dragstart',
   onDrag: 'drag',
   onDragEnd: 'dragend',
@@ -21,7 +23,29 @@ const events = {
   onZoomEnd: 'zoomend',
   onPitch: 'pitch',
   onPitchStart: 'pitchstart',
-  onPitchEnd: 'pitchend'
+  onPitchEnd: 'pitchend',
+  onWebGlContextLost: 'webglcontextlost',
+  onWebGlContextRestored: 'webglcontextrestored',
+  onRemove: 'remove',
+  onContextMenu: 'contextmenu',
+  onRender: 'render',
+  onError: 'error',
+  onSourceData: 'sourcedata',
+  onDataLoading: 'dataloading',
+  onStyleDataLoading: 'styledataloading',
+  onTouchCancel: 'touchcancel',
+  onData: 'data',
+  onSourceDataLoading: 'sourcedataloading',
+  onTouchMove: 'touchmove',
+  onTouchEnd: 'touchend',
+  onTouchStart: 'touchstart',
+  onStyleData: 'styledata',
+  onBoxZoomStart: 'boxzoomstart',
+  onBoxZoomEnd: 'boxzoomend',
+  onBoxZoomCancel: 'boxzoomcancel',
+  onRotateStart: 'rotatestart',
+  onRotate: 'rotate',
+  onRotateEnd: 'rotateend'
 };
 
 export type MapEvent = (map: MapboxGl.Map, evt: React.SyntheticEvent<any>) => void;
@@ -32,9 +56,11 @@ export interface Events {
   onDblClick?: MapEvent;
   onClick?: MapEvent;
   onMouseMove?: MapEvent;
+  onMouseOut?: MapEvent;
   onMoveStart?: MapEvent;
   onMove?: MapEvent;
   onMoveEnd?: MapEvent;
+  onMouseDown?: MapEvent;
   onMouseUp?: MapEvent;
   onDragStart?: MapEvent;
   onDragEnd?: MapEvent;
@@ -45,6 +71,28 @@ export interface Events {
   onPitch?: MapEvent;
   onPitchStart?: MapEvent;
   onPitchEnd?: MapEvent;
+  onWebGlContextLost?: MapEvent;
+  onWebGlContextRestored?: MapEvent;
+  onRemove?: MapEvent;
+  onContextMenu?: MapEvent;
+  onRender?: MapEvent;
+  onError?: MapEvent;
+  onSourceData?: MapEvent;
+  onDataLoading?: MapEvent;
+  onStyleDataLoading?: MapEvent;
+  onTouchCancel?: MapEvent;
+  onData?: MapEvent;
+  onSourceDataLoading?: MapEvent;
+  onTouchMove?: MapEvent;
+  onTouchEnd?: MapEvent;
+  onTouchStart?: MapEvent;
+  onStyleData?: MapEvent;
+  onBoxZoomStart?: MapEvent;
+  onBoxZoomEnd?: MapEvent;
+  onBoxZoomCancel?: MapEvent;
+  onRotateStart?: MapEvent;
+  onRotate?: MapEvent;
+  onRotateEnd?: MapEvent;
 }
 
 export interface FitBoundsOptions {
@@ -89,6 +137,16 @@ export interface FactoryParameters {
   attributionControl?: boolean;
   logoPosition?: 'top-left' | 'top-right' | 'bottom-left' | 'bottom-right';
   renderWorldCopies?: boolean;
+  trackResize?: boolean;
+  touchZoomRotate?: boolean;
+  doubleClickZoom?: boolean;
+  keyboard?: boolean;
+  dragPan?: boolean;
+  boxZoom?: boolean;
+  refreshExpiredTiles?: boolean;
+  failIfMajorPerformanceCaveat?: boolean;
+  classes?: string[];
+  bearingSnap?: number;
 }
 
 // Satisfy typescript pitfall with defaultProps
@@ -108,7 +166,17 @@ const ReactMapboxFactory = ({
   dragRotate = true,
   attributionControl = true,
   logoPosition = 'bottom-left',
-  renderWorldCopies = true
+  renderWorldCopies = true,
+  trackResize = true,
+  touchZoomRotate = true,
+  doubleClickZoom = true,
+  keyboard = true,
+  dragPan = true,
+  boxZoom = true,
+  refreshExpiredTiles = true,
+  failIfMajorPerformanceCaveat = false,
+  classes,
+  bearingSnap = 7
 }: FactoryParameters): any => (
   class ReactMapboxGl extends React.Component<Props & Events, State> {
     public static defaultProps = {
@@ -168,13 +236,22 @@ const ReactMapboxFactory = ({
         attributionControl,
         interactive,
         dragRotate,
-        renderWorldCopies
+        renderWorldCopies,
+        trackResize,
+        touchZoomRotate,
+        doubleClickZoom,
+        keyboard,
+        dragPan,
+        boxZoom,
+        refreshExpiredTiles,
+        logoPosition: logoPosition as any,
+        classes,
+        bearingSnap
       };
 
       const map = new MapboxGl.Map({
         ...opts,
-        // logoposition is not part of the typings of mapbox-gl, this does the trick
-        logoPosition
+        failIfMajorPerformanceCaveat
       });
 
       if (fitBounds) {
