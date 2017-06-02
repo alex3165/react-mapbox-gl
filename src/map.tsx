@@ -196,6 +196,8 @@ const ReactMapboxFactory = ({
       map: undefined
     };
 
+    private _isMounted = true;
+
     public getChildContext = () => ({
       map: this.state.map
     })
@@ -259,7 +261,9 @@ const ReactMapboxFactory = ({
       }
 
       map.on('load', (evt: React.SyntheticEvent<any>) => {
-        this.setState({ map });
+        if (this._isMounted) {
+          this.setState({ map });
+        }
 
         if (onStyleLoad) {
           onStyleLoad(map, evt);
@@ -279,6 +283,7 @@ const ReactMapboxFactory = ({
 
     public componentWillUnmount() {
       const { map } = this.state as State;
+      this._isMounted = false;
 
       if (map) {
         map.remove();
