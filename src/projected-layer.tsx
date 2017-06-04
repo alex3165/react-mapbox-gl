@@ -5,11 +5,7 @@ import { Map } from 'mapbox-gl';
 import { Anchor, PointDef, OverlayProps } from './util/overlays';
 import * as GeoJSON from 'geojson';
 
-import {
-  overlayState,
-  overlayTransform,
-  anchors
-} from './util/overlays';
+import { overlayState, overlayTransform, anchors } from './util/overlays';
 
 const defaultStyle = {
   zIndex: 3
@@ -52,13 +48,13 @@ export default class ProjectedLayer extends React.Component<Props, any> {
     if (el) {
       this.container = el;
     }
-  }
+  };
 
   private handleMapMove = () => {
     if (!this.prevent) {
       this.setState(overlayState(this.props, this.context.map, this.container));
     }
-  }
+  };
 
   public componentDidMount() {
     const { map } = this.context;
@@ -73,8 +69,8 @@ export default class ProjectedLayer extends React.Component<Props, any> {
     const { coordinates } = this.props;
 
     if (
-      coordinates[0] !== nextProps.coordinates[0]
-      || coordinates[1] !== nextProps.coordinates[1]
+      coordinates[0] !== nextProps.coordinates[0] ||
+      coordinates[1] !== nextProps.coordinates[1]
     ) {
       this.setState(overlayState(nextProps, this.context.map, this.container));
     }

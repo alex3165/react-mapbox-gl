@@ -13,7 +13,8 @@
     "build:watch": "tsc --watch",
     "prepublishOnly": "npm run clean && npm run build",
     "version": "npm run build",
-    "postversion": "git push && git push --tags"
+    "postversion": "git push && git push --tags",
+    "prettify": "prettier --write --single-quote src/*.ts src/*.tsx src/**/*.ts src/**/*.tsx"
   },
   "jest": {
     "transform": {
@@ -74,6 +75,7 @@
     "enzyme": "^2.8.2",
     "jest": "^20.0.0",
     "mapbox-gl": "^0.37.0",
+    "prettier": "^1.4.2",
     "prop-types": "^15.5.6",
     "react": "^15.5.3",
     "react-addons-test-utils": "^15.4.2",

@@ -3,9 +3,15 @@ import * as MapboxGL from 'mapbox-gl';
 import { Props } from '../projected-layer';
 
 export type Anchor = (
-  'center' | 'top' | 'bottom' | 'left' | 'right' |
-  'top-left' | 'top-right' | 'bottom-left' | 'bottom-right'
-);
+  | 'center'
+  | 'top'
+  | 'bottom'
+  | 'left'
+  | 'right'
+  | 'top-left'
+  | 'top-right'
+  | 'bottom-left'
+  | 'bottom-right');
 
 export interface PointDef {
   x: number;
@@ -31,11 +37,11 @@ export const anchors = [
 ];
 
 export const anchorTranslates = {
-  'center': 'translate(-50%, -50%)',
-  'top': 'translate(-50%, 0)',
-  'left': 'translate(0, -50%)',
-  'right': 'translate(-100%, -50%)',
-  'bottom': 'translate(-50%, -100%)',
+  center: 'translate(-50%, -50%)',
+  top: 'translate(-50%, 0)',
+  left: 'translate(0, -50%)',
+  right: 'translate(-100%, -50%)',
+  bottom: 'translate(-50%, -100%)',
   'top-left': 'translate(0, 0)',
   'top-right': 'translate(-100%, 0)',
   'bottom-left': 'translate(0, -100%)',
@@ -45,11 +51,11 @@ export const anchorTranslates = {
 // Hack /o\
 const defaultElement = { offsetWidth: 0, offsetHeight: 0 };
 
-const isPointLike = (input: Point | any[]): boolean => (input instanceof Point || Array.isArray(input));
+const isPointLike = (input: Point | any[]): boolean =>
+  input instanceof Point || Array.isArray(input);
 
-const projectCoordinates = (map: MapboxGL.Map, coordinates: number[]) => (
-  map.project(LngLat.convert(coordinates))
-);
+const projectCoordinates = (map: MapboxGL.Map, coordinates: number[]) =>
+  map.project(LngLat.convert(coordinates));
 
 const calculateAnchor = (
   map: MapboxGL.Map,
@@ -61,7 +67,10 @@ const calculateAnchor = (
 
   if (position.y + offsets.bottom.y - offsetHeight < 0) {
     anchor = [anchors[1]];
-  } else if (position.y + offsets.top.y + offsetHeight > (map as any).transform.height) {
+  } else if (
+    position.y + offsets.top.y + offsetHeight >
+    (map as any).transform.height
+  ) {
     anchor = [anchors[2]];
   }
 
@@ -87,11 +96,11 @@ const normalizedOffsets = (offset: any): any => {
     // input specifies a radius from which to calculate offsets at all positions
     const cornerOffset = Math.round(Math.sqrt(0.5 * Math.pow(offset, 2)));
     return {
-      'center': new (Point as any)(offset, offset),
-      'top': new (Point as any)(0, offset),
-      'bottom': new (Point as any)(0, -offset),
-      'left': new (Point as any)(offset, 0),
-      'right': new (Point as any)(-offset, 0),
+      center: new (Point as any)(offset, offset),
+      top: new (Point as any)(0, offset),
+      bottom: new (Point as any)(0, -offset),
+      left: new (Point as any)(offset, 0),
+      right: new (Point as any)(-offset, 0),
       'top-left': new (Point as any)(cornerOffset, cornerOffset),
       'top-right': new (Point as any)(-cornerOffset, cornerOffset),
       'bottom-left': new (Point as any)(cornerOffset, -cornerOffset),
@@ -114,11 +123,15 @@ const normalizedOffsets = (offset: any): any => {
   }, {});
 };
 
-export const overlayState = (props: Props, map: MapboxGL.Map, container: HTMLElement) => {
+export const overlayState = (
+  props: Props,
+  map: MapboxGL.Map,
+  container: HTMLElement
+) => {
   const position = projectCoordinates(map, props.coordinates);
   const offsets = normalizedOffsets(props.offset);
-  const anchor = props.anchor
-    || calculateAnchor(map, offsets, position as any, container);
+  const anchor =
+    props.anchor || calculateAnchor(map, offsets, position as any, container);
 
   return {
     anchor,
@@ -127,11 +140,14 @@ export const overlayState = (props: Props, map: MapboxGL.Map, container: HTMLEle
   };
 };
 
-const moveTranslate = (point: PointDef ) => (
-  point ? `translate(${point.x.toFixed(0)}px, ${point.y.toFixed(0)}px)` : ''
-);
+const moveTranslate = (point: PointDef) =>
+  point ? `translate(${point.x.toFixed(0)}px, ${point.y.toFixed(0)}px)` : '';
 
-export const overlayTransform = ({ anchor, position, offset }: OverlayProps) => {
+export const overlayTransform = ({
+  anchor,
+  position,
+  offset
+}: OverlayProps) => {
   const res = [moveTranslate(position as any)];
 
   if (offset && offset.x !== undefined && offset.y !== undefined) {

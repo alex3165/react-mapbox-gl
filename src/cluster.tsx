@@ -10,7 +10,10 @@ import * as bbox from '@turf/bbox';
 import { polygon } from '@turf/helpers';
 
 export interface Props {
-  ClusterMarkerFactory(coordinates: GeoJSON.Position, pointCount: number): JSX.Element;
+  ClusterMarkerFactory(
+    coordinates: GeoJSON.Position,
+    pointCount: number
+  ): JSX.Element;
   clusterThreshold?: number;
   radius?: number;
   maxZoom?: number;
@@ -87,14 +90,15 @@ export default class Cluster extends React.Component<Props, State> {
     const upRight = map.unproject([w, 0]).toArray();
     const downRight = map.unproject([w, h]).toArray();
     const downLeft = map.unproject([0, h]).toArray();
-    const newPoints = superC.getClusters(bbox(polygon([[upLeft, upRight, downRight, downLeft, upLeft]])),
+    const newPoints = superC.getClusters(
+      bbox(polygon([[upLeft, upRight, downRight, downLeft, upLeft]])),
       Math.round(zoom)
     );
 
     if (newPoints.length !== clusterPoints.length) {
       this.setState({ clusterPoints: newPoints });
     }
-  }
+  };
 
   private feature(coordinates: GeoJSON.Position): Feature {
     return {
@@ -109,15 +113,18 @@ export default class Cluster extends React.Component<Props, State> {
     };
   }
 
-  private childrenToFeatures = (children: Array<React.Component<MarkerProps, any>>) => (
-    children.map((child) => this.feature(child && child.props.coordinates))
-  )
+  private childrenToFeatures = (
+    children: Array<React.Component<MarkerProps, any>>
+  ) => children.map(child => this.feature(child && child.props.coordinates));
 
   public render() {
     const { children, ClusterMarkerFactory, clusterThreshold } = this.props;
     const { clusterPoints } = this.state;
 
-    if (clusterThreshold !== undefined && (clusterPoints.length <= clusterThreshold)) {
+    if (
+      clusterThreshold !== undefined &&
+      clusterPoints.length <= clusterThreshold
+    ) {
       return (
         <div>
           {children}
@@ -128,9 +135,9 @@ export default class Cluster extends React.Component<Props, State> {
     return (
       <div>
         {// tslint:disable-line:jsx-no-multiline-js
-          clusterPoints.map(({ geometry, properties }: Feature) => (
-            ClusterMarkerFactory(geometry.coordinates, properties.point_count))
-          )}
+        clusterPoints.map(({ geometry, properties }: Feature) =>
+          ClusterMarkerFactory(geometry.coordinates, properties.point_count)
+        )}
       </div>
     );
   }

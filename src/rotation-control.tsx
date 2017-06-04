@@ -41,12 +41,11 @@ const buttonStyleCompass = {
   borderTopRightRadius: 2
 };
 
-const Icon = () => (
+const Icon = () =>
   <svg viewBox="0 0 20 20">
-    <polygon fill="#333333" points="6,9 10,1 14,9"/>
-    <polygon fill="#CCCCCC" points="6,11 10,19 14,11"/>
-  </svg>
-);
+    <polygon fill="#333333" points="6,9 10,1 14,9" />
+    <polygon fill="#CCCCCC" points="6,11 10,19 14,11" />
+  </svg>;
 
 const compassSpan = {
   width: 20,
@@ -72,7 +71,6 @@ export interface Context {
 }
 
 export default class RotationControl extends React.Component<Props, State> {
-
   public context: Context;
 
   public static defaultProps = {
@@ -101,31 +99,36 @@ export default class RotationControl extends React.Component<Props, State> {
     if (!this.state.hover) {
       this.setState({ hover: undefined });
     }
-  }
+  };
 
   private onMouseIn = () => {
     if (COMPASS !== this.state.hover) {
       this.setState({ hover: COMPASS });
     }
-  }
+  };
 
   private onClickCompass = () => {
     this.context.map.resetNorth();
-  }
+  };
 
   private onMapRotate = () => {
     const map = this.context.map as any;
     const rotate = `rotate(${map.transform.angle * (180 / Math.PI)}deg)`; // tslint:disable-line
     this.compassIcon.style.transform = rotate;
-  }
+  };
 
   private assignRef = (icon: any) => {
     this.compassIcon = icon;
-  }
+  };
 
   public render() {
     const { position, style, className } = this.props;
     const { hover } = this.state;
+    const controlStyle = {
+      ...buttonStyle,
+      ...buttonStyleCompass,
+      ...hover === COMPASS ? buttonStyleHovered : {}
+    };
 
     return (
       <div
@@ -133,13 +136,13 @@ export default class RotationControl extends React.Component<Props, State> {
         style={{ ...containerStyle, ...positions[position], ...style }}
       >
         <button
-          style={{ ...buttonStyle, ...buttonStyleCompass, ...(hover === COMPASS ? buttonStyleHovered : {}) }}
+          style={controlStyle}
           onMouseOver={this.onMouseIn}
           onMouseOut={this.onMouseOut}
           onClick={this.onClickCompass}
         >
           <span ref={this.assignRef} style={compassSpan}>
-            <Icon/>
+            <Icon />
           </span>
         </button>
       </div>

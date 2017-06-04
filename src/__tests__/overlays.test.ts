@@ -3,7 +3,12 @@ jest.mock('mapbox-gl', () => ({
   LngLat: {}
 }));
 
-import { overlayTransform, OverlayProps, anchors, Anchor } from '../util/overlays';
+import {
+  overlayTransform,
+  OverlayProps,
+  anchors,
+  Anchor
+} from '../util/overlays';
 
 describe('overlayTransform', () => {
   it('Should transform position anchor and offset accordingly', () => {
@@ -15,9 +20,11 @@ describe('overlayTransform', () => {
 
     const res = overlayTransform(overlayProps);
 
-    expect(res).toEqual(
-      ['translate(1000px, 2000px)', 'translate(10px, 20px)', 'translate(-50%, 0)']
-    );
+    expect(res).toEqual([
+      'translate(1000px, 2000px)',
+      'translate(10px, 20px)',
+      'translate(-50%, 0)'
+    ]);
   });
 
   it('Should transform position and offset only', () => {
@@ -28,9 +35,7 @@ describe('overlayTransform', () => {
 
     const res = overlayTransform(overlayProps);
 
-    expect(res).toEqual(
-      ['translate(1000px, 2000px)', 'translate(10px, 20px)']
-    );
+    expect(res).toEqual(['translate(1000px, 2000px)', 'translate(10px, 20px)']);
   });
 
   it('Should not add an undefined offset', () => {

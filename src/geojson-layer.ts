@@ -7,17 +7,21 @@ import { generateID } from './util/uid';
 import { Sources, SourceOptionData } from './util/types';
 
 const typeToLayerLUT = {
-  'fill': 'fill',
+  fill: 'fill',
   'fill-extrusion': 'fillExtrusion',
-  'symbol': 'symbol',
-  'circle': 'circle',
-  'line': 'line'
+  symbol: 'symbol',
+  circle: 'circle',
+  line: 'line'
 };
 
 export interface Props {
   id?: string;
   data: SourceOptionData;
-  sourceOptions: MapboxGL.VectorSource | MapboxGL.RasterSource | MapboxGL.GeoJSONSource | MapboxGL.GeoJSONSourceRaw;
+  sourceOptions:
+    | MapboxGL.VectorSource
+    | MapboxGL.RasterSource
+    | MapboxGL.GeoJSONSource
+    | MapboxGL.GeoJSONSourceRaw;
   before?: string;
 
   fillLayout?: MapboxGL.FillLayout;
@@ -35,8 +39,16 @@ export interface Props {
   layerOptions?: MapboxGL.Layer;
 }
 
-type Paints = MapboxGL.LinePaint | MapboxGL.SymbolPaint | MapboxGL.CirclePaint | MapboxGL.FillExtrusionPaint;
-type Layouts = MapboxGL.FillLayout | MapboxGL.LineLayout | MapboxGL.CircleLayout | MapboxGL.FillExtrusionLayout;
+type Paints =
+  | MapboxGL.LinePaint
+  | MapboxGL.SymbolPaint
+  | MapboxGL.CirclePaint
+  | MapboxGL.FillExtrusionPaint;
+type Layouts =
+  | MapboxGL.FillLayout
+  | MapboxGL.LineLayout
+  | MapboxGL.CircleLayout
+  | MapboxGL.FillExtrusionLayout;
 
 export interface Context {
   map: MapboxGL.Map;
@@ -67,21 +79,26 @@ export default class GeoJSONLayer extends React.Component<Props, void> {
     const layerId = `${id}-${type}`;
     layerIds.push(layerId);
 
-    const paint: Paints = this.props[`${typeToLayerLUT[type]}Paint` ] || {};
+    const paint: Paints = this.props[`${typeToLayerLUT[type]}Paint`] || {};
 
     // default undefined layers to invisible
     const visibility = Object.keys(paint).length ? 'visible' : 'none';
-    const layout: Layouts = this.props[`${typeToLayerLUT[type]}Layout`] || { visibility };
+    const layout: Layouts = this.props[`${typeToLayerLUT[type]}Layout`] || {
+      visibility
+    };
 
-    map.addLayer({
-      id: layerId,
-      source: id,
-      type: type as any,
-      paint,
-      layout,
-      ...layerOptions
-    }, before);
-  }
+    map.addLayer(
+      {
+        id: layerId,
+        source: id,
+        type: type as any,
+        paint,
+        layout,
+        ...layerOptions
+      },
+      before
+    );
+  };
 
   public componentWillMount() {
     const { id, source } = this;
@@ -106,7 +123,7 @@ export default class GeoJSONLayer extends React.Component<Props, void> {
 
     map.removeSource(id);
 
-    layerIds.forEach((lId) => map.removeLayer(lId));
+    layerIds.forEach(lId => map.removeLayer(lId));
   }
 
   public componentWillReceiveProps(props: Props) {
@@ -125,7 +142,7 @@ export default class GeoJSONLayer extends React.Component<Props, void> {
         if (!isEqual(props[prop], this.props[prop])) {
           const paintDiff = diff(this.props[prop], props[prop]);
 
-          Object.keys(paintDiff).forEach((key) => {
+          Object.keys(paintDiff).forEach(key => {
             map.setPaintProperty(`${this.id}-${type}`, key, paintDiff[key]);
           });
         }
@@ -139,7 +156,7 @@ export default class GeoJSONLayer extends React.Component<Props, void> {
         if (!isEqual(props[prop], this.props[prop])) {
           const layoutDiff = diff(this.props[prop], props[prop]);
 
-          Object.keys(layoutDiff).forEach((key) => {
+          Object.keys(layoutDiff).forEach(key => {
             map.setLayoutProperty(`${this.id}-${type}`, key, layoutDiff[key]);
           });
         }
