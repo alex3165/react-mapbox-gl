@@ -31,13 +31,15 @@ export interface State {
 
 export interface Context {
   map: MapboxGL.Map;
+  scrollZoom: boolean;
 }
 
 export default class Cluster extends React.Component<Props, State> {
   public context: Context;
 
   public static contextTypes = {
-    map: PropTypes.object
+    map: PropTypes.object,
+    scrollZoom: PropTypes.bool
   };
 
   public static defaultProps = {
@@ -120,20 +122,27 @@ export default class Cluster extends React.Component<Props, State> {
   public render() {
     const { children, ClusterMarkerFactory, clusterThreshold } = this.props;
     const { clusterPoints } = this.state;
+    const { scrollZoom } = this.context;
+
+    const style = scrollZoom
+      ? {
+          pointerEvents: 'none'
+        }
+      : {};
 
     if (
       clusterThreshold !== undefined &&
       clusterPoints.length <= clusterThreshold
     ) {
       return (
-        <div>
+        <div style={style}>
           {children}
         </div>
       );
     }
 
     return (
-      <div>
+      <div style={style}>
         {// tslint:disable-line:jsx-no-multiline-js
         clusterPoints.map(({ geometry, properties }: Feature) =>
           ClusterMarkerFactory(geometry.coordinates, properties.point_count)

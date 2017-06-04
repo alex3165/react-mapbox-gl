@@ -21,6 +21,7 @@ export default class GeoJSONExample extends Component {
   render() {
     return (
       <Map
+        // eslint-disable-next-line
         style="mapbox://styles/mapbox/light-v8"
         center={this.state.center}
         movingMethod="jumpTo"
