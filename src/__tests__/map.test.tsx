@@ -30,9 +30,7 @@ describe('Map', () => {
 
   it('Should render the map correctly', () => {
     const MapboxMap = ReactMapboxGl({ accessToken: '' });
-    mount(
-      <MapboxMap style=""/>
-    );
+    mount(<MapboxMap style="" />);
   });
 
   it('Should call fitBounds with the right parameters', () => {
@@ -41,22 +39,21 @@ describe('Map', () => {
     const MapboxMap = ReactMapboxGl({ accessToken: '' });
 
     mount(
-      <MapboxMap style="" fitBounds={fitBoundsValues} fitBoundsOptions={fitBoundsOptions}/>
+      <MapboxMap
+        style=""
+        fitBounds={fitBoundsValues}
+        fitBoundsOptions={fitBoundsOptions}
+      />
     );
 
-    expect(fitBounds).toBeCalledWith(
-      fitBoundsValues,
-      fitBoundsOptions
-    );
+    expect(fitBounds).toBeCalledWith(fitBoundsValues, fitBoundsOptions);
   });
 
   it('Should calc the center from fitbounds if center is not given', () => {
     const fitBoundsValues: FitBounds = [[0, 3], [2, 9]];
     const MapboxMap = ReactMapboxGl({ accessToken: '' });
 
-    mount(
-      <MapboxMap style="" fitBounds={fitBoundsValues}/>
-    );
+    mount(<MapboxMap style="" fitBounds={fitBoundsValues} />);
 
     const lastCall = Map.mock.calls[Map.mock.calls.length - 1];
     expect(lastCall[0].center).toEqual([1, 6]);
@@ -65,9 +62,7 @@ describe('Map', () => {
   it('Should listen onStyleLoad event', () => {
     const MapboxMap = ReactMapboxGl({ accessToken: '' });
 
-    mount(
-      <MapboxMap style="" onStyleLoad={jest.fn()}/>
-    );
+    mount(<MapboxMap style="" onStyleLoad={jest.fn()} />);
 
     expect(on).toBeCalledWith('load', jasmine.any(Function));
   });
@@ -77,14 +72,14 @@ describe('Map', () => {
     const center = [3, 4];
     const MapboxMap = ReactMapboxGl({ accessToken: '' });
 
-    const wrapper = mount(
-      <MapboxMap style="" center={[1, 2]}/>
-    );
+    const wrapper = mount(<MapboxMap style="" center={[1, 2]} />);
 
-    wrapper.setState({ map: {
-      ...mapState,
-      flyTo
-    }});
+    wrapper.setState({
+      map: {
+        ...mapState,
+        flyTo
+      }
+    });
 
     wrapper.setProps({ center });
 
@@ -95,14 +90,14 @@ describe('Map', () => {
     const flyTo = jest.fn();
     const MapboxMap = ReactMapboxGl({ accessToken: '' });
 
-    const wrapper = mount(
-      <MapboxMap style="" zoom={[1]}/>
-    );
+    const wrapper = mount(<MapboxMap style="" zoom={[1]} />);
 
-    wrapper.setState({ map: {
-      ...mapState,
-      flyTo
-   }});
+    wrapper.setState({
+      map: {
+        ...mapState,
+        flyTo
+      }
+    });
     wrapper.setProps({ zoom: [1] });
 
     expect(flyTo.mock.calls[0][0].zoom).toEqual(1);
@@ -113,14 +108,14 @@ describe('Map', () => {
     const flyTo = jest.fn();
     const zoom = [3];
 
-    const wrapper = mount(
-      <MapboxMap style="" zoom={zoom}/>
-    );
+    const wrapper = mount(<MapboxMap style="" zoom={zoom} />);
 
-    wrapper.setState({ map: {
-      ...mapState,
-      flyTo
-   }});
+    wrapper.setState({
+      map: {
+        ...mapState,
+        flyTo
+      }
+    });
     wrapper.setProps({ zoom });
 
     expect(flyTo).not.toHaveBeenCalled();

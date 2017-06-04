@@ -1,10 +1,6 @@
 import * as React from 'react';
 const PropTypes = require('prop-types'); // tslint:disable-line
-import {
-  Map,
-  GeoJSONSource,
-  GeoJSONSourceRaw
-} from 'mapbox-gl';
+import { Map, GeoJSONSource, GeoJSONSourceRaw } from 'mapbox-gl';
 import { SourceOptionData, TilesJson } from './util/types';
 
 export interface Context {
@@ -35,7 +31,7 @@ export default class Source extends React.Component<Props, void> {
       this.initialize();
       this.forceUpdate();
     }
-  }
+  };
 
   public componentWillMount() {
     const { map } = this.context;
@@ -56,7 +52,7 @@ export default class Source extends React.Component<Props, void> {
         onSourceAdded(map.getSource(this.id) as GeoJSONSource | TilesJson);
       }
     }
-  }
+  };
 
   private onData = (event: any) => {
     const { map } = this.context;
@@ -72,7 +68,7 @@ export default class Source extends React.Component<Props, void> {
       source.setData(this.props.geoJsonSource.data as SourceOptionData);
     }
     map.off('load', this.onData);
-  }
+  };
 
   public componentWillUnmount() {
     const { map } = this.context;
@@ -95,13 +91,12 @@ export default class Source extends React.Component<Props, void> {
 
     // Update tilesJsonSource
     if (tileJsonSource && props.tileJsonSource) {
-      const hasNewTilesSource = (
+      const hasNewTilesSource =
         tileJsonSource.url !== props.tileJsonSource.url ||
         // Check for reference equality on tiles array
         tileJsonSource.tiles !== props.tileJsonSource.tiles ||
         tileJsonSource.minzoom !== props.tileJsonSource.minzoom ||
-        tileJsonSource.maxzoom !== props.tileJsonSource.maxzoom
-      );
+        tileJsonSource.maxzoom !== props.tileJsonSource.maxzoom;
 
       if (hasNewTilesSource) {
         map.removeSource(id);
@@ -110,7 +105,11 @@ export default class Source extends React.Component<Props, void> {
     }
 
     // Update geoJsonSource data
-    if ((geoJsonSource && props.geoJsonSource) && props.geoJsonSource.data !== geoJsonSource.data) {
+    if (
+      geoJsonSource &&
+      props.geoJsonSource &&
+      props.geoJsonSource.data !== geoJsonSource.data
+    ) {
       const source = map.getSource(id) as GeoJSONSource;
       source.setData(props.geoJsonSource.data as SourceOptionData);
     }
@@ -119,5 +118,4 @@ export default class Source extends React.Component<Props, void> {
   public render() {
     return null;
   }
-
 }

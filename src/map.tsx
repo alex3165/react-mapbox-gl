@@ -48,7 +48,10 @@ const events = {
   onRotateEnd: 'rotateend'
 };
 
-export type MapEvent = (map: MapboxGl.Map, evt: React.SyntheticEvent<any>) => void;
+export type MapEvent = (
+  map: MapboxGl.Map,
+  evt: React.SyntheticEvent<any>
+) => void;
 
 export interface Events {
   onStyleLoad?: MapEvent;
@@ -177,7 +180,7 @@ const ReactMapboxFactory = ({
   failIfMajorPerformanceCaveat = false,
   classes,
   bearingSnap = 7
-}: FactoryParameters): any => (
+}: FactoryParameters): any =>
   class ReactMapboxGl extends React.Component<Props & Events, State> {
     public static defaultProps = {
       onStyleLoad: (...args: any[]) => args,
@@ -201,13 +204,14 @@ const ReactMapboxFactory = ({
 
     public getChildContext = () => ({
       map: this.state.map
-    })
+    });
 
     private container: HTMLElement;
 
-    private calcCenter = (bounds: FitBounds): number[] => (
-      [(bounds[0][0] + bounds[1][0]) / 2, (bounds[0][1] + bounds[1][1]) / 2]
-    )
+    private calcCenter = (bounds: FitBounds): number[] => [
+      (bounds[0][0] + bounds[1][0]) / 2,
+      (bounds[0][1] + bounds[1][1]) / 2
+    ];
 
     public componentDidMount() {
       const {
@@ -232,7 +236,9 @@ const ReactMapboxFactory = ({
         maxBounds,
         bearing,
         container: this.container,
-        center: fitBounds && center === defaultCenter ? this.calcCenter(fitBounds) : center,
+        center: fitBounds && center === defaultCenter
+          ? this.calcCenter(fitBounds)
+          : center,
         pitch,
         style,
         scrollZoom,
@@ -302,50 +308,48 @@ const ReactMapboxFactory = ({
       const bearing = map.getBearing();
       const pitch = map.getPitch();
 
-      const didZoomUpdate = (
+      const didZoomUpdate =
         this.props.zoom !== nextProps.zoom &&
-        (nextProps.zoom && nextProps.zoom[0]) !== zoom
-      );
+        (nextProps.zoom && nextProps.zoom[0]) !== zoom;
 
-      const didCenterUpdate = (
+      const didCenterUpdate =
         this.props.center !== nextProps.center &&
-        (
-          (nextProps.center && nextProps.center[0]) !== center.lng ||
-          (nextProps.center && nextProps.center[1]) !== center.lat
-        )
-      );
+        ((nextProps.center && nextProps.center[0]) !== center.lng ||
+          (nextProps.center && nextProps.center[1]) !== center.lat);
 
-      const didBearingUpdate = (
+      const didBearingUpdate =
         this.props.bearing !== nextProps.bearing &&
-        nextProps.bearing !== bearing
-      );
+        nextProps.bearing !== bearing;
 
-      const didPitchUpdate = (
-        this.props.pitch !== nextProps.pitch &&
-        nextProps.pitch !== pitch
-      );
+      const didPitchUpdate =
+        this.props.pitch !== nextProps.pitch && nextProps.pitch !== pitch;
 
       if (nextProps.fitBounds) {
         const { fitBounds } = this.props;
 
-        const didFitBoundsUpdate = (
+        const didFitBoundsUpdate =
           fitBounds !== nextProps.fitBounds || // Check for reference equality
           nextProps.fitBounds.length !== (fitBounds && fitBounds.length) || // Added element
-          !!fitBounds.filter((c, i) => { // Check for equality
+          !!fitBounds.filter((c, i) => {
+            // Check for equality
             const nc = nextProps.fitBounds && nextProps.fitBounds[i];
             return c[0] !== (nc && nc[0]) || c[1] !== (nc && nc[1]);
-          })[0]
-        );
+          })[0];
 
         if (didFitBoundsUpdate) {
           map.fitBounds(nextProps.fitBounds, nextProps.fitBoundsOptions);
         }
       }
 
-      if (didZoomUpdate || didCenterUpdate || didBearingUpdate || didPitchUpdate) {
+      if (
+        didZoomUpdate ||
+        didCenterUpdate ||
+        didBearingUpdate ||
+        didPitchUpdate
+      ) {
         const mm: string = nextProps.movingMethod || defaultMovingMethod;
         map[mm]({
-          zoom: (didZoomUpdate && nextProps.zoom) ? nextProps.zoom[0] : zoom,
+          zoom: didZoomUpdate && nextProps.zoom ? nextProps.zoom[0] : zoom,
           center: didCenterUpdate ? nextProps.center : center,
           bearing: didBearingUpdate ? nextProps.bearing : bearing,
           pitch: didPitchUpdate ? nextProps.pitch : pitch
@@ -361,7 +365,7 @@ const ReactMapboxFactory = ({
 
     private setRef = (x: HTMLElement) => {
       this.container = x;
-    }
+    };
 
     public render() {
       const { containerStyle, children } = this.props;
@@ -373,7 +377,6 @@ const ReactMapboxFactory = ({
         </div>
       );
     }
-  }
-);
+  };
 
 export default ReactMapboxFactory;

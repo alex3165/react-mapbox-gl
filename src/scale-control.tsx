@@ -4,12 +4,24 @@ const PropTypes = require('prop-types'); // tslint:disable-line
 import { Map } from 'mapbox-gl';
 
 const scales = [
-  0.01, 0.02, 0.05,
-  0.1, 0.2, 0.5,
-  1, 2, 5,
-  10, 20, 50,
-  100, 200, 500,
-  1000, 2 * 1000, 5 * 1000,
+  0.01,
+  0.02,
+  0.05,
+  0.1,
+  0.2,
+  0.5,
+  1,
+  2,
+  5,
+  10,
+  20,
+  50,
+  100,
+  200,
+  500,
+  1000,
+  2 * 1000,
+  5 * 1000,
   10 * 1000
 ];
 
@@ -129,22 +141,22 @@ export default class ScaleControl extends React.Component<Props, State> {
       chosenScale,
       scaleWidth
     });
-  }
+  };
 
   private _getDistanceTwoPoints(x: number[], y: number[], measurement = 'km') {
     const [lng1, lat1] = x;
     const [lng2, lat2] = y;
 
     // Radius of the earth in km or miles
-    const R = measurement === 'km'
-      ? 6371
-      : 6371 / MILE_IN_KILOMETERS;
+    const R = measurement === 'km' ? 6371 : 6371 / MILE_IN_KILOMETERS;
     const dLat = this._deg2rad(lat2 - lat1);
     const dLng = this._deg2rad(lng2 - lng1);
     const a =
       Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-      Math.cos(this._deg2rad(lat1)) * Math.cos(this._deg2rad(lat2)) *
-      Math.sin(dLng / 2) * Math.sin(dLng / 2);
+      Math.cos(this._deg2rad(lat1)) *
+        Math.cos(this._deg2rad(lat2)) *
+        Math.sin(dLng / 2) *
+        Math.sin(dLng / 2);
     const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
     const d = R * c;
 
@@ -173,9 +185,7 @@ export default class ScaleControl extends React.Component<Props, State> {
 
     return (
       <div style={{ ...containerStyle, ...positions[position], ...style }}>
-        <div
-          style={{ ...scaleStyle, width: scaleWidth }}
-        />
+        <div style={{ ...scaleStyle, width: scaleWidth }} />
         <div style={{ paddingLeft: 10 }}>
           {this._displayMeasurement(measurement, chosenScale)}
         </div>

@@ -58,41 +58,47 @@ export default class Layer extends React.Component<Props, void> {
   private geometry = (coordinates: GeoJSON.Position) => {
     switch (this.props.type) {
       case 'symbol':
-      case 'circle': return {
-        type: 'Point',
-        coordinates
-      };
+      case 'circle':
+        return {
+          type: 'Point',
+          coordinates
+        };
 
-      case 'fill': return {
-        type: coordinates.length > 1 ? 'MultiPolygon' : 'Polygon',
-        coordinates
-      };
+      case 'fill':
+        return {
+          type: coordinates.length > 1 ? 'MultiPolygon' : 'Polygon',
+          coordinates
+        };
 
-      case 'line': return {
-        type: 'LineString',
-        coordinates
-      };
+      case 'line':
+        return {
+          type: 'LineString',
+          coordinates
+        };
 
-      default: return {
-        type: 'Point',
-        coordinates
-      };
+      default:
+        return {
+          type: 'Point',
+          coordinates
+        };
     }
-  }
+  };
 
   private makeFeature = (props: any, id: number): Feature => ({
     type: 'Feature',
     geometry: this.geometry(props.coordinates),
     properties: { ...props.properties, id }
-  })
+  });
 
   private onClick = (evt: any) => {
     const features = evt.features as Feature[];
-    const children: Array<React.ReactElement<FeatureProps>> = ([] as any).concat(this.props.children);
+    const children: Array<
+      React.ReactElement<FeatureProps>
+    > = ([] as any).concat(this.props.children);
     const { map } = this.context;
 
     if (features) {
-      features.forEach((feature) => {
+      features.forEach(feature => {
         const { id } = feature.properties;
         if (children) {
           const child = children[id];
@@ -104,17 +110,21 @@ export default class Layer extends React.Component<Props, void> {
         }
       });
     }
-  }
+  };
 
   private onMouseMove = (evt: any) => {
-    const children: Array<React.ReactElement<FeatureProps>> = ([] as any).concat(this.props.children);
+    const children: Array<
+      React.ReactElement<FeatureProps>
+    > = ([] as any).concat(this.props.children);
     const { map } = this.context;
     const oldHover = this.hover;
     const hover: string[] = [];
-    const features = map.queryRenderedFeatures(evt.point, { layers: [this.id] }) as Feature[];
+    const features = map.queryRenderedFeatures(evt.point, {
+      layers: [this.id]
+    }) as Feature[];
 
     if (features) {
-      features.forEach((feature) => {
+      features.forEach(feature => {
         const { id } = feature.properties;
         if (children) {
           const child = children[id];
@@ -129,8 +139,8 @@ export default class Layer extends React.Component<Props, void> {
     }
 
     oldHover
-      .filter((prevHoverId) => hover.indexOf(prevHoverId) === -1)
-      .forEach((key) => {
+      .filter(prevHoverId => hover.indexOf(prevHoverId) === -1)
+      .forEach(key => {
         const child = children[key as any];
         const onMouseLeave = child && child.props.onMouseLeave;
         if (onMouseLeave) {
@@ -139,7 +149,7 @@ export default class Layer extends React.Component<Props, void> {
       });
 
     this.hover = hover;
-  }
+  };
 
   private initialize = () => {
     const { id, source } = this;
@@ -160,7 +170,7 @@ export default class Layer extends React.Component<Props, void> {
     }
 
     map.addLayer(layer, before);
-  }
+  };
 
   private onStyleDataChange = () => {
     // if the style of the map has been updated and we don't have layer anymore,
@@ -169,7 +179,7 @@ export default class Layer extends React.Component<Props, void> {
       this.initialize();
       this.forceUpdate();
     }
-  }
+  };
 
   public componentWillMount() {
     const { map } = this.context;
@@ -201,13 +211,13 @@ export default class Layer extends React.Component<Props, void> {
   }
 
   public componentWillReceiveProps(props: Props) {
-    const { paint, layout,  before, layerOptions } = this.props;
+    const { paint, layout, before, layerOptions } = this.props;
     const { map } = this.context;
 
     if (!isEqual(props.paint, paint)) {
       const paintDiff = diff(paint, props.paint);
 
-      Object.keys(paintDiff).forEach((key) => {
+      Object.keys(paintDiff).forEach(key => {
         map.setPaintProperty(this.id, key, paintDiff[key]);
       });
     }
@@ -215,12 +225,16 @@ export default class Layer extends React.Component<Props, void> {
     if (!isEqual(props.layout, layout)) {
       const layoutDiff = diff(layout, props.layout);
 
-      Object.keys(layoutDiff).forEach((key) => {
+      Object.keys(layoutDiff).forEach(key => {
         map.setLayoutProperty(this.id, key, layoutDiff[key]);
       });
     }
 
-    if ((props.layerOptions && layerOptions) && !isEqual(props.layerOptions.filter, layerOptions.filter)) {
+    if (
+      props.layerOptions &&
+      layerOptions &&
+      !isEqual(props.layerOptions.filter, layerOptions.filter)
+    ) {
       map.setFilter(this.id, props.layerOptions.filter as any);
     }
 
@@ -238,7 +252,9 @@ export default class Layer extends React.Component<Props, void> {
       children = [] as any;
     }
 
-    children = Array.isArray(children) ? children.reduce((arr, next) => arr.concat(next), [] as any) : [children];
+    children = Array.isArray(children)
+      ? children.reduce((arr, next) => arr.concat(next), [] as any)
+      : [children];
 
     const features = (children! as Array<React.ReactElement<any>>)
       .map(({ props }, id) => this.makeFeature(props, id))

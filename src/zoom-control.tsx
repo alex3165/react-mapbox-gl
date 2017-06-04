@@ -26,7 +26,7 @@ const buttonStyle = {
   border: 0,
   height: 26,
   width: 26,
-  backgroundImage: 'url(\'https://api.mapbox.com/mapbox.js/v2.4.0/images/icons-000000@2x.png\')',
+  backgroundImage: `url('https://api.mapbox.com/mapbox.js/v2.4.0/images/icons-000000@2x.png')`,
   backgroundPosition: '0px 0px',
   backgroundSize: '26px 260px',
   outline: 0
@@ -69,7 +69,6 @@ export interface Context {
 }
 
 export default class ZoomControl extends React.Component<Props, State> {
-
   public context: Context;
 
   public static defaultProps = {
@@ -92,31 +91,41 @@ export default class ZoomControl extends React.Component<Props, State> {
     if (!this.state.hover) {
       this.setState({ hover: undefined });
     }
-  }
+  };
 
   private plusOver = () => {
     if (PLUS !== this.state.hover) {
       this.setState({ hover: PLUS });
     }
-  }
+  };
 
   private minusOver = () => {
     if (MINUS !== this.state.hover) {
       this.setState({ hover: MINUS });
     }
-  }
+  };
 
   private onClickPlus = () => {
     this.props.onControlClick(this.context.map, this.props.zoomDiff);
-  }
+  };
 
   private onClickMinus = () => {
     this.props.onControlClick(this.context.map, -this.props.zoomDiff);
-  }
+  };
 
   public render() {
     const { position, style, className } = this.props;
     const { hover } = this.state;
+    const plusStyle = {
+      ...buttonStyle,
+      ...buttonStylePlus,
+      ...hover === PLUS ? buttonStyleHovered : {}
+    };
+    const minusStyle = {
+      ...buttonStyle,
+      ...buttonStyleMinus,
+      ...hover === MINUS ? buttonStyleHovered : {}
+    };
 
     return (
       <div
@@ -125,14 +134,14 @@ export default class ZoomControl extends React.Component<Props, State> {
       >
         <button
           type="button"
-          style={{ ...buttonStyle, ...buttonStylePlus, ...(hover === PLUS ? buttonStyleHovered : {}) }}
+          style={plusStyle}
           onMouseOver={this.plusOver}
           onMouseOut={this.onMouseOut}
           onClick={this.onClickPlus}
         />
         <button
           type="button"
-          style={{ ...buttonStyle, ...buttonStyleMinus, ...(hover === MINUS ? buttonStyleHovered : {}) }}
+          style={minusStyle}
           onMouseOver={this.minusOver}
           onMouseOut={this.onMouseOut}
           onClick={this.onClickMinus}
