@@ -192,7 +192,8 @@ const ReactMapboxFactory = ({
     };
 
     public static childContextTypes = {
-      map: PropTypes.object
+      map: PropTypes.object,
+      scrollZoom: PropTypes.bool
     };
 
     public state = {
@@ -203,7 +204,8 @@ const ReactMapboxFactory = ({
     private _isMounted = true;
 
     public getChildContext = () => ({
-      map: this.state.map
+      map: this.state.map,
+      scrollZoom
     });
 
     private container: HTMLElement;
