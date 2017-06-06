@@ -1,14 +1,14 @@
 export default (`
-const Map = ReactMapboxGl({
-  accessToken: 'pk.eyJ1IjoiZmFicmljOCIsImEiOiJjaWc5aTV1ZzUwMDJwdzJrb2w0dXRmc2d0In0.p6GGlfyV-WksaDV_KdN27A'
-});
+const Map = ReactMapboxGl({ accessToken });
+const zoom = [8];
 
 render(
   <Map
     style="mapbox://styles/mapbox/streets-v8"
+    zoom={zoom}
     containerStyle={{
-      height: "100vh",
-      width: "100vw"
+      height: "100%",
+      width: "500px"
     }}>
       <Layer
         type="symbol"

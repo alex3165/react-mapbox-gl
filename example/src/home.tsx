@@ -7,13 +7,14 @@ import ReactMapboxGl, { Layer, Feature } from 'react-mapbox-gl';
 const StyledProvider = styled(LiveProvider)`
   margin: auto;
   display: flex;
+  justify-content: center;
 `;
 
 const Description = styled.p`
   text-align: center;
-  width: 540px;
-  margin: 30px auto;
-  color: #c1c1c1;
+  maxWidth: 900px;
+  margin: 50px auto;
+  color: #34495e;
   line-height: 30px;
   font-size: 20px;
 `;
@@ -26,11 +27,14 @@ const StyledEditor = styled(LiveEditor)`
 
 const StyledPreview = styled(LivePreview)``;
 
+const accessToken = 'pk.eyJ1IjoiYWxleDMxNjUiLCJhIjoiY2l4b3V0Z3RpMDAxczJ4cWk2YnEzNTVzYSJ9.MFPmOyHy8DM5_CVaqPYhOg';
+
 const MapCode = () => (
   <StyledProvider
     code={code}
     mountStylesheet={false}
-    scope={{ ReactMapboxGl, Layer, Feature } as any}
+    scope={{ ReactMapboxGl, Layer, Feature, accessToken } as any}
+    noInline={true}
   >
     <StyledEditor contentEditable={false}/>
     <StyledPreview/>
@@ -43,8 +47,7 @@ class Home extends React.Component<{}, void> {
     return (
       <div>
         <Description>
-          Mapbox-gl-js wrapper for React which bring the API to a
-          react-friendly way and provide extra control components
+          Simple to use and declarative way to define a WebGl Mapbox map in React.
         </Description>
         <MapCode/>
       </div>
