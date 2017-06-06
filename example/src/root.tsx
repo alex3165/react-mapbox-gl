@@ -15,6 +15,12 @@ const NavLink = styled(Link)`
   color: #34495e;
 `;
 
+const ExternalLink = styled.a`
+  text-decoration: none;
+  padding: 6px;
+  color: #34495e;
+`;
+
 const Header = styled.div`
 `;
 
@@ -37,8 +43,18 @@ export default class Root extends React.Component<{}, void> {
           <Nav>
             <NavLink to="/">Home</NavLink>
             <NavLink to="/demos">Demos</NavLink>
-            <NavLink to="/documentation">Documentation</NavLink>
-            <NavLink to="https://github.com/alex3165/react-mapbox-gl">Github</NavLink>
+            <ExternalLink
+              href="https://github.com/alex3165/react-mapbox-gl/blob/master/docs/API.md"
+              target="_blank"
+            >
+              Documentation
+            </ExternalLink>
+            <ExternalLink
+              href="https://github.com/alex3165/react-mapbox-gl"
+              target="_blank"
+            >
+              Github
+            </ExternalLink>
           </Nav>
         </Header>
         {children}

@@ -24,7 +24,7 @@ const StyledEditor = styled(LiveEditor)`
 `;
 
 const MapCode = () => (
-  <StyledProvider code={code}>
+  <StyledProvider code={code} mountStylesheet={false}>
     <StyledEditor contentEditable={false}/>
   </StyledProvider>
 );
