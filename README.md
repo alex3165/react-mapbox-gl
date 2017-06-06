@@ -1,3 +1,5 @@
+![Logo](logo.svg)
+
 # React-mapbox-gl [Doc](docs/API.md)
 
 [![Greenkeeper badge](https://badges.greenkeeper.io/alex3165/react-mapbox-gl.svg)](https://greenkeeper.io/)
