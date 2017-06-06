@@ -1,11 +1,12 @@
 import * as React from 'react';
-import { LiveProvider, LiveEditor } from 'react-live';
+import { LiveProvider, LiveEditor, LivePreview, LiveError } from 'react-live';
 import styled from 'styled-components';
 import code from './home-code';
+import ReactMapboxGl, { Layer, Feature } from 'react-mapbox-gl';
 
 const StyledProvider = styled(LiveProvider)`
-  width: 50%;
   margin: auto;
+  display: flex;
 `;
 
 const Description = styled.p`
@@ -23,9 +24,17 @@ const StyledEditor = styled(LiveEditor)`
   line-height: 18px;
 `;
 
+const StyledPreview = styled(LivePreview)``;
+
 const MapCode = () => (
-  <StyledProvider code={code} mountStylesheet={false}>
+  <StyledProvider
+    code={code}
+    mountStylesheet={false}
+    scope={{ ReactMapboxGl, Layer, Feature } as any}
+  >
     <StyledEditor contentEditable={false}/>
+    <StyledPreview/>
+    <LiveError/>
   </StyledProvider>
 );
 
