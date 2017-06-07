@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import * as React, { Component } from 'react';
 import ReactMapboxGl, { Layer, Feature, Popup, ZoomControl } from "react-mapbox-gl";
 import styles from './london-cycle.style';
 import { parseString } from "xml2js";

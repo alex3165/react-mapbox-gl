@@ -22,7 +22,7 @@ export interface Props {
   paint?: Paint;
   layout?: Layout;
   layerOptions?: MapboxGL.Layer;
-  children?: JSX.Element;
+  children?: JSX.Element | JSX.Element[];
 }
 
 export interface Context {
@@ -249,12 +249,12 @@ export default class Layer extends React.Component<Props, void> {
     let { children } = this.props;
 
     if (!children) {
-      children = [] as any;
+      children = [] as JSX.Element[];
     }
 
     children = Array.isArray(children)
-      ? children.reduce((arr, next) => arr.concat(next), [] as any)
-      : [children];
+      ? children as JSX.Element[]
+      : [children] as JSX.Element[];
 
     const features = (children! as Array<React.ReactElement<any>>)
       .map(({ props }, id) => this.makeFeature(props, id))
