@@ -2,6 +2,8 @@ import * as React from 'react';
 import styled from 'styled-components';
 import { Link } from 'react-router';
 import Logo from './logo';
+import { browserHistory, RouteComponentProps } from 'react-router';
+import { paths } from './index';
 
 const Nav = styled.nav`
   display: flex;
@@ -44,14 +46,16 @@ export interface State {
   selected: number;
 }
 
-export default class Root extends React.Component<{}, State> {
+export default class Root extends React.Component<RouteComponentProps<void, void>, State> {
   public state = {
-    selected: 0
+    selected: paths.indexOf(this.props.location.pathname)
   }
 
-  private select = (selection: number) => {
-    this.setState({
-      selected: selection
+  public componentWillMount() {
+    browserHistory.listen(ev => {
+      this.setState({
+        selected: paths.indexOf(ev.pathname)
+      });
     });
   }
 
@@ -66,8 +70,8 @@ export default class Root extends React.Component<{}, State> {
             <Logo width={120} height={120}/>
           </LogoWrapper>
           <Nav>
-            <NavLink selected={selected === 0} onClick={this.select.bind(this, 0)} to="/">Home</NavLink>
-            <NavLink selected={selected === 1} onClick={this.select.bind(this, 1)} to="/demos">Demos</NavLink>
+            <NavLink selected={selected === 0} to={paths[0]}>Home</NavLink>
+            <NavLink selected={selected === 1} to={paths[1]}>Demos</NavLink>
             <ExternalLink
               href="https://github.com/alex3165/react-mapbox-gl/blob/master/docs/API.md"
               target="_blank"

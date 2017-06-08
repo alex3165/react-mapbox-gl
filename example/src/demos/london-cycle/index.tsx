@@ -35,8 +35,8 @@ const Mapbox = ReactMapboxGl({
 });
 
 const mapStyle = {
-  height: '100vh',
-  width: '100vw'
+  height: '500px',
+  width: '100%'
 };
 
 const layoutLayer = { 'icon-image': 'bike' };
