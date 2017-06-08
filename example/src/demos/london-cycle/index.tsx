@@ -1,9 +1,10 @@
 import * as React from 'react';
-import ReactMapboxGl, { Layer, Feature } from 'react-mapbox-gl'; // { Layer, Feature, Popup, ZoomControl }
+import ReactMapboxGl, { Layer, Feature, Popup } from '../../../../'; // { Layer, Feature, Popup, ZoomControl }
 import { parseString } from 'xml2js';
+import styled from 'styled-components';
 
 // tslint:disable-next-line:no-var-requires
-const config = require('../config.json');
+const { londonCycle } = require('../config.json');
 
 const getCycleStations = (): Promise<any[]> => (
   fetch('https://tfl.gov.uk/tfl/syndication/feeds/cycle-hire/livecyclehireupdates.xml')
@@ -30,7 +31,7 @@ const Mapbox = ReactMapboxGl({
   minZoom: 8,
   maxZoom: 15,
   maxBounds,
-  accessToken: config.accessToken
+  accessToken: londonCycle.accessToken
 });
 
 const mapStyle = {
@@ -38,7 +39,15 @@ const mapStyle = {
   width: '100vw'
 };
 
-const layoutLayer = { 'icon-image': 'marker-15' };
+const layoutLayer = { 'icon-image': 'bike' };
+
+const StyledPopup = styled.div`
+  background: white;
+  color: #3F618C;
+  font-weight: 400;
+  padding: 5px;
+  border-radius: 2px;
+`;
 
 export interface Station {
   id: string;
@@ -53,11 +62,11 @@ export interface State {
   center: number[];
   zoom: number[];
   station?: Station;
-  stations: { [id: string]: Station }
+  stations: { [id: string]: Station };
 }
 
 export default class LondonCycle extends React.Component<{}, State> {
-  public state = {
+  public state: State = {
     fitBounds: undefined,
     center: [-0.109970527, 51.52916347],
     zoom: [11],
@@ -103,11 +112,12 @@ export default class LondonCycle extends React.Component<{}, State> {
   }
 
   public render() {
-    const { fitBounds, center, zoom, stations } = this.state;
+    const { fitBounds, center, zoom, stations, station } = this.state;
+
     return (
       <div>
         <Mapbox
-          style={config.style}
+          style={londonCycle.style}
           fitBounds={fitBounds}
           center={center}
           zoom={zoom}
@@ -131,6 +141,24 @@ export default class LondonCycle extends React.Component<{}, State> {
               ))
             }
           </Layer>
+          {
+            station && (
+              <Popup
+                key={station.id}
+                offset={[0, -50]}
+                coordinates={station.position}
+              >
+                <StyledPopup>
+                  <div>
+                    {station.name}
+                  </div>
+                  <div>
+                    {station.bikes} bikes / {station.slots} slots
+                  </div>
+                </StyledPopup>
+              </Popup>
+            )
+          }
         </Mapbox>
       </div>
     )

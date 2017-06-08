@@ -6,19 +6,16 @@
   "license": "MIT",
   "homepage": "http://alex3165.github.io/react-mapbox-gl",
   "scripts": {
-    "link": "./link-react-mapbox-gl.sh",
     "start": "react-scripts-ts start",
     "build": "react-scripts-ts build",
     "predeploy": "npm run build",
-    "deploy": "gh-pages -d build",
-    "postinstall": "npm run link"
+    "deploy": "gh-pages -d build"
   },
   "dependencies": {
     "immutable": "^3.8.1",
     "react": "^15.5.3",
     "react-dom": "^15.5.3",
     "react-live": "^1.5.4",
-    "react-mapbox-gl": "^1.9.3",
     "react-router": "^3.0.5",
     "styled-components": "^2.0.0",
     "xml2js": "^0.4.17"

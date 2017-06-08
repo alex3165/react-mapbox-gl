@@ -253,7 +253,7 @@ export default class Layer extends React.Component<Props, void> {
     }
 
     children = Array.isArray(children)
-      ? children as JSX.Element[]
+      ? (children as JSX.Element[][]).reduce((arr, next) => arr.concat(next), [] as JSX.Element[])
       : [children] as JSX.Element[];
 
     const features = (children! as Array<React.ReactElement<any>>)

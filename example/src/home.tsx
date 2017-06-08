@@ -2,7 +2,7 @@ import * as React from 'react';
 import { LiveProvider, LiveEditor, LivePreview, LiveError } from 'react-live';
 import styled from 'styled-components';
 import code from './home-code';
-import ReactMapboxGl, { Layer, Feature } from 'react-mapbox-gl';
+import ReactMapboxGl, { Layer, Feature } from '../../';
 
 const StyledProvider = styled(LiveProvider)`
   margin: auto;
