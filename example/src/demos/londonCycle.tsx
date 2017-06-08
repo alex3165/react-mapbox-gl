@@ -1,10 +1,11 @@
 import * as React from 'react';
-import ReactMapboxGl, { Layer, Feature, Popup } from '../../../../'; // { Layer, Feature, Popup, ZoomControl }
+import ReactMapboxGl, { Layer, Feature, Popup } from '../../../';
 import { parseString } from 'xml2js';
 import styled from 'styled-components';
+import { londonCycleMaxBounds as maxBounds } from './data';
 
 // tslint:disable-next-line:no-var-requires
-const { londonCycle } = require('../config.json');
+const { londonCycle } = require('./config.json');
 
 const getCycleStations = (): Promise<any[]> => (
   fetch('https://tfl.gov.uk/tfl/syndication/feeds/cycle-hire/livecyclehireupdates.xml')
@@ -22,11 +23,6 @@ const getCycleStations = (): Promise<any[]> => (
     ))
 );
 
-const maxBounds = [
-  [-0.481747846041145, 51.3233379650232],
-  [0.23441119994140536, 51.654967740310525]
-];
-
 const Mapbox = ReactMapboxGl({
   minZoom: 8,
   maxZoom: 15,
@@ -35,8 +31,9 @@ const Mapbox = ReactMapboxGl({
 });
 
 const mapStyle = {
-  height: '500px',
-  width: '100%'
+  height: '400px',
+  width: '65%',
+  margin: '30px auto'
 };
 
 const layoutLayer = { 'icon-image': 'bike' };

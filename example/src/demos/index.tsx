@@ -1,49 +1,21 @@
 import * as React from 'react';
-import LondonCycleMap from './london-cycle';
+import LondonCycleMap from './londonCycle';
+import AllShapes from './allShapes';
 import styled from 'styled-components';
 
-const List = styled.ul`
-
+const Title = styled.h1`
+  font-weight: 600;
+  font-size: 24px;
 `;
 
-const Item = styled.li`
-
-`;
-
-interface MenuProps {
-  selected: number;
-  onSelect: (index: number) => void;
-}
-
-const Menu: React.StatelessComponent<MenuProps> = ({ onSelect, selected }) => (
-  <List>
-    <Item onClick={onSelect.bind(null, 0)}>London cycle</Item>
-    <Item onClick={onSelect.bind(null, 0)}>All shapes</Item>
-  </List>
-);
-
-export interface State {
-  selected: number;
-}
-
-class Demos extends React.Component<{}, State> {
-
-  public state = {
-    selected: 0
-  }
-
-  private onSelect = (index: number) => {
-    this.setState({
-      selected: index
-    });
-  }
-
+class Demos extends React.Component<{}, {}> {
   public render() {
-    const { selected } = this.state;
     return (
       <div>
-        <Menu selected={selected} onSelect={this.onSelect}/>
+        <Title>Bike stations in London</Title>
         <LondonCycleMap/>
+        <Title>All React mapbox gl shapes</Title>
+        <AllShapes/>
       </div>
     );
   }
