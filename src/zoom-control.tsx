@@ -106,11 +106,11 @@ export default class ZoomControl extends React.Component<Props, State> {
   };
 
   private onClickPlus = () => {
-    this.props.onControlClick(this.context.map, this.props.zoomDiff);
+    this.props.onControlClick!(this.context.map, this.props.zoomDiff!);
   };
 
   private onClickMinus = () => {
-    this.props.onControlClick(this.context.map, -this.props.zoomDiff);
+    this.props.onControlClick!(this.context.map, -this.props.zoomDiff!);
   };
 
   public render() {
@@ -130,7 +130,7 @@ export default class ZoomControl extends React.Component<Props, State> {
     return (
       <div
         className={className}
-        style={{ ...containerStyle, ...positions[position], ...style }}
+        style={{ ...containerStyle, ...positions[position!], ...style }}
       >
         <button
           type="button"

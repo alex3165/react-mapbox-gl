@@ -1,6 +1,8 @@
 import * as React from 'react';
 import LondonCycleMap from './londonCycle';
 import AllShapes from './allShapes';
+import HtmlFeatures from './htmlFeatures';
+
 import styled from 'styled-components';
 
 const Title = styled.h1`
@@ -14,8 +16,10 @@ class Demos extends React.Component<{}, {}> {
       <div>
         <Title>Bike stations in London</Title>
         <LondonCycleMap/>
-        <Title>All React mapbox gl shapes</Title>
+        <Title>Mapbox webgl shapes</Title>
         <AllShapes/>
+        <Title>React mapbox features</Title>
+        <HtmlFeatures/>
       </div>
     );
   }

@@ -184,10 +184,10 @@ export default class ScaleControl extends React.Component<Props, State> {
     const { chosenScale, scaleWidth } = this.state;
 
     return (
-      <div style={{ ...containerStyle, ...positions[position], ...style }}>
+      <div style={{ ...containerStyle, ...positions[position!], ...style }}>
         <div style={{ ...scaleStyle, width: scaleWidth }} />
         <div style={{ paddingLeft: 10 }}>
-          {this._displayMeasurement(measurement, chosenScale)}
+          {this._displayMeasurement(measurement!, chosenScale)}
         </div>
       </div>
     );
