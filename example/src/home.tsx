@@ -47,7 +47,7 @@ class Home extends React.Component<{}, void> {
     return (
       <div>
         <Description>
-          Simple to use and declarative WebGl Mapbox map in React.
+          Simple to use with declarative API WebGl Mapbox map in React.
         </Description>
         <MapCode/>
       </div>
