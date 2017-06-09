@@ -69,9 +69,9 @@ export type Measurement = 'km' | 'mi';
 export type Position = 'topRight' | 'topLeft' | 'bottomRight' | 'bottomLeft';
 
 export interface Props {
-  measurement: Measurement;
-  position: Position;
-  style: React.CSSProperties;
+  measurement?: Measurement;
+  position?: Position;
+  style?: React.CSSProperties;
 }
 
 export interface State {

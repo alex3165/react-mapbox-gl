@@ -57,9 +57,9 @@ const [COMPASS] = [0];
 const POSITIONS = Object.keys(positions);
 
 export interface Props {
-  position: 'topRight' | 'topLeft' | 'bottomRight' | 'bottomLeft';
-  style: React.CSSProperties;
-  className: string;
+  position?: 'topRight' | 'topLeft' | 'bottomRight' | 'bottomLeft';
+  style?: React.CSSProperties;
+  className?: string;
 }
 
 export interface State {
@@ -133,7 +133,7 @@ export default class RotationControl extends React.Component<Props, State> {
     return (
       <div
         className={className}
-        style={{ ...containerStyle, ...positions[position], ...style }}
+        style={{ ...containerStyle, ...positions[position!], ...style }}
       >
         <button
           style={controlStyle}

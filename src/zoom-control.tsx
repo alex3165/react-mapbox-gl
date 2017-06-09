@@ -53,11 +53,11 @@ const [PLUS, MINUS] = [0, 1];
 const POSITIONS = Object.keys(positions);
 
 export interface Props {
-  zoomDiff: number;
-  onControlClick: (map: Map, zoomDiff: number) => void;
-  position: 'topRight' | 'topLeft' | 'bottomRight' | 'bottomLeft';
-  style: React.CSSProperties;
-  className: string;
+  zoomDiff?: number;
+  onControlClick?: (map: Map, zoomDiff: number) => void;
+  position?: 'topRight' | 'topLeft' | 'bottomRight' | 'bottomLeft';
+  style?: React.CSSProperties;
+  className?: string;
 }
 
 export interface State {
