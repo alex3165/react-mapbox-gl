@@ -42,7 +42,7 @@ export default class Layer extends React.Component<Props, void> {
     paint: {}
   };
 
-  private hover: string[] = [];
+  private hover: number[] = [];
   private isDragging: boolean = false;
   private draggedChildren: any = undefined;
 
@@ -113,9 +113,10 @@ export default class Layer extends React.Component<Props, void> {
     }
   };
 
-  private getChildren = () => (
-    ([] as any).concat(this.props.children) as Array<React.ReactElement<FeatureProps>>;
-  )
+  private getChildren = () =>
+    ([] as any).concat(this.props.children) as Array<
+      React.ReactElement<FeatureProps>
+    >;
 
   private onMouseEnter = (evt: any) => {
     const children = this.getChildren();
@@ -147,7 +148,7 @@ export default class Layer extends React.Component<Props, void> {
     // TODO: Check if a children is draggable
     map.dragPan.enable();
 
-    this.hover.forEach((id: string) => {
+    this.hover.forEach(id => {
       const child = children[id];
       const onMouseLeave = child && child.props.onMouseLeave;
       if (onMouseLeave) {
@@ -175,16 +176,15 @@ export default class Layer extends React.Component<Props, void> {
     }
     const children = this.getChildren();
 
-    this.draggedChildren = children
-      .map((child, index) => {
-        if (this.hover.includes(index) && child.props.draggable) {
-          return React.cloneElement(child, {
-            coordinates: [lngLat.lng, lngLat.lat]
-          })
-        }
+    this.draggedChildren = children.map((child, index) => {
+      if (this.hover.includes(index) && child.props.draggable) {
+        return React.cloneElement(child, {
+          coordinates: [lngLat.lng, lngLat.lat]
+        });
+      }
 
-        return child;
-      });
+      return child;
+    });
 
     this.forceUpdate();
   };
@@ -196,7 +196,7 @@ export default class Layer extends React.Component<Props, void> {
     this.isDragging = false;
     this.draggedChildren = undefined;
 
-    this.hover.map((id: string) => {
+    this.hover.map(id => {
       const child = children[id];
       const onDragEnd = child && child.props.onDragEnd;
       if (onDragEnd) {
@@ -315,7 +315,10 @@ export default class Layer extends React.Component<Props, void> {
       children = this.draggedChildren;
     } else {
       children = Array.isArray(children)
-        ? (children as JSX.Element[][]).reduce((arr, next) => arr.concat(next), [] as JSX.Element[])
+        ? (children as JSX.Element[][]).reduce(
+            (arr, next) => arr.concat(next),
+            [] as JSX.Element[]
+          )
         : [children] as JSX.Element[];
     }
 
