@@ -11,8 +11,6 @@ const Map = ReactMapboxGl({ accessToken: token });
 const Container = styled.div`
   position: relative;
   height: 400px;
-  width: 65%;
-  margin: auto;
 `;
 
 const Button = styled.button`
@@ -46,8 +44,7 @@ const TopBar = styled.div`
 
 const mapStyle = {
   height: '100%',
-  width: '100%',
-  margin: '30px auto'
+  width: '100%'
 };
 
 const GEOJSON_SOURCE_OPTIONS: GeoJSONSourceRaw = {

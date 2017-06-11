@@ -10,8 +10,7 @@ const Map = ReactMapboxGl({ accessToken: token });
 
 const mapStyle = {
   height: '400px',
-  width: '65%',
-  margin: '30px auto'
+  width: '100%'
 };
 
 const styles: { [key: string]: React.CSSProperties } = {

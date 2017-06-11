@@ -10,8 +10,6 @@ const mapboxGeocoding = (query: string) => `https://api.mapbox.com/geocoding/v5/
 
 const Container = styled.div`
   position: relative;
-  width: 65%;
-  margin: auto;
   height: 400px;
 `;
 
@@ -27,11 +25,8 @@ const Map = ReactMapboxGl({ accessToken: token });
 
 const mapStyle = {
   height: '100%',
-  width: '100%',
-  margin: '30px auto'
+  width: '100%'
 };
-
-// Marker, Popup, Cluster
 
 export interface Place {
   id: string;

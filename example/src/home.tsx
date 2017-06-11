@@ -4,6 +4,15 @@ import styled from 'styled-components';
 import code from './home-code';
 import ReactMapboxGl, { Layer, Feature } from '../../';
 
+const Container = styled.div`
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
+
+const Wrapper = styled.div``;
+
 const StyledProvider = styled(LiveProvider)`
   margin: auto;
   display: flex;
@@ -13,7 +22,7 @@ const StyledProvider = styled(LiveProvider)`
 const Description = styled.p`
   text-align: center;
   maxWidth: 900px;
-  margin: 50px auto;
+  margin-bottom: 60px;
   color: #34495e;
   line-height: 30px;
   font-size: 20px;
@@ -45,12 +54,14 @@ const MapCode = () => (
 class Home extends React.Component<{}, void> {
   public render() {
     return (
-      <div>
-        <Description>
-          Simple to use with declarative API WebGl Mapbox map in React.
-        </Description>
-        <MapCode/>
-      </div>
+      <Container>
+        <Wrapper>
+          <Description>
+            Simple to use with declarative API WebGl Mapbox map in React.
+          </Description>
+          <MapCode/>
+        </Wrapper>
+      </Container>
     );
   }
 };

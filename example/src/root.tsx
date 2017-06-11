@@ -5,6 +5,12 @@ import Logo from './logo';
 import { browserHistory, RouteComponentProps } from 'react-router';
 import { paths } from './index';
 
+const Container = styled.div`
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+`;
+
 const Nav = styled.nav`
   display: flex;
   justify-content: center;
@@ -64,7 +70,7 @@ export default class Root extends React.Component<RouteComponentProps<void, void
     const { selected } = this.state;
 
     return (
-      <div>
+      <Container>
         <Header>
           <LogoWrapper>
             <Logo width={120} height={120}/>
@@ -88,7 +94,7 @@ export default class Root extends React.Component<RouteComponentProps<void, void
           </Nav>
         </Header>
         {children}
-      </div>
+      </Container>
     );
   }
 };
