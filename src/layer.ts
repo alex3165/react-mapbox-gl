@@ -42,7 +42,9 @@ export default class Layer extends React.Component<Props, void> {
     paint: {}
   };
 
-  private hover: string[] = [];
+  private hover: number[] = [];
+  private isDragging: boolean = false;
+  private draggedChildren: any = undefined;
 
   private id: string = this.props.id || `layer-${generateID()}`;
 
@@ -92,9 +94,8 @@ export default class Layer extends React.Component<Props, void> {
 
   private onClick = (evt: any) => {
     const features = evt.features as Feature[];
-    const children: Array<
-      React.ReactElement<FeatureProps>
-    > = ([] as any).concat(this.props.children);
+    const children = this.getChildren();
+
     const { map } = this.context;
 
     if (features) {
@@ -112,11 +113,18 @@ export default class Layer extends React.Component<Props, void> {
     }
   };
 
-  private onMouseEnter = (evt: any) => {
-    const children: Array<
+  private getChildren = () =>
+    ([] as any).concat(this.props.children) as Array<
       React.ReactElement<FeatureProps>
-    > = ([] as any).concat(this.props.children);
+    >;
+
+  private onMouseEnter = (evt: any) => {
+    const children = this.getChildren();
     const { map } = this.context;
+
+    // TODO: Check if a children is draggable
+    map.dragPan.disable();
+
     this.hover = [];
 
     evt.features.forEach((feature: Feature) => {
@@ -134,18 +142,69 @@ export default class Layer extends React.Component<Props, void> {
   };
 
   private onMouseLeave = (evt: any) => {
-    const children: Array<
-      React.ReactElement<FeatureProps>
-    > = ([] as any).concat(this.props.children);
+    const children = this.getChildren();
     const { map } = this.context;
 
-    this.hover.forEach((id: string) => {
+    // TODO: Check if a children is draggable
+    map.dragPan.enable();
+
+    this.hover.forEach(id => {
       const child = children[id];
       const onMouseLeave = child && child.props.onMouseLeave;
       if (onMouseLeave) {
         onMouseLeave({ ...evt, map });
       }
     });
+
+    this.hover = [];
+  };
+
+  private onMouseDown = () => {
+    const { map } = this.context;
+    if (this.hover.length === 0) {
+      return;
+    }
+
+    this.isDragging = true;
+    map.on('mousemove', this.onDragMove);
+    map.once('mouseup', this.onDragUp);
+  };
+
+  private onDragMove = ({ lngLat }: any) => {
+    if (!this.isDragging) {
+      return;
+    }
+    const children = this.getChildren();
+
+    this.draggedChildren = children.map((child, index) => {
+      if (this.hover.includes(index) && child.props.draggable) {
+        return React.cloneElement(child, {
+          coordinates: [lngLat.lng, lngLat.lat]
+        });
+      }
+
+      return child;
+    });
+
+    this.forceUpdate();
+  };
+
+  private onDragUp = (evt: any) => {
+    const { map } = this.context;
+    const children = this.getChildren();
+
+    this.isDragging = false;
+    this.draggedChildren = undefined;
+
+    this.hover.map(id => {
+      const child = children[id];
+      const onDragEnd = child && child.props.onDragEnd;
+      if (onDragEnd) {
+        onDragEnd({ ...evt, map });
+      }
+    });
+
+    map.off('mousemove', this.onDragMove);
   };
 
   private initialize = () => {
@@ -186,6 +245,7 @@ export default class Layer extends React.Component<Props, void> {
     map.on('click', this.id, this.onClick);
     map.on('mouseenter', this.id, this.onMouseEnter);
     map.on('mouseleave', this.id, this.onMouseLeave);
+    map.on('mousedown', this.onMouseDown);
     map.on('styledata', this.onStyleDataChange);
   }
 
@@ -251,9 +311,16 @@ export default class Layer extends React.Component<Props, void> {
       children = [] as JSX.Element[];
     }
 
-    children = Array.isArray(children)
-      ? (children as JSX.Element[][]).reduce((arr, next) => arr.concat(next), [] as JSX.Element[])
-      : [children] as JSX.Element[];
+    if (this.draggedChildren) {
+      children = this.draggedChildren;
+    } else {
+      children = Array.isArray(children)
+        ? (children as JSX.Element[][]).reduce(
+            (arr, next) => arr.concat(next),
+            [] as JSX.Element[]
+          )
+        : [children] as JSX.Element[];
+    }
 
     const features = (children! as Array<React.ReactElement<any>>)
       .map(({ props }, id) => this.makeFeature(props, id))
