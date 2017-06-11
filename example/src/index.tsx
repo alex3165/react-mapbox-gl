@@ -8,7 +8,7 @@ import Root from './root';
 export const paths = [
   '/',
   '/demos'
-]
+];
 
 function render() {
   ReactDOM.render(

@@ -63,11 +63,11 @@ const GEOJSON_SOURCE_OPTIONS: GeoJSONSourceRaw = {
 };
 
 const POSITION_CIRCLE_PAINT = {
-    'circle-stroke-width': 2,
+    'circle-stroke-width': 4,
     'circle-radius': 10,
     'circle-blur': 0.15,
-    'circle-color': '#0066EE',
-    'circle-stroke-color': '#FFFFFF'
+    'circle-color': '#3770C6',
+    'circle-stroke-color': 'white'
 };
 
 const selectedStyles = ['basic', 'dark', 'light'];
@@ -76,13 +76,17 @@ const switchStyles = Object.keys(styles).filter(k => selectedStyles.includes(k))
 export interface State {
   styleKey: string;
   userPosition: number[];
+  mapCenter: number[];
 }
+
+const InitialUserPostion = [-0.2416815, 51.5285582]
 
 class StyleUpdate extends React.Component<{}, State> {
 
   public state: State = {
     styleKey: 'basic',
-    userPosition: [-0.2416815, 51.5285582]
+    userPosition: InitialUserPostion,
+    mapCenter: InitialUserPostion
   };
 
   public componentWillMount() {
@@ -90,7 +94,8 @@ class StyleUpdate extends React.Component<{}, State> {
       const { latitude, longitude } = coords;
 
       this.setState({
-        userPosition: [longitude, latitude]
+        userPosition: [longitude, latitude],
+        mapCenter: [longitude, latitude]
       });
     }, err => {
       console.error('Cannot retrieve your current position', err);
@@ -107,24 +112,34 @@ class StyleUpdate extends React.Component<{}, State> {
     });
   }
 
+  private onDragEnd = ({ lngLat }: any) => {
+    this.setState({
+      userPosition: [lngLat.lng, lngLat.lat]
+    });
+  };
+
   public render() {
-    const { styleKey, userPosition } = this.state;
+    const { styleKey, userPosition, mapCenter } = this.state;
 
     return (
       <Container>
         <Map
           style={styles[styleKey]}
           containerStyle={mapStyle}
-          center={userPosition}
+          center={mapCenter}
         >
           <Source id="example_id" geoJsonSource={GEOJSON_SOURCE_OPTIONS}/>
           <Layer type="circle" id="example_id_marker" paint={POSITION_CIRCLE_PAINT} sourceId={'example_id'}/>
           <Layer type="circle" id="position-marker" paint={POSITION_CIRCLE_PAINT}>
-            <Feature coordinates={userPosition}/>
+            <Feature
+              coordinates={userPosition}
+              draggable={true}
+              onDragEnd={this.onDragEnd}
+            />
           </Layer>
         </Map>
         <TopBar>
-          <Button onClick={this.nextStyle}>Switch Style</Button>
+          <Button onClick={this.nextStyle}>Change style</Button>
           <Indicator>{`Using style: ${styleKey}`}</Indicator>
         </TopBar>
       </Container>

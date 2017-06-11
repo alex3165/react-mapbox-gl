@@ -226,6 +226,8 @@ import { Feature } from "react-mapbox-gl";
   - Args contain the feature object, the map object and the arguments passed by mapbox from the event `onmousemove`
 - **onMouseLeave** : `(args: Object) => void` Triggered when the mouse leave the feature element
   - Args contain the map object and the arguments passed by Mapbox from the event `onmousemove`
+- **draggable** *(Default: `false`)*: `boolean` Define wether the feature is draggable or not.
+- **onDragEnd** : `(args: Object) => void` Triggered when the user stop dragging the feature.
 
 ----------
 # ZoomControl
