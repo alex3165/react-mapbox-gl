@@ -2,7 +2,7 @@ import * as React from 'react';
 import LondonCycleMap from './londonCycle';
 import AllShapes from './allShapes';
 import HtmlFeatures from './htmlFeatures';
-
+import ThreeDMap from './threeDMap';
 import styled from 'styled-components';
 
 const Title = styled.h1`
@@ -20,6 +20,8 @@ class Demos extends React.Component<{}, {}> {
         <AllShapes/>
         <Title>React mapbox features</Title>
         <HtmlFeatures/>
+        <Title>3D extrusion mapbox map</Title>
+        <ThreeDMap/>
       </div>
     );
   }

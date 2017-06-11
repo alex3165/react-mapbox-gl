@@ -21,7 +21,7 @@ export interface Props {
   sourceOptions?: Sources;
   paint?: Paint;
   layout?: Layout;
-  layerOptions?: MapboxGL.Layer;
+  layerOptions?: Partial<MapboxGL.Layer>;
   children?: JSX.Element | JSX.Element[];
 }
 

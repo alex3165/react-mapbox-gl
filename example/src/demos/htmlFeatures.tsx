@@ -4,20 +4,30 @@ import styled from 'styled-components';
 import Dropdown from '../dropdown';
 
 // tslint:disable-next-line:no-var-requires
-const { londonCycle } = require('./config.json');
-const { accessToken, style } = londonCycle;
+const { token, styles } = require('./config.json');
 // tslint:disable-next-line:max-line-length
-const mapboxGeocoding = (query: string) => `https://api.mapbox.com/geocoding/v5/mapbox.places/${query}.json?access_token=${accessToken}`;
+const mapboxGeocoding = (query: string) => `https://api.mapbox.com/geocoding/v5/mapbox.places/${query}.json?access_token=${token}`;
 
 const Container = styled.div`
-
+  position: relative;
+  width: 65%;
+  margin: auto;
+  height: 400px;
 `;
 
-const Map = ReactMapboxGl({ accessToken });
+const Mark = styled.div`
+  background-color: #e74c3c;
+  border-radius: 50%;
+  width: 20px;
+  height: 20px;
+  border: 4px solid #EAA29B;
+`;
+
+const Map = ReactMapboxGl({ accessToken: token });
 
 const mapStyle = {
-  height: '400px',
-  width: '65%',
+  height: '100%',
+  width: '100%',
   margin: '30px auto'
 };
 
@@ -33,6 +43,7 @@ export interface State {
   query: string;
   options: Place[];
   selected?: Place;
+  center: number[];
 }
 
 const req = (url: string, body?: any, method = 'GET') => new Request(url, {
@@ -50,7 +61,8 @@ class HtmlFeatures extends React.Component<{}, State> {
   public state: State = {
     query: '',
     options: [],
-    selected: undefined
+    selected: undefined,
+    center: [-0.1148677, 51.5139573]
   };
 
   private fetch = (query: string) => {
@@ -70,24 +82,21 @@ class HtmlFeatures extends React.Component<{}, State> {
   };
 
   private onSelectItem = (index: number) => {
+    const selected = this.state.options[index];
     this.setState({
-      selected: this.state.options[index]
+      selected,
+      center: selected.center
     });
   };
 
-  private onSearch = ({ target }: any) => {
-    if (target.value.length > 2) {
-      this.setState({
-        query: target.value
-      });
-
-      this.fetch(target.value);
-    }
+  private onSearch = (query: string) => {
+    this.setState({ query });
+    this.fetch(query);
   }
 
   public render() {
-    const { options, selected } = this.state;
-
+    const { options, selected, center } = this.state;
+    // console.log('selected', selected);
     return (
       <Container>
         <Dropdown
@@ -96,15 +105,14 @@ class HtmlFeatures extends React.Component<{}, State> {
           options={options}
         />
         <Map
-          style={style}
+          style={styles.light}
           containerStyle={mapStyle}
+          center={center}
         >
           {
             selected && (
               <Marker coordinates={selected.center}>
-                <div>
-                  Test
-                </div>
+                <Mark/>
               </Marker>
             )
           }

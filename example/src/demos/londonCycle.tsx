@@ -5,7 +5,7 @@ import styled from 'styled-components';
 import { londonCycleMaxBounds as maxBounds } from './data';
 
 // tslint:disable-next-line:no-var-requires
-const { londonCycle } = require('./config.json');
+const { token, styles } = require('./config.json');
 
 const getCycleStations = (): Promise<any[]> => (
   fetch('https://tfl.gov.uk/tfl/syndication/feeds/cycle-hire/livecyclehireupdates.xml')
@@ -27,7 +27,7 @@ const Mapbox = ReactMapboxGl({
   minZoom: 8,
   maxZoom: 15,
   maxBounds,
-  accessToken: londonCycle.accessToken
+  accessToken: token
 });
 
 const mapStyle = {
@@ -114,7 +114,7 @@ export default class LondonCycle extends React.Component<{}, State> {
     return (
       <div>
         <Mapbox
-          style={londonCycle.style}
+          style={styles.londonCycle}
           fitBounds={fitBounds}
           center={center}
           zoom={zoom}

@@ -8,16 +8,14 @@ import ReactMapboxGl, {
 } from '../../../';
 import { AllShapesPolygonCoords, AllShapesMultiPolygonCoords } from './data';
 // tslint:disable-next-line:no-var-requires
-const { londonCycle } = require('./config.json');
+const { token } = require('./config.json');
 // tslint:disable-next-line:no-var-requires
 const mapData = require('./allShapesStyle.json');
 // tslint:disable-next-line:no-var-requires
 const route = require('./route.json');
 const mappedRoute = route.points.map((point: any) => [ point.lat, point.lng ]);
 
-const { accessToken } = londonCycle;
-
-const Map = ReactMapboxGl({ accessToken });
+const Map = ReactMapboxGl({ accessToken: token });
 
 const mapStyle = {
   height: '400px',
@@ -83,6 +81,11 @@ class AllShapes extends React.Component<{}, State> {
         });
       }
     }, 8000);
+  }
+
+  public componentWillUnmount() {
+    clearTimeout(this.timeoutHandle);
+    clearInterval(this.intervalHandle);
   }
 
   private getCirclePaint = () => ({
