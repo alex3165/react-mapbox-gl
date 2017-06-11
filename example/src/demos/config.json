@@ -2,6 +2,7 @@
   "token": "pk.eyJ1IjoiYWxleDMxNjUiLCJhIjoiY2l4b3V1YjgxMDAxZzMycG94ajRydGJ2ciJ9.ENIGGEe_9pIKS3hZFY9teg",
   "styles": {
     "londonCycle": "mapbox://styles/alex3165/cj2hv9v4y00242slphcyk9oca",
-    "light": "mapbox://styles/mapbox/light-v9"
+    "light": "mapbox://styles/mapbox/light-v9",
+    "outdoor": "mapbox://styles/mapbox/outdoors-v10"
   }
 }
