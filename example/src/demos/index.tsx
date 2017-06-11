@@ -4,6 +4,7 @@ import AllShapes from './allShapes';
 import HtmlFeatures from './htmlFeatures';
 import ThreeDMap from './threeDMap';
 import HtmlCluster from './htmlCluster';
+import SwitchStyle from './switchStyle';
 
 import styled from 'styled-components';
 
@@ -26,6 +27,8 @@ class Demos extends React.Component<{}, {}> {
         <ThreeDMap/>
         <Title>Html cluster features</Title>
         <HtmlCluster/>
+        <Title>Switch style</Title>
+        <SwitchStyle/>
       </div>
     );
   }
