@@ -112,43 +112,40 @@ export default class Layer extends React.Component<Props, void> {
     }
   };
 
-  private onMouseMove = (evt: any) => {
+  private onMouseEnter = (evt: any) => {
     const children: Array<
       React.ReactElement<FeatureProps>
     > = ([] as any).concat(this.props.children);
     const { map } = this.context;
-    const oldHover = this.hover;
-    const hover: string[] = [];
-    const features = map.queryRenderedFeatures(evt.point, {
-      layers: [this.id]
-    }) as Feature[];
+    this.hover = [];
 
-    if (features) {
-      features.forEach(feature => {
-        const { id } = feature.properties;
-        if (children) {
-          const child = children[id];
-          hover.push(id);
+    evt.features.forEach((feature: Feature) => {
+      const { id } = feature.properties;
+      if (children) {
+        const child = children[id];
 
-          const onMouseEnter = child && child.props.onMouseEnter;
-          if (onMouseEnter) {
-            onMouseEnter({ ...evt, feature, map });
-          }
+        this.hover.push(id);
+        const onMouseEnter = child && child.props.onMouseEnter;
+        if (onMouseEnter) {
+          onMouseEnter({ ...evt, feature, map });
         }
-      });
-    }
+      }
+    });
+  };
 
-    oldHover
-      .filter(prevHoverId => hover.indexOf(prevHoverId) === -1)
-      .forEach(key => {
-        const child = children[key as any];
-        const onMouseLeave = child && child.props.onMouseLeave;
-        if (onMouseLeave) {
-          onMouseLeave({ ...evt, map });
-        }
-      });
+  private onMouseLeave = (evt: any) => {
+    const children: Array<
+      React.ReactElement<FeatureProps>
+    > = ([] as any).concat(this.props.children);
+    const { map } = this.context;
 
-    this.hover = hover;
+    this.hover.forEach((id: string) => {
+      const child = children[id];
+      const onMouseLeave = child && child.props.onMouseLeave;
+      if (onMouseLeave) {
+        onMouseLeave({ ...evt, map });
+      }
+    });
   };
 
   private initialize = () => {
@@ -187,7 +184,8 @@ export default class Layer extends React.Component<Props, void> {
     this.initialize();
 
     map.on('click', this.id, this.onClick);
-    map.on('mousemove', this.onMouseMove);
+    map.on('mouseenter', this.id, this.onMouseEnter);
+    map.on('mouseleave', this.id, this.onMouseLeave);
     map.on('styledata', this.onStyleDataChange);
   }
 
@@ -206,7 +204,8 @@ export default class Layer extends React.Component<Props, void> {
     }
 
     map.off('click', this.onClick);
-    map.off('mousemove', this.onMouseMove);
+    map.off('mouseenter', this.onMouseEnter);
+    map.off('mouseleave', this.onMouseLeave);
     map.off('styledata', this.onStyleDataChange);
   }
 
