@@ -17,7 +17,7 @@ const typeToLayerLUT = {
 export interface Props {
   id?: string;
   data: SourceOptionData;
-  sourceOptions:
+  sourceOptions?:
     | MapboxGL.VectorSource
     | MapboxGL.RasterSource
     | MapboxGL.GeoJSONSource

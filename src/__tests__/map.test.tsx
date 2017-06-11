@@ -1,12 +1,13 @@
-let fitBounds = jest.fn();
-let on = jest.fn();
-const Map = jest.fn(() => ({
-  fitBounds,
-  on
+let mockfitBounds = jest.fn();
+let mockon = jest.fn();
+
+const mockMap = jest.fn(() => ({
+  fitBounds: mockfitBounds,
+  on: mockon
 }));
 
 jest.mock('mapbox-gl', () => ({
-  Map
+  Map: mockMap
 }));
 
 import * as React from 'react';
@@ -17,8 +18,8 @@ describe('Map', () => {
   let mapState;
 
   beforeEach(() => {
-    fitBounds = jest.fn();
-    on = jest.fn();
+    mockfitBounds = jest.fn();
+    mockon = jest.fn();
 
     mapState = {
       getCenter: jest.fn(() => ({ lng: 1, lat: 2 })),
@@ -46,7 +47,7 @@ describe('Map', () => {
       />
     );
 
-    expect(fitBounds).toBeCalledWith(fitBoundsValues, fitBoundsOptions);
+    expect(mockfitBounds).toBeCalledWith(fitBoundsValues, fitBoundsOptions);
   });
 
   it('Should calc the center from fitbounds if center is not given', () => {
@@ -55,7 +56,7 @@ describe('Map', () => {
 
     mount(<MapboxMap style="" fitBounds={fitBoundsValues} />);
 
-    const lastCall = Map.mock.calls[Map.mock.calls.length - 1];
+    const lastCall = mockMap.mock.calls[mockMap.mock.calls.length - 1];
     expect(lastCall[0].center).toEqual([1, 6]);
   });
 
@@ -64,7 +65,7 @@ describe('Map', () => {
 
     mount(<MapboxMap style="" onStyleLoad={jest.fn()} />);
 
-    expect(on).toBeCalledWith('load', jasmine.any(Function));
+    expect(mockon).toBeCalledWith('load', jasmine.any(Function));
   });
 
   it('Should update the map center position', () => {

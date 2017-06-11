@@ -69,9 +69,9 @@ export type Measurement = 'km' | 'mi';
 export type Position = 'topRight' | 'topLeft' | 'bottomRight' | 'bottomLeft';
 
 export interface Props {
-  measurement: Measurement;
-  position: Position;
-  style: React.CSSProperties;
+  measurement?: Measurement;
+  position?: Position;
+  style?: React.CSSProperties;
 }
 
 export interface State {
@@ -184,10 +184,10 @@ export default class ScaleControl extends React.Component<Props, State> {
     const { chosenScale, scaleWidth } = this.state;
 
     return (
-      <div style={{ ...containerStyle, ...positions[position], ...style }}>
+      <div style={{ ...containerStyle, ...positions[position!], ...style }}>
         <div style={{ ...scaleStyle, width: scaleWidth }} />
         <div style={{ paddingLeft: 10 }}>
-          {this._displayMeasurement(measurement, chosenScale)}
+          {this._displayMeasurement(measurement!, chosenScale)}
         </div>
       </div>
     );
