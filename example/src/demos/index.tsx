@@ -108,7 +108,7 @@ export interface State {
 
 class Demos extends React.Component<{}, State> {
   public state: State = {
-    selectedDemoIndex: 0
+    selectedDemoIndex: 4
   }
 
   private onSelectExample(index: number) {

@@ -59,7 +59,7 @@ class HtmlCluster extends React.Component<{}, {}> {
         zoom={this.zoom}
         containerStyle={mapStyle}
       >
-        <Cluster ClusterMarkerFactory={this.clusterMarker} clusterThreshold={8}>
+        <Cluster ClusterMarkerFactory={this.clusterMarker}>
           {
             falls.features.map((feature: any, key: number) =>
               <Marker
