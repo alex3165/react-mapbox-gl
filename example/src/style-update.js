@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import ReactMap, { Layer, Source, Feature } from "react-mapbox-gl";
+import ReactMap, { Layer, Source, Feature, GeoJSONLayer } from "react-mapbox-gl";
 
 const accessToken = "pk.eyJ1IjoiYWxleDMxNjUiLCJhIjoiY2l4b3V0Z3RpMDAxczJ4cWk2YnEzNTVzYSJ9.MFPmOyHy8DM5_CVaqPYhOg";
 const streetsStyle = "mapbox://styles/mapbox/streets-v9";
@@ -74,7 +74,10 @@ const POSITION_CIRCLE_PAINT = {
     'circle-color': '#0066EE',
     'circle-stroke-color': '#FFFFFF'
 };
-const DEFAULT_USER_POSITION = [-0.2416815, 51.5285582];
+const DEFAULT_USER_POSITION = [ -77.01239, 38.91275 ]
+
+
+import geojson from "./geojson.json";
 
 class StyleUpdate extends Component {
   state = {
@@ -113,14 +116,23 @@ class StyleUpdate extends Component {
           center={this.state.userPosition}
         >
           <Source id="example_id" geoJsonSource={GEOJSON_SOURCE_OPTIONS} />
-          <Layer type="circle" id="example_id_marker" paint={POSITION_CIRCLE_PAINT} sourceId={'example_id'} /> 
+          <Layer type="circle" id="example_id_marker" paint={POSITION_CIRCLE_PAINT} sourceId={'example_id'} />
           <Layer type="circle" id="position-marker" paint={POSITION_CIRCLE_PAINT}>
             <Feature coordinates={this.state.userPosition} />
           </Layer>
+          <GeoJSONLayer
+            data={geojson}
+            circleLayout={{ visibility: "visible" }}
+            symbolLayout={{
+              "text-field": "{place}",
+              "text-font": ["Open Sans Semibold", "Arial Unicode MS Bold"],
+              "text-offset": [0, 0.6],
+              "text-anchor": "top"
+            }}/>
         </ReactMap>
-        
+
         <button style={styles.button} onClick={this.nextStyle}>Switch Style</button>
-        
+
         <div style={styles.indicator}>
           { `Using style: "${this.getStyleKey()}"` }
         </div>
