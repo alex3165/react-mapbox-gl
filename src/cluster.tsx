@@ -60,6 +60,11 @@ export default class Cluster extends React.Component<Props, State> {
     clusterPoints: []
   };
 
+  private featureClusterMap = new WeakMap<
+    Feature,
+    React.Component<MarkerProps, any>
+  >();
+
   public componentWillMount() {
     const { map } = this.context;
     const { superC } = this.state;
@@ -82,12 +87,14 @@ export default class Cluster extends React.Component<Props, State> {
 
     const zoom = map.getZoom();
     const bounds = map.getBounds();
-    const formattedBounds = [bounds.getWest(), bounds.getSouth(), bounds.getEast(), bounds.getNorth()];
+    const formattedBounds = [
+      bounds.getWest(),
+      bounds.getSouth(),
+      bounds.getEast(),
+      bounds.getNorth()
+    ];
 
-    const newPoints = superC.getClusters(
-      formattedBounds,
-      Math.round(zoom)
-    );
+    const newPoints = superC.getClusters(formattedBounds, Math.round(zoom));
 
     if (newPoints.length !== clusterPoints.length) {
       this.setState({ clusterPoints: newPoints });
@@ -101,18 +108,21 @@ export default class Cluster extends React.Component<Props, State> {
         type: 'point',
         coordinates
       },
-      properties: {
-        point_count: 1
-      }
+      properties: {}
     };
   }
 
   private childrenToFeatures = (
     children: Array<React.Component<MarkerProps, any>>
-  ) => children.map(child => this.feature(child && child.props.coordinates));
+  ) =>
+    children.map(child => {
+      const feature = this.feature(child && child.props.coordinates);
+      this.featureClusterMap.set(feature, child);
+      return feature;
+    });
 
   public render() {
-    const { children, ClusterMarkerFactory } = this.props;
+    const { ClusterMarkerFactory } = this.props;
     const { clusterPoints } = this.state;
     const { scrollZoom } = this.context;
 
@@ -122,22 +132,18 @@ export default class Cluster extends React.Component<Props, State> {
         }
       : {};
 
-    if (
-      !clusterPoints.filter((point: any) => point.properties.point_count >= 2).length
-    ) {
-      return (
-        <div style={style}>
-          {children}
-        </div>
-      );
-    }
-
     return (
       <div style={style}>
         {// tslint:disable-line:jsx-no-multiline-js
-        clusterPoints.map(({ geometry, properties }: Feature) =>
-          ClusterMarkerFactory(geometry.coordinates, properties.point_count)
-        )}
+        clusterPoints.map((feature: Feature) => {
+          if (feature.properties.cluster) {
+            return ClusterMarkerFactory(
+              feature.geometry.coordinates,
+              feature.properties.point_count
+            );
+          }
+          return this.featureClusterMap.get(feature);
+        })}
       </div>
     );
   }
