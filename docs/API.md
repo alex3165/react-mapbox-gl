@@ -56,6 +56,7 @@ const Map = ReactMapboxGl({
   - Check the previous value and the new one, if the value changed update the bearing value [flyTo](https://www.mapbox.com/mapbox-gl-js/api/#Map.flyTo)
 - **pitch** *(Default: `0`)*: `Number` Pitch (tilt) of the map at initialisation, range : `0 - 60`
 - **containerStyle** : `Object` The style of the container of the map
+- **ClassName** : `string` ClassName passed down to the container div
 - **movingMethod** *(Default: `flyTo`)*: `String` define the method used when changing the center or zoom position. Possible value :
   - `jumpTo`
   - `easeTo`

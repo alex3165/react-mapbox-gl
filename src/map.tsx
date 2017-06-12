@@ -118,6 +118,7 @@ export interface Props {
   bearing?: number;
   pitch?: number;
   containerStyle?: React.CSSProperties;
+  className?: string;
   movingMethod?: 'jumpTo' | 'easeTo' | 'flyTo';
   children?: JSX.Element;
 }
@@ -156,6 +157,9 @@ export interface FactoryParameters {
 const defaultZoom = [11];
 const defaultMovingMethod = 'flyTo';
 const defaultCenter = [-0.2416815, 51.5285582];
+const defaultContainerStyle = {
+  textAlign: 'left'
+};
 
 const ReactMapboxFactory = ({
   accessToken,
@@ -370,11 +374,15 @@ const ReactMapboxFactory = ({
     };
 
     public render() {
-      const { containerStyle, children } = this.props;
+      const { containerStyle, className, children } = this.props;
       const { map } = this.state;
 
       return (
-        <div ref={this.setRef} style={containerStyle}>
+        <div
+          ref={this.setRef}
+          className={className}
+          style={{ ...containerStyle, ...defaultContainerStyle }}
+        >
           {map && children}
         </div>
       );
