@@ -1,17 +1,15 @@
 import * as MapboxGL from 'mapbox-gl';
 
 export type Sources = (
-  MapboxGL.VectorSource |
-  MapboxGL.RasterSource |
-  MapboxGL.GeoJSONSource |
-  MapboxGL.GeoJSONSourceRaw
-);
+  | MapboxGL.VectorSource
+  | MapboxGL.RasterSource
+  | MapboxGL.GeoJSONSource
+  | MapboxGL.GeoJSONSourceRaw);
 
 export type SourceOptionData = (
-  GeoJSON.Feature<GeoJSON.GeometryObject> |
-  GeoJSON.FeatureCollection<GeoJSON.GeometryObject> |
-  string
-);
+  | GeoJSON.Feature<GeoJSON.GeometryObject>
+  | GeoJSON.FeatureCollection<GeoJSON.GeometryObject>
+  | string);
 
 export interface Feature {
   type: 'Feature';

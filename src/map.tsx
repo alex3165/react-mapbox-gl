@@ -9,10 +9,12 @@ const events = {
   onDblClick: 'dblclick',
   onClick: 'click',
   onMouseMove: 'mousemove',
-  onMoveStart: 'mousestart',
+  onMouseOut: 'mouseout',
+  onMoveStart: 'movestart',
   onMove: 'move',
   onMoveEnd: 'moveend',
   onMouseUp: 'mouseup',
+  onMouseDown: 'mousedown',
   onDragStart: 'dragstart',
   onDrag: 'drag',
   onDragEnd: 'dragend',
@@ -21,10 +23,35 @@ const events = {
   onZoomEnd: 'zoomend',
   onPitch: 'pitch',
   onPitchStart: 'pitchstart',
-  onPitchEnd: 'pitchend'
+  onPitchEnd: 'pitchend',
+  onWebGlContextLost: 'webglcontextlost',
+  onWebGlContextRestored: 'webglcontextrestored',
+  onRemove: 'remove',
+  onContextMenu: 'contextmenu',
+  onRender: 'render',
+  onError: 'error',
+  onSourceData: 'sourcedata',
+  onDataLoading: 'dataloading',
+  onStyleDataLoading: 'styledataloading',
+  onTouchCancel: 'touchcancel',
+  onData: 'data',
+  onSourceDataLoading: 'sourcedataloading',
+  onTouchMove: 'touchmove',
+  onTouchEnd: 'touchend',
+  onTouchStart: 'touchstart',
+  onStyleData: 'styledata',
+  onBoxZoomStart: 'boxzoomstart',
+  onBoxZoomEnd: 'boxzoomend',
+  onBoxZoomCancel: 'boxzoomcancel',
+  onRotateStart: 'rotatestart',
+  onRotate: 'rotate',
+  onRotateEnd: 'rotateend'
 };
 
-export type MapEvent = (map: MapboxGl.Map, evt: React.SyntheticEvent<any>) => void;
+export type MapEvent = (
+  map: MapboxGl.Map,
+  evt: React.SyntheticEvent<any>
+) => void;
 
 export interface Events {
   onStyleLoad?: MapEvent;
@@ -32,9 +59,11 @@ export interface Events {
   onDblClick?: MapEvent;
   onClick?: MapEvent;
   onMouseMove?: MapEvent;
+  onMouseOut?: MapEvent;
   onMoveStart?: MapEvent;
   onMove?: MapEvent;
   onMoveEnd?: MapEvent;
+  onMouseDown?: MapEvent;
   onMouseUp?: MapEvent;
   onDragStart?: MapEvent;
   onDragEnd?: MapEvent;
@@ -45,6 +74,28 @@ export interface Events {
   onPitch?: MapEvent;
   onPitchStart?: MapEvent;
   onPitchEnd?: MapEvent;
+  onWebGlContextLost?: MapEvent;
+  onWebGlContextRestored?: MapEvent;
+  onRemove?: MapEvent;
+  onContextMenu?: MapEvent;
+  onRender?: MapEvent;
+  onError?: MapEvent;
+  onSourceData?: MapEvent;
+  onDataLoading?: MapEvent;
+  onStyleDataLoading?: MapEvent;
+  onTouchCancel?: MapEvent;
+  onData?: MapEvent;
+  onSourceDataLoading?: MapEvent;
+  onTouchMove?: MapEvent;
+  onTouchEnd?: MapEvent;
+  onTouchStart?: MapEvent;
+  onStyleData?: MapEvent;
+  onBoxZoomStart?: MapEvent;
+  onBoxZoomEnd?: MapEvent;
+  onBoxZoomCancel?: MapEvent;
+  onRotateStart?: MapEvent;
+  onRotate?: MapEvent;
+  onRotateEnd?: MapEvent;
 }
 
 export interface FitBoundsOptions {
@@ -57,33 +108,48 @@ export interface FitBoundsOptions {
 
 export type FitBounds = number[][];
 
+// React Props updated between re-render
 export interface Props {
   style: string | MapboxGl.Style;
-  accessToken: string;
   center?: number[];
   zoom?: number[];
-  minZoom?: number;
-  maxZoom?: number;
-  maxBounds?: MapboxGl.LngLatBounds | FitBounds;
   fitBounds?: FitBounds;
   fitBoundsOptions?: FitBoundsOptions;
   bearing?: number;
   pitch?: number;
   containerStyle?: React.CSSProperties;
-  hash?: boolean;
-  preserveDrawingBuffer?: boolean;
-  scrollZoom?: boolean;
-  interactive?: boolean;
-  dragRotate?: boolean;
   movingMethod?: 'jumpTo' | 'easeTo' | 'flyTo';
-  attributionControl?: boolean;
-  logoPosition?: 'top-left' | 'top-right' | 'bottom-left' | 'bottom-right';
   children?: JSX.Element;
-  renderWorldCopies?: boolean;
 }
 
 export interface State {
   map?: MapboxGl.Map;
+}
+
+// Static Properties of the map
+export interface FactoryParameters {
+  accessToken: string;
+  minZoom?: number;
+  maxZoom?: number;
+  hash?: boolean;
+  preserveDrawingBuffer?: boolean;
+  maxBounds?: MapboxGl.LngLatBounds | FitBounds;
+  scrollZoom?: boolean;
+  interactive?: boolean;
+  dragRotate?: boolean;
+  attributionControl?: boolean;
+  logoPosition?: 'top-left' | 'top-right' | 'bottom-left' | 'bottom-right';
+  renderWorldCopies?: boolean;
+  trackResize?: boolean;
+  touchZoomRotate?: boolean;
+  doubleClickZoom?: boolean;
+  keyboard?: boolean;
+  dragPan?: boolean;
+  boxZoom?: boolean;
+  refreshExpiredTiles?: boolean;
+  failIfMajorPerformanceCaveat?: boolean;
+  classes?: string[];
+  bearingSnap?: number;
 }
 
 // Satisfy typescript pitfall with defaultProps
@@ -91,212 +157,228 @@ const defaultZoom = [11];
 const defaultMovingMethod = 'flyTo';
 const defaultCenter = [-0.2416815, 51.5285582];
 
-export default class ReactMapboxGl extends React.Component<Props & Events, State> {
-  public static defaultProps = {
-    hash: false,
-    onStyleLoad: (...args: any[]) => args,
-    preserveDrawingBuffer: false,
-    center: defaultCenter,
-    zoom: defaultZoom,
-    minZoom: 0,
-    maxZoom: 20,
-    bearing: 0,
-    scrollZoom: true,
-    movingMethod: defaultMovingMethod,
-    pitch: 0,
-    logoPosition: 'bottom-left',
-    interactive: true,
-    dragRotate: true,
-    renderWorldCopies: true
-  };
-
-  public static childContextTypes = {
-    map: PropTypes.object
-  };
-
-  public state = {
-    map: undefined
-  };
-
-  public getChildContext = () => ({
-    map: this.state.map
-  })
-
-  private container: HTMLElement;
-
-  private calcCenter = (bounds: FitBounds): number[] => (
-    [(bounds[0][0] + bounds[1][0]) / 2, (bounds[0][1] + bounds[1][1]) / 2]
-  )
-
-  public componentDidMount() {
-    const {
-      style,
-      hash,
-      preserveDrawingBuffer,
-      accessToken,
-      onStyleLoad,
-      center,
-      pitch,
-      zoom,
-      minZoom,
-      maxZoom,
-      maxBounds,
-      fitBounds,
-      fitBoundsOptions,
-      bearing,
-      scrollZoom,
-      attributionControl,
-      logoPosition,
-      interactive,
-      dragRotate,
-      renderWorldCopies
-    } = this.props;
-
-    (MapboxGl as any).accessToken = accessToken;
-
-    const opts: MapboxGl.MapboxOptions = {
-      preserveDrawingBuffer,
-      hash,
-      // Duplicated default because Typescript can't figure out there is a defaultProps and zoom will never be undefined
-      zoom: zoom ? zoom[0] : defaultZoom[0],
-      minZoom,
-      maxZoom,
-      maxBounds,
-      bearing,
-      container: this.container,
-      center: fitBounds && center === defaultCenter ? this.calcCenter(fitBounds) : center,
-      pitch,
-      style,
-      scrollZoom,
-      attributionControl,
-      interactive,
-      dragRotate,
-      renderWorldCopies
+const ReactMapboxFactory = ({
+  accessToken,
+  minZoom = 0,
+  maxZoom = 20,
+  hash = false,
+  preserveDrawingBuffer = false,
+  maxBounds,
+  scrollZoom = true,
+  interactive = true,
+  dragRotate = true,
+  attributionControl = true,
+  logoPosition = 'bottom-left',
+  renderWorldCopies = true,
+  trackResize = true,
+  touchZoomRotate = true,
+  doubleClickZoom = true,
+  keyboard = true,
+  dragPan = true,
+  boxZoom = true,
+  refreshExpiredTiles = true,
+  failIfMajorPerformanceCaveat = false,
+  classes,
+  bearingSnap = 7
+}: FactoryParameters): any =>
+  class ReactMapboxGl extends React.Component<Props & Events, State> {
+    public static defaultProps = {
+      onStyleLoad: (...args: any[]) => args,
+      center: defaultCenter,
+      zoom: defaultZoom,
+      bearing: 0,
+      movingMethod: defaultMovingMethod,
+      pitch: 0
     };
 
-    const map = new MapboxGl.Map({
-      ...opts,
-      // logoposition is not part of the typings of mapbox-gl, this does the trick
-      logoPosition
+    public static childContextTypes = {
+      map: PropTypes.object,
+      scrollZoom: PropTypes.bool
+    };
+
+    public state = {
+      map: undefined
+    };
+
+    // tslint:disable-next-line:variable-name
+    private _isMounted = true;
+
+    public getChildContext = () => ({
+      map: this.state.map,
+      scrollZoom
     });
 
-    if (fitBounds) {
-      map.fitBounds(fitBounds, fitBoundsOptions);
-    }
+    private container: HTMLElement;
 
-    map.on('load', (evt: React.SyntheticEvent<any>) => {
-      this.setState({ map });
+    private calcCenter = (bounds: FitBounds): number[] => [
+      (bounds[0][0] + bounds[1][0]) / 2,
+      (bounds[0][1] + bounds[1][1]) / 2
+    ];
 
-      if (onStyleLoad) {
-        onStyleLoad(map, evt);
+    public componentDidMount() {
+      const {
+        style,
+        onStyleLoad,
+        center,
+        pitch,
+        zoom,
+        fitBounds,
+        fitBoundsOptions,
+        bearing
+      } = this.props;
+
+      (MapboxGl as any).accessToken = accessToken;
+
+      const opts: MapboxGl.MapboxOptions = {
+        preserveDrawingBuffer,
+        hash,
+        zoom: zoom ? zoom[0] : defaultZoom[0],
+        minZoom,
+        maxZoom,
+        maxBounds,
+        bearing,
+        container: this.container,
+        center: fitBounds && center === defaultCenter
+          ? this.calcCenter(fitBounds)
+          : center,
+        pitch,
+        style,
+        scrollZoom,
+        attributionControl,
+        interactive,
+        dragRotate,
+        renderWorldCopies,
+        trackResize,
+        touchZoomRotate,
+        doubleClickZoom,
+        keyboard,
+        dragPan,
+        boxZoom,
+        refreshExpiredTiles,
+        logoPosition: logoPosition as any,
+        classes,
+        bearingSnap
+      };
+
+      const map = new MapboxGl.Map({
+        ...opts,
+        failIfMajorPerformanceCaveat
+      });
+
+      if (fitBounds) {
+        map.fitBounds(fitBounds, fitBoundsOptions);
       }
-    });
 
-    Object.keys(events).forEach((event, index) => {
-      const propEvent = this.props[event];
+      map.on('load', (evt: React.SyntheticEvent<any>) => {
+        if (this._isMounted) {
+          this.setState({ map });
+        }
 
-      if (propEvent) {
-        map.on(events[event], (evt: React.SyntheticEvent<any>) => {
-          propEvent(map, evt);
-        });
-      }
-    });
-  }
+        if (onStyleLoad) {
+          onStyleLoad(map, evt);
+        }
+      });
 
-  public componentWillUnmount() {
-    const { map } = this.state as State;
+      Object.keys(events).forEach((event, index) => {
+        const propEvent = this.props[event];
 
-    if (map) {
-      // Remove all events attached to the map
-      map.off();
-
-      // NOTE: We need to defer removing the map to after all children have unmounted
-      setTimeout(() => {
-        map.remove();
+        if (propEvent) {
+          map.on(events[event], (evt: React.SyntheticEvent<any>) => {
+            propEvent(map, evt);
+          });
+        }
       });
     }
-  }
 
-  public componentWillReceiveProps(nextProps: Props) {
-    const { map } = this.state as State;
-    if (!map) {
+    public componentWillUnmount() {
+      const { map } = this.state as State;
+      this._isMounted = false;
+
+      if (map) {
+        map.remove();
+      }
+    }
+
+    public componentWillReceiveProps(nextProps: Props) {
+      const { map } = this.state as State;
+      if (!map) {
+        return null;
+      }
+
+      const center = map.getCenter();
+      const zoom = map.getZoom();
+      const bearing = map.getBearing();
+      const pitch = map.getPitch();
+
+      const didZoomUpdate =
+        this.props.zoom !== nextProps.zoom &&
+        (nextProps.zoom && nextProps.zoom[0]) !== zoom;
+
+      const didCenterUpdate =
+        this.props.center !== nextProps.center &&
+        ((nextProps.center && nextProps.center[0]) !== center.lng ||
+          (nextProps.center && nextProps.center[1]) !== center.lat);
+
+      const didBearingUpdate =
+        this.props.bearing !== nextProps.bearing &&
+        nextProps.bearing !== bearing;
+
+      const didPitchUpdate =
+        this.props.pitch !== nextProps.pitch && nextProps.pitch !== pitch;
+
+      if (nextProps.fitBounds) {
+        const { fitBounds } = this.props;
+
+        const didFitBoundsUpdate =
+          fitBounds !== nextProps.fitBounds || // Check for reference equality
+          nextProps.fitBounds.length !== (fitBounds && fitBounds.length) || // Added element
+          !!fitBounds.filter((c, i) => {
+            // Check for equality
+            const nc = nextProps.fitBounds && nextProps.fitBounds[i];
+            return c[0] !== (nc && nc[0]) || c[1] !== (nc && nc[1]);
+          })[0];
+
+        if (didFitBoundsUpdate) {
+          map.fitBounds(nextProps.fitBounds, nextProps.fitBoundsOptions);
+        }
+      }
+
+      if (
+        didZoomUpdate ||
+        didCenterUpdate ||
+        didBearingUpdate ||
+        didPitchUpdate
+      ) {
+        const mm: string = nextProps.movingMethod || defaultMovingMethod;
+        map[mm]({
+          zoom: didZoomUpdate && nextProps.zoom ? nextProps.zoom[0] : zoom,
+          center: didCenterUpdate ? nextProps.center : center,
+          bearing: didBearingUpdate ? nextProps.bearing : bearing,
+          pitch: didPitchUpdate ? nextProps.pitch : pitch
+        });
+      }
+
+      if (!isEqual(this.props.style, nextProps.style)) {
+        map.setStyle(nextProps.style);
+      }
+
       return null;
     }
 
-    const center = map.getCenter();
-    const zoom = map.getZoom();
-    const bearing = map.getBearing();
-    const pitch = map.getPitch();
+    private setRef = (x: HTMLElement) => {
+      this.container = x;
+    };
 
-    const didZoomUpdate = (
-      this.props.zoom !== nextProps.zoom &&
-      (nextProps.zoom && nextProps.zoom[0]) !== zoom
-    );
+    public render() {
+      const { containerStyle, children } = this.props;
+      const { map } = this.state;
 
-    const didCenterUpdate = (
-      this.props.center !== nextProps.center &&
-      (
-        (nextProps.center && nextProps.center[0]) !== center.lng ||
-        (nextProps.center && nextProps.center[1]) !== center.lat
-      )
-    );
-
-    const didBearingUpdate = (
-      this.props.bearing !== nextProps.bearing &&
-      nextProps.bearing !== bearing
-    );
-
-    const didPitchUpdate = (
-      this.props.pitch !== nextProps.pitch &&
-      nextProps.pitch !== pitch
-    );
-
-    if (nextProps.fitBounds) {
-      const { fitBounds } = this.props;
-
-      const didFitBoundsUpdate = (
-        fitBounds !== nextProps.fitBounds || // Check for reference equality
-        nextProps.fitBounds.length !== (fitBounds && fitBounds.length) || // Added element
-        !!fitBounds.filter((c, i) => { // Check for equality
-          const nc = nextProps.fitBounds && nextProps.fitBounds[i];
-          return c[0] !== (nc && nc[0]) || c[1] !== (nc && nc[1]);
-        })[0]
+      return (
+        <div ref={this.setRef} style={containerStyle}>
+          {map && children}
+        </div>
       );
-
-      if (didFitBoundsUpdate) {
-        map.fitBounds(nextProps.fitBounds, nextProps.fitBoundsOptions);
-      }
     }
+  };
 
-    if (didZoomUpdate || didCenterUpdate || didBearingUpdate || didPitchUpdate) {
-      const mm: string = this.props.movingMethod || defaultMovingMethod;
-      map[mm]({
-        zoom: (didZoomUpdate && nextProps.zoom) ? nextProps.zoom[0] : zoom,
-        center: didCenterUpdate ? nextProps.center : center,
-        bearing: didBearingUpdate ? nextProps.bearing : bearing,
-        pitch: didPitchUpdate ? nextProps.pitch : pitch
-      });
-    }
-
-    if (!isEqual(this.props.style, nextProps.style)) {
-      map.setStyle(nextProps.style);
-    }
-
-    return null;
-  }
-
-  private setRef = (x: HTMLElement) => {
-    this.container = x;
-  }
-
-  public render() {
-    const { containerStyle, children } = this.props;
-    const { map } = this.state;
-
-    return (
-      <div ref={this.setRef} style={containerStyle}>
-        {map && children}
-      </div>
-    );
-  }
-}
+export default ReactMapboxFactory;

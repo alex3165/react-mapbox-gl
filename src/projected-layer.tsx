@@ -5,11 +5,7 @@ import { Map } from 'mapbox-gl';
 import { Anchor, PointDef, OverlayProps } from './util/overlays';
 import * as GeoJSON from 'geojson';
 
-import {
-  overlayState,
-  overlayTransform,
-  anchors
-} from './util/overlays';
+import { overlayState, overlayTransform, anchors } from './util/overlays';
 
 const defaultStyle = {
   zIndex: 3
@@ -29,6 +25,7 @@ export interface Props {
 
 export interface Context {
   map: Map;
+  scrollZoom: boolean;
 }
 
 export default class ProjectedLayer extends React.Component<Props, any> {
@@ -37,7 +34,8 @@ export default class ProjectedLayer extends React.Component<Props, any> {
   private prevent: boolean;
 
   public static contextTypes = {
-    map: PropTypes.object
+    map: PropTypes.object,
+    scrollZoom: PropTypes.bool
   };
 
   public static defaultProps = {
@@ -52,13 +50,13 @@ export default class ProjectedLayer extends React.Component<Props, any> {
     if (el) {
       this.container = el;
     }
-  }
+  };
 
   private handleMapMove = () => {
     if (!this.prevent) {
       this.setState(overlayState(this.props, this.context.map, this.container));
     }
-  }
+  };
 
   public componentDidMount() {
     const { map } = this.context;
@@ -73,8 +71,8 @@ export default class ProjectedLayer extends React.Component<Props, any> {
     const { coordinates } = this.props;
 
     if (
-      coordinates[0] !== nextProps.coordinates[0]
-      || coordinates[1] !== nextProps.coordinates[1]
+      coordinates[0] !== nextProps.coordinates[0] ||
+      coordinates[1] !== nextProps.coordinates[1]
     ) {
       this.setState(overlayState(nextProps, this.context.map, this.container));
     }
@@ -97,10 +95,12 @@ export default class ProjectedLayer extends React.Component<Props, any> {
       onMouseEnter,
       onMouseLeave
     } = this.props;
+    const { scrollZoom } = this.context;
 
     const finalStyle = {
       ...defaultStyle,
       ...style,
+      pointerEvents: scrollZoom ? 'none' : 'inherit',
       transform: overlayTransform(this.state as OverlayProps).join(' ')
     };
 

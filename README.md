@@ -1,3 +1,5 @@
+![Logo](./logo.svg)
+
 # React-mapbox-gl [Doc](docs/API.md)
 
 [![Greenkeeper badge](https://badges.greenkeeper.io/alex3165/react-mapbox-gl.svg)](https://greenkeeper.io/)
@@ -28,19 +30,6 @@ Include the following elements:
 
 > The source files are written in Typescript, you can consume the compiled files in Javascript or Typescript and get the type definition files.
 
-
-## Do you need `mapbox-gl-js` and `react-mapbox-gl`
-Mapbox-gl expose a map rendered in a canvas using WebGl which mean:
-- Vector tiles
-- Fast rendering
-- Smooth transitions
-- Data on the client side (interact with anything on the map)
-- Highly customizable using [mapbox studio](https://www.mapbox.com/mapbox-studio/)
-- Considerable bundle size
-
-Details of all the features exposed: [mapbox-gl-js](https://www.mapbox.com/maps/)
-
-
 ## How to start
 
 ```javascript
@@ -49,7 +38,7 @@ npm install react-mapbox-gl --save
 
 Example:
 
-```javascript
+```jsx
 // ES6
 import ReactMapboxGl, { Layer, Feature } from "react-mapbox-gl";
 
@@ -58,9 +47,13 @@ var ReactMapboxGl = require("react-mapbox-gl");
 var Layer = ReactMapboxGl.Layer;
 var Feature = ReactMapboxGl.Feature;
 
-<ReactMapboxGl
-  style="mapbox://styles/mapbox/streets-v8"
-  accessToken="pk.eyJ1IjoiZmFicmljOCIsImEiOiJjaWc5aTV1ZzUwMDJwdzJrb2w0dXRmc2d0In0.p6GGlfyV-WksaDV_KdN27A"
+const Map = ReactMapboxGl({
+  accessToken: "pk.eyJ1IjoiZmFicmljOCIsImEiOiJjaWc5aTV1ZzUwMDJwdzJrb2w0dXRmc2d0In0.p6GGlfyV-WksaDV_KdN27A"
+});
+
+<Map
+  style="mapbox://styles/mapbox/streets-v9"
+  accessToken=
   containerStyle={{
     height: "100vh",
     width: "100vw"
@@ -71,7 +64,7 @@ var Feature = ReactMapboxGl.Feature;
       layout={{ "icon-image": "marker-15" }}>
       <Feature coordinates={[-0.481747846041145, 51.3233379650232]}/>
     </Layer>
-</ReactMapboxGl>
+</Map>
 ```
 
 ## Disclaimer
@@ -80,19 +73,6 @@ We changed it to an array so that between 2 render it check for a reference equa
 this way we can reliably update the zoom value.
 
 See https://github.com/alex3165/react-mapbox-gl/issues/57 for more informations.
-
-## Examples
-- Display a big amount of markers: [London cycle example](example/src/london-cycle.js)
-- Display all the availables shapes: [All shapes example](example/src/all-shapes.js)
-- Display a GEOJson file: [geojson example](example/src/geojson-example.js)
-- Display Cluster of Markers: [cluster example](example/src/cluster.js)
-
-### Run the examples
-- Clone the repository
-- Go to the example folder
-- Install the dependencies: `npm install`
-- link react-mapbox-gl: `npm run link`
-- start: `npm run start` (default port: 3000)
 
 ## [API Documentation](docs/API.md)
 

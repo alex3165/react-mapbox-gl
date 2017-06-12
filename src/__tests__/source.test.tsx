@@ -9,8 +9,8 @@ describe('Source', () => {
   let removeSourceMock: any;
   let setDataMock: any;
   const EMPTY_GEOJSON = {
-    'type': 'FeatureCollection',
-    'features': []
+    type: 'FeatureCollection',
+    features: []
   };
 
   const EMPTY_GEOJSON_SRC = {
@@ -23,33 +23,38 @@ describe('Source', () => {
     removeSourceMock = jest.fn();
     setDataMock = jest.fn();
 
-    SourceWithContext = withContext({
-      map: React.PropTypes.object
-    }, () => ({
-      map: {
-        addSource: addSourceMock,
-        removeSource: removeSourceMock,
-        on: jest.fn(),
-        off: jest.fn(),
-        getSource: jest.fn(() => this.id)
-      }
-    }))(Source);
+    SourceWithContext = withContext(
+      {
+        map: React.PropTypes.object
+      },
+      () => ({
+        map: {
+          addSource: addSourceMock,
+          removeSource: removeSourceMock,
+          on: jest.fn(),
+          off: jest.fn(),
+          getSource: jest.fn(() => this.id)
+        }
+      })
+    )(Source);
   });
 
   it('Should render source with geoJsonSource', () => {
     mount(
-      <SourceWithContext
-        id="source-1"
-        geoJsonSource={EMPTY_GEOJSON_SRC}
-      /> as React.ReactElement<any>
+      (
+        <SourceWithContext id="source-1" geoJsonSource={EMPTY_GEOJSON_SRC} />
+      ) as React.ReactElement<any>
     );
 
-    expect(addSourceMock.mock.calls[0]).toEqual(['source-1', {
-      type: 'geojson',
-      data: {
-        type: 'FeatureCollection',
-        features: []
+    expect(addSourceMock.mock.calls[0]).toEqual([
+      'source-1',
+      {
+        type: 'geojson',
+        data: {
+          type: 'FeatureCollection',
+          features: []
+        }
       }
-    }]);
+    ]);
   });
 });

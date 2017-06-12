@@ -1,9 +1,6 @@
 import * as React from 'react';
 import ProjectedLayer from './projected-layer';
-import {
-  anchors,
-  Anchor
-} from './util/overlays';
+import { anchors, Anchor } from './util/overlays';
 import * as GeoJSON from 'geojson';
 import { getClassName } from './util/classname';
 import { PointDef } from './util/overlays';
@@ -29,13 +26,14 @@ export default class Popup extends React.Component<Props, void> {
   public render() {
     const anchorClass = `mapboxgl-popup-anchor-${this.props.anchor}`;
     const props = { ...this.props, children: undefined };
+    const className = getClassName(
+      defaultClassName.concat(anchorClass),
+      this.props.className
+    );
 
     return (
-      <ProjectedLayer
-        className={getClassName(defaultClassName.concat(anchorClass), this.props.className)}
-        {...props as any}
-      >
-        <div className="mapboxgl-popup-tip"/>
+      <ProjectedLayer className={className} {...props as any}>
+        <div className="mapboxgl-popup-tip" />
         <div className="mapboxgl-popup-content">
           {this.props.children}
         </div>
