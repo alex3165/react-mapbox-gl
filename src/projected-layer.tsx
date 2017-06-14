@@ -25,7 +25,6 @@ export interface Props {
 
 export interface Context {
   map: Map;
-  scrollZoom: boolean;
 }
 
 export default class ProjectedLayer extends React.Component<Props, any> {
@@ -34,8 +33,7 @@ export default class ProjectedLayer extends React.Component<Props, any> {
   private prevent: boolean;
 
   public static contextTypes = {
-    map: PropTypes.object,
-    scrollZoom: PropTypes.bool
+    map: PropTypes.object
   };
 
   public static defaultProps = {
@@ -95,12 +93,10 @@ export default class ProjectedLayer extends React.Component<Props, any> {
       onMouseEnter,
       onMouseLeave
     } = this.props;
-    const { scrollZoom } = this.context;
 
     const finalStyle = {
       ...defaultStyle,
       ...style,
-      pointerEvents: scrollZoom ? 'none' : 'inherit',
       transform: overlayTransform(this.state as OverlayProps).join(' ')
     };
 
