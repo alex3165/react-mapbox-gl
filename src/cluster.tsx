@@ -6,6 +6,8 @@ import { Props as MarkerProps } from './marker';
 const supercluster = require('supercluster'); // tslint:disable-line
 import * as GeoJSON from 'geojson';
 import { Feature } from './util/types';
+import * as bbox from '@turf/bbox';
+import { polygon } from '@turf/helpers';
 
 export interface Props {
   ClusterMarkerFactory(
@@ -84,16 +86,17 @@ export default class Cluster extends React.Component<Props, State> {
     const { superC, clusterPoints } = this.state;
 
     const zoom = map.getZoom();
-    const bounds = map.getBounds();
-    const formattedBounds = [
-      bounds.getWest(),
-      bounds.getSouth(),
-      bounds.getEast(),
-      bounds.getNorth()
-    ];
-
-    const newPoints = superC.getClusters(formattedBounds, Math.round(zoom));
-
+    const canvas = map.getCanvas();
+    const w = canvas.width;
+    const h = canvas.height;
+    const upLeft = map.unproject([0, 0]).toArray();
+    const upRight = map.unproject([w, 0]).toArray();
+    const downRight = map.unproject([w, h]).toArray();
+    const downLeft = map.unproject([0, h]).toArray();
+    const newPoints = superC.getClusters(
+      bbox(polygon([[upLeft, upRight, downRight, downLeft, upLeft]])),
+      Math.round(zoom)
+    );
     if (newPoints.length !== clusterPoints.length) {
       this.setState({ clusterPoints: newPoints });
     }
