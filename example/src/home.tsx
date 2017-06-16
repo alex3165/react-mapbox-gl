@@ -32,7 +32,7 @@ const StyledEditor = styled(LiveEditor)`
   font-family: 'Source Code Pro', monospace;
   font-size: 13px;
   line-height: 18px;
-`;
+` as any;
 
 const StyledPreview = styled(LivePreview)``;
 
