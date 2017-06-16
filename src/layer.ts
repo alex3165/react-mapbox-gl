@@ -161,7 +161,7 @@ export default class Layer extends React.Component<Props, void> {
 
   private onMouseDown = () => {
     const { map } = this.context;
-    if (this.hover.length === 0) {
+    if (this.hover.filter(Boolean).length === 0) {
       return;
     }
 
