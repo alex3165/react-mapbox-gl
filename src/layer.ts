@@ -213,12 +213,12 @@ export default class Layer extends React.Component<Props, void> {
     const { map } = this.context;
 
     const layer = {
+      ...layerOptions,
       id,
       source: sourceId || id,
       type,
       layout,
-      paint,
-      ...layerOptions
+      paint
     };
 
     if (!sourceId) {

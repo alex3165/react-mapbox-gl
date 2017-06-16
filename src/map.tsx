@@ -161,6 +161,15 @@ const defaultContainerStyle = {
   textAlign: 'left'
 };
 
+// tslint:disable-next-line:no-namespace
+declare global {
+  namespace mapboxgl {
+    export interface MapboxOptions {
+      failIfMajorPerformanceCaveat?: boolean;
+    }
+  }
+}
+
 const ReactMapboxFactory = ({
   accessToken,
   minZoom = 0,
@@ -259,13 +268,11 @@ const ReactMapboxFactory = ({
         refreshExpiredTiles,
         logoPosition: logoPosition as any,
         classes,
-        bearingSnap
+        bearingSnap,
+        failIfMajorPerformanceCaveat
       };
 
-      const map = new MapboxGl.Map({
-        ...opts,
-        failIfMajorPerformanceCaveat
-      });
+      const map = new MapboxGl.Map(opts);
 
       if (fitBounds) {
         map.fitBounds(fitBounds, fitBoundsOptions);
