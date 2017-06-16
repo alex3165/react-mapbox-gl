@@ -53,7 +53,6 @@ const Menu = styled.ul`
 const Item = styled.li`
   margin: 0px 10px;
   font-weight: ${({ selected }) => selected ? 700 : 100};
-  border-bottom: ${({ selected }) => selected ? '1px solid grey' : 'none'};
   cursor: pointer;
 `;
 
@@ -108,7 +107,7 @@ export interface State {
 
 class Demos extends React.Component<{}, State> {
   public state: State = {
-    selectedDemoIndex: 4
+    selectedDemoIndex: 0
   }
 
   private onSelectExample(index: number) {

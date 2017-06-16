@@ -1,10 +1,12 @@
 import * as React from 'react';
-import ReactMapboxGl, { Layer, Source, Feature } from '../../../';
+import ReactMapboxGl, { Layer, Source, Feature, GeoJSONLayer } from '../../../';
 import { GeoJSONSourceRaw } from 'mapbox-gl';
 
 import styled from 'styled-components';
 // tslint:disable-next-line:no-var-requires
 const { token, styles } = require('./config.json');
+// tslint:disable-next-line:no-var-requires
+const geojson = require('./geojson.json');
 
 const Map = ReactMapboxGl({ accessToken: token });
 
@@ -79,7 +81,7 @@ export interface State {
   mapCenter: number[];
 }
 
-const InitialUserPostion = [-0.2416815, 51.5285582]
+const InitialUserPostion = [-0.2416815, 51.5285582];
 
 class StyleUpdate extends React.Component<{}, State> {
 
@@ -137,6 +139,16 @@ class StyleUpdate extends React.Component<{}, State> {
               onDragEnd={this.onDragEnd}
             />
           </Layer>
+          <GeoJSONLayer
+            data={geojson}
+            circleLayout={{ visibility: 'visible' }}
+            symbolLayout={{
+              'text-field': '{place}',
+              'text-font': ['Open Sans Semibold', 'Arial Unicode MS Bold'],
+              'text-offset': [0, 0.6],
+              'text-anchor': 'top'
+            }}
+          />
         </Map>
         <TopBar>
           <Button onClick={this.nextStyle}>Change style</Button>

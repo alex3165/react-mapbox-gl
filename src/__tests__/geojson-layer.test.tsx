@@ -20,7 +20,8 @@ describe('GeoJSONLayer', () => {
       () => ({
         map: {
           addSource: jest.fn(),
-          addLayer: addLayerMock
+          addLayer: addLayerMock,
+          on: jest.fn()
         }
       })
     )(GeoJSONLayer);

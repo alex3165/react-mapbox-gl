@@ -100,7 +100,16 @@ export default class GeoJSONLayer extends React.Component<Props, void> {
     );
   };
 
-  public componentWillMount() {
+  private onStyleDataChange = () => {
+    // if the style of the map has been updated and we don't have layer anymore,
+    // add it back to the map and force re-rendering to redraw it
+    if (!this.context.map.getSource(this.id)) {
+      this.initialize();
+      this.forceUpdate();
+    }
+  }
+
+  private initialize() {
     const { id, source } = this;
     const { map } = this.context;
 
@@ -113,6 +122,12 @@ export default class GeoJSONLayer extends React.Component<Props, void> {
     this.createLayer('circle');
   }
 
+  public componentWillMount() {
+    const { map } = this.context;
+    this.initialize();
+    map.on('styledata', this.onStyleDataChange);
+  }
+
   public componentWillUnmount() {
     const { id, layerIds } = this;
     const { map } = this.context;
@@ -122,7 +137,7 @@ export default class GeoJSONLayer extends React.Component<Props, void> {
     }
 
     map.removeSource(id);
-
+    map.off('styledata', this.onStyleDataChange);
     layerIds.forEach(lId => map.removeLayer(lId));
   }
 
