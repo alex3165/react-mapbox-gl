@@ -23,9 +23,7 @@ describe('ScaleControl', () => {
   });
 
   it('should render the component', () => {
-    const wrapper = shallow(
-      <ScaleControlWithContext/>
-    );
+    const wrapper = shallow(<ScaleControlWithContext />);
 
     expect(wrapper).toBeDefined();
   });

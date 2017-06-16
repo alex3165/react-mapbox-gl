@@ -107,7 +107,7 @@ export default class GeoJSONLayer extends React.Component<Props, void> {
       this.initialize();
       this.forceUpdate();
     }
-  }
+  };
 
   private initialize() {
     const { id, source } = this;

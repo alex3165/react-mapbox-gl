@@ -48,7 +48,7 @@ const mockProjections = {
       return [-63.41135717118712, 69.80779389260127];
     }
   }
-}
+};
 
 describe('cluster', () => {
   let ClusterWithContext: any;
@@ -77,15 +77,14 @@ describe('cluster', () => {
 
     mount(
       <ClusterWithContext
-        children={
-          coordinates.map(coord => (
-            <Marker coordinates={coord}/>
-          ))
-        }
+        children={coordinates.map(coord => <Marker coordinates={coord} />)}
         ClusterMarkerFactory={clusterMarkerFactory}
       />
     );
 
-    expect(clusterMarkerFactory.mock.calls[0]).toEqual([[ -9.11968680123703, 40.047086577057655 ], 2 ]);
+    expect(clusterMarkerFactory.mock.calls[0]).toEqual([
+      [-9.11968680123703, 40.047086577057655],
+      2
+    ]);
   });
 });
