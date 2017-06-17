@@ -119,7 +119,7 @@ export default class Layer extends React.Component<Props, void> {
     >;
 
   private isHoverDraggable = (children: Array<React.ReactElement<FeatureProps>>) => (
-    !!this.hover.map(id => children[id].props.draggable).filter(Boolean).length
+    !!this.hover.map(id => children[id] ? children[id].props.draggable : false).filter(Boolean).length
   );
 
   private onMouseEnter = (evt: any) => {
@@ -222,12 +222,12 @@ export default class Layer extends React.Component<Props, void> {
     const { map } = this.context;
 
     const layer = {
-      ...layerOptions,
       id,
       source: sourceId || id,
       type,
       layout,
-      paint
+      paint,
+      ...layerOptions
     };
 
     if (!sourceId) {
