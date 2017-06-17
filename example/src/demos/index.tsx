@@ -13,6 +13,7 @@ const Container = styled.div`
   flex: 1;
   display: flex;
   flex-direction: column;
+  justify-content: center;
 `;
 
 const Title = styled.h1`
@@ -31,8 +32,7 @@ const Top = styled.div`
 `;
 
 const Section = styled.div`
-  flex: 1;
-  width: 65%;
+  width: 75%;
   margin: 0px auto;
   display: flex;
   flex-direction: column;

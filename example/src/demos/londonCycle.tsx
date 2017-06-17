@@ -35,7 +35,7 @@ const mapStyle = {
   width: '100%'
 };
 
-const layoutLayer = { 'icon-image': 'bike' };
+const layoutLayer = { 'icon-image': 'Cycle_Hire_Logo_small' };
 
 const StyledPopup = styled.div`
   background: white;

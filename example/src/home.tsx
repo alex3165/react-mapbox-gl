@@ -3,6 +3,8 @@ import { LiveProvider, LiveEditor, LivePreview, LiveError } from 'react-live';
 import styled from 'styled-components';
 import code from './home-code';
 import ReactMapboxGl, { Layer, Feature } from '../../';
+// tslint:disable-next-line:no-var-requires
+const { token } = require('./demos/config.json');
 
 const Container = styled.div`
   flex: 1;
@@ -36,13 +38,11 @@ const StyledEditor = styled(LiveEditor)`
 
 const StyledPreview = styled(LivePreview)``;
 
-const accessToken = 'pk.eyJ1IjoiYWxleDMxNjUiLCJhIjoiY2l4b3V0Z3RpMDAxczJ4cWk2YnEzNTVzYSJ9.MFPmOyHy8DM5_CVaqPYhOg';
-
 const MapCode = () => (
   <StyledProvider
     code={code}
     mountStylesheet={false}
-    scope={{ ReactMapboxGl, Layer, Feature, accessToken } as any}
+    scope={{ ReactMapboxGl, Layer, Feature, accessToken: token } as any}
     noInline={true}
   >
     <StyledEditor contentEditable={false}/>
