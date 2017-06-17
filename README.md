@@ -1,4 +1,4 @@
-![Logo](./logo.svg)
+![Logo](/logo.svg)
 
 # React-mapbox-gl [Doc](docs/API.md)
 

@@ -1,3 +1,25 @@
+## 2.0.* (June 2017)
+### Breaking changes
+- `ReactMapboxGl` is now a factory that return a React Component, see documentation on how to use it
+
+### Feature
+- `Feature` component has a `draggable` property
+- The map component returned by the factory accept all the events
+- Listen events only on the concerned `Layer`, should improve performances
+
+### Bug fixes
+- `Cluster` component bugs have been fixed, it is tested and should behave as expected
+- Fix issue when using `text-align: center` on a parent tag of the map
+- Fix wrong unmounting of the map
+- Fix `Layer` and `GeoJsonLayer` when changing the style of the map
+
+### Others
+- Improvement of the documentation
+- Brand new website for the examples with more examples
+- Add more tests
+- Prettify all the source files
+- Update dependencies
+
 ## 1.4.0 (March 14 2017)
 
 - Breaking change : `onHover` is now `onMouseEnter`, `onEndHover` is now `onMouseLeave`
