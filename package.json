@@ -31,8 +31,7 @@
   },
   "files": [
     "lib",
-    "src",
-    "vendor"
+    "src"
   ],
   "repository": {
     "type": "git",
