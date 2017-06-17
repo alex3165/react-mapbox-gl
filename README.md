@@ -8,8 +8,7 @@
 <br/><br/>
 ![London cycle example gif](docs/london-cycle-example.gif "London cycle example gif")
 
-React wrapper of [mapbox-gl-js](https://www.mapbox.com/mapbox-gl-js/api/) which bring the API to a react friendly way.
-On top of the layers provided, `react-mapbox-gl` add some React rendered layers, projected using `map.project`.
+React wrapper for [mapbox-gl-js](https://www.mapbox.com/mapbox-gl-js/api/). Expose a bunch of component meant to be simple to use for React. It is important to understand the difference between the components `Map`, `Layer`, `GeoJsonLayer`, `Source`, `Feature` (proxy between React and Mapbox API) and the components `Marker`, `Popup`, `Cluster`, `ZoomControl`, `ScaleControl`, `RotationControl` which are real React components.
 
 Include the following elements:
 - ReactMapboxGl
@@ -28,7 +27,7 @@ Include the following elements:
 - Popup (Projected component)
 - Cluster
 
-> The source files are written in Typescript, you can consume the compiled files in Javascript or Typescript and get the type definition files.
+> This repository include the Typescript type definition files
 
 ## How to start
 
@@ -67,16 +66,16 @@ const Map = ReactMapboxGl({
 </Map>
 ```
 
-## Disclaimer
+## Why is zoom an array
 The zoom property is an array on purpose. With a float as a value we can't tell whether the zoom has changed when checking for value equality `7 === 7 // true`.
 We changed it to an array so that between 2 render it check for a reference equality `[7] === [7] // false`,
-this way we can reliably update the zoom value.
+this way we can reliably update the zoom value without having to keep the viewport in the state of the Map component.
 
-See https://github.com/alex3165/react-mapbox-gl/issues/57 for more informations.
+## [Version 2.0 Documentation](docs/API.md)
 
-## [API Documentation](docs/API.md)
+### [Version 1.12 documentation](https://github.com/alex3165/react-mapbox-gl/blob/archive/1.12/docs/API.md)
 
-## Contribution
+## Contributions
 - Ideally before posting an issue you can try to reproduce the bug you encounter using this [boilerplate](https://github.com/alex3165/react-mapbox-gl-debug)
 
 ## Built with react-mapbox-gl
