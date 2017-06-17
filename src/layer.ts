@@ -118,12 +118,13 @@ export default class Layer extends React.Component<Props, void> {
       React.ReactElement<FeatureProps>
     >;
 
+  private isHoverDraggable = (children: Array<React.ReactElement<FeatureProps>>) => (
+    !!this.hover.map(id => children[id].props.draggable).filter(Boolean).length
+  );
+
   private onMouseEnter = (evt: any) => {
     const children = this.getChildren();
     const { map } = this.context;
-
-    // TODO: Check if a children is draggable
-    map.dragPan.disable();
 
     this.hover = [];
 
@@ -139,13 +140,15 @@ export default class Layer extends React.Component<Props, void> {
         }
       }
     });
+
+    if (this.isHoverDraggable(children)) {
+      map.dragPan.disable();
+    }
   };
 
   private onMouseLeave = (evt: any) => {
     const children = this.getChildren();
     const { map } = this.context;
-
-    // TODO: Check if a children is draggable
     map.dragPan.enable();
 
     this.hover.forEach(id => {
@@ -156,14 +159,19 @@ export default class Layer extends React.Component<Props, void> {
       }
     });
 
-    this.hover = [];
+    if (!this.isDragging) {
+      this.hover = [];
+    }
   };
 
   private onMouseDown = () => {
     const { map } = this.context;
-    if (this.hover.filter(Boolean).length === 0) {
+    const children = this.getChildren();
+    const isHoverDraggable = this.isHoverDraggable(children);
+    if (!isHoverDraggable) {
       return;
     }
+    map.dragPan.disable();
 
     this.isDragging = true;
     map.on('mousemove', this.onDragMove);
@@ -193,6 +201,7 @@ export default class Layer extends React.Component<Props, void> {
     const { map } = this.context;
     const children = this.getChildren();
 
+    map.dragPan.enable();
     this.isDragging = false;
     this.draggedChildren = undefined;
 
@@ -245,7 +254,7 @@ export default class Layer extends React.Component<Props, void> {
     map.on('click', this.id, this.onClick);
     map.on('mouseenter', this.id, this.onMouseEnter);
     map.on('mouseleave', this.id, this.onMouseLeave);
-    map.on('mousedown', this.onMouseDown);
+    map.on('mousedown', this.id, this.onMouseDown);
     map.on('styledata', this.onStyleDataChange);
   }
 

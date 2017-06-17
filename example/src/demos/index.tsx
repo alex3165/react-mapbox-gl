@@ -107,13 +107,14 @@ export interface State {
 
 class Demos extends React.Component<{}, State> {
   public state: State = {
-    selectedDemoIndex: 0
+    selectedDemoIndex: parseInt(localStorage.getItem('selectedDemoIndex') || '0', 10)
   }
 
   private onSelectExample(index: number) {
     this.setState({
       selectedDemoIndex: index
     });
+    localStorage.setItem('selectedDemoIndex', JSON.stringify(index));
   }
 
   public render() {
