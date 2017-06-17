@@ -234,7 +234,7 @@ export default class Layer extends React.Component<Props, void> {
       map.addSource(id, source);
     }
 
-    map.addLayer(layer, before);
+    map.addLayer(layer as any, before);
   };
 
   private onStyleDataChange = () => {
