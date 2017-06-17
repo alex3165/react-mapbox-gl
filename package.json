@@ -62,7 +62,7 @@
     "prop-types": "^15.5.10",
     "react": "^15.6.1",
     "react-dom": "^15.6.1",
-    "mapbox-gl": "^0.38.0"
+    "mapbox-gl": "^0.37.0"
   },
   "devDependencies": {
     "@types/core-js": "^0.9.41",
@@ -75,7 +75,7 @@
     "@types/recompose": "^0.23.0",
     "enzyme": "^2.8.2",
     "jest": "^20.0.0",
-    "mapbox-gl": "^0.38.0",
+    "mapbox-gl": "^0.37.0",
     "prettier": "^1.4.2",
     "prop-types": "^15.5.10",
     "react": "^15.6.1",
