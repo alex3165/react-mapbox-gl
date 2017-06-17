@@ -59,6 +59,7 @@
     "supercluster": "^2.3.0"
   },
   "peerDependencies": {
+    "prop-types": "^15.5.10",
     "react": "^15.6.1",
     "react-dom": "^15.6.1",
     "mapbox-gl": "^0.38.0"
@@ -76,7 +77,7 @@
     "jest": "^20.0.0",
     "mapbox-gl": "^0.38.0",
     "prettier": "^1.4.2",
-    "prop-types": "^15.5.6",
+    "prop-types": "^15.5.10",
     "react": "^15.6.1",
     "react-addons-test-utils": "^15.6.0",
     "react-dom": "^15.6.1",
