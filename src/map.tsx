@@ -96,6 +96,7 @@ export interface Events {
   onRotateStart?: MapEvent;
   onRotate?: MapEvent;
   onRotateEnd?: MapEvent;
+  onLoad?: MapboxGl.Map;
 }
 
 export interface FitBoundsOptions {
@@ -235,7 +236,8 @@ const ReactMapboxFactory = ({
         zoom,
         fitBounds,
         fitBoundsOptions,
-        bearing
+        bearing,
+        onLoad
       } = this.props;
 
       (MapboxGl as any).accessToken = accessToken;
@@ -281,6 +283,9 @@ const ReactMapboxFactory = ({
       map.on('load', (evt: React.SyntheticEvent<any>) => {
         if (this._isMounted) {
           this.setState({ map });
+          if (onLoad) {
+            onLoad(map)
+          }
         }
 
         if (onStyleLoad) {
