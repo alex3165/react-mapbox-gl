@@ -52,7 +52,6 @@ const Map = ReactMapboxGl({
 
 <Map
   style="mapbox://styles/mapbox/streets-v9"
-  accessToken=
   containerStyle={{
     height: "100vh",
     width: "100vw"
