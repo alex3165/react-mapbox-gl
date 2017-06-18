@@ -73,7 +73,7 @@ const POSITION_CIRCLE_PAINT = {
 };
 
 const selectedStyles = ['basic', 'dark', 'light'];
-const switchStyles = Object.keys(styles).filter(k => selectedStyles.includes(k));
+const switchStyles = Object.keys(styles).filter(k => (selectedStyles as any).includes(k));
 
 export interface State {
   styleKey: string;
