@@ -384,7 +384,7 @@ clusterMarker = (coordinates) => (
 
 ...
 
-<Cluster ClusterMarkerFactory={this.clusterMarker} clusterThreshold={8}>
+<Cluster ClusterMarkerFactory={this.clusterMarker}>
   {
     places.features.map((feature, key) =>
       <Marker
