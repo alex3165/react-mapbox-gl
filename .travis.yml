@@ -11,6 +11,6 @@ deploy:
   provider: pages
   skip_cleanup: true
   github_token: $GITHUB_TOKEN
-  local_dir: example/build
+  local_dir: example/dist
   on:
     tags: true
