@@ -29,7 +29,7 @@ export interface Context {
   map: MapboxGL.Map;
 }
 
-export default class Layer extends React.Component<Props, void> {
+export default class Layer extends React.Component<Props, {}> {
   public context: Context;
 
   public static contextTypes = {

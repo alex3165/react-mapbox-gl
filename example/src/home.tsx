@@ -51,7 +51,7 @@ const MapCode = () => (
   </StyledProvider>
 );
 
-class Home extends React.Component<{}, void> {
+class Home extends React.Component<{}, {}> {
   public render() {
     return (
       <Container>

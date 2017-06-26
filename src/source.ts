@@ -15,7 +15,7 @@ export interface Props {
   onSourceLoaded?: (source: GeoJSONSource | TilesJson) => any;
 }
 
-export default class Source extends React.Component<Props, void> {
+export default class Source extends React.Component<Props, {}> {
   public context: Context;
 
   public static contextTypes = {

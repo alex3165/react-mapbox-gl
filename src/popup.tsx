@@ -18,7 +18,7 @@ export interface Props {
 
 const defaultClassName = ['mapboxgl-popup'];
 
-export default class Popup extends React.Component<Props, void> {
+export default class Popup extends React.Component<Props, {}> {
   public static defaultProps = {
     anchor: anchors[0]
   };

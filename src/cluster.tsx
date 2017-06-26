@@ -20,7 +20,7 @@ export interface Props {
   extent?: number;
   nodeSize?: number;
   log?: boolean;
-  children?: Array<React.Component<MarkerProps, void>>;
+  children?: Array<React.Component<MarkerProps, {}>>;
 }
 
 export interface State {
