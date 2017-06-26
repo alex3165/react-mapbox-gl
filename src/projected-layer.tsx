@@ -44,7 +44,7 @@ export default class ProjectedLayer extends React.Component<Props, any> {
 
   public state: OverlayProps = {};
 
-  private setContainer = (el: HTMLElement) => {
+  private setContainer = (el: HTMLElement | null) => {
     if (el) {
       this.container = el;
     }

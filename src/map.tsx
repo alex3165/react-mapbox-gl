@@ -374,8 +374,8 @@ const ReactMapboxFactory = ({
       return null;
     }
 
-    private setRef = (x: HTMLElement) => {
-      this.container = x;
+    private setRef = (x: HTMLElement | null) => {
+      this.container = x!;
     };
 
     public render() {
