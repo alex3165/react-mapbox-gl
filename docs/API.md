@@ -63,10 +63,16 @@ const Map = ReactMapboxGl({
   - `flyTo`
 
 ### Events
-All mapbox map events are implemented, see events section on mapbox documentation [api](https://www.mapbox.com/mapbox-gl-js/api),
+All mapbox map events are implemented, see events section on mapbox documentation [api](https://www.mapbox.com/mapbox-gl-js/api). All the events have the following signature `(map: Mapbox.Map, evt: React.SyntheticEvent<any>) => void`.
+
 The events name are transformed to camelcase:
 ```js
+
 const events = {
+  // Triggered when style of the map has loaded
+  onStyleLoad,
+
+  // mapbox-gl events
   onResize: 'resize',
   onDblClick: 'dblclick',
   onClick: 'click',
