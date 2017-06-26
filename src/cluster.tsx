@@ -67,12 +67,10 @@ export default class Cluster extends React.Component<Props, State> {
 
   public componentWillMount() {
     const { map } = this.context;
-    const { superC } = this.state;
     const { children } = this.props;
 
     if (children) {
-      const features = this.childrenToFeatures(children as any);
-      superC.load(features);
+      this.childrenChange(children);
     }
 
     // TODO: Debounce ?
@@ -82,22 +80,25 @@ export default class Cluster extends React.Component<Props, State> {
   }
 
   public componentWillReceiveProps(nextProps: Props) {
-    const { superC } = this.state;
     const { children } = this.props;
 
     if (children !== nextProps.children) {
-      this.featureClusterMap = new WeakMap<
-        Feature,
-        React.Component<MarkerProps, any>
-      >();
-      const features = this.childrenToFeatures(nextProps.children as any);
-      superC.load(features);
+      this.childrenChange(nextProps.children);
+      this.mapChange(true);
     }
-
-    this.mapChange();
   }
 
-  private mapChange = () => {
+  private childrenChange = (newChildren: any) => {
+    const { superC } = this.state;
+    this.featureClusterMap = new WeakMap<
+      Feature,
+      React.Component<MarkerProps, any>
+    >();
+    const features = this.childrenToFeatures(newChildren as any);
+    superC.load(features);
+  };
+
+  private mapChange = (forceSetState: boolean = false) => {
     const { map } = this.context;
     const { superC, clusterPoints } = this.state;
 
@@ -113,7 +114,7 @@ export default class Cluster extends React.Component<Props, State> {
       bbox(polygon([[upLeft, upRight, downRight, downLeft, upLeft]])),
       Math.round(zoom)
     );
-    if (newPoints.length !== clusterPoints.length) {
+    if (newPoints.length !== clusterPoints.length || forceSetState) {
       this.setState({ clusterPoints: newPoints });
     }
   };
