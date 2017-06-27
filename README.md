@@ -32,7 +32,7 @@ Include the following elements:
 ## How to start
 
 ```javascript
-npm install react-mapbox-gl --save
+npm install react-mapbox-gl mapbox-gl --save
 ```
 
 Example:
