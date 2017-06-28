@@ -273,16 +273,13 @@ const ReactMapboxFactory = ({
       };
 
       const map = new MapboxGl.Map(opts);
+      this.setState({ map });
 
       if (fitBounds) {
         map.fitBounds(fitBounds, fitBoundsOptions);
       }
 
       map.on('load', (evt: React.SyntheticEvent<any>) => {
-        if (this._isMounted) {
-          this.setState({ map });
-        }
-
         if (onStyleLoad) {
           onStyleLoad(map, evt);
         }
