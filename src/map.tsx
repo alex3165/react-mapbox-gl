@@ -125,6 +125,7 @@ export interface Props {
 
 export interface State {
   map?: MapboxGl.Map;
+  ready: boolean
 }
 
 // Static Properties of the map
@@ -209,7 +210,8 @@ const ReactMapboxFactory = ({
     };
 
     public state = {
-      map: undefined
+      map: undefined,
+      ready: false
     };
 
     // tslint:disable-next-line:variable-name
@@ -273,13 +275,17 @@ const ReactMapboxFactory = ({
       };
 
       const map = new MapboxGl.Map(opts);
-      this.setState({ map });
+      this.setState({ ...this.state, map });
 
       if (fitBounds) {
         map.fitBounds(fitBounds, fitBoundsOptions);
       }
 
       map.on('load', (evt: React.SyntheticEvent<any>) => {
+        if (this._isMounted) {
+          this.setState({ ...this.state, ready: true })
+        }
+
         if (onStyleLoad) {
           onStyleLoad(map, evt);
         }
@@ -377,7 +383,7 @@ const ReactMapboxFactory = ({
 
     public render() {
       const { containerStyle, className, children } = this.props;
-      const { map } = this.state;
+      const { ready } = this.state;
 
       return (
         <div
@@ -385,7 +391,7 @@ const ReactMapboxFactory = ({
           className={className}
           style={{ ...containerStyle, ...defaultContainerStyle }}
         >
-          {map && children}
+          {ready && children}
         </div>
       );
     }
