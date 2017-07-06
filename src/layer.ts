@@ -217,13 +217,12 @@ export default class Layer extends React.Component<Props, {}> {
   };
 
   private initialize = () => {
-    const { id, source } = this;
     const { type, layout, paint, layerOptions, sourceId, before } = this.props;
     const { map } = this.context;
 
     const layer = {
-      id,
-      source: sourceId || id,
+      id: this.id,
+      source: sourceId || this.id,
       type,
       layout,
       paint,
@@ -231,7 +230,7 @@ export default class Layer extends React.Component<Props, {}> {
     };
 
     if (!sourceId) {
-      map.addSource(id, source);
+      map.addSource(this.id, this.source);
     }
 
     map.addLayer(layer as any, before);
@@ -260,16 +259,15 @@ export default class Layer extends React.Component<Props, {}> {
 
   public componentWillUnmount() {
     const { map } = this.context;
-    const { id } = this;
     if (!map || !map.getStyle()) {
       return;
     }
 
-    map.removeLayer(id);
+    map.removeLayer(this.id);
     // if pointing to an existing source, don't remove
     // as other layers may be dependent upon it
     if (!this.props.sourceId) {
-      map.removeSource(id);
+      map.removeSource(this.id);
     }
 
     map.off('click', this.onClick);

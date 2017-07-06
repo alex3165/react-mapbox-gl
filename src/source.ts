@@ -85,7 +85,6 @@ export default class Source extends React.Component<Props, {}> {
   }
 
   public componentWillReceiveProps(props: Props) {
-    const { id } = this;
     const { geoJsonSource, tileJsonSource } = this.props;
     const { map } = this.context;
 
@@ -99,8 +98,8 @@ export default class Source extends React.Component<Props, {}> {
         tileJsonSource.maxzoom !== props.tileJsonSource.maxzoom;
 
       if (hasNewTilesSource) {
-        map.removeSource(id);
-        map.addSource(id, props.tileJsonSource as any);
+        map.removeSource(this.id);
+        map.addSource(this.id, props.tileJsonSource as any);
       }
     }
 
@@ -110,7 +109,7 @@ export default class Source extends React.Component<Props, {}> {
       props.geoJsonSource &&
       props.geoJsonSource.data !== geoJsonSource.data
     ) {
-      const source = map.getSource(id) as GeoJSONSource;
+      const source = map.getSource(this.id) as GeoJSONSource;
       source.setData(props.geoJsonSource.data as SourceOptionData);
     }
   }

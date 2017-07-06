@@ -72,12 +72,12 @@ export default class GeoJSONLayer extends React.Component<Props, {}> {
   private layerIds: string[] = [];
 
   private createLayer = (type: string) => {
-    const { id, layerIds } = this;
+    // const { id, layerIds } = this;
     const { before, layerOptions } = this.props;
     const { map } = this.context;
 
-    const layerId = `${id}-${type}`;
-    layerIds.push(layerId);
+    const layerId = `${this.id}-${type}`;
+    this.layerIds.push(layerId);
 
     const paint: Paints = this.props[`${typeToLayerLUT[type]}Paint`] || {};
 
@@ -90,7 +90,7 @@ export default class GeoJSONLayer extends React.Component<Props, {}> {
     map.addLayer(
       {
         id: layerId,
-        source: id,
+        source: this.id,
         type: type as any,
         paint,
         layout,
@@ -110,10 +110,9 @@ export default class GeoJSONLayer extends React.Component<Props, {}> {
   };
 
   private initialize() {
-    const { id, source } = this;
     const { map } = this.context;
 
-    map.addSource(id, source);
+    map.addSource(this.id, this.source);
 
     this.createLayer('symbol');
     this.createLayer('line');
@@ -129,25 +128,23 @@ export default class GeoJSONLayer extends React.Component<Props, {}> {
   }
 
   public componentWillUnmount() {
-    const { id, layerIds } = this;
     const { map } = this.context;
 
     if (!map || !map.getStyle()) {
       return;
     }
 
-    map.removeSource(id);
+    map.removeSource(this.id);
     map.off('styledata', this.onStyleDataChange);
-    layerIds.forEach(lId => map.removeLayer(lId));
+    this.layerIds.forEach(lId => map.removeLayer(lId));
   }
 
   public componentWillReceiveProps(props: Props) {
-    const { id } = this;
     const { data } = this.props;
     const { map } = this.context;
 
     if (props.data !== data) {
-      (map.getSource(id) as MapboxGL.GeoJSONSource).setData(props.data);
+      (map.getSource(this.id) as MapboxGL.GeoJSONSource).setData(props.data);
     }
 
     for (const type in typeToLayerLUT) {
