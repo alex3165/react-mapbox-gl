@@ -11,13 +11,13 @@ const getCycleStations = (): Promise<any[]> => (
   fetch('https://tfl.gov.uk/tfl/syndication/feeds/cycle-hire/livecyclehireupdates.xml')
     .then(res => res.text())
     .then(data => (
-      new Promise((resolve, reject) => {
+      new Promise<any[]>((resolve, reject) => {
         parseString(data, (err, res) => {
           if (!err) {
-            resolve(res.stations.station);
-          } else {
-            reject(err);
+            return resolve(res.stations.station);
           }
+
+          reject(err);
         });
       })
     ))
