@@ -2,7 +2,7 @@ import { LngLat, Point } from 'mapbox-gl';
 import * as MapboxGL from 'mapbox-gl';
 import { Props } from '../projected-layer';
 
-export type Anchor = (
+export type Anchor =
   | 'center'
   | 'top'
   | 'bottom'
@@ -11,7 +11,7 @@ export type Anchor = (
   | 'top-left'
   | 'top-right'
   | 'bottom-left'
-  | 'bottom-right');
+  | 'bottom-right';
 
 export interface PointDef {
   x: number;

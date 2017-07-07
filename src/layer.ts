@@ -118,9 +118,12 @@ export default class Layer extends React.Component<Props, {}> {
       React.ReactElement<FeatureProps>
     >;
 
-  private isHoverDraggable = (children: Array<React.ReactElement<FeatureProps>>) => (
-    !!this.hover.map(id => children[id] ? children[id].props.draggable : false).filter(Boolean).length
-  );
+  private isHoverDraggable = (
+    children: Array<React.ReactElement<FeatureProps>>
+  ) =>
+    !!this.hover
+      .map(id => (children[id] ? children[id].props.draggable : false))
+      .filter(Boolean).length;
 
   private onMouseEnter = (evt: any) => {
     const children = this.getChildren();

@@ -125,7 +125,7 @@ export interface Props {
 
 export interface State {
   map?: MapboxGl.Map;
-  ready: boolean
+  ready: boolean;
 }
 
 // Static Properties of the map
@@ -251,9 +251,10 @@ const ReactMapboxFactory = ({
         maxBounds,
         bearing,
         container: this.container,
-        center: fitBounds && center === defaultCenter
-          ? this.calcCenter(fitBounds)
-          : center,
+        center:
+          fitBounds && center === defaultCenter
+            ? this.calcCenter(fitBounds)
+            : center,
         pitch,
         style,
         scrollZoom,
@@ -283,7 +284,7 @@ const ReactMapboxFactory = ({
 
       map.on('load', (evt: React.SyntheticEvent<any>) => {
         if (this._isMounted) {
-          this.setState({ ready: true })
+          this.setState({ ready: true });
         }
 
         if (onStyleLoad) {
