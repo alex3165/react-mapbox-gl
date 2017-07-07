@@ -23,14 +23,14 @@
     "@types/react": "^15.0.29",
     "@types/react-dom": "^15.5.0",
     "@types/react-router": "^3.0.11",
-    "@types/xml2js": "0.0.33",
+    "@types/xml2js": "^0.4.0",
     "copy-webpack-plugin": "^4.0.1",
     "cross-env": "^5.0.1",
     "gh-pages": "^1.0.0",
     "html-webpack-plugin": "^2.28.0",
-    "ts-loader": "^2.1.0",
-    "typescript": "^2.3.4",
-    "webpack": "^2.6.1",
+    "ts-loader": "^2.2.2",
+    "typescript": "^2.4.1",
+    "webpack": "^3.1.0",
     "webpack-dev-server": "^2.4.5"
   }
 }
