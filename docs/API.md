@@ -227,14 +227,14 @@ import { Feature } from "react-mapbox-gl";
 ### Properties
 - **coordinates** *(required)* : `Array<Number>` Display the feature at the given position.
 - **properties** : `Object` Properties object passed down to the feature at the creation of the source.
-- **onClick** : `(args: Object) => void` Triggered when user click on the feature
+- **onClick** : `(mapWithEvt: Object) => void` Triggered when user click on the feature
   - Args contain the feature object, the map object and the arguments passed by mapbox from the event `click`
-- **onMouseEnter** : `(args: Object) => void` Triggered when the mouse enter the feature element
+- **onMouseEnter** : `(mapWithEvt: Object) => void` Triggered when the mouse enter the feature element
   - Args contain the feature object, the map object and the arguments passed by mapbox from the event `onmousemove`
-- **onMouseLeave** : `(args: Object) => void` Triggered when the mouse leave the feature element
+- **onMouseLeave** : `(mapWithEvt: Object) => void` Triggered when the mouse leave the feature element
   - Args contain the map object and the arguments passed by Mapbox from the event `onmousemove`
 - **draggable** *(Default: `false`)*: `boolean` Define wether the feature is draggable or not.
-- **onDragEnd** : `(args: Object) => void` Triggered when the user stop dragging the feature.
+- **onDragEnd** : `(mapWithEvt: Object) => void` Triggered when the user stop dragging the feature.
 
 ----------
 # ZoomControl
