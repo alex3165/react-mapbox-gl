@@ -406,7 +406,9 @@ clusterMarker = (coordinates) => (
 ```
 
 ### Properties
-- **ClusterMarkerFactory** *(required)*: `(coordinates: number[], pointCount: number) => Marker` A function called for every cluster, the function must return a Marker component
+- **ClusterMarkerFactory** *(required)*: `(coordinates: number[], pointCount: number, getLeaves: (limit?: number, offset?: number) => Array<React.ReactElement<any>>) => Marker` A function called for every cluster, the function must return a Marker component
+  - `getLeaves()` return `Cluster` children of a cluster, with pagination support: limit is the number of points to return (set to Infinity for all points, default to 10), and offset is the amount of points to skip (for pagination).
+
 - **radius**: *Default: 60*:`Number` Cluster radius, in pixels.
 - **minZoom**: *Default: 0*:`Number` Minimum zoom level at which clusters are generated.
 - **maxZoom**: *Default: 16*:`Number` Maximum zoom level at which clusters are generated.

@@ -1,5 +1,6 @@
 import * as React from 'react';
-import ReactMapboxGl, { Marker, Cluster } from '../../../';
+import ReactMapboxGl, { Marker, Cluster, Popup } from '../../../';
+import styled from 'styled-components';
 
 // tslint:disable-next-line:no-var-requires
 const { token, styles: { outdoor } } = require('./config.json');
@@ -24,7 +25,7 @@ const styles: { [key: string]: React.CSSProperties } = {
     alignItems: 'center',
     color: 'white',
     border: '2px solid #56C498',
-    pointerEvents: 'none'
+    cursor: 'pointer'
   },
   marker: {
     width: 30,
@@ -34,29 +35,76 @@ const styles: { [key: string]: React.CSSProperties } = {
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
-    border: '2px solid #C9C9C9',
-    pointerEvents: 'none'
+    border: '2px solid #C9C9C9'
   }
 }
 
-class HtmlCluster extends React.Component<{}, {}> {
+const StyledPopup = styled.div`
+  background: white;
+  color: #3F618C;
+  font-weight: 400;
+  padding: 5px;
+  border-radius: 2px;
+`;
+
+export interface State {
+  popup?: {
+    coordinates: GeoJSON.Position,
+    total: number,
+    leaves: Array<React.ReactElement<any>>
+  };
+}
+
+class HtmlCluster extends React.Component<{}, State> {
+  public state: State = {
+    popup: undefined
+  }
+
   private zoom = [4];
 
-  private clusterMarker = (coordinates: number[], pointCount: number) => (
-    <Marker
-      key={coordinates.toString()}
-      coordinates={coordinates}
-      style={styles.clusterMarker}
-    >
-      <div>{pointCount}</div>
-    </Marker>
-  );
+  private clusterMarker = (
+    coordinates: GeoJSON.Position,
+    pointCount: number,
+    getLeaves: (limit?: number, offset?: number) => Array<React.ReactElement<any>>
+  ) => (
+      <Marker
+        key={coordinates.toString()}
+        coordinates={coordinates}
+        style={styles.clusterMarker}
+        onClick={this.clusterClick.bind(this, coordinates, pointCount, getLeaves)}
+      >
+        <div>{pointCount}</div>
+      </Marker>
+    )
+
+  private onMove = () => {
+    if (this.state.popup) {
+      this.setState({ popup: undefined });
+    }
+  };
+
+  private clusterClick = (
+    coordinates: GeoJSON.Position,
+    total: number,
+    getLeaves: (limit?: number, offset?: number) => Array<React.ReactElement<any>>
+  ) => {
+    this.setState({
+      popup: {
+        coordinates,
+        total,
+        leaves: getLeaves()
+      }
+    });
+  }
 
   public render() {
+    const { popup } = this.state;
+
     return (
       <Map
         style={outdoor}
         zoom={this.zoom}
+        onMove={this.onMove}
         containerStyle={mapStyle}
       >
         <Cluster ClusterMarkerFactory={this.clusterMarker}>
@@ -66,12 +114,38 @@ class HtmlCluster extends React.Component<{}, {}> {
                 key={key}
                 style={styles.marker}
                 coordinates={feature.geometry.coordinates}
+                data-feature={feature}
               >
-                <div/>
+                <div
+                  title={feature.properties.name}
+                >
+                  {feature.properties.name[0]}
+                </div>
               </Marker>
             )
           }
         </Cluster>
+        {
+          popup && (
+            <Popup
+              offset={[0, -50]}
+              coordinates={popup.coordinates}
+            >
+              <StyledPopup>
+                {
+                  popup.leaves.map((leaf: React.ReactElement<any>, index: number) =>
+                    <div
+                      key={index}
+                    >
+                      {leaf.props['data-feature'].properties.name}
+                    </div>
+                  )
+                }
+                {popup.total > popup.leaves.length ? <div>And more...</div> : null}
+              </StyledPopup>
+            </Popup>
+          )
+        }
       </Map>
     )
   }

@@ -12,7 +12,11 @@ import { polygon } from '@turf/helpers';
 export interface Props {
   ClusterMarkerFactory(
     coordinates: GeoJSON.Position,
-    pointCount: number
+    pointCount: number,
+    getLeaves: (
+      limit?: number,
+      offset?: number
+    ) => Array<React.ReactElement<any>>
   ): JSX.Element;
   radius?: number;
   maxZoom?: number;
@@ -25,7 +29,7 @@ export interface Props {
 
 export interface State {
   superC: any;
-  clusterPoints: any[];
+  clusterPoints: Array<GeoJSON.Feature<GeoJSON.Point>>;
 }
 
 export interface Context {
@@ -139,9 +143,18 @@ export default class Cluster extends React.Component<Props, State> {
       return feature;
     });
 
+  private getLeaves = (feature: Feature, zoom: number) => {
+    const { superC } = this.state;
+    return superC.getLeaves(feature.properties.cluster_id, zoom).map(
+      (leave: Feature) => this.featureClusterMap.get(leave)
+    )
+  }
+
   public render() {
     const { ClusterMarkerFactory } = this.props;
     const { clusterPoints } = this.state;
+    const { map } = this.context;
+    const zoom = Math.round(map.getZoom());
 
     return (
       <div>
@@ -150,7 +163,8 @@ export default class Cluster extends React.Component<Props, State> {
           if (feature.properties.cluster) {
             return ClusterMarkerFactory(
               feature.geometry.coordinates,
-              feature.properties.point_count
+              feature.properties.point_count,
+              this.getLeaves.bind(this, feature, zoom)
             );
           }
           return this.featureClusterMap.get(feature);
