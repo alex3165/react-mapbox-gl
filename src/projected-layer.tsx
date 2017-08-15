@@ -2,10 +2,15 @@ import * as React from 'react';
 const PropTypes = require('prop-types'); // tslint:disable-line
 
 import { Map } from 'mapbox-gl';
-import { Anchor, PointDef, OverlayProps } from './util/overlays';
+import {
+  Anchor,
+  PointDef,
+  OverlayProps,
+  overlayState,
+  overlayTransform,
+  anchors
+} from './util/overlays';
 import * as GeoJSON from 'geojson';
-
-import { overlayState, overlayTransform, anchors } from './util/overlays';
 
 const defaultStyle = {
   zIndex: 3

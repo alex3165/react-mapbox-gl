@@ -1,5 +1,4 @@
-import { LngLat, Point } from 'mapbox-gl';
-import * as MapboxGL from 'mapbox-gl';
+import { LngLat, Point, Map } from 'mapbox-gl';
 import { Props } from '../projected-layer';
 
 export type Anchor =
@@ -54,11 +53,11 @@ const defaultElement = { offsetWidth: 0, offsetHeight: 0 };
 const isPointLike = (input: Point | any[]): boolean =>
   input instanceof Point || Array.isArray(input);
 
-const projectCoordinates = (map: MapboxGL.Map, coordinates: number[]) =>
+const projectCoordinates = (map: Map, coordinates: number[]) =>
   map.project(LngLat.convert(coordinates));
 
 const calculateAnchor = (
-  map: MapboxGL.Map,
+  map: Map,
   offsets: any,
   position: PointDef,
   { offsetHeight, offsetWidth } = defaultElement
@@ -125,7 +124,7 @@ const normalizedOffsets = (offset: any): any => {
 
 export const overlayState = (
   props: Props,
-  map: MapboxGL.Map,
+  map: Map,
   container: HTMLElement
 ) => {
   const position = projectCoordinates(map, props.coordinates);
