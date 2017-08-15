@@ -6,8 +6,7 @@ const isEqual = require('deep-equal'); //tslint:disable-line
 import diff from './util/diff';
 import * as GeoJSON from 'geojson';
 import { generateID } from './util/uid';
-import { Sources } from './util/types';
-import { Feature } from './util/types';
+import { Sources, Feature } from './util/types';
 import { Props as FeatureProps } from './feature';
 
 export type Paint = any;

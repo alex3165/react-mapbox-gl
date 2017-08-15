@@ -82,9 +82,12 @@ describe('cluster', () => {
       />
     );
 
-    expect(clusterMarkerFactory.mock.calls[0]).toEqual([
-      [-9.11968680123703, 40.047086577057655],
-      2
-    ]);
+    const call = clusterMarkerFactory.mock.calls[0];
+    // coordinates
+    expect(call[0]).toEqual([-9.11968680123703, 40.047086577057655]);
+    // pointCount
+    expect(call[1]).toEqual(2);
+    // getLeaves
+    expect(call[2]().length).toEqual(2);
   });
 });

@@ -1,9 +1,8 @@
 import * as React from 'react';
 import ProjectedLayer from './projected-layer';
-import { anchors, Anchor } from './util/overlays';
+import { anchors, Anchor, PointDef } from './util/overlays';
 import * as GeoJSON from 'geojson';
 import { getClassName } from './util/classname';
-import { PointDef } from './util/overlays';
 
 export interface Props {
   coordinates: GeoJSON.Position;
