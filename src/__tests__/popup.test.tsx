@@ -7,7 +7,7 @@ jest.mock('../util/overlays', () => ({
   anchors: []
 }));
 import * as React from 'react';
-import Popup, { defaultClassName } from '../Popup';
+import Popup, { defaultClassName } from '../popup';
 import { withContext } from 'recompose';
 
 import { mount } from 'enzyme';
