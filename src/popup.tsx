@@ -31,7 +31,7 @@ export default class Popup extends React.Component<Props, {}> {
     );
 
     return (
-      <ProjectedLayer className={className} {...props as any}>
+      <ProjectedLayer {...props as any} className={className}>
         <div className="mapboxgl-popup-tip" />
         <div className="mapboxgl-popup-content">
           {this.props.children}
