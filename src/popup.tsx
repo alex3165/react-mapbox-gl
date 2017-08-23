@@ -15,7 +15,7 @@ export interface Props {
   className?: string;
 }
 
-const defaultClassName = ['mapboxgl-popup'];
+export const defaultClassName = ['mapboxgl-popup'];
 
 export default class Popup extends React.Component<Props, {}> {
   public static defaultProps = {
