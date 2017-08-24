@@ -121,4 +121,44 @@ describe('Map', () => {
 
     expect(flyTo).not.toHaveBeenCalled();
   });
+
+  it('Should pass animation options and flyTo options', () => {
+    const MapboxMap = ReactMapboxGl({ accessToken: '' });
+    const flyTo = jest.fn();
+    const zoom = [3];
+    const flyToOptions = {
+      speed: 0.1,
+      curve: 0.9
+    };
+    const animationOptions = {
+      offset: [20, 60]
+    };
+
+    const wrapper = mount(
+      <MapboxMap
+        style=""
+        zoom={zoom}
+        flyToOptions={flyToOptions}
+        animationOptions={animationOptions}
+      />
+    );
+
+    wrapper.setState({
+      map: {
+        ...mapState,
+        flyTo
+      }
+    });
+
+    wrapper.setProps({ zoom: [1] });
+
+    expect(flyTo.mock.calls[0][0]).toEqual({
+      ...flyToOptions,
+      ...animationOptions,
+      bearing: undefined,
+      center: {lat: 2, lng: 1},
+      pitch: undefined,
+      zoom: 1
+    });
+  });
 });

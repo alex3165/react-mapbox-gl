@@ -119,6 +119,9 @@ export default class LondonCycle extends React.Component<{}, State> {
           zoom={zoom}
           onDrag={this.onDrag}
           containerStyle={mapStyle}
+          flyToOptions={{
+            speed: 0.8
+          }}
         >
           <Layer
             type="symbol"

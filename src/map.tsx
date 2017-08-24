@@ -108,6 +108,20 @@ export interface FitBoundsOptions {
 
 export type FitBounds = number[][];
 
+export interface AnimationOptions {
+  duration: number;
+  animate: boolean;
+  easing(time: number): number;
+  offset: number[];
+}
+
+export interface FlyToOptions {
+  curve: number;
+  minZoom: number;
+  speed: number;
+  screenSpeed: number;
+}
+
 // React Props updated between re-render
 export interface Props {
   style: string | MapboxGl.Style;
@@ -120,6 +134,8 @@ export interface Props {
   containerStyle?: React.CSSProperties;
   className?: string;
   movingMethod?: 'jumpTo' | 'easeTo' | 'flyTo';
+  animationOptions?: AnimationOptions;
+  flyToOptions?: FlyToOptions;
   children?: JSX.Element;
 }
 
@@ -363,7 +379,11 @@ const ReactMapboxFactory = ({
         didPitchUpdate
       ) {
         const mm: string = nextProps.movingMethod || defaultMovingMethod;
+        const { flyToOptions, animationOptions } = nextProps;
+
         map[mm]({
+          ...animationOptions,
+          ...flyToOptions,
           zoom: didZoomUpdate && nextProps.zoom ? nextProps.zoom[0] : zoom,
           center: didCenterUpdate ? nextProps.center : center,
           bearing: didBearingUpdate ? nextProps.bearing : bearing,
