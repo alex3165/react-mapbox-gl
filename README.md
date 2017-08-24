@@ -79,3 +79,6 @@ this way we can reliably update the zoom value without having to keep the viewpo
 
 ## Built with react-mapbox-gl
 [monumap.org](https://monumap.org/)
+
+## mapbox-gl-draw compatibility
+Try [react-mapbox-gl-draw](https://github.com/amaurymartiny/react-mapbox-gl-draw)
