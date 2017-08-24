@@ -61,6 +61,8 @@ const Map = ReactMapboxGl({
   - `jumpTo`
   - `easeTo`
   - `flyTo`
+- **animationOptions** : `AnimationOptions` Options for moving animation [see](https://www.mapbox.com/mapbox-gl-js/api/#animationoptions)
+- **flyToOptions** : `FlyToOptions` Options for flyTo animation [see](https://www.mapbox.com/mapbox-gl-js/api/#map#flyto)
 
 ### Events
 All mapbox map events are implemented, see events section on mapbox documentation [api](https://www.mapbox.com/mapbox-gl-js/api). All the events have the following signature `(map: Mapbox.Map, evt: React.SyntheticEvent<any>) => void`.
