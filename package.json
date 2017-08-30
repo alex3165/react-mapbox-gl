@@ -55,7 +55,7 @@
     "@turf/bbox": "^4.4.0",
     "@turf/helpers": "^4.4.0",
     "deep-equal": "^1.0.1",
-    "supercluster": "^2.3.0"
+    "supercluster": "^3.0.0"
   },
   "peerDependencies": {
     "prop-types": "^15.5.10",
