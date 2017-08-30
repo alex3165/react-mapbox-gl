@@ -80,12 +80,16 @@ export default class GeoJSONLayer extends React.Component<Props, {}> {
 
   private layerIds: string[] = [];
 
+  private buildLayerId = (type: string) => {
+    return `${this.id}-${type}`;
+  }
+
   private createLayer = (type: string) => {
     // const { id, layerIds } = this;
     const { before, layerOptions } = this.props;
     const { map } = this.context;
 
-    const layerId = `${this.id}-${type}`;
+    const layerId = this.buildLayerId(type);
     this.layerIds.push(layerId);
 
     const paint: Paints = this.props[`${typeToLayerLUT[type]}Paint`] || {};
@@ -114,7 +118,7 @@ export default class GeoJSONLayer extends React.Component<Props, {}> {
   private mapLayerMouseHandlers = (type: string) => {
     const { map } = this.context;
 
-    const layerId = `${this.id}-${type}`;
+    const layerId = this.buildLayerId(type);
 
     const events = Object.keys(eventToHandler);
 
