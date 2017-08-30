@@ -14,6 +14,15 @@ const typeToLayerLUT = {
   line: 'line'
 };
 
+const eventToHandler = {
+  mousemove: 'OnMouseMove',
+  mouseenter: 'OnMouseEnter',
+  mouseleave: 'OnMouseLeave',
+  mousedown: 'OnMouseDown',
+  mouseup: 'OnMouseUp',
+  click: 'OnClick'
+};
+
 export interface Props {
   id?: string;
   data: SourceOptionData;
@@ -98,7 +107,25 @@ export default class GeoJSONLayer extends React.Component<Props, {}> {
       },
       before
     );
+
+    this.mapLayerMouseHandlers(type)
   };
+
+  private mapLayerMouseHandlers = (type: string) => {
+    const { map } = this.context;
+
+    const layerId = `${this.id}-${type}`;
+
+    const events = Object.keys(eventToHandler);
+
+    events.forEach(event => {
+      const handler = this.props[`${typeToLayerLUT[type]}${eventToHandler[event]}`] || null;
+
+      if (handler) {
+        map.on(event, layerId, handler);
+      }
+    })
+  }
 
   private onStyleDataChange = () => {
     // if the style of the map has been updated and we don't have layer anymore,
