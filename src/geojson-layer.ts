@@ -168,6 +168,20 @@ export default class GeoJSONLayer extends React.Component<Props, {}> {
     map.removeSource(this.id);
     map.off('styledata', this.onStyleDataChange);
     this.layerIds.forEach(lId => map.removeLayer(lId));
+
+    for (const type in typeToLayerLUT) {
+      if (typeToLayerLUT.hasOwnProperty(type)) {
+        for (const event in eventToHandler) {
+          if (eventToHandler.hasOwnProperty(event)) {
+            const prop = typeToLayerLUT[type] + eventToHandler[event];
+
+            if (this.props[prop]) {
+              map.off(event, this.buildLayerId(type), this.props[prop]);
+            }
+          }
+        }
+      }
+    }
   }
 
   public componentWillReceiveProps(props: Props) {
@@ -186,7 +200,7 @@ export default class GeoJSONLayer extends React.Component<Props, {}> {
           const paintDiff = diff(this.props[prop], props[prop]);
 
           Object.keys(paintDiff).forEach(key => {
-            map.setPaintProperty(`${this.id}-${type}`, key, paintDiff[key]);
+            map.setPaintProperty(this.buildLayerId(type), key, paintDiff[key]);
           });
         }
       }
@@ -200,8 +214,28 @@ export default class GeoJSONLayer extends React.Component<Props, {}> {
           const layoutDiff = diff(this.props[prop], props[prop]);
 
           Object.keys(layoutDiff).forEach(key => {
-            map.setLayoutProperty(`${this.id}-${type}`, key, layoutDiff[key]);
+            map.setLayoutProperty(this.buildLayerId(type), key, layoutDiff[key]);
           });
+        }
+      }
+    }
+
+    for (const type in typeToLayerLUT) {
+      if (typeToLayerLUT.hasOwnProperty(type)) {
+        for (const event in eventToHandler) {
+          if (eventToHandler.hasOwnProperty(event)) {
+            const prop = typeToLayerLUT[type] + eventToHandler[event];
+
+            if (!isEqual(props[prop], this.props[prop])) {
+              if (this.props[prop]) {
+                map.off(event, this.buildLayerId(type), this.props[prop]);
+              }
+
+              if (props[prop]) {
+                map.on(event, this.buildLayerId(type), props[prop]);
+              }
+            }
+          }
         }
       }
     }
