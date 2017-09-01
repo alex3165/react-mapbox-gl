@@ -182,15 +182,22 @@ export default class GeoJSONLayer extends React.Component<Props, {}> {
   }
 
   public componentWillReceiveProps(props: Props) {
-    const { data } = this.props;
+    const { data, layerOptions } = this.props;
     const { map } = this.context;
 
     if (props.data !== data) {
       (map.getSource(this.id) as MapboxGL.GeoJSONSource).setData(props.data);
     }
 
+    const layerFilterChanged = props.layerOptions && layerOptions &&
+      !isEqual(props.layerOptions.filter, layerOptions.filter)
+
     Object.keys(typeToLayerLUT).forEach(type => {
       const layerId = this.buildLayerId(type);
+
+      if (props.layerOptions && layerFilterChanged) {
+        map.setFilter(layerId, props.layerOptions.filter as any);
+      }
 
       const paintProp = typeToLayerLUT[type] + 'Paint';
 
