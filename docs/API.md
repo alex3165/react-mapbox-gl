@@ -209,6 +209,12 @@ import { GeoJSONLayer } from "react-mapbox-gl";
 - **data** *(required)* : `String | Object` The url to the geojson file or the geojson file itself.
 - **lineLayout** | **symbolLayout** | **circleLayout** | **fillLayout** | **fillExtrusionLayout** : `Object` Layer layout informations. [mapbox layout api](https://www.mapbox.com/mapbox-gl-style-spec/#layer-layout)
 - **linePaint** | **symbolPaint** | **circlePaint** | **fillPaint** | **fillExtrusionPaint** : `Object` Paint informations. [mapbox paint api](https://www.mapbox.com/mapbox-gl-style-spec/#layer-paint)
+- **lineOnMouseDown** | **symbolOnMouseDown** | **circleOnMouseDown** | **fillOnMouseDown** | **fillExtrusionOnMouseDown** : `Function` Mouse down handler. [mapbox map mouse event](https://www.mapbox.com/mapbox-gl-js/api/#mapmouseevent)
+- **lineOnMouseUp** | **symbolOnMouseUp** | **circleOnMouseUp** | **fillOnMouseUp** | **fillExtrusionOnMouseUp** : `Function` Mouse up handler. [mapbox map mouse event](https://www.mapbox.com/mapbox-gl-js/api/#mapmouseevent)
+- **lineOnMouseMove** | **symbolOnMouseMove** | **circleOnMouseMove** | **fillOnMouseMove** | **fillExtrusionOnMouseMove** : `Function` Mouse move handler. [mapbox map mouse event](https://www.mapbox.com/mapbox-gl-js/api/#mapmouseevent)
+- **lineOnMouseEnter** | **symbolOnMouseEnter** | **circleOnMouseEnter** | **fillOnMouseEnter** | **fillExtrusionOnMouseEnter** : `Function` Mouse enter handler. [mapbox map mouse event](https://www.mapbox.com/mapbox-gl-js/api/#mapmouseevent)
+- **lineOnMouseLeave** | **symbolOnMouseLeave** | **circleOnMouseLeave** | **fillOnMouseLeave** | **fillExtrusionOnMouseLeave** : `Function` Mouse leave handler. [mapbox map api](https://www.mapbox.com/mapbox-gl-js/api/#mapmouseevent)
+- **lineOnClick** | **symbolOnClick** | **circleOnClick** | **fillOnClick** | **fillExtrusionOnClick** : `Function` Mouse click handler. [mapbox map mouse event](https://www.mapbox.com/mapbox-gl-js/api/#mapmouseevent)
 - **sourceOptions**: `Object` Options object merged to the object used when calling `GeoJSONSource` method
 - **layerOptions**: `Object` Passed down to the layer object when setting it out.
 - **before**:`String` Pass the id of a layer, it will display the current layer before the layer defined by the id. [mapbox api](https://www.mapbox.com/mapbox-gl-js/api/#Map#addLayer)
