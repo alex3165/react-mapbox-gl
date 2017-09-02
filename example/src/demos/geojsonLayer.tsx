@@ -32,6 +32,10 @@ const circlePaint: MapboxGL.CirclePaint = {
 class GeoJsonLayer extends React.Component<{}, {}> {
   private center = [ -77.01239, 38.91275 ];
 
+  private onClickCircle = (evt: any) => {
+    console.log(evt);
+  }
+
   public render() {
     return (
       <Map
@@ -43,6 +47,7 @@ class GeoJsonLayer extends React.Component<{}, {}> {
           data={geojson}
           circleLayout={circleLayout}
           circlePaint={circlePaint}
+          circleOnClick={this.onClickCircle}
           symbolLayout={symbolLayout}
           symbolPaint={symbolPaint}
         />
