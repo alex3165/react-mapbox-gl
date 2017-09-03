@@ -143,18 +143,16 @@ export default class Cluster extends React.Component<Props, State> {
       return feature;
     });
 
-  private getLeaves = (feature: Feature, zoom: number) => {
+  private getLeaves = (feature: Feature) => {
     const { superC } = this.state;
     return superC
-      .getLeaves(feature.properties.cluster_id, zoom)
+      .getLeaves(feature.properties.cluster_id)
       .map((leave: Feature) => this.featureClusterMap.get(leave));
   };
 
   public render() {
     const { ClusterMarkerFactory } = this.props;
     const { clusterPoints } = this.state;
-    const { map } = this.context;
-    const zoom = Math.round(map.getZoom());
 
     return (
       <div>
@@ -164,7 +162,7 @@ export default class Cluster extends React.Component<Props, State> {
             return ClusterMarkerFactory(
               feature.geometry.coordinates,
               feature.properties.point_count,
-              this.getLeaves.bind(this, feature, zoom)
+              this.getLeaves.bind(this, feature)
             );
           }
           return this.featureClusterMap.get(feature);
