@@ -423,3 +423,5 @@ clusterMarker = (coordinates) => (
 - **extent**: *Default: 512*:`Number` (Tiles) Tile extent. Radius is calculated relative to this value.
 - **nodeSize**: *Default: 64*:`Number` Size of the KD-tree leaf node. Affects performance.
 - **log**: *Default: false*:`Boolean` Whether timing info should be logged.
+- **zoomOnClick**: *Default: false*:`Boolean` Zoom to bounds of cluster on click.
+- **zoomOnClickPadding**: *Default: 20*:`Number` The amount of padding in pixels to add to the cluster bounds for the zoom.
