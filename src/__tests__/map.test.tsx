@@ -156,7 +156,7 @@ describe('Map', () => {
       ...flyToOptions,
       ...animationOptions,
       bearing: undefined,
-      center: {lat: 2, lng: 1},
+      center: { lat: 2, lng: 1 },
       pitch: undefined,
       zoom: 1
     });

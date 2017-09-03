@@ -145,10 +145,10 @@ export default class Cluster extends React.Component<Props, State> {
 
   private getLeaves = (feature: Feature, zoom: number) => {
     const { superC } = this.state;
-    return superC.getLeaves(feature.properties.cluster_id, zoom).map(
-      (leave: Feature) => this.featureClusterMap.get(leave)
-    )
-  }
+    return superC
+      .getLeaves(feature.properties.cluster_id, zoom)
+      .map((leave: Feature) => this.featureClusterMap.get(leave));
+  };
 
   public render() {
     const { ClusterMarkerFactory } = this.props;

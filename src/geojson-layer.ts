@@ -126,7 +126,7 @@ export default class GeoJSONLayer extends React.Component<Props, {}> {
 
   private buildLayerId = (type: string) => {
     return `${this.id}-${type}`;
-  }
+  };
 
   private createLayer = (type: string) => {
     // const { id, layerIds } = this;
@@ -156,7 +156,7 @@ export default class GeoJSONLayer extends React.Component<Props, {}> {
       before
     );
 
-    this.mapLayerMouseHandlers(type)
+    this.mapLayerMouseHandlers(type);
   };
 
   private mapLayerMouseHandlers = (type: string) => {
@@ -167,13 +167,14 @@ export default class GeoJSONLayer extends React.Component<Props, {}> {
     const events = Object.keys(eventToHandler);
 
     events.forEach(event => {
-      const handler = this.props[`${typeToLayerLUT[type]}${eventToHandler[event]}`] || null;
+      const handler =
+        this.props[`${typeToLayerLUT[type]}${eventToHandler[event]}`] || null;
 
       if (handler) {
         map.on(event, layerId, handler);
       }
-    })
-  }
+    });
+  };
 
   private onStyleDataChange = () => {
     // if the style of the map has been updated and we don't have layer anymore,
@@ -233,8 +234,10 @@ export default class GeoJSONLayer extends React.Component<Props, {}> {
       (map.getSource(this.id) as MapboxGL.GeoJSONSource).setData(props.data);
     }
 
-    const layerFilterChanged = props.layerOptions && layerOptions &&
-      !isEqual(props.layerOptions.filter, layerOptions.filter)
+    const layerFilterChanged =
+      props.layerOptions &&
+      layerOptions &&
+      !isEqual(props.layerOptions.filter, layerOptions.filter);
 
     Object.keys(typeToLayerLUT).forEach(type => {
       const layerId = this.buildLayerId(type);
