@@ -14,29 +14,82 @@ const typeToLayerLUT = {
   line: 'line'
 };
 
-export interface Props {
+const eventToHandler = {
+  mousemove: 'OnMouseMove',
+  mouseenter: 'OnMouseEnter',
+  mouseleave: 'OnMouseLeave',
+  mousedown: 'OnMouseDown',
+  mouseup: 'OnMouseUp',
+  click: 'OnClick'
+};
+
+export type MouseEvent = (evt: any) => any;
+
+export interface LineProps {
+  linePaint?: MapboxGL.LinePaint;
+  lineLayout?: MapboxGL.LineLayout;
+  lineOnMouseMove?: MouseEvent;
+  lineOnMouseEnter?: MouseEvent;
+  lineOnMouseLeave?: MouseEvent;
+  lineOnMouseDown?: MouseEvent;
+  lineOnMouseUp?: MouseEvent;
+  lineOnClick?: MouseEvent;
+}
+
+export interface CircleProps {
+  circlePaint?: MapboxGL.CirclePaint;
+  circleLayout?: MapboxGL.CircleLayout;
+  circleOnMouseMove?: MouseEvent;
+  circleOnMouseEnter?: MouseEvent;
+  circleOnMouseLeave?: MouseEvent;
+  circleOnMouseDown?: MouseEvent;
+  circleOnMouseUp?: MouseEvent;
+  circleOnClick?: MouseEvent;
+}
+
+export interface SymbolProps {
+  symbolLayout?: MapboxGL.SymbolLayout;
+  symbolPaint?: MapboxGL.SymbolPaint;
+  symbolOnMouseMove?: MouseEvent;
+  symbolOnMouseEnter?: MouseEvent;
+  symbolOnMouseLeave?: MouseEvent;
+  symbolOnMouseDown?: MouseEvent;
+  symbolOnMouseUp?: MouseEvent;
+  symbolOnClick?: MouseEvent;
+}
+
+export interface FillProps {
+  fillLayout?: MapboxGL.FillLayout;
+  fillPaint?: MapboxGL.FillPaint;
+  fillOnMouseMove?: MouseEvent;
+  fillOnMouseEnter?: MouseEvent;
+  fillOnMouseLeave?: MouseEvent;
+  fillOnMouseDown?: MouseEvent;
+  fillOnMouseUp?: MouseEvent;
+  fillOnClick?: MouseEvent;
+}
+
+export interface FillExtrusionProps {
+  fillExtrusionLayout?: MapboxGL.FillExtrusionLayout;
+  fillExtrusionPaint?: MapboxGL.FillExtrusionPaint;
+  fillExtrusionOnMouseMove?: MouseEvent;
+  fillExtrusionOnMouseEnter?: MouseEvent;
+  fillExtrusionOnMouseLeave?: MouseEvent;
+  fillExtrusionOnMouseDown?: MouseEvent;
+  fillExtrusionOnMouseUp?: MouseEvent;
+  fillExtrusionOnClick?: MouseEvent;
+}
+
+export interface Props extends LineProps, CircleProps, SymbolProps, FillProps, FillExtrusionProps {
   id?: string;
   data: SourceOptionData;
+  layerOptions?: MapboxGL.Layer;
   sourceOptions?:
     | MapboxGL.VectorSource
     | MapboxGL.RasterSource
     | MapboxGL.GeoJSONSource
     | MapboxGL.GeoJSONSourceRaw;
   before?: string;
-
-  fillLayout?: MapboxGL.FillLayout;
-  fillExtrusionLayout?: MapboxGL.FillExtrusionLayout;
-  symbolLayout?: MapboxGL.SymbolLayout;
-  circleLayout?: MapboxGL.CircleLayout;
-  lineLayout?: MapboxGL.LineLayout;
-
-  fillPaint?: MapboxGL.FillPaint;
-  fillExtrusionPaint?: MapboxGL.FillExtrusionPaint;
-  symbolPaint?: MapboxGL.SymbolPaint;
-  circlePaint?: MapboxGL.CirclePaint;
-  linePaint?: MapboxGL.LinePaint;
-
-  layerOptions?: MapboxGL.Layer;
 }
 
 type Paints =
@@ -71,12 +124,16 @@ export default class GeoJSONLayer extends React.Component<Props, {}> {
 
   private layerIds: string[] = [];
 
+  private buildLayerId = (type: string) => {
+    return `${this.id}-${type}`;
+  };
+
   private createLayer = (type: string) => {
     // const { id, layerIds } = this;
     const { before, layerOptions } = this.props;
     const { map } = this.context;
 
-    const layerId = `${this.id}-${type}`;
+    const layerId = this.buildLayerId(type);
     this.layerIds.push(layerId);
 
     const paint: Paints = this.props[`${typeToLayerLUT[type]}Paint`] || {};
@@ -98,6 +155,25 @@ export default class GeoJSONLayer extends React.Component<Props, {}> {
       },
       before
     );
+
+    this.mapLayerMouseHandlers(type);
+  };
+
+  private mapLayerMouseHandlers = (type: string) => {
+    const { map } = this.context;
+
+    const layerId = this.buildLayerId(type);
+
+    const events = Object.keys(eventToHandler);
+
+    events.forEach(event => {
+      const handler =
+        this.props[`${typeToLayerLUT[type]}${eventToHandler[event]}`] || null;
+
+      if (handler) {
+        map.on(event, layerId, handler);
+      }
+    });
   };
 
   private onStyleDataChange = () => {
@@ -136,44 +212,74 @@ export default class GeoJSONLayer extends React.Component<Props, {}> {
 
     map.removeSource(this.id);
     map.off('styledata', this.onStyleDataChange);
+
+    Object.keys(typeToLayerLUT).forEach(type => {
+      Object.keys(eventToHandler).forEach(event => {
+        const prop = typeToLayerLUT[type] + eventToHandler[event];
+
+        if (this.props[prop]) {
+          map.off(event, this.buildLayerId(type), this.props[prop]);
+        }
+      });
+    });
+
     this.layerIds.forEach(lId => map.removeLayer(lId));
   }
 
   public componentWillReceiveProps(props: Props) {
-    const { data } = this.props;
+    const { data, layerOptions } = this.props;
     const { map } = this.context;
 
     if (props.data !== data) {
       (map.getSource(this.id) as MapboxGL.GeoJSONSource).setData(props.data);
     }
 
-    for (const type in typeToLayerLUT) {
-      if (typeToLayerLUT.hasOwnProperty(type)) {
-        const prop = typeToLayerLUT[type] + 'Paint';
+    const layerFilterChanged =
+      props.layerOptions &&
+      layerOptions &&
+      !isEqual(props.layerOptions.filter, layerOptions.filter);
 
-        if (!isEqual(props[prop], this.props[prop])) {
-          const paintDiff = diff(this.props[prop], props[prop]);
+    Object.keys(typeToLayerLUT).forEach(type => {
+      const layerId = this.buildLayerId(type);
 
-          Object.keys(paintDiff).forEach(key => {
-            map.setPaintProperty(`${this.id}-${type}`, key, paintDiff[key]);
-          });
-        }
+      if (props.layerOptions && layerFilterChanged) {
+        map.setFilter(layerId, props.layerOptions.filter as any);
       }
-    }
 
-    for (const type in typeToLayerLUT) {
-      if (typeToLayerLUT.hasOwnProperty(type)) {
-        const prop = typeToLayerLUT[type] + 'Layout';
+      const paintProp = typeToLayerLUT[type] + 'Paint';
 
-        if (!isEqual(props[prop], this.props[prop])) {
-          const layoutDiff = diff(this.props[prop], props[prop]);
+      if (!isEqual(props[paintProp], this.props[paintProp])) {
+        const paintDiff = diff(this.props[paintProp], props[paintProp]);
 
-          Object.keys(layoutDiff).forEach(key => {
-            map.setLayoutProperty(`${this.id}-${type}`, key, layoutDiff[key]);
-          });
-        }
+        Object.keys(paintDiff).forEach(key => {
+          map.setPaintProperty(layerId, key, paintDiff[key]);
+        });
       }
-    }
+
+      const layoutProp = typeToLayerLUT[type] + 'Layout';
+
+      if (!isEqual(props[layoutProp], this.props[layoutProp])) {
+        const layoutDiff = diff(this.props[layoutProp], props[layoutProp]);
+
+        Object.keys(layoutDiff).forEach(key => {
+          map.setLayoutProperty(layerId, key, layoutDiff[key]);
+        });
+      }
+
+      Object.keys(eventToHandler).forEach(event => {
+        const prop = typeToLayerLUT[type] + eventToHandler[event];
+
+        if (props[prop] !== this.props[prop]) {
+          if (this.props[prop]) {
+            map.off(event, layerId, this.props[prop]);
+          }
+
+          if (props[prop]) {
+            map.on(event, layerId, props[prop]);
+          }
+        }
+      });
+    });
   }
 
   public render() {

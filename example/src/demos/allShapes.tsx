@@ -11,9 +11,15 @@ import { AllShapesPolygonCoords, AllShapesMultiPolygonCoords } from './data';
 const { token } = require('./config.json');
 // tslint:disable-next-line:no-var-requires
 const mapData = require('./allShapesStyle.json');
+interface Point { lat: number; lng: number };
+interface Route {
+  [key: string]: any;
+  points: Point[];
+}
 // tslint:disable-next-line:no-var-requires
-const route = require('./route.json');
-const mappedRoute = route.points.map((point: any) => [ point.lat, point.lng ]);
+const route: Route = require('./route.json');
+
+const mappedRoute = route.points.map(point => [ point.lat, point.lng ]);
 
 const Map = ReactMapboxGl({ accessToken: token });
 
