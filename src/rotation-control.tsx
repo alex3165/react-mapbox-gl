@@ -41,11 +41,12 @@ const buttonStyleCompass = {
   borderTopRightRadius: 2
 };
 
-const Icon = () =>
+const Icon = () => (
   <svg viewBox="0 0 20 20">
     <polygon fill="#333333" points="6,9 10,1 14,9" />
     <polygon fill="#CCCCCC" points="6,11 10,19 14,11" />
-  </svg>;
+  </svg>
+);
 
 const compassSpan = {
   width: 20,

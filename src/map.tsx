@@ -267,9 +267,10 @@ const ReactMapboxFactory = ({
         maxBounds,
         bearing,
         container: this.container,
-        center: fitBounds && center === defaultCenter
-          ? this.calcCenter(fitBounds)
-          : center,
+        center:
+          fitBounds && center === defaultCenter
+            ? this.calcCenter(fitBounds)
+            : center,
         pitch,
         style,
         scrollZoom,

@@ -79,7 +79,9 @@ describe('cluster', () => {
 
     mount(
       <ClusterWithContext
-        children={coordinates.map((coord, index) => <Marker coordinates={coord} key={index} />)}
+        children={coordinates.map((coord, index) => (
+          <Marker coordinates={coord} key={index} />
+        ))}
         ClusterMarkerFactory={clusterMarkerFactory}
       />
     );

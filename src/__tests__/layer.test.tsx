@@ -67,9 +67,7 @@ describe('Layer', () => {
   });
 
   it('Should set features based on children', () => {
-    const layer = mount(
-      <LayerWithContext children={childrenWithOneFeature} />
-    );
+    const layer = mount(<LayerWithContext children={childrenWithOneFeature} />);
 
     expect(setDataMock.mock.calls[0]).toEqual([
       {
@@ -86,11 +84,7 @@ describe('Layer', () => {
   });
 
   it('Should set features to empty array when children disappear', () => {
-    const layer = mount(
-      (
-        <LayerWithContext children={childrenWithOneFeature} />
-      ) as React.ReactElement<any>
-    );
+    const layer = mount(<LayerWithContext children={childrenWithOneFeature} />);
 
     layer.setProps({ children: undefined });
 
@@ -105,9 +99,7 @@ describe('Layer', () => {
   it('Should flatten features', () => {
     const childrens = [<div>Test</div>, [<div>Test</div>, <div>Test</div>]];
 
-    const layer = mount(
-      <LayerWithContext children={childrens} /> as React.ReactElement<any>
-    );
+    const layer = mount(<LayerWithContext children={childrens} />);
 
     expect(setDataMock.mock.calls[0][0].features).toHaveLength(3);
   });

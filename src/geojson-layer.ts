@@ -80,7 +80,12 @@ export interface FillExtrusionProps {
   fillExtrusionOnClick?: MouseEvent;
 }
 
-export interface Props extends LineProps, CircleProps, SymbolProps, FillProps, FillExtrusionProps {
+export interface Props
+  extends LineProps,
+    CircleProps,
+    SymbolProps,
+    FillProps,
+    FillExtrusionProps {
   id?: string;
   data: SourceOptionData;
   layerOptions?: MapboxGL.Layer;

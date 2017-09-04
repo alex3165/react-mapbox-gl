@@ -56,9 +56,7 @@ describe('GeoJSONLayer', () => {
   });
 
   it('Should call addLayer when no layerOptions provided', () => {
-    mount(
-      <GeoJSONLayerWithContext fillPaint={fillPaint} data={data} />
-    );
+    mount(<GeoJSONLayerWithContext fillPaint={fillPaint} data={data} />);
 
     const addFillLayerCall = addLayerMock.mock.calls.find(([call]) =>
       call.id.endsWith('-fill')
@@ -76,10 +74,15 @@ describe('GeoJSONLayer', () => {
   });
 
   it('Should start listening onClick mouse event', () => {
-    mount(<GeoJSONLayerWithContext fillPaint={fillPaint} data={data} fillOnClick={jest.fn()} />);
+    mount(
+      <GeoJSONLayerWithContext
+        fillPaint={fillPaint}
+        data={data}
+        fillOnClick={jest.fn()}
+      />
+    );
 
     expect(mapOnEventMock.mock.calls[0][0]).toEqual('click');
     expect(mapOnEventMock.mock.calls[0][1]).toEqual('geojson-3-fill');
-
   });
 });
