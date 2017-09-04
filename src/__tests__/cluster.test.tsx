@@ -1,6 +1,7 @@
 jest.mock('mapbox-gl', () => ({
   Map: {}
 }));
+
 jest.mock('../util/overlays', () => ({
   overlayState: jest.fn(() => ({})),
   overlayTransform: jest.fn(() => []),
@@ -12,6 +13,7 @@ import Cluster from '../cluster';
 import Marker from '../marker';
 import { withContext } from 'recompose';
 import { mount } from 'enzyme';
+const PropTypes = require('prop-types'); // tslint:disable-line
 
 const coordinates = [
   [-12.408741828510017, 58.16339752811908],
@@ -58,7 +60,7 @@ describe('cluster', () => {
 
     ClusterWithContext = withContext(
       {
-        map: React.PropTypes.object
+        map: PropTypes.object
       },
       () => ({
         map: {
@@ -77,7 +79,7 @@ describe('cluster', () => {
 
     mount(
       <ClusterWithContext
-        children={coordinates.map(coord => <Marker coordinates={coord} />)}
+        children={coordinates.map((coord, index) => <Marker coordinates={coord} key={index} />)}
         ClusterMarkerFactory={clusterMarkerFactory}
       />
     );

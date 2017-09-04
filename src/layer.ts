@@ -36,7 +36,7 @@ export default class Layer extends React.Component<Props, {}> {
   };
 
   public static defaultProps = {
-    type: 'symbol',
+    type: 'symbol' as 'symbol',
     layout: {},
     paint: {}
   };

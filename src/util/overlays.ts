@@ -33,7 +33,7 @@ export const anchors = [
   'top-right',
   'bottom-left',
   'bottom-right'
-];
+] as Anchor[];
 
 export const anchorTranslates = {
   center: 'translate(-50%, -50%)',

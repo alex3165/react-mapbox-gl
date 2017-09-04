@@ -2,6 +2,7 @@ import * as React from 'react';
 import Layer from '../layer';
 import { withContext } from 'recompose';
 import { mount } from 'enzyme';
+const PropTypes = require('prop-types'); // tslint:disable-line
 
 describe('Layer', () => {
   let LayerWithContext: any;
@@ -22,7 +23,7 @@ describe('Layer', () => {
 
     LayerWithContext = withContext(
       {
-        map: React.PropTypes.object
+        map: PropTypes.object
       },
       () => ({
         map: {
@@ -36,7 +37,7 @@ describe('Layer', () => {
   });
 
   it('Should render layer with default options', () => {
-    mount(<LayerWithContext children={children} /> as React.ReactElement<any>);
+    mount(<LayerWithContext children={children} />);
 
     expect(addLayerMock.mock.calls[0]).toEqual([
       {
@@ -51,7 +52,7 @@ describe('Layer', () => {
   });
 
   it('Should render layer with default source', () => {
-    mount(<LayerWithContext children={children} /> as React.ReactElement<any>);
+    mount(<LayerWithContext children={children} />);
 
     expect(addSourceMock.mock.calls[0]).toEqual([
       'layer-2',
@@ -67,9 +68,7 @@ describe('Layer', () => {
 
   it('Should set features based on children', () => {
     const layer = mount(
-      (
-        <LayerWithContext children={childrenWithOneFeature} />
-      ) as React.ReactElement<any>
+      <LayerWithContext children={childrenWithOneFeature} />
     );
 
     expect(setDataMock.mock.calls[0]).toEqual([
