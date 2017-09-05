@@ -77,7 +77,7 @@ this way we can reliably update the zoom value without having to keep the viewpo
 ### [Version 1.12 documentation](https://github.com/alex3165/react-mapbox-gl/blob/archive/1.12/docs/API.md)
 
 ## Contributions
-- Ideally before posting an issue you can try to reproduce the bug you encounter using this [boilerplate](https://github.com/alex3165/react-mapbox-gl-debug)
+- Ideally before posting an issue you can try to reproduce the bug you encounter using this [boilerplate](https://github.com/alex3165/react-mapbox-gl-debug) or [this webpackbin template](https://www.webpackbin.com/bins/-KqtJN-qkLs4BPaVX0QS)
 
 ## Built with react-mapbox-gl
 [monumap.org](https://monumap.org/)
