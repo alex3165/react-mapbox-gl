@@ -20,7 +20,6 @@ const Map = ReactMapboxGl({
 - **accessToken** *(required)* : `String` Mapbox access token.
 - **minZoom** *(Default: `0`)*: `Number` Minimum zoom level. Must be between 0 and 20.
 - **maxZoom** *(Default: `20`)*: `Number` Maximum zoom level. Must be between 0 and 20.
-- **maxBounds** : `LngLatBounds | Array<Array<number>>` If set, the map is constrained to the given bounds [SouthWest, NorthEast]
 - **scrollZoom** *(Default: `true`)*: See [mapbox scrollZoom](https://www.mapbox.com/mapbox-gl-js/api/#Map)
 - **hash** *(Default: `false`)*: `Boolean`, [See mapbox doc](https://www.mapbox.com/mapbox-gl-js/api/#Map)
 - **preserveDrawingBuffer** *(Default: `false`)*: `Boolean`, [See mapbox doc](https://www.mapbox.com/mapbox-gl-js/api/#Map)
@@ -50,6 +49,7 @@ const Map = ReactMapboxGl({
   - Re-center the map if the value change regarding the prev value or the actual center position [flyTo](https://www.mapbox.com/mapbox-gl-js/api/#Map.flyTo)
 - **zoom** *(Default: `[11]`)*: `Array<Number>` Zoom level of the map at initialisation wrapped in an array.
   - Check for reference equality between the previous value of zoom and the new one in order to update it or not.
+- **maxBounds** : `LngLatBounds | Array<Array<number>>` If set, the map is constrained to the given bounds [SouthWest, NorthEast]
 - **fitBounds** : `Array<Array<number>>` If set, the map will center on the given coordinates, [fitBounds](https://www.mapbox.com/mapbox-gl-js/api/#Map#fitBounds)
 - **fitBoundsOptions** : `FitBoundsOptions` Options for [fitBounds](https://www.mapbox.com/mapbox-gl-js/api/#Map#fitBounds)
 - **bearing** *(Default: `0`)*: `Number` Bearing (rotation) of the map at initialisation measured in degrees counter-clockwise from north.

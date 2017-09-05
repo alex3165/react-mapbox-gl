@@ -152,7 +152,6 @@ export interface FactoryParameters {
   maxZoom?: number;
   hash?: boolean;
   preserveDrawingBuffer?: boolean;
-  maxBounds?: MapboxGl.LngLatBounds | FitBounds;
   scrollZoom?: boolean;
   interactive?: boolean;
   dragRotate?: boolean;
@@ -194,7 +193,6 @@ const ReactMapboxFactory = ({
   maxZoom = 20,
   hash = false,
   preserveDrawingBuffer = false,
-  maxBounds,
   scrollZoom = true,
   interactive = true,
   dragRotate = true,
@@ -254,7 +252,8 @@ const ReactMapboxFactory = ({
         zoom,
         fitBounds,
         fitBoundsOptions,
-        bearing
+        bearing,
+        maxBounds
       } = this.props;
 
       (MapboxGl as any).accessToken = accessToken;
@@ -265,7 +264,7 @@ const ReactMapboxFactory = ({
         zoom: zoom ? zoom[0] : defaultZoom[0],
         minZoom,
         maxZoom,
-        maxBounds: this.props.maxBounds || maxBounds,
+        maxBounds,
         bearing,
         container: this.container,
         center: fitBounds && center === defaultCenter
