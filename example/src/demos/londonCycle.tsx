@@ -26,7 +26,6 @@ const getCycleStations = (): Promise<any[]> => (
 const Mapbox = ReactMapboxGl({
   minZoom: 8,
   maxZoom: 15,
-  maxBounds,
   accessToken: token
 });
 
@@ -115,6 +114,7 @@ export default class LondonCycle extends React.Component<{}, State> {
         <Mapbox
           style={styles.londonCycle}
           fitBounds={fitBounds}
+          maxBounds={maxBounds}
           center={center}
           zoom={zoom}
           onDrag={this.onDrag}
