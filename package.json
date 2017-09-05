@@ -81,7 +81,7 @@
     "react-dom": "^15.6.1",
     "react-test-renderer": "^15.6.1",
     "recompose": "^0.25.0",
-    "ts-jest": "^20.0.7",
+    "ts-jest": "^21.0.0",
     "tslint": "^5.5.0",
     "tslint-react": "^3.0.0",
     "typescript": "^2.4.0"
