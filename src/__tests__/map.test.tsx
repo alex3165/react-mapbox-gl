@@ -3,7 +3,8 @@ let mockon = jest.fn();
 
 const mockMap = jest.fn(() => ({
   fitBounds: mockfitBounds,
-  on: mockon
+  on: mockon,
+  getCenter: jest.fn()
 }));
 
 jest.mock('mapbox-gl', () => ({
@@ -102,6 +103,25 @@ describe('Map', () => {
     wrapper.setProps({ zoom: [1] });
 
     expect(flyTo.mock.calls[0][0].zoom).toEqual(1);
+  });
+
+  it('Should update maxBounds', () => {
+    const flyTo = jest.fn();
+    const maxBoundsProps = [[1, 0], [0, 1]];
+    const mockMaxBounds = jest.fn();
+
+    const MapboxMap = ReactMapboxGl({ accessToken: '' });
+    const wrapper = mount(<MapboxMap style="" />);
+    wrapper.setState({
+      map: {
+        setMaxBounds: mockMaxBounds,
+        ...mapState,
+        flyTo
+      }
+    });
+    wrapper.setProps({ maxBounds: maxBoundsProps });
+
+    expect(mockMaxBounds).toBeCalledWith(maxBoundsProps);
   });
 
   it('Should not update zoom when using same reference equality', () => {
