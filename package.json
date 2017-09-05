@@ -73,7 +73,7 @@
     "@types/react": "^16.0.2",
     "@types/recompose": "^0.24.0",
     "enzyme": "^2.9.1",
-    "jest": "^20.0.4",
+    "jest": "^21.0.1",
     "mapbox-gl": "^0.39.1",
     "prettier": "^1.4.2",
     "prop-types": "^15.5.10",
@@ -81,7 +81,7 @@
     "react-dom": "^15.6.1",
     "react-test-renderer": "^15.6.1",
     "recompose": "^0.25.0",
-    "ts-jest": "^20.0.7",
+    "ts-jest": "^21.0.0",
     "tslint": "^5.5.0",
     "tslint-react": "^3.0.0",
     "typescript": "^2.4.0"
