@@ -127,6 +127,7 @@ export interface Props {
   style: string | MapboxGl.Style;
   center?: number[];
   zoom?: number[];
+  maxBounds?: MapboxGl.LngLatBounds | FitBounds;
   fitBounds?: FitBounds;
   fitBoundsOptions?: FitBoundsOptions;
   bearing?: number;
@@ -264,7 +265,7 @@ const ReactMapboxFactory = ({
         zoom: zoom ? zoom[0] : defaultZoom[0],
         minZoom,
         maxZoom,
-        maxBounds,
+        maxBounds: this.props.maxBounds || maxBounds,
         bearing,
         container: this.container,
         center: fitBounds && center === defaultCenter
@@ -353,6 +354,15 @@ const ReactMapboxFactory = ({
 
       const didPitchUpdate =
         this.props.pitch !== nextProps.pitch && nextProps.pitch !== pitch;
+
+      if (nextProps.maxBounds) {
+        const didMaxBoundsUpdate =
+          this.props.maxBounds !== nextProps.maxBounds;
+
+        if (didMaxBoundsUpdate) {
+          map.setMaxBounds(nextProps.maxBounds);
+        }
+      }
 
       if (nextProps.fitBounds) {
         const { fitBounds } = this.props;
