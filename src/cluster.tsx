@@ -170,7 +170,8 @@ export default class Cluster extends React.Component<Props, State> {
       Infinity
     );
     const childrenBbox = bbox(featureCollection(children));
-    this.context.map.fitBounds(LngLatBounds.convert(childrenBbox), {
+    // https://github.com/mapbox/mapbox-gl-js/issues/5249
+    this.context.map.fitBounds(LngLatBounds.convert(childrenBbox as any), {
       padding: this.props.zoomOnClickPadding!
     });
   };
