@@ -8,6 +8,7 @@ describe('Layer', () => {
   let LayerWithContext: any;
   let addLayerMock = jest.fn();
   let addSourceMock = jest.fn();
+  let addImageMock = jest.fn();
   let setDataMock = jest.fn();
   let children: any[];
   let childrenWithOneFeature: any[];
@@ -17,6 +18,7 @@ describe('Layer', () => {
     addLayerMock = jest.fn();
     addSourceMock = jest.fn();
     setDataMock = jest.fn();
+    addImageMock = jest.fn();
     feature = { coordinates: [-123, 45] };
     children = [{ props: {} }];
     childrenWithOneFeature = [{ props: feature }];
@@ -29,6 +31,7 @@ describe('Layer', () => {
         map: {
           addSource: addSourceMock,
           addLayer: addLayerMock,
+          addImage: addImageMock,
           on: jest.fn(),
           getSource: jest.fn().mockReturnValue({ setData: setDataMock })
         }
@@ -102,5 +105,18 @@ describe('Layer', () => {
     const layer = mount(<LayerWithContext children={childrens} />);
 
     expect(setDataMock.mock.calls[0][0].features).toHaveLength(3);
+  });
+
+  it('Should add images', () => {
+    const images = ['test', new Image(), {}];
+
+    mount(
+      <LayerWithContext
+        children={children}
+        images={images}
+      />
+    );
+
+    expect(addImageMock.mock.calls[0]).toEqual(images);
   });
 });

@@ -11,11 +11,19 @@ import { Props as FeatureProps } from './feature';
 
 export type Paint = any;
 export type Layout = any;
+export interface ImageOptions {
+  width?: number;
+  height?: number;
+  pixelRatio?: number;
+};
+export type ImageDefinition = [string, HTMLImageElement];
+export type ImageDefinitionWithOptions = [string, HTMLImageElement, ImageOptions];
 
 export interface Props {
   id?: string;
   type?: 'symbol' | 'line' | 'fill' | 'circle' | 'raster';
   sourceId?: string;
+  images?: ImageDefinition | ImageDefinition[] | ImageDefinitionWithOptions | ImageDefinitionWithOptions[];
   before?: string;
   sourceOptions?: Sources;
   paint?: Paint;
@@ -219,7 +227,7 @@ export default class Layer extends React.Component<Props, {}> {
   };
 
   private initialize = () => {
-    const { type, layout, paint, layerOptions, sourceId, before } = this.props;
+    const { type, layout, paint, layerOptions, sourceId, before, images } = this.props;
     const { map } = this.context;
 
     const layer = {
@@ -230,6 +238,13 @@ export default class Layer extends React.Component<Props, {}> {
       paint,
       ...layerOptions
     };
+
+    if (images) {
+      const normalizedImages = !Array.isArray(images[0]) ? [images] : images;
+      (normalizedImages as ImageDefinitionWithOptions[]).forEach(image => {
+        map.addImage(image[0], image[1], image[2]);
+      });
+    }
 
     if (!sourceId) {
       map.addSource(this.id, this.source);
@@ -261,6 +276,8 @@ export default class Layer extends React.Component<Props, {}> {
 
   public componentWillUnmount() {
     const { map } = this.context;
+    const { images } = this.props;
+
     if (!map || !map.getStyle()) {
       return;
     }
@@ -270,6 +287,13 @@ export default class Layer extends React.Component<Props, {}> {
     // as other layers may be dependent upon it
     if (!this.props.sourceId) {
       map.removeSource(this.id);
+    }
+
+    if (images) {
+      const normalizedImages = !Array.isArray(images[0]) ? [images] : images;
+      (normalizedImages as ImageDefinitionWithOptions[])
+        .map(([key, ...rest]) => key)
+        .forEach(map.removeImage)
     }
 
     map.off('click', this.onClick);
