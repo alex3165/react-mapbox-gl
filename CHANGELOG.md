@@ -1,3 +1,7 @@
+## Above 2.0.0
+
+See [release notes](https://github.com/alex3165/react-mapbox-gl/releases)
+
 ## 2.0.* (June 2017)
 ### Breaking changes
 - `ReactMapboxGl` is now a factory that return a React Component, see documentation on how to use it
