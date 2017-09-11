@@ -152,6 +152,7 @@ import { Layer } from "react-mapbox-gl";
 - **layerOptions**: `Object` Passed down to the layer object when setting it out.
 - **sourceId**: `String` When passed to the layer, the source will not be created but only the layer and it will use the given source id.
 - **before**: `String` Pass the id of a layer, it will display the current layer before the layer defined by the id. [mapbox api](https://www.mapbox.com/mapbox-gl-js/api/#Map#addLayer)
+- **images**: `[imageKey: string, image: HTMLImageElement, options: Object]` Also accept array of the previous image tuples. Add images for use in layout `icon-image`, the value should be the `imageKey` string of the tuples. Alternatively use mapbox studio to upload the image, it will be fetched with the map style object. (use [map.addImage](https://www.mapbox.com/mapbox-gl-js/api/#map#addimage) under the hood).
 
 ----------
 # Source
