@@ -110,12 +110,7 @@ describe('Layer', () => {
   it('Should add images', () => {
     const images = ['test', new Image(), {}];
 
-    mount(
-      <LayerWithContext
-        children={children}
-        images={images}
-      />
-    );
+    mount(<LayerWithContext children={children} images={images} />);
 
     expect(addImageMock.mock.calls[0]).toEqual(images);
   });

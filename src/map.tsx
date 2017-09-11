@@ -356,8 +356,7 @@ const ReactMapboxFactory = ({
         this.props.pitch !== nextProps.pitch && nextProps.pitch !== pitch;
 
       if (nextProps.maxBounds) {
-        const didMaxBoundsUpdate =
-          this.props.maxBounds !== nextProps.maxBounds;
+        const didMaxBoundsUpdate = this.props.maxBounds !== nextProps.maxBounds;
 
         if (didMaxBoundsUpdate) {
           map.setMaxBounds(nextProps.maxBounds);

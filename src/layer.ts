@@ -15,15 +15,23 @@ export interface ImageOptions {
   width?: number;
   height?: number;
   pixelRatio?: number;
-};
+}
 export type ImageDefinition = [string, HTMLImageElement];
-export type ImageDefinitionWithOptions = [string, HTMLImageElement, ImageOptions];
+export type ImageDefinitionWithOptions = [
+  string,
+  HTMLImageElement,
+  ImageOptions
+];
 
 export interface Props {
   id?: string;
   type?: 'symbol' | 'line' | 'fill' | 'circle' | 'raster';
   sourceId?: string;
-  images?: ImageDefinition | ImageDefinition[] | ImageDefinitionWithOptions | ImageDefinitionWithOptions[];
+  images?:
+    | ImageDefinition
+    | ImageDefinition[]
+    | ImageDefinitionWithOptions
+    | ImageDefinitionWithOptions[];
   before?: string;
   sourceOptions?: Sources;
   paint?: Paint;
@@ -227,7 +235,15 @@ export default class Layer extends React.Component<Props, {}> {
   };
 
   private initialize = () => {
-    const { type, layout, paint, layerOptions, sourceId, before, images } = this.props;
+    const {
+      type,
+      layout,
+      paint,
+      layerOptions,
+      sourceId,
+      before,
+      images
+    } = this.props;
     const { map } = this.context;
 
     const layer = {
@@ -293,7 +309,7 @@ export default class Layer extends React.Component<Props, {}> {
       const normalizedImages = !Array.isArray(images[0]) ? [images] : images;
       (normalizedImages as ImageDefinitionWithOptions[])
         .map(([key, ...rest]) => key)
-        .forEach(map.removeImage)
+        .forEach(map.removeImage);
     }
 
     map.off('click', this.onClick);
