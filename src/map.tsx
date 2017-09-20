@@ -375,7 +375,10 @@ const ReactMapboxFactory = ({
             return c[0] !== (nc && nc[0]) || c[1] !== (nc && nc[1]);
           })[0];
 
-        if (didFitBoundsUpdate) {
+        if (
+          didFitBoundsUpdate ||
+          this.props.fitBoundsOptions !== nextProps.fitBoundsOptions
+        ) {
           map.fitBounds(nextProps.fitBounds, nextProps.fitBoundsOptions);
         }
       }

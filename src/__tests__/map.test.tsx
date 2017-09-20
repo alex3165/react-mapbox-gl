@@ -51,6 +51,33 @@ describe('Map', () => {
     expect(mockfitBounds).toBeCalledWith(fitBoundsValues, fitBoundsOptions);
   });
 
+  it.only('Should update fitBounds if fitBoundsOptions changes', () => {
+    const flyTo = jest.fn();
+    const fitBoundsValues: FitBounds = [[0, 1], [2, 3]];
+    const fitBoundsOptions = { offset: [ 150, 0] };
+    const newFitBoundsOptions = { offset: [ 0, 0] };
+    const MapboxMap = ReactMapboxGl({ accessToken: '' });
+
+    const wrapper = mount(
+      <MapboxMap
+        style=""
+        fitBounds={fitBoundsValues}
+        fitBoundsOptions={fitBoundsOptions}
+      />
+    );
+    wrapper.setState({
+      map: {
+        ...mapState,
+        flyTo,
+        fitBounds: mockfitBounds
+      }
+    });
+
+    wrapper.setProps({ fitBoundsOptions: newFitBoundsOptions });
+
+    expect(mockfitBounds.mock.calls[1][1]).toBe(newFitBoundsOptions);
+  });
+
   it('Should calc the center from fitbounds if center is not given', () => {
     const fitBoundsValues: FitBounds = [[0, 3], [2, 9]];
     const MapboxMap = ReactMapboxGl({ accessToken: '' });
