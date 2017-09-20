@@ -51,7 +51,7 @@ describe('Map', () => {
     expect(mockfitBounds).toBeCalledWith(fitBoundsValues, fitBoundsOptions);
   });
 
-  it.only('Should update fitBounds if fitBoundsOptions changes', () => {
+  it('Should update fitBounds if fitBoundsOptions changes', () => {
     const flyTo = jest.fn();
     const fitBoundsValues: FitBounds = [[0, 1], [2, 3]];
     const fitBoundsOptions = { offset: [ 150, 0] };
