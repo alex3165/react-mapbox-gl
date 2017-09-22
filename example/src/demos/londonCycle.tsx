@@ -3,6 +3,8 @@ import ReactMapboxGl, { Layer, Feature, Popup } from '../../../';
 import { parseString } from 'xml2js';
 import styled from 'styled-components';
 import { londonCycleMaxBounds as maxBounds } from './data';
+import { svg } from './cycle';
+import { ImageDefinition } from '../../../src/layer';
 
 // tslint:disable-next-line:no-var-requires
 const { token, styles } = require('./config.json');
@@ -34,7 +36,13 @@ const mapStyle = {
   width: '100%'
 };
 
-const layoutLayer = { 'icon-image': 'Cycle_Hire_Logo_small' };
+// Define layout to use in Layer component
+const layoutLayer = { 'icon-image': 'londonCycle' };
+
+// Create an image for the Layer
+const image = new Image();
+image.src = 'data:image/svg+xml;charset=utf-8,' + svg;
+const images: ImageDefinition = ['londonCycle', image];
 
 const StyledPopup = styled.div`
   background: white;
@@ -59,6 +67,7 @@ export interface State {
   station?: Station;
   stations: { [id: string]: Station };
 }
+
 
 export default class LondonCycle extends React.Component<{}, State> {
   public state: State = {
@@ -127,6 +136,7 @@ export default class LondonCycle extends React.Component<{}, State> {
             type="symbol"
             id="marker"
             layout={layoutLayer}
+            images={images}
           >
             {
               Object.keys(stations).map((stationK, index) => (
