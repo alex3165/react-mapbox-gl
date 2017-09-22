@@ -67,7 +67,7 @@
     "@types/core-js": "0.9.43",
     "@types/enzyme": "2.8.8",
     "@types/geojson": "1.0.3",
-    "@types/jest": "20.0.8",
+    "@types/jest": "21.1.0",
     "@types/mapbox-gl": "0.39.5",
     "@types/node": "8.0.29",
     "@types/react": "16.0.5",
