@@ -70,7 +70,7 @@
     "@types/jest": "21.1.0",
     "@types/mapbox-gl": "0.39.6",
     "@types/node": "8.0.29",
-    "@types/react": "16.0.5",
+    "@types/react": "16.0.6",
     "@types/recompose": "0.24.1",
     "enzyme": "2.9.1",
     "jest": "21.1.0",
