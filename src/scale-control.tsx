@@ -55,9 +55,8 @@ const scaleStyle = {
   borderBottomRightRadius: 1
 };
 
-const POSITIONS = Object.keys(positions);
-
-const MEASUREMENTS = ['km', 'mi'];
+const POSITIONS = Object.keys(positions) as Position[];
+const MEASUREMENTS = ['km', 'mi'] as Measurement[];
 
 const MILE_IN_KILOMETERS = 1.60934;
 const MILE_IN_FEET = 5280;

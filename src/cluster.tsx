@@ -1,13 +1,13 @@
 import * as React from 'react';
 const PropTypes = require('prop-types'); // tslint:disable-line
 
-import { Map } from 'mapbox-gl';
+import { Map, LngLatBounds } from 'mapbox-gl';
 import { Props as MarkerProps } from './marker';
 const supercluster = require('supercluster'); // tslint:disable-line
 import * as GeoJSON from 'geojson';
 import { Feature } from './util/types';
 import * as bbox from '@turf/bbox';
-import { polygon } from '@turf/helpers';
+import { polygon, featureCollection } from '@turf/helpers';
 
 export interface Props {
   ClusterMarkerFactory(
@@ -16,14 +16,16 @@ export interface Props {
     getLeaves: (
       limit?: number,
       offset?: number
-    ) => Array<React.ReactElement<any>>
-  ): JSX.Element;
+    ) => Array<React.ReactElement<MarkerProps>>
+  ): React.ReactElement<MarkerProps>;
   radius?: number;
   maxZoom?: number;
   minZoom?: number;
   extent?: number;
   nodeSize?: number;
   log?: boolean;
+  zoomOnClick?: boolean;
+  zoomOnClickPadding?: number;
   children?: Array<React.Component<MarkerProps, {}>>;
 }
 
@@ -49,10 +51,12 @@ export default class Cluster extends React.Component<Props, State> {
     maxZoom: 16,
     extent: 512,
     nodeSize: 64,
-    log: false
+    log: false,
+    zoomOnClick: false,
+    zoomOnClickPadding: 20
   };
 
-  public state = {
+  public state: State = {
     superC: supercluster({
       radius: this.props.radius,
       maxZoom: this.props.maxZoom,
@@ -96,9 +100,9 @@ export default class Cluster extends React.Component<Props, State> {
     const { superC } = this.state;
     this.featureClusterMap = new WeakMap<
       Feature,
-      React.Component<MarkerProps, any>
+      React.Component<MarkerProps, {}>
     >();
-    const features = this.childrenToFeatures(newChildren as any);
+    const features = this.childrenToFeatures(newChildren);
     superC.load(features);
   };
 
@@ -127,7 +131,7 @@ export default class Cluster extends React.Component<Props, State> {
     return {
       type: 'Feature',
       geometry: {
-        type: 'point',
+        type: 'Point',
         coordinates
       },
       properties: {}
@@ -143,19 +147,53 @@ export default class Cluster extends React.Component<Props, State> {
       return feature;
     });
 
-  private getLeaves = (feature: Feature) => {
+  private getLeaves = (feature: Feature, limit?: number, offset?: number) => {
     const { superC } = this.state;
     return superC
-      .getLeaves(feature.properties.cluster_id)
+      .getLeaves(feature.properties.cluster_id, limit, offset)
       .map((leave: Feature) => this.featureClusterMap.get(leave));
   };
+
+  public zoomToClusterBounds = (event: React.MouseEvent<HTMLElement>) => {
+    const markers = Array.prototype.slice.call(event.currentTarget.children);
+    const marker = this.findMarkerElement(
+      event.currentTarget,
+      event.target as HTMLElement
+    );
+    const index = markers.indexOf(marker);
+    const cluster = this.state.clusterPoints[index] as Feature;
+    if (!cluster.properties.cluster_id) {
+      return;
+    }
+    const children = this.state.superC.getLeaves(
+      cluster.properties.cluster_id,
+      Infinity
+    );
+    const childrenBbox = bbox(featureCollection(children));
+    // https://github.com/mapbox/mapbox-gl-js/issues/5249
+    this.context.map.fitBounds(LngLatBounds.convert(childrenBbox as any), {
+      padding: this.props.zoomOnClickPadding!
+    });
+  };
+
+  private findMarkerElement(
+    target: HTMLElement,
+    element: HTMLElement
+  ): HTMLElement {
+    if (element.parentElement === target) {
+      return element;
+    }
+    return this.findMarkerElement(target, element.parentElement!);
+  }
 
   public render() {
     const { ClusterMarkerFactory } = this.props;
     const { clusterPoints } = this.state;
 
     return (
-      <div>
+      <div
+        onClick={this.props.zoomOnClick ? this.zoomToClusterBounds : undefined}
+      >
         {// tslint:disable-line:jsx-no-multiline-js
         clusterPoints.map((feature: Feature) => {
           if (feature.properties.cluster) {

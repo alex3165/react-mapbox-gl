@@ -2,26 +2,29 @@ import * as React from 'react';
 import GeoJSONLayer from '../geojson-layer';
 import { withContext } from 'recompose';
 import { mount } from 'enzyme';
+const PropTypes = require('prop-types'); // tslint:disable-line
 
 describe('GeoJSONLayer', () => {
   let GeoJSONLayerWithContext: any;
   let addLayerMock = jest.fn();
+  let mapOnEventMock = jest.fn();
 
   const fillPaint = { 'fill-color': '#001122' };
   const data = { type: 'FeatureCollection', features: [] };
 
   beforeEach(() => {
     addLayerMock = jest.fn();
+    mapOnEventMock = jest.fn();
 
     GeoJSONLayerWithContext = withContext(
       {
-        map: React.PropTypes.object
+        map: PropTypes.object
       },
       () => ({
         map: {
           addSource: jest.fn(),
           addLayer: addLayerMock,
-          on: jest.fn()
+          on: mapOnEventMock
         }
       })
     )(GeoJSONLayer);
@@ -29,13 +32,11 @@ describe('GeoJSONLayer', () => {
 
   it('Should call addLayer with provided layerOptions', () => {
     mount(
-      (
-        <GeoJSONLayerWithContext
-          fillPaint={fillPaint}
-          data={data}
-          layerOptions={{ minzoom: 13 }}
-        />
-      ) as React.ReactElement<any>
+      <GeoJSONLayerWithContext
+        fillPaint={fillPaint}
+        data={data}
+        layerOptions={{ minzoom: 13 }}
+      />
     );
 
     const addFillLayerCall = addLayerMock.mock.calls.find(([call]) =>
@@ -55,11 +56,7 @@ describe('GeoJSONLayer', () => {
   });
 
   it('Should call addLayer when no layerOptions provided', () => {
-    mount(
-      (
-        <GeoJSONLayerWithContext fillPaint={fillPaint} data={data} />
-      ) as React.ReactElement<any>
-    );
+    mount(<GeoJSONLayerWithContext fillPaint={fillPaint} data={data} />);
 
     const addFillLayerCall = addLayerMock.mock.calls.find(([call]) =>
       call.id.endsWith('-fill')
@@ -74,5 +71,18 @@ describe('GeoJSONLayer', () => {
       },
       undefined
     ]);
+  });
+
+  it('Should start listening onClick mouse event', () => {
+    mount(
+      <GeoJSONLayerWithContext
+        fillPaint={fillPaint}
+        data={data}
+        fillOnClick={jest.fn()}
+      />
+    );
+
+    expect(mapOnEventMock.mock.calls[0][0]).toEqual('click');
+    expect(mapOnEventMock.mock.calls[0][1]).toEqual('geojson-3-fill');
   });
 });

@@ -2,6 +2,7 @@ import * as React from 'react';
 import Source from '../source';
 import { withContext } from 'recompose';
 import { mount } from 'enzyme';
+const PropTypes = require('prop-types'); // tslint:disable-line
 
 describe('Source', () => {
   let SourceWithContext: any;
@@ -25,7 +26,7 @@ describe('Source', () => {
 
     SourceWithContext = withContext(
       {
-        map: React.PropTypes.object
+        map: PropTypes.object
       },
       () => ({
         map: {
@@ -41,9 +42,7 @@ describe('Source', () => {
 
   it('Should render source with geoJsonSource', () => {
     mount(
-      (
-        <SourceWithContext id="source-1" geoJsonSource={EMPTY_GEOJSON_SRC} />
-      ) as React.ReactElement<any>
+      <SourceWithContext id="source-1" geoJsonSource={EMPTY_GEOJSON_SRC} />
     );
 
     expect(addSourceMock.mock.calls[0]).toEqual([

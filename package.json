@@ -1,6 +1,6 @@
 {
   "name": "react-mapbox-gl",
-  "version": "2.3.1",
+  "version": "2.5.1",
   "description": "A React binding of mapbox-gl-js",
   "main": "lib/index.js",
   "typings": "lib/index.d.ts",
@@ -52,38 +52,38 @@
   },
   "homepage": "https://github.com/alex3165/react-mapbox-gl#readme",
   "dependencies": {
-    "@turf/bbox": "^4.4.0",
-    "@turf/helpers": "^4.4.0",
-    "deep-equal": "^1.0.1",
-    "supercluster": "^3.0.0"
+    "@turf/bbox": "4.7.3",
+    "@turf/helpers": "4.7.3",
+    "deep-equal": "1.0.1",
+    "supercluster": "3.0.0"
   },
   "peerDependencies": {
     "prop-types": "^15.5.10",
     "react": "^15.6.1",
     "react-dom": "^15.6.1",
-    "mapbox-gl": "^0.39.1"
+    "mapbox-gl": "^0.40.1"
   },
   "devDependencies": {
-    "@types/core-js": "^0.9.41",
-    "@types/enzyme": "^2.7.9",
-    "@types/geojson": "^1.0.1",
-    "@types/jest": "^20.0.0",
-    "@types/mapbox-gl": "^0.39.2",
-    "@types/node": "^8.0.9",
-    "@types/react": "^16.0.2",
-    "@types/recompose": "^0.24.0",
-    "enzyme": "^2.8.2",
-    "jest": "^20.0.4",
-    "mapbox-gl": "^0.39.1",
-    "prettier": "^1.4.2",
-    "prop-types": "^15.5.10",
-    "react": "^15.6.1",
-    "react-addons-test-utils": "^15.6.0",
-    "react-dom": "^15.6.1",
-    "recompose": "^0.25.0",
-    "ts-jest": "^20.0.7",
-    "tslint": "^5.5.0",
-    "tslint-react": "^3.0.0",
-    "typescript": "^2.4.0"
+    "@types/core-js": "0.9.43",
+    "@types/enzyme": "2.8.8",
+    "@types/geojson": "1.0.3",
+    "@types/jest": "21.1.0",
+    "@types/mapbox-gl": "0.39.6",
+    "@types/node": "8.0.29",
+    "@types/react": "16.0.5",
+    "@types/recompose": "0.24.1",
+    "enzyme": "2.9.1",
+    "jest": "21.1.0",
+    "mapbox-gl": "0.39.1",
+    "prettier": "1.7.0",
+    "prop-types": "15.5.10",
+    "react": "15.6.1",
+    "react-dom": "15.6.1",
+    "react-test-renderer": "15.6.1",
+    "recompose": "0.25.0",
+    "ts-jest": "21.0.1",
+    "tslint": "5.7.0",
+    "tslint-react": "3.2.0",
+    "typescript": "2.5.2"
   }
 }

@@ -9,8 +9,8 @@ jest.mock('../util/overlays', () => ({
 import * as React from 'react';
 import Popup, { defaultClassName } from '../popup';
 import { withContext } from 'recompose';
-
 import { mount } from 'enzyme';
+const PropTypes = require('prop-types'); // tslint:disable-line
 
 describe('Popup', () => {
   let PopupWithContext: any;
@@ -18,7 +18,7 @@ describe('Popup', () => {
   beforeEach(() => {
     PopupWithContext = withContext(
       {
-        map: React.PropTypes.object
+        map: PropTypes.object
       },
       () => ({
         map: {

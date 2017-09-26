@@ -20,7 +20,6 @@ const Map = ReactMapboxGl({
 - **accessToken** *(required)* : `String` Mapbox access token.
 - **minZoom** *(Default: `0`)*: `Number` Minimum zoom level. Must be between 0 and 20.
 - **maxZoom** *(Default: `20`)*: `Number` Maximum zoom level. Must be between 0 and 20.
-- **maxBounds** : `LngLatBounds | Array<Array<number>>` If set, the map is constrained to the given bounds [SouthWest, NorthEast]
 - **scrollZoom** *(Default: `true`)*: See [mapbox scrollZoom](https://www.mapbox.com/mapbox-gl-js/api/#Map)
 - **hash** *(Default: `false`)*: `Boolean`, [See mapbox doc](https://www.mapbox.com/mapbox-gl-js/api/#Map)
 - **preserveDrawingBuffer** *(Default: `false`)*: `Boolean`, [See mapbox doc](https://www.mapbox.com/mapbox-gl-js/api/#Map)
@@ -50,6 +49,7 @@ const Map = ReactMapboxGl({
   - Re-center the map if the value change regarding the prev value or the actual center position [flyTo](https://www.mapbox.com/mapbox-gl-js/api/#Map.flyTo)
 - **zoom** *(Default: `[11]`)*: `Array<Number>` Zoom level of the map at initialisation wrapped in an array.
   - Check for reference equality between the previous value of zoom and the new one in order to update it or not.
+- **maxBounds** : `LngLatBounds | Array<Array<number>>` If set, the map is constrained to the given bounds [SouthWest, NorthEast]
 - **fitBounds** : `Array<Array<number>>` If set, the map will center on the given coordinates, [fitBounds](https://www.mapbox.com/mapbox-gl-js/api/#Map#fitBounds)
 - **fitBoundsOptions** : `FitBoundsOptions` Options for [fitBounds](https://www.mapbox.com/mapbox-gl-js/api/#Map#fitBounds)
 - **bearing** *(Default: `0`)*: `Number` Bearing (rotation) of the map at initialisation measured in degrees counter-clockwise from north.
@@ -152,6 +152,7 @@ import { Layer } from "react-mapbox-gl";
 - **layerOptions**: `Object` Passed down to the layer object when setting it out.
 - **sourceId**: `String` When passed to the layer, the source will not be created but only the layer and it will use the given source id.
 - **before**: `String` Pass the id of a layer, it will display the current layer before the layer defined by the id. [mapbox api](https://www.mapbox.com/mapbox-gl-js/api/#Map#addLayer)
+- **images**: `[imageKey: string, image: HTMLImageElement, options: Object]` Also accept array of the previous image tuple. Add images for use in layout with prop `icon-image`. The value should be the `imageKey` string of the tuple. Alternatively use mapbox studio to upload the image, it will be fetched with the map style object. (see [map.addImage](https://www.mapbox.com/mapbox-gl-js/api/#map#addimage) options for the tuple options).
 
 ----------
 # Source
@@ -423,3 +424,5 @@ clusterMarker = (coordinates) => (
 - **extent**: *Default: 512*:`Number` (Tiles) Tile extent. Radius is calculated relative to this value.
 - **nodeSize**: *Default: 64*:`Number` Size of the KD-tree leaf node. Affects performance.
 - **log**: *Default: false*:`Boolean` Whether timing info should be logged.
+- **zoomOnClick**: *Default: false*:`Boolean` Zoom to bounds of cluster on click.
+- **zoomOnClickPadding**: *Default: 20*:`Number` The amount of padding in pixels to add to the cluster bounds for the zoom.

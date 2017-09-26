@@ -2,6 +2,7 @@ import * as React from 'react';
 import ScaleControl from '../scale-control';
 import { shallow } from 'enzyme';
 import { withContext } from 'recompose';
+const PropTypes = require('prop-types'); // tslint:disable-line
 
 describe('ScaleControl', () => {
   let ScaleControlWithContext: any;
@@ -9,7 +10,7 @@ describe('ScaleControl', () => {
   beforeEach(() => {
     ScaleControlWithContext = withContext(
       {
-        map: React.PropTypes.object
+        map: PropTypes.object
       },
       () => ({
         map: {

@@ -127,6 +127,7 @@ export interface Props {
   style: string | MapboxGl.Style;
   center?: number[];
   zoom?: number[];
+  maxBounds?: MapboxGl.LngLatBounds | FitBounds;
   fitBounds?: FitBounds;
   fitBoundsOptions?: FitBoundsOptions;
   bearing?: number;
@@ -151,7 +152,6 @@ export interface FactoryParameters {
   maxZoom?: number;
   hash?: boolean;
   preserveDrawingBuffer?: boolean;
-  maxBounds?: MapboxGl.LngLatBounds | FitBounds;
   scrollZoom?: boolean;
   interactive?: boolean;
   dragRotate?: boolean;
@@ -193,7 +193,6 @@ const ReactMapboxFactory = ({
   maxZoom = 20,
   hash = false,
   preserveDrawingBuffer = false,
-  maxBounds,
   scrollZoom = true,
   interactive = true,
   dragRotate = true,
@@ -253,7 +252,8 @@ const ReactMapboxFactory = ({
         zoom,
         fitBounds,
         fitBoundsOptions,
-        bearing
+        bearing,
+        maxBounds
       } = this.props;
 
       (MapboxGl as any).accessToken = accessToken;
@@ -267,9 +267,10 @@ const ReactMapboxFactory = ({
         maxBounds,
         bearing,
         container: this.container,
-        center: fitBounds && center === defaultCenter
-          ? this.calcCenter(fitBounds)
-          : center,
+        center:
+          fitBounds && center === defaultCenter
+            ? this.calcCenter(fitBounds)
+            : center,
         pitch,
         style,
         scrollZoom,
@@ -353,6 +354,14 @@ const ReactMapboxFactory = ({
 
       const didPitchUpdate =
         this.props.pitch !== nextProps.pitch && nextProps.pitch !== pitch;
+
+      if (nextProps.maxBounds) {
+        const didMaxBoundsUpdate = this.props.maxBounds !== nextProps.maxBounds;
+
+        if (didMaxBoundsUpdate) {
+          map.setMaxBounds(nextProps.maxBounds);
+        }
+      }
 
       if (nextProps.fitBounds) {
         const { fitBounds } = this.props;
