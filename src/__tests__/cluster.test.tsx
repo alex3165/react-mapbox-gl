@@ -15,6 +15,10 @@ import { withContext } from 'recompose';
 import { mount } from 'enzyme';
 const PropTypes = require('prop-types'); // tslint:disable-line
 
+const Enzyme = require('enzyme');
+const Adapter = require('enzyme-adapter-react-16');
+Enzyme.configure({ adapter: new Adapter() });
+
 const coordinates = [
   [-12.408741828510017, 58.16339752811908],
   [-5.668629523822517, 50.06970856327533],
