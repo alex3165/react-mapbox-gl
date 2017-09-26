@@ -80,7 +80,7 @@
     "react": "15.6.1",
     "react-dom": "15.6.1",
     "react-test-renderer": "15.6.1",
-    "recompose": "0.25.0",
+    "recompose": "0.25.1",
     "ts-jest": "21.0.1",
     "tslint": "5.7.0",
     "tslint-react": "3.2.0",
