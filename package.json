@@ -53,7 +53,7 @@
   "homepage": "https://github.com/alex3165/react-mapbox-gl#readme",
   "dependencies": {
     "@turf/bbox": "4.7.3",
-    "@turf/helpers": "4.7.3",
+    "@turf/helpers": "5.0.0-alpha",
     "deep-equal": "1.0.1",
     "supercluster": "3.0.0"
   },
