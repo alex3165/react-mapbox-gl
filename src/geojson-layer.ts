@@ -185,6 +185,7 @@ export default class GeoJSONLayer extends React.Component<Props, {}> {
     // if the style of the map has been updated and we don't have layer anymore,
     // add it back to the map and force re-rendering to redraw it
     if (!this.context.map.getSource(this.id)) {
+      this.unbind();
       this.initialize();
       this.forceUpdate();
     }
@@ -202,6 +203,30 @@ export default class GeoJSONLayer extends React.Component<Props, {}> {
     this.createLayer('circle');
   }
 
+  private unbind() {
+    const { map } = this.context;
+
+    if (map.getSource(this.id)) {
+      map.removeSource(this.id);
+    }
+
+    Object.keys(typeToLayerLUT).forEach(type => {
+      Object.keys(eventToHandler).forEach(event => {
+        const prop = typeToLayerLUT[type] + eventToHandler[event];
+
+        if (this.props[prop]) {
+          map.off(event, this.buildLayerId(type), this.props[prop]);
+        }
+      });
+    });
+
+    this.layerIds.forEach(lId => {
+      if (map.getLayer(lId)) {
+        map.removeLayer(lId)
+      }
+    });
+  }
+
   public componentWillMount() {
     const { map } = this.context;
     this.initialize();
@@ -215,20 +240,9 @@ export default class GeoJSONLayer extends React.Component<Props, {}> {
       return;
     }
 
-    map.removeSource(this.id);
     map.off('styledata', this.onStyleDataChange);
 
-    Object.keys(typeToLayerLUT).forEach(type => {
-      Object.keys(eventToHandler).forEach(event => {
-        const prop = typeToLayerLUT[type] + eventToHandler[event];
-
-        if (this.props[prop]) {
-          map.off(event, this.buildLayerId(type), this.props[prop]);
-        }
-      });
-    });
-
-    this.layerIds.forEach(lId => map.removeLayer(lId));
+    this.unbind();
   }
 
   public componentWillReceiveProps(props: Props) {
@@ -237,6 +251,12 @@ export default class GeoJSONLayer extends React.Component<Props, {}> {
 
     if (props.data !== data) {
       (map.getSource(this.id) as MapboxGL.GeoJSONSource).setData(props.data);
+
+      this.source = {
+        type: 'geojson',
+        ...props.sourceOptions,
+        data: props.data
+      }
     }
 
     const layerFilterChanged =
