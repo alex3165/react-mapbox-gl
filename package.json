@@ -79,7 +79,7 @@
     "prop-types": "15.5.10",
     "react": "15.6.1",
     "react-dom": "15.6.1",
-    "react-test-renderer": "15.6.1",
+    "react-test-renderer": "15.6.2",
     "recompose": "0.25.0",
     "ts-jest": "21.0.1",
     "tslint": "5.7.0",
