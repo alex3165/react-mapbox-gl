@@ -12,10 +12,6 @@ import { withContext } from 'recompose';
 import { mount } from 'enzyme';
 const PropTypes = require('prop-types'); // tslint:disable-line
 
-const Enzyme = require('enzyme');
-const Adapter = require('enzyme-adapter-react-16');
-Enzyme.configure({ adapter: new Adapter() });
-
 describe('Popup', () => {
   let PopupWithContext: any;
 
@@ -50,7 +46,11 @@ describe('Popup', () => {
     const wrapper = mount(
       <PopupWithContext className="custom-classname" coordinates={[0, 0]} />
     );
-
-    expect(wrapper.find('Popup').hasClass(defaultClassName[0])).toEqual(true);
+    expect(
+      wrapper
+        .find('Popup')
+        .childAt(0)
+        .hasClass(defaultClassName[0])
+    ).toEqual(true);
   });
 });

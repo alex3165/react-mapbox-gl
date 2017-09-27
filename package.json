@@ -26,6 +26,10 @@
       "tsx",
       "js"
     ],
+    "setupFiles": [
+      "<rootDir>/src/jest/setupFile.ts"
+    ],
+    "setupTestFrameworkScriptFile": "<rootDir>/src/jest/setupTestFrameworkScriptFile.ts",
     "browser": true,
     "verbose": true
   },
@@ -85,7 +89,7 @@
     "prettier": "1.7.0",
     "prop-types": "15.5.10",
     "react": "^16.0.0",
-    "react-dom": "16.0.0",
+    "react-dom": "^16.0.0",
     "react-test-renderer": "^16.0.0",
     "recompose": "0.25.0",
     "ts-jest": "21.0.1",

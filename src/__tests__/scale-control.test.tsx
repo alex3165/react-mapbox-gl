@@ -4,10 +4,6 @@ import { shallow } from 'enzyme';
 import { withContext } from 'recompose';
 const PropTypes = require('prop-types'); // tslint:disable-line
 
-const Enzyme = require('enzyme');
-const Adapter = require('enzyme-adapter-react-16');
-Enzyme.configure({ adapter: new Adapter() });
-
 describe('ScaleControl', () => {
   let ScaleControlWithContext: any;
 

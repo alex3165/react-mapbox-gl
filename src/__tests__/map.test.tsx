@@ -15,14 +15,8 @@ import * as React from 'react';
 import ReactMapboxGl, { FitBounds } from '../map';
 import { mount } from 'enzyme';
 
-const Enzyme = require('enzyme');
-const Adapter = require('enzyme-adapter-react-16');
-Enzyme.configure({ adapter: new Adapter() });
-
 describe('Map', () => {
   let mapState;
-  console.log('Enzyme');
-  console.log(Enzyme);
   beforeEach(() => {
     mockfitBounds = jest.fn();
     mockon = jest.fn();
