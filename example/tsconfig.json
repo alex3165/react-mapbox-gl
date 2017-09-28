@@ -13,7 +13,6 @@
     "noUnusedLocals": true,
     "outDir": "./dist",
     "removeComments": true,
-    "rootDir": "./src",
     "sourceMap": true,
     "strictNullChecks": true,
     "suppressImplicitAnyIndexErrors": true,
