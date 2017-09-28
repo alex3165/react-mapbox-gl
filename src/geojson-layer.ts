@@ -222,7 +222,7 @@ export default class GeoJSONLayer extends React.Component<Props, {}> {
 
     this.layerIds.forEach(lId => {
       if (map.getLayer(lId)) {
-        map.removeLayer(lId)
+        map.removeLayer(lId);
       }
     });
   }
@@ -256,7 +256,7 @@ export default class GeoJSONLayer extends React.Component<Props, {}> {
         type: 'geojson',
         ...props.sourceOptions,
         data: props.data
-      }
+      };
     }
 
     const layerFilterChanged =
