@@ -4,7 +4,6 @@ import { parseString } from 'xml2js';
 import styled from 'styled-components';
 import { londonCycleMaxBounds as maxBounds } from './data';
 import { svg } from './cycle';
-import { ImageDefinition } from '../../../src/layer';
 
 // tslint:disable-next-line:no-var-requires
 const { token, styles } = require('./config.json');
@@ -42,7 +41,7 @@ const layoutLayer = { 'icon-image': 'londonCycle' };
 // Create an image for the Layer
 const image = new Image();
 image.src = 'data:image/svg+xml;charset=utf-8,' + svg;
-const images: ImageDefinition = ['londonCycle', image];
+const images: any = ['londonCycle', image];
 
 const StyledPopup = styled.div`
   background: white;
