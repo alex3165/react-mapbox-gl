@@ -5,9 +5,7 @@ import * as MapboxGL from 'mapbox-gl';
 const isEqual = require('deep-equal'); //tslint:disable-line
 import diff from './util/diff';
 import * as GeoJSON from 'geojson';
-import { generateID } from './util/uid';
-import { Sources, Feature } from './util/types';
-import { Props as FeatureProps } from './feature';
+import { Sources, Feature, Context } from './util/types';
 
 export type Paint = any;
 export type Layout = any;
@@ -23,8 +21,7 @@ export type ImageDefinitionWithOptions = [
   ImageOptions
 ];
 
-export interface Props {
-  id?: string;
+export interface LayerCommonProps {
   type?: 'symbol' | 'line' | 'fill' | 'circle' | 'raster';
   sourceId?: string;
   images?:
@@ -40,9 +37,12 @@ export interface Props {
   children?: JSX.Element | JSX.Element[];
 }
 
-export interface Context {
-  map: MapboxGL.Map;
+export interface OwnProps {
+  id: string;
+  draggedChildren?: JSX.Element[];
 }
+
+export type Props = LayerCommonProps & OwnProps;
 
 export default class Layer extends React.Component<Props, {}> {
   public context: Context;
@@ -56,12 +56,6 @@ export default class Layer extends React.Component<Props, {}> {
     layout: {},
     paint: {}
   };
-
-  private hover: number[] = [];
-  private isDragging: boolean = false;
-  private draggedChildren: any = undefined;
-
-  private id: string = this.props.id || `layer-${generateID()}`;
 
   private source: Sources = {
     type: 'geojson',
@@ -107,151 +101,6 @@ export default class Layer extends React.Component<Props, {}> {
     properties: { ...props.properties, id }
   });
 
-  private onClick = (evt: any) => {
-    const features = evt.features as Feature[];
-    const children = this.getChildren();
-
-    const { map } = this.context;
-
-    if (features) {
-      features.forEach(feature => {
-        const { id } = feature.properties;
-        if (children) {
-          const child = children[id];
-
-          const onClick = child && child.props.onClick;
-          if (onClick) {
-            onClick({ ...evt, feature, map });
-          }
-        }
-      });
-    }
-  };
-
-  private getChildren = () =>
-    ([] as any).concat(this.props.children) as Array<
-      React.ReactElement<FeatureProps>
-    >;
-
-  private areFeaturesDraggable = (
-    children: Array<React.ReactElement<FeatureProps>>,
-    featureIds: number[] = this.hover
-  ) =>
-    !!featureIds
-      .map(id => (children[id] ? children[id].props.draggable : false))
-      .filter(Boolean).length;
-
-  private onMouseEnter = (evt: any) => {
-    const children = this.getChildren();
-    const { map } = this.context;
-
-    this.hover = [];
-
-    evt.features.forEach((feature: Feature) => {
-      const { id } = feature.properties;
-      if (children) {
-        const child = children[id];
-
-        this.hover.push(id);
-        const onMouseEnter = child && child.props.onMouseEnter;
-        if (onMouseEnter) {
-          onMouseEnter({ ...evt, feature, map });
-        }
-      }
-    });
-
-    if (this.areFeaturesDraggable(children)) {
-      map.dragPan.disable();
-    }
-  };
-
-  private onMouseLeave = (evt: any) => {
-    const children = this.getChildren();
-    const { map } = this.context;
-    map.dragPan.enable();
-
-    this.hover.forEach(id => {
-      const child = children[id];
-      const onMouseLeave = child && child.props.onMouseLeave;
-      if (onMouseLeave) {
-        onMouseLeave({ ...evt, map });
-      }
-    });
-
-    if (!this.isDragging) {
-      this.hover = [];
-    }
-  };
-
-  private onMouseDown = () => {
-    const { map } = this.context;
-    const children = this.getChildren();
-    const isHoverDraggable = this.areFeaturesDraggable(children);
-    if (!isHoverDraggable) {
-      return;
-    }
-    map.dragPan.disable();
-
-    this.isDragging = true;
-    map.on('mousemove', this.onDragMove);
-    map.once('mouseup', this.onDragUp.bind(this, 'mousemove'));
-  };
-
-  private onDragMove = ({ lngLat }: any) => {
-    if (!this.isDragging) {
-      return;
-    }
-    const children = this.getChildren();
-
-    this.draggedChildren = children.map((child, index) => {
-      if (this.hover.includes(index) && child.props.draggable) {
-        return React.cloneElement(child, {
-          coordinates: [lngLat.lng, lngLat.lat]
-        });
-      }
-
-      return child;
-    });
-
-    this.forceUpdate();
-  };
-
-  private onDragUp = (moveEvent: string, evt: any) => {
-    const { map } = this.context;
-    const children = this.getChildren();
-
-    map.dragPan.enable();
-    this.isDragging = false;
-    this.draggedChildren = undefined;
-
-    this.hover.map(id => {
-      const child = children[id];
-      const onDragEnd = child && child.props.onDragEnd;
-      if (onDragEnd) {
-        onDragEnd({ ...evt, map });
-      }
-    });
-
-    map.off(moveEvent, this.onDragMove);
-  };
-
-  private onTouchStart = (evt: any) => {
-    const children = this.getChildren();
-    const { map } = this.context;
-
-    evt.features.forEach((feature: Feature) => {
-      const { id } = feature.properties;
-      this.hover = [id];
-      if (this.areFeaturesDraggable(children)) {
-        map.dragPan.disable();
-        this.isDragging = true;
-
-        map.on('touchmove', this.onDragMove);
-        map.once('touchend', this.onDragUp.bind(this, 'touchmove'))
-      }
-    });
-  };
-
   private initialize = () => {
     const {
       type,
@@ -260,13 +109,14 @@ export default class Layer extends React.Component<Props, {}> {
       layerOptions,
       sourceId,
       before,
-      images
+      images,
+      id
     } = this.props;
     const { map } = this.context;
 
     const layer = {
-      id: this.id,
-      source: sourceId || this.id,
+      id,
+      source: sourceId || id,
       type,
       layout,
       paint,
@@ -281,7 +131,7 @@ export default class Layer extends React.Component<Props, {}> {
     }
 
     if (!sourceId) {
-      map.addSource(this.id, this.source);
+      map.addSource(id, this.source);
     }
 
     map.addLayer(layer as any, before);
@@ -290,7 +140,7 @@ export default class Layer extends React.Component<Props, {}> {
   private onStyleDataChange = () => {
     // if the style of the map has been updated and we don't have layer anymore,
     // add it back to the map and force re-rendering to redraw it
-    if (!this.context.map.getLayer(this.id)) {
+    if (!this.context.map.getLayer(this.props.id)) {
       this.initialize();
       this.forceUpdate();
     }
@@ -301,27 +151,22 @@ export default class Layer extends React.Component<Props, {}> {
 
     this.initialize();
 
-    map.on('click', this.id, this.onClick);
-    map.on('mouseenter', this.id, this.onMouseEnter);
-    map.on('mouseleave', this.id, this.onMouseLeave);
-    map.on('mousedown', this.id, this.onMouseDown);
-    map.on('touchstart', this.id, this.onTouchStart);
     map.on('styledata', this.onStyleDataChange);
   }
 
   public componentWillUnmount() {
     const { map } = this.context;
-    const { images } = this.props;
+    const { images, id } = this.props;
 
     if (!map || !map.getStyle()) {
       return;
     }
 
-    map.removeLayer(this.id);
+    map.removeLayer(id);
     // if pointing to an existing source, don't remove
     // as other layers may be dependent upon it
     if (!this.props.sourceId) {
-      map.removeSource(this.id);
+      map.removeSource(id);
     }
 
     if (images) {
@@ -331,21 +176,18 @@ export default class Layer extends React.Component<Props, {}> {
         .forEach(map.removeImage);
     }
 
-    map.off('click', this.onClick);
-    map.off('mouseenter', this.onMouseEnter);
-    map.off('mouseleave', this.onMouseLeave);
     map.off('styledata', this.onStyleDataChange);
   }
 
   public componentWillReceiveProps(props: Props) {
-    const { paint, layout, before, layerOptions } = this.props;
+    const { paint, layout, before, layerOptions, id } = this.props;
     const { map } = this.context;
 
     if (!isEqual(props.paint, paint)) {
       const paintDiff = diff(paint, props.paint);
 
       Object.keys(paintDiff).forEach(key => {
-        map.setPaintProperty(this.id, key, paintDiff[key]);
+        map.setPaintProperty(id, key, paintDiff[key]);
       });
     }
 
@@ -353,7 +195,7 @@ export default class Layer extends React.Component<Props, {}> {
       const layoutDiff = diff(layout, props.layout);
 
       Object.keys(layoutDiff).forEach(key => {
-        map.setLayoutProperty(this.id, key, layoutDiff[key]);
+        map.setLayoutProperty(id, key, layoutDiff[key]);
       });
     }
 
@@ -362,25 +204,25 @@ export default class Layer extends React.Component<Props, {}> {
       layerOptions &&
       !isEqual(props.layerOptions.filter, layerOptions.filter)
     ) {
-      map.setFilter(this.id, props.layerOptions.filter as any);
+      map.setFilter(id, props.layerOptions.filter as any);
     }
 
     if (before !== props.before) {
-      map.moveLayer(this.id, props.before);
+      map.moveLayer(id, props.before);
     }
   }
 
   public render() {
     const { map } = this.context;
-    const { sourceId } = this.props;
+    const { sourceId, draggedChildren } = this.props;
     let { children } = this.props;
 
     if (!children) {
       children = [] as JSX.Element[];
     }
 
-    if (this.draggedChildren) {
-      children = this.draggedChildren;
+    if (draggedChildren) {
+      children = draggedChildren;
     } else {
       children = Array.isArray(children)
         ? (children as JSX.Element[][]).reduce(
@@ -394,7 +236,9 @@ export default class Layer extends React.Component<Props, {}> {
       .map(({ props }, id) => this.makeFeature(props, id))
       .filter(Boolean);
 
-    const source = map.getSource(sourceId || this.id) as MapboxGL.GeoJSONSource;
+    const source = map.getSource(
+      sourceId || this.props.id
+    ) as MapboxGL.GeoJSONSource;
 
     if (source && !sourceId && source.setData) {
       source.setData({
