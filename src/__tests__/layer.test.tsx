@@ -44,8 +44,8 @@ describe('Layer', () => {
 
     expect(addLayerMock.mock.calls[0]).toEqual([
       {
-        id: 'layer-1',
-        source: 'layer-1',
+        id: undefined,
+        source: undefined,
         type: 'symbol',
         layout: {},
         paint: {}
@@ -58,7 +58,7 @@ describe('Layer', () => {
     mount(<LayerWithContext children={children} />);
 
     expect(addSourceMock.mock.calls[0]).toEqual([
-      'layer-2',
+      undefined,
       {
         type: 'geojson',
         data: {
