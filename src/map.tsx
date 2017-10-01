@@ -148,6 +148,7 @@ export interface State {
 // Static Properties of the map
 export interface FactoryParameters {
   accessToken: string;
+  apiUrl?: string;
   minZoom?: number;
   maxZoom?: number;
   hash?: boolean;
@@ -189,6 +190,7 @@ declare global {
 
 const ReactMapboxFactory = ({
   accessToken,
+  apiUrl,
   minZoom = 0,
   maxZoom = 20,
   hash = false,
@@ -257,6 +259,9 @@ const ReactMapboxFactory = ({
       } = this.props;
 
       (MapboxGl as any).accessToken = accessToken;
+      if (apiUrl) {
+        (MapboxGl as any).config.API_URL = apiUrl;
+      }
 
       const opts: MapboxGl.MapboxOptions = {
         preserveDrawingBuffer,

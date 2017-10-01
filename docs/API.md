@@ -18,6 +18,7 @@ const Map = ReactMapboxGl({
 
 ### Factory parameters
 - **accessToken** *(required)* : `String` Mapbox access token.
+- **apiUrl**: `String` Define a custom URL to fetch the vector tiles.
 - **minZoom** *(Default: `0`)*: `Number` Minimum zoom level. Must be between 0 and 20.
 - **maxZoom** *(Default: `20`)*: `Number` Maximum zoom level. Must be between 0 and 20.
 - **scrollZoom** *(Default: `true`)*: See [mapbox scrollZoom](https://www.mapbox.com/mapbox-gl-js/api/#Map)
