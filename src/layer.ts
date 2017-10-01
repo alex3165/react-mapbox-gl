@@ -133,10 +133,11 @@ export default class Layer extends React.Component<Props, {}> {
       React.ReactElement<FeatureProps>
     >;
 
-  private isHoverDraggable = (
-    children: Array<React.ReactElement<FeatureProps>>
+  private areFeaturesDraggable = (
+    children: Array<React.ReactElement<FeatureProps>>,
+    featureIds: number[] = this.hover
   ) =>
-    !!this.hover
+    !!featureIds
       .map(id => (children[id] ? children[id].props.draggable : false))
       .filter(Boolean).length;
 
@@ -159,7 +160,7 @@ export default class Layer extends React.Component<Props, {}> {
       }
     });
 
-    if (this.isHoverDraggable(children)) {
+    if (this.areFeaturesDraggable(children)) {
       map.dragPan.disable();
     }
   };
@@ -185,7 +186,7 @@ export default class Layer extends React.Component<Props, {}> {
   private onMouseDown = () => {
     const { map } = this.context;
     const children = this.getChildren();
-    const isHoverDraggable = this.isHoverDraggable(children);
+    const isHoverDraggable = this.areFeaturesDraggable(children);
     if (!isHoverDraggable) {
       return;
     }
@@ -193,7 +194,7 @@ export default class Layer extends React.Component<Props, {}> {
 
     this.isDragging = true;
     map.on('mousemove', this.onDragMove);
-    map.once('mouseup', this.onDragUp);
+    map.once('mouseup', this.onDragUp.bind(this, 'mousemove'));
   };
 
   private onDragMove = ({ lngLat }: any) => {
@@ -215,7 +216,7 @@ export default class Layer extends React.Component<Props, {}> {
     this.forceUpdate();
   };
 
-  private onDragUp = (evt: any) => {
+  private onDragUp = (moveEvent: string, evt: any) => {
     const { map } = this.context;
     const children = this.getChildren();
 
@@ -231,7 +232,24 @@ export default class Layer extends React.Component<Props, {}> {
       }
     });
 
-    map.off('mousemove', this.onDragMove);
+    map.off(moveEvent, this.onDragMove);
+  };
+
+  private onTouchStart = (evt: any) => {
+    const children = this.getChildren();
+    const { map } = this.context;
+
+    evt.features.forEach((feature: Feature) => {
+      const { id } = feature.properties;
+      this.hover = [id];
+      if (this.areFeaturesDraggable(children)) {
+        map.dragPan.disable();
+        this.isDragging = true;
+
+        map.on('touchmove', this.onDragMove);
+        map.once('touchend', this.onDragUp.bind(this, 'touchmove'))
+      }
+    });
   };
 
   private initialize = () => {
@@ -287,6 +305,7 @@ export default class Layer extends React.Component<Props, {}> {
     map.on('mouseenter', this.id, this.onMouseEnter);
     map.on('mouseleave', this.id, this.onMouseLeave);
     map.on('mousedown', this.id, this.onMouseDown);
+    map.on('touchstart', this.id, this.onTouchStart);
     map.on('styledata', this.onStyleDataChange);
   }
 
