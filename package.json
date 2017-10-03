@@ -68,7 +68,7 @@
     "@types/deep-equal": "^1.0.1",
     "@types/enzyme": "2.8.8",
     "@types/geojson": "1.0.3",
-    "@types/jest": "21.1.0",
+    "@types/jest": "21.1.2",
     "@types/mapbox-gl": "0.39.6",
     "@types/node": "8.0.29",
     "@types/prettier": "^1.7.0",
