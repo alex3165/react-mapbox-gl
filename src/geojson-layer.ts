@@ -4,7 +4,7 @@ import * as MapboxGL from 'mapbox-gl';
 const isEqual = require('deep-equal'); //tslint:disable-line
 import diff from './util/diff';
 import { generateID } from './util/uid';
-import { Sources, SourceOptionData } from './util/types';
+import { Sources, SourceOptionData, Context } from './util/types';
 
 const typeToLayerLUT = {
   fill: 'fill',
@@ -107,10 +107,6 @@ type Layouts =
   | MapboxGL.LineLayout
   | MapboxGL.CircleLayout
   | MapboxGL.FillExtrusionLayout;
-
-export interface Context {
-  map: MapboxGL.Map;
-}
 
 export default class GeoJSONLayer extends React.Component<Props, {}> {
   public context: Context;

@@ -28,3 +28,7 @@ export interface TilesJson {
   minzoom: number;
   tileSize?: number;
 }
+
+export interface Context {
+  map: MapboxGL.Map;
+}

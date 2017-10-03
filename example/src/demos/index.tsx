@@ -48,6 +48,9 @@ const Menu = styled.ul`
   list-style-type: none;
   display: flex;
   justify-content: center;
+  @media (max-width: 420px) {
+    flex-direction: column;
+  }
 `;
 
 const Item = styled.li`
