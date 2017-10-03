@@ -1,5 +1,5 @@
 import * as React from 'react';
-const PropTypes = require('prop-types'); // tslint:disable-line
+import * as PropTypes from 'prop-types';
 import * as MapboxGL from 'mapbox-gl';
 const isEqual = require('deep-equal'); //tslint:disable-line
 import diff from './util/diff';

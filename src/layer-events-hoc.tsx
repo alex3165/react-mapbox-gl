@@ -1,5 +1,5 @@
 import * as React from 'react';
-const PropTypes = require('prop-types'); // tslint:disable-line
+import * as PropTypes from 'prop-types';
 import { Context, Feature } from './util/types';
 import { Props as FeatureProps } from './feature';
 import { generateID } from './util/uid';

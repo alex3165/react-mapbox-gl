@@ -1,5 +1,5 @@
 import * as React from 'react';
-const PropTypes = require('prop-types'); // tslint:disable-line
+import * as PropTypes from 'prop-types';
 import { Map, GeoJSONSource, GeoJSONSourceRaw } from 'mapbox-gl';
 import { SourceOptionData, TilesJson } from './util/types';
 

@@ -1,9 +1,8 @@
 import * as React from 'react';
-const PropTypes = require('prop-types'); // tslint:disable-line
-
+import * as PropTypes from 'prop-types';
 import { Map, LngLatBounds } from 'mapbox-gl';
 import { Props as MarkerProps } from './marker';
-const supercluster = require('supercluster'); // tslint:disable-line
+import * as supercluster from 'supercluster'; // tslint:disable-line
 import * as GeoJSON from 'geojson';
 import { Feature } from './util/types';
 import * as bbox from '@turf/bbox';
