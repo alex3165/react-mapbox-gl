@@ -1,6 +1,7 @@
 import * as MapboxGl from 'mapbox-gl';
 import * as React from 'react';
 import * as PropTypes from 'prop-types';
+import injectCSS from './util/inject-css';
 const isEqual = require('deep-equal'); //tslint:disable-line
 
 const events = {
@@ -168,6 +169,7 @@ export interface FactoryParameters {
   failIfMajorPerformanceCaveat?: boolean;
   classes?: string[];
   bearingSnap?: number;
+  injectCss?: boolean;
 }
 
 // Satisfy typescript pitfall with defaultProps
@@ -209,9 +211,14 @@ const ReactMapboxFactory = ({
   refreshExpiredTiles = true,
   failIfMajorPerformanceCaveat = false,
   classes,
-  bearingSnap = 7
-}: FactoryParameters): any =>
-  class ReactMapboxGl extends React.Component<Props & Events, State> {
+  bearingSnap = 7,
+  injectCss = true
+}: FactoryParameters): any => {
+  if (injectCss) {
+    injectCSS(window);
+  }
+
+  return class ReactMapboxGl extends React.Component<Props & Events, State> {
     public static defaultProps = {
       onStyleLoad: (...args: any[]) => args,
       center: defaultCenter,
@@ -429,5 +436,6 @@ const ReactMapboxFactory = ({
       );
     }
   };
+}
 
 export default ReactMapboxFactory;

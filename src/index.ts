@@ -1,5 +1,4 @@
 // Add a style tag to the document's head for the map's styling
-import injectCSS from './util/inject-css';
 import Map from './map';
 import BaseLayer, { LayerCommonProps, Props as LayerProps } from './layer';
 import layerMouseTouchEvents, { EnhancedLayerProps } from './layer-events-hoc';
@@ -14,8 +13,6 @@ import Cluster from './cluster';
 import RotationControl from './rotation-control';
 import { Context } from './util/types';
 import * as PropTypes from 'prop-types';
-
-injectCSS(window);
 
 // Hack to get around import issue from external lib, see: https://github.com/Microsoft/TypeScript/issues/9944
 // TODO: Remove this hack once the above issue is fixed
