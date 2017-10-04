@@ -17,7 +17,6 @@ import { mount } from 'enzyme';
 
 describe('Map', () => {
   let mapState;
-
   beforeEach(() => {
     mockfitBounds = jest.fn();
     mockon = jest.fn();
