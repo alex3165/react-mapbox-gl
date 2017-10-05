@@ -42,6 +42,7 @@ const Map = ReactMapboxGl({
 - **failIfMajorPerformanceCaveat** *(Default: `false`)*: `boolean` If  `true` , map creation will fail if the performance of Mapbox GL JS would be dramatically worse than expected (i.e. a software renderer would be used).
 - **classes**: `string[]` Mapbox style class names with which to initialize the map. Keep in mind that these classes are used for controlling a style layer's paint properties, so are not reflected in an HTML element's  class attribute. To learn more about Mapbox style classes, read about Layers in the style specification.
 - **bearingSnap** *(Default: `7`)*: `number` The threshold, measured in degrees, that determines when the map's bearing (rotation) will snap to north. For example, with a  bearingSnap of 7, if the user rotates the map within 7 degrees of north, the map will automatically snap to exact north.
+- **injectCss** *(Default: `true`)*: `boolean` If `false`, the factory will no try to inject the default CSS for the map into the `<head>` element.
 
 
 ### Component Properties
