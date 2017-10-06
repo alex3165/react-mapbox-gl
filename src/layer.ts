@@ -133,7 +133,7 @@ export default class Layer extends React.Component<Props, {}> {
       map.addSource(id, this.source);
     }
 
-    map.addLayer(layer as any, before);
+    map.addLayer(layer, before);
   };
 
   private onStyleDataChange = () => {
