@@ -1,26 +1,29 @@
 import { LngLat, Point, Map } from 'mapbox-gl';
 import { Props } from '../projected-layer';
 
-export type Anchor =
-  | 'center'
-  | 'top'
-  | 'bottom'
-  | 'left'
-  | 'right'
-  | 'top-left'
-  | 'top-right'
-  | 'bottom-left'
-  | 'bottom-right';
+export interface AnchorsOffset {
+  center: Point;
+  top: Point;
+  bottom: Point;
+  left: Point;
+  right: Point;
+  'top-left': Point;
+  'top-right': Point;
+  'bottom-left': Point;
+  'bottom-right': Point;
+}
+
+export type Anchor = keyof AnchorsOffset;
 
 export interface PointDef {
   x: number;
   y: number;
 }
 
-export interface OverlayProps {
+export interface OverlayParams {
   anchor?: Anchor;
-  offset?: PointDef;
-  position?: PointDef;
+  offset?: Point;
+  position?: Point;
 }
 
 export const anchors = [
@@ -49,16 +52,14 @@ export const anchorTranslates = {
 
 // Hack /o\
 const defaultElement = { offsetWidth: 0, offsetHeight: 0 };
-
-const isPointLike = (input: Point | any[]): boolean =>
-  input instanceof Point || Array.isArray(input);
+const defaultPoint = [0, 0];
 
 const projectCoordinates = (map: Map, coordinates: number[]) =>
   map.project(LngLat.convert(coordinates));
 
 const calculateAnchor = (
   map: Map,
-  offsets: any,
+  offsets: AnchorsOffset,
   position: PointDef,
   { offsetHeight, offsetWidth } = defaultElement
 ) => {
@@ -68,6 +69,7 @@ const calculateAnchor = (
     anchor = [anchors[1]];
   } else if (
     position.y + offsets.top.y + offsetHeight >
+    // tslint:disable-next-line:no-any
     (map as any).transform.height
   ) {
     anchor = [anchors[2]];
@@ -75,6 +77,7 @@ const calculateAnchor = (
 
   if (position.x < offsetWidth / 2) {
     anchor.push(anchors[3]);
+  // tslint:disable-next-line:no-any
   } else if (position.x > (map as any).transform.width - offsetWidth / 2) {
     anchor.push(anchors[4]);
   }
@@ -83,43 +86,45 @@ const calculateAnchor = (
     return anchors[2];
   }
 
-  return anchor.join('-');
+  return anchor.join('-') as Anchor;
 };
 
-const normalizedOffsets = (offset: any): any => {
+const normalizedOffsets = (offset?: number | Point | AnchorsOffset | number[]): AnchorsOffset => {
   if (!offset) {
-    return normalizedOffsets(new (Point as any)(0, 0));
+    return normalizedOffsets(new Point(0, 0));
   }
 
   if (typeof offset === 'number') {
     // input specifies a radius from which to calculate offsets at all positions
     const cornerOffset = Math.round(Math.sqrt(0.5 * Math.pow(offset, 2)));
     return {
-      center: new (Point as any)(offset, offset),
-      top: new (Point as any)(0, offset),
-      bottom: new (Point as any)(0, -offset),
-      left: new (Point as any)(offset, 0),
-      right: new (Point as any)(-offset, 0),
-      'top-left': new (Point as any)(cornerOffset, cornerOffset),
-      'top-right': new (Point as any)(-cornerOffset, cornerOffset),
-      'bottom-left': new (Point as any)(cornerOffset, -cornerOffset),
-      'bottom-right': new (Point as any)(-cornerOffset, -cornerOffset)
+      center: new Point(offset, offset),
+      top: new Point(0, offset),
+      bottom: new Point(0, -offset),
+      left: new Point(offset, 0),
+      right: new Point(-offset, 0),
+      'top-left': new Point(cornerOffset, cornerOffset),
+      'top-right': new Point(-cornerOffset, cornerOffset),
+      'bottom-left': new Point(cornerOffset, -cornerOffset),
+      'bottom-right': new Point(-cornerOffset, -cornerOffset)
     };
   }
 
-  if (isPointLike(offset)) {
+  if (offset instanceof Point || Array.isArray(offset)) {
     // input specifies a single offset to be applied to all positions
     return anchors.reduce((res, anchor) => {
-      res[anchor] = (Point as any).convert(offset);
+      res[anchor] = Point.convert(offset);
       return res;
-    }, {});
+    // tslint:disable-next-line:no-object-literal-type-assertion
+    }, {} as AnchorsOffset);
   }
 
   // input specifies an offset per position
   return anchors.reduce((res, anchor) => {
-    res[anchor] = (Point as any).convert(offset[anchor] || [0, 0]);
+    res[anchor] = Point.convert(offset[anchor] || defaultPoint);
     return res;
-  }, {});
+  // tslint:disable-next-line:no-object-literal-type-assertion
+  }, {} as AnchorsOffset);
 };
 
 export const overlayState = (
@@ -130,7 +135,7 @@ export const overlayState = (
   const position = projectCoordinates(map, props.coordinates);
   const offsets = normalizedOffsets(props.offset);
   const anchor =
-    props.anchor || calculateAnchor(map, offsets, position as any, container);
+    props.anchor || calculateAnchor(map, offsets, position, container);
 
   return {
     anchor,
@@ -139,15 +144,19 @@ export const overlayState = (
   };
 };
 
-const moveTranslate = (point: PointDef) =>
+const moveTranslate = (point: Point) =>
   point ? `translate(${point.x.toFixed(0)}px, ${point.y.toFixed(0)}px)` : '';
 
 export const overlayTransform = ({
   anchor,
   position,
   offset
-}: OverlayProps) => {
-  const res = [moveTranslate(position as any)];
+}: OverlayParams) => {
+  const res = [];
+
+  if (position) {
+    res.push(moveTranslate(position))
+  }
 
   if (offset && offset.x !== undefined && offset.y !== undefined) {
     res.push(moveTranslate(offset));
