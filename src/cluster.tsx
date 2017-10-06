@@ -29,6 +29,8 @@ export interface Props {
 }
 
 export interface State {
+  // Fix this once below PR merged
+  // https://github.com/DefinitelyTyped/DefinitelyTyped/pull/20348
   superC: any;
   clusterPoints: Array<GeoJSON.Feature<GeoJSON.Point>>;
 }
@@ -69,7 +71,7 @@ export default class Cluster extends React.Component<Props, State> {
 
   private featureClusterMap = new WeakMap<
     Feature,
-    React.Component<MarkerProps, any>
+    React.Component<MarkerProps>
   >();
 
   public componentWillMount() {
@@ -138,7 +140,7 @@ export default class Cluster extends React.Component<Props, State> {
   }
 
   private childrenToFeatures = (
-    children: Array<React.Component<MarkerProps, any>>
+    children: Array<React.Component<MarkerProps>>
   ) =>
     children.map(child => {
       const feature = this.feature(child && child.props.coordinates);

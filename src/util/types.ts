@@ -17,6 +17,7 @@ export interface Feature {
     type: string;
     coordinates: GeoJSON.Position;
   };
+  // tslint:disable-next-line:no-any
   properties: any;
 }
 

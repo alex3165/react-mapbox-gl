@@ -1,10 +1,9 @@
 import * as React from 'react';
 import * as PropTypes from 'prop-types';
-import { Map } from 'mapbox-gl';
+import { Map, Point } from 'mapbox-gl';
 import {
   Anchor,
-  PointDef,
-  OverlayProps,
+  OverlayParams,
   overlayState,
   overlayTransform,
   anchors
@@ -18,7 +17,7 @@ const defaultStyle = {
 export interface Props {
   coordinates: GeoJSON.Position;
   anchor?: Anchor;
-  offset?: number | number[] | PointDef;
+  offset?: number | number[] | Point;
   children?: JSX.Element;
   onClick?: React.MouseEventHandler<HTMLDivElement>;
   onMouseEnter?: React.MouseEventHandler<HTMLDivElement>;
@@ -31,10 +30,10 @@ export interface Context {
   map: Map;
 }
 
-export default class ProjectedLayer extends React.Component<Props, any> {
+export default class ProjectedLayer extends React.Component<Props, OverlayParams> {
   public context: Context;
   private container: HTMLElement;
-  private prevent: boolean;
+  private prevent: boolean = false;
 
   public static contextTypes = {
     map: PropTypes.object
@@ -43,10 +42,11 @@ export default class ProjectedLayer extends React.Component<Props, any> {
   public static defaultProps = {
     anchor: anchors[0],
     offset: 0,
+    // tslint:disable-next-line:no-any
     onClick: (...args: any[]) => args
   };
 
-  public state: OverlayProps = {};
+  public state: OverlayParams = {};
 
   private setContainer = (el: HTMLElement | null) => {
     if (el) {
@@ -101,7 +101,7 @@ export default class ProjectedLayer extends React.Component<Props, any> {
     const finalStyle = {
       ...defaultStyle,
       ...style,
-      transform: overlayTransform(this.state as OverlayProps).join(' ')
+      transform: overlayTransform(this.state).join(' ')
     };
 
     return (
