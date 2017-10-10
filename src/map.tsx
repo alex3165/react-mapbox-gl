@@ -50,6 +50,7 @@ const events = {
 
 export type MapEvent = (
   map: MapboxGl.Map,
+  // tslint:disable-next-line:no-any
   evt: React.SyntheticEvent<any>
 ) => void;
 
@@ -213,14 +214,15 @@ const ReactMapboxFactory = ({
   classes,
   bearingSnap = 7,
   injectCss = true
-}: FactoryParameters): any => {
+}: FactoryParameters) => {
   if (injectCss) {
     injectCSS(window);
   }
 
   return class ReactMapboxGl extends React.Component<Props & Events, State> {
     public static defaultProps = {
-      onStyleLoad: (...args: any[]) => args,
+      // tslint:disable-next-line:no-any
+      onStyleLoad: (map: MapboxGl.Map, evt: any) => null,
       center: defaultCenter,
       zoom: defaultZoom,
       bearing: 0,
@@ -238,15 +240,15 @@ const ReactMapboxFactory = ({
     };
 
     // tslint:disable-next-line:variable-name
-    private _isMounted = true;
+    public _isMounted = true;
 
     public getChildContext = () => ({
       map: this.state.map
     });
 
-    private container: HTMLElement;
+    public container: HTMLElement;
 
-    private calcCenter = (bounds: FitBounds): number[] => [
+    public calcCenter = (bounds: FitBounds): number[] => [
       (bounds[0][0] + bounds[1][0]) / 2,
       (bounds[0][1] + bounds[1][1]) / 2
     ];
@@ -264,8 +266,10 @@ const ReactMapboxFactory = ({
         maxBounds
       } = this.props;
 
+      // tslint:disable-next-line:no-any
       (MapboxGl as any).accessToken = accessToken;
       if (apiUrl) {
+        // tslint:disable-next-line:no-any
         (MapboxGl as any).config.API_URL = apiUrl;
       }
 
@@ -296,6 +300,8 @@ const ReactMapboxFactory = ({
         dragPan,
         boxZoom,
         refreshExpiredTiles,
+        // TODO: change when https://github.com/DefinitelyTyped/DefinitelyTyped/pull/20472 is merged
+        // tslint:disable-next-line:no-any
         logoPosition: logoPosition as any,
         classes,
         bearingSnap,
@@ -309,6 +315,7 @@ const ReactMapboxFactory = ({
         map.fitBounds(fitBounds, fitBoundsOptions);
       }
 
+      // tslint:disable-next-line:no-any
       map.on('load', (evt: React.SyntheticEvent<any>) => {
         if (this._isMounted) {
           this.setState({ ready: true });
@@ -323,6 +330,7 @@ const ReactMapboxFactory = ({
         const propEvent = this.props[event];
 
         if (propEvent) {
+          // tslint:disable-next-line:no-any
           map.on(events[event], (evt: React.SyntheticEvent<any>) => {
             propEvent(map, evt);
           });
@@ -417,7 +425,7 @@ const ReactMapboxFactory = ({
       return null;
     }
 
-    private setRef = (x: HTMLElement | null) => {
+    public setRef = (x: HTMLElement | null) => {
       this.container = x!;
     };
 
