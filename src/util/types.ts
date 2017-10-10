@@ -33,3 +33,5 @@ export interface TilesJson {
 export interface Context {
   map: MapboxGL.Map;
 }
+
+export type LayerType = 'fill' | 'line' | 'symbol' | 'circle' | 'fill-extrusion' | 'raster' | 'background';

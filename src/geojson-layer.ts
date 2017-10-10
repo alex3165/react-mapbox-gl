@@ -4,7 +4,7 @@ import * as MapboxGL from 'mapbox-gl';
 const isEqual = require('deep-equal'); //tslint:disable-line
 import diff from './util/diff';
 import { generateID } from './util/uid';
-import { Sources, SourceOptionData, Context } from './util/types';
+import { Sources, SourceOptionData, Context, LayerType } from './util/types';
 
 const typeToLayerLUT = {
   fill: 'fill',
@@ -23,6 +23,7 @@ const eventToHandler = {
   click: 'OnClick'
 };
 
+// tslint:disable-next-line:no-any
 export type MouseEvent = (evt: any) => any;
 
 export interface LineProps {
@@ -129,8 +130,7 @@ export default class GeoJSONLayer extends React.Component<Props, {}> {
     return `${this.id}-${type}`;
   };
 
-  private createLayer = (type: string) => {
-    // const { id, layerIds } = this;
+  private createLayer = (type: LayerType) => {
     const { before, layerOptions } = this.props;
     const { map } = this.context;
 
@@ -149,7 +149,7 @@ export default class GeoJSONLayer extends React.Component<Props, {}> {
       {
         id: layerId,
         source: this.id,
-        type: type as any,
+        type,
         paint,
         layout,
         ...layerOptions
@@ -264,7 +264,7 @@ export default class GeoJSONLayer extends React.Component<Props, {}> {
       const layerId = this.buildLayerId(type);
 
       if (props.layerOptions && layerFilterChanged) {
-        map.setFilter(layerId, props.layerOptions.filter as any);
+        map.setFilter(layerId, props.layerOptions.filter || []);
       }
 
       const paintProp = typeToLayerLUT[type] + 'Paint';
