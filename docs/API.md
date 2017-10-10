@@ -48,6 +48,7 @@ const Map = ReactMapboxGl({
 ### Component Properties
 - **style** *(required)* : `String | Object`  Mapbox map style, if changed, the style will be updated using `setStyle`.
 - **center** *(Default: `[ -0.2416815, 51.5285582 ]`)*: `Array<Number>` Center the map at the position at initialisation
+  - Must be in longitude, latitude coordinate order (as opposed to latitude, longitude) to match GeoJSON (source: https://www.mapbox.com/mapbox-gl-js/api/#lnglat). 
   - Re-center the map if the value change regarding the prev value or the actual center position [flyTo](https://www.mapbox.com/mapbox-gl-js/api/#Map.flyTo)
 - **zoom** *(Default: `[11]`)*: `Array<Number>` Zoom level of the map at initialisation wrapped in an array.
   - Check for reference equality between the previous value of zoom and the new one in order to update it or not.
