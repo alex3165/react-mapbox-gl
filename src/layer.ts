@@ -3,11 +3,27 @@ import * as PropTypes from 'prop-types';
 import * as MapboxGL from 'mapbox-gl';
 const isEqual = require('deep-equal'); //tslint:disable-line
 import diff from './util/diff';
-import * as GeoJSON from 'geojson';
 import { Sources, Feature, Context } from './util/types';
+import { Props as FeatureProps } from './feature';
 
-export type Paint = any;
-export type Layout = any;
+export type Paint =
+MapboxGL.BackgroundPaint
+  | MapboxGL.FillPaint
+  | MapboxGL.FillExtrusionPaint
+  | MapboxGL.SymbolPaint
+  | MapboxGL.LinePaint
+  | MapboxGL.RasterPaint
+  | MapboxGL.CirclePaint;
+
+export type Layout =
+MapboxGL.BackgroundLayout
+| MapboxGL.FillLayout
+| MapboxGL.FillExtrusionLayout
+| MapboxGL.LineLayout
+| MapboxGL.SymbolLayout
+| MapboxGL.RasterLayout
+| MapboxGL.CircleLayout;
+
 export interface ImageOptions {
   width?: number;
   height?: number;
@@ -65,7 +81,8 @@ export default class Layer extends React.Component<Props, {}> {
     }
   };
 
-  private geometry = (coordinates: GeoJSON.Position) => {
+  // tslint:disable-next-line:no-any
+  private geometry = (coordinates: any) => {
     switch (this.props.type) {
       case 'symbol':
       case 'circle':
@@ -94,7 +111,7 @@ export default class Layer extends React.Component<Props, {}> {
     }
   };
 
-  private makeFeature = (props: any, id: number): Feature => ({
+  private makeFeature = (props: FeatureProps, id: number): Feature => ({
     type: 'Feature',
     geometry: this.geometry(props.coordinates),
     properties: { ...props.properties, id }
@@ -203,7 +220,7 @@ export default class Layer extends React.Component<Props, {}> {
       layerOptions &&
       !isEqual(props.layerOptions.filter, layerOptions.filter)
     ) {
-      map.setFilter(id, props.layerOptions.filter as any);
+      map.setFilter(id, props.layerOptions.filter || []);
     }
 
     if (before !== props.before) {
@@ -231,8 +248,8 @@ export default class Layer extends React.Component<Props, {}> {
         : [children] as JSX.Element[];
     }
 
-    const features = (children! as Array<React.ReactElement<any>>)
-      .map(({ props }, id) => this.makeFeature(props, id))
+    const features = (children! as Array<React.ReactElement<FeatureProps>>)
+      .map(({ props }, id) => this.makeFeature(props.properties, id))
       .filter(Boolean);
 
     const source = map.getSource(

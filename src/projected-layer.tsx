@@ -18,7 +18,7 @@ export interface Props {
   coordinates: GeoJSON.Position;
   anchor?: Anchor;
   offset?: number | number[] | Point;
-  children?: JSX.Element;
+  children?: JSX.Element | JSX.Element[];
   onClick?: React.MouseEventHandler<HTMLDivElement>;
   onMouseEnter?: React.MouseEventHandler<HTMLDivElement>;
   onMouseLeave?: React.MouseEventHandler<HTMLDivElement>;
