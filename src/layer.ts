@@ -59,7 +59,7 @@ export interface OwnProps {
 
 export type Props = LayerCommonProps & OwnProps;
 
-export default class Layer extends React.Component<Props, {}> {
+export default class Layer extends React.Component<Props> {
   public context: Context;
 
   public static contextTypes = {

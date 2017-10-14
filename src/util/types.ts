@@ -21,14 +21,7 @@ export interface Feature {
   properties: any;
 }
 
-export interface TilesJson {
-  type: string;
-  tiles?: string[];
-  url?: string;
-  maxzoom: number;
-  minzoom: number;
-  tileSize?: number;
-}
+export type TilesJson = MapboxGL.VectorSource | MapboxGL.RasterSource
 
 export interface Context {
   map: MapboxGL.Map;
