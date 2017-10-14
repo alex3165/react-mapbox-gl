@@ -116,6 +116,7 @@ export default class ScaleControl extends React.Component<Props, State> {
 
     // tslint:disable-next-line:no-any
     const clientWidth = (map as any)._canvas.clientWidth;
+    // tslint:disable-next-line:no-any
     const { _ne, _sw } = map.getBounds() as any;
 
     const totalWidth = this._getDistanceTwoPoints(
