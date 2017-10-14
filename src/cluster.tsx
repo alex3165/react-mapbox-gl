@@ -98,7 +98,7 @@ export default class Cluster extends React.Component<Props, State> {
     const { superC } = this.state;
     this.featureClusterMap = new WeakMap<
       Feature,
-      React.Component<MarkerProps, {}>
+      React.Component<MarkerProps>
     >();
     const features = this.childrenToFeatures(newChildren);
     superC.load(features);

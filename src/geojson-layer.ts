@@ -109,7 +109,7 @@ type Layouts =
   | MapboxGL.CircleLayout
   | MapboxGL.FillExtrusionLayout;
 
-export default class GeoJSONLayer extends React.Component<Props, {}> {
+export default class GeoJSONLayer extends React.Component<Props> {
   public context: Context;
 
   public static contextTypes = {
