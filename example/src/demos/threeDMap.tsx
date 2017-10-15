@@ -22,11 +22,11 @@ const threeDLayerOpts: Partial<MapboxGL.Layer> = {
 const paintLayer = {
   'fill-extrusion-color': '#aaa',
   'fill-extrusion-height': {
-      'type': 'identity',
+      'type': 'identity' as  'identity',
       'property': 'height'
   },
   'fill-extrusion-base': {
-      'type': 'identity',
+      'type': 'identity' as 'identity',
       'property': 'min_height'
   },
   'fill-extrusion-opacity': .6

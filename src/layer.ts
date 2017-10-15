@@ -8,7 +8,7 @@ import { Props as FeatureProps } from './feature';
 
 export type Paint =
 MapboxGL.BackgroundPaint
-  | MapboxGL.FillPaint
+  | Partial<MapboxGL.FillPaint>
   | MapboxGL.FillExtrusionPaint
   | MapboxGL.SymbolPaint
   | MapboxGL.LinePaint
@@ -249,7 +249,7 @@ export default class Layer extends React.Component<Props> {
     }
 
     const features = (children! as Array<React.ReactElement<FeatureProps>>)
-      .map(({ props }, id) => this.makeFeature(props.properties, id))
+      .map(({ props }, id) => this.makeFeature(props, id))
       .filter(Boolean);
 
     const source = map.getSource(

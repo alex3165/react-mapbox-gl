@@ -34,7 +34,7 @@ const StyledEditor = styled(LiveEditor)`
   font-family: 'Source Code Pro', monospace;
   font-size: 13px;
   line-height: 18px;
-` as any;
+`;
 
 const StyledPreview = styled(LivePreview)``;
 
@@ -42,7 +42,7 @@ const MapCode = () => (
   <StyledProvider
     code={code}
     mountStylesheet={false}
-    scope={{ ReactMapboxGl, Layer, Feature, accessToken: token } as any}
+    scope={{ ReactMapboxGl, Layer, Feature, accessToken: token }}
     noInline={true}
   >
     <StyledEditor contentEditable={false}/>
@@ -51,7 +51,7 @@ const MapCode = () => (
   </StyledProvider>
 );
 
-class Home extends React.Component<{}, {}> {
+class Home extends React.Component {
   public render() {
     return (
       <Container>
