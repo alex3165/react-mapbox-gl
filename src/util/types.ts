@@ -17,18 +17,16 @@ export interface Feature {
     type: string;
     coordinates: GeoJSON.Position;
   };
+  // tslint:disable-next-line:no-any
   properties: any;
 }
 
-export interface TilesJson {
-  type: string;
-  tiles?: string[];
-  url?: string;
-  maxzoom: number;
-  minzoom: number;
-  tileSize?: number;
-}
+export type TilesJson = MapboxGL.VectorSource | MapboxGL.RasterSource
 
 export interface Context {
   map: MapboxGL.Map;
 }
+
+export type LayerType = 'fill' | 'line' | 'symbol' | 'circle' | 'fill-extrusion' | 'raster' | 'background';
+
+export type AnyShapeCoordinates = number[] | number[][] | number[][][] | number[][][][];

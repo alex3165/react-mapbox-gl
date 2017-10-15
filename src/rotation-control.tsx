@@ -94,7 +94,7 @@ export default class RotationControl extends React.Component<Props, State> {
     this.context.map.off('rotate', this.onMapRotate);
   }
 
-  public compassIcon: any;
+  public compassIcon: HTMLSpanElement | null;
 
   private onMouseOut = () => {
     if (!this.state.hover) {
@@ -113,12 +113,16 @@ export default class RotationControl extends React.Component<Props, State> {
   };
 
   private onMapRotate = () => {
-    const map = this.context.map as any;
-    const rotate = `rotate(${map.transform.angle * (180 / Math.PI)}deg)`; // tslint:disable-line
-    this.compassIcon.style.transform = rotate;
+    const map = this.context.map;
+    // tslint:disable-next-line:no-any
+    const rotate = `rotate(${(map as any).transform.angle * (180 / Math.PI)}deg)`;
+
+    if (this.compassIcon) {
+      this.compassIcon.style.transform = rotate;
+    }
   };
 
-  private assignRef = (icon: any) => {
+  private assignRef = (icon: HTMLSpanElement | null) => {
     this.compassIcon = icon;
   };
 

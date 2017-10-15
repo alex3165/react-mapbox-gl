@@ -114,7 +114,9 @@ export default class ScaleControl extends React.Component<Props, State> {
     const { map } = this.context;
     const { measurement } = this.props;
 
+    // tslint:disable-next-line:no-any
     const clientWidth = (map as any)._canvas.clientWidth;
+    // tslint:disable-next-line:no-any
     const { _ne, _sw } = map.getBounds() as any;
 
     const totalWidth = this._getDistanceTwoPoints(
@@ -133,6 +135,7 @@ export default class ScaleControl extends React.Component<Props, State> {
       return acc;
     }, 0);
 
+    // tslint:disable-next-line:no-any
     const scaleWidth = chosenScale / totalWidth * (map as any)._canvas.width;
 
     this.setState({

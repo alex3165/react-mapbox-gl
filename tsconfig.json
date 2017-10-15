@@ -16,9 +16,7 @@
     "removeComments": true,
     "forceConsistentCasingInFileNames": true,
     "noImplicitReturns": true,
-    "noImplicitThis": true,
-    "noImplicitAny": true,
-    "strictNullChecks": true,
+    "strict": true,
     "noUnusedLocals": true,
     "declaration": true,
     "suppressImplicitAnyIndexErrors": true

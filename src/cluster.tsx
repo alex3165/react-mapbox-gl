@@ -2,7 +2,7 @@ import * as React from 'react';
 import * as PropTypes from 'prop-types';
 import { Map, LngLatBounds } from 'mapbox-gl';
 import { Props as MarkerProps } from './marker';
-import * as supercluster from 'supercluster'; // tslint:disable-line
+import supercluster, { Supercluster } from 'supercluster';
 import * as GeoJSON from 'geojson';
 import { Feature } from './util/types';
 import * as bbox from '@turf/bbox';
@@ -25,11 +25,11 @@ export interface Props {
   log?: boolean;
   zoomOnClick?: boolean;
   zoomOnClickPadding?: number;
-  children?: Array<React.Component<MarkerProps, {}>>;
+  children?: Array<React.Component<MarkerProps>>;
 }
 
 export interface State {
-  superC: any;
+  superC: Supercluster;
   clusterPoints: Array<GeoJSON.Feature<GeoJSON.Point>>;
 }
 
@@ -69,7 +69,7 @@ export default class Cluster extends React.Component<Props, State> {
 
   private featureClusterMap = new WeakMap<
     Feature,
-    React.Component<MarkerProps, any>
+    React.Component<MarkerProps>
   >();
 
   public componentWillMount() {
@@ -77,10 +77,9 @@ export default class Cluster extends React.Component<Props, State> {
     const { children } = this.props;
 
     if (children) {
-      this.childrenChange(children);
+      this.childrenChange(children as Array<React.Component<MarkerProps>>);
     }
 
-    // TODO: Debounce ?
     map.on('move', this.mapChange);
     map.on('zoom', this.mapChange);
     this.mapChange();
@@ -89,17 +88,17 @@ export default class Cluster extends React.Component<Props, State> {
   public componentWillReceiveProps(nextProps: Props) {
     const { children } = this.props;
 
-    if (children !== nextProps.children) {
+    if (children !== nextProps.children && nextProps.children) {
       this.childrenChange(nextProps.children);
       this.mapChange(true);
     }
   }
 
-  private childrenChange = (newChildren: any) => {
+  private childrenChange = (newChildren: Array<React.Component<MarkerProps>>) => {
     const { superC } = this.state;
     this.featureClusterMap = new WeakMap<
       Feature,
-      React.Component<MarkerProps, {}>
+      React.Component<MarkerProps>
     >();
     const features = this.childrenToFeatures(newChildren);
     superC.load(features);
@@ -126,11 +125,11 @@ export default class Cluster extends React.Component<Props, State> {
     }
   };
 
-  private feature(coordinates: GeoJSON.Position): Feature {
+  private feature(coordinates: GeoJSON.Position) {
     return {
-      type: 'Feature',
+      type: 'Feature' as 'Feature',
       geometry: {
-        type: 'Point',
+        type: 'Point' as 'Point',
         coordinates
       },
       properties: {}
@@ -138,7 +137,7 @@ export default class Cluster extends React.Component<Props, State> {
   }
 
   private childrenToFeatures = (
-    children: Array<React.Component<MarkerProps, any>>
+    children: Array<React.Component<MarkerProps>>
   ) =>
     children.map(child => {
       const feature = this.feature(child && child.props.coordinates);
@@ -149,7 +148,7 @@ export default class Cluster extends React.Component<Props, State> {
   private getLeaves = (feature: Feature, limit?: number, offset?: number) => {
     const { superC } = this.state;
     return superC
-      .getLeaves(feature.properties.cluster_id, limit, offset)
+      .getLeaves(feature.properties.cluster_id, limit || Infinity, offset)
       .map((leave: Feature) => this.featureClusterMap.get(leave));
   };
 
@@ -170,6 +169,7 @@ export default class Cluster extends React.Component<Props, State> {
     );
     const childrenBbox = bbox(featureCollection(children));
     // https://github.com/mapbox/mapbox-gl-js/issues/5249
+    // tslint:disable-next-line:no-any
     this.context.map.fitBounds(LngLatBounds.convert(childrenBbox as any), {
       padding: this.props.zoomOnClickPadding!
     });
@@ -193,7 +193,7 @@ export default class Cluster extends React.Component<Props, State> {
       <div
         onClick={this.props.zoomOnClick ? this.zoomToClusterBounds : undefined}
       >
-        {// tslint:disable-line:jsx-no-multiline-js
+        {
         clusterPoints.map((feature: Feature) => {
           if (feature.properties.cluster) {
             return ClusterMarkerFactory(
