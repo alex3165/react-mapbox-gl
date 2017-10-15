@@ -3,7 +3,7 @@ import * as PropTypes from 'prop-types';
 import { Context, Feature } from './util/types';
 import { Props as FeatureProps } from './feature';
 import { generateID } from './util/uid';
-import { Props as LayerProps, LayerCommonProps } from './layer';
+import { LayerCommonProps, Props as LayerProps } from './layer';
 
 export interface EnhancedLayerProps {
   id?: string;
@@ -11,8 +11,8 @@ export interface EnhancedLayerProps {
 
 type LayerChildren = React.ReactElement<FeatureProps> | undefined;
 
-const layerMouseTouchEvents = (WrappedComponent: React.ComponentClass<LayerProps>) =>
-  class EnhancedLayer extends React.Component<EnhancedLayerProps & LayerCommonProps> {
+function layerMouseTouchEvents(WrappedComponent: React.ComponentClass<LayerProps>) {
+  return class EnhancedLayer extends React.Component<EnhancedLayerProps & LayerCommonProps> {
     public context: Context;
     public hover: number[] = [];
     public isDragging: boolean = false;
@@ -207,5 +207,6 @@ const layerMouseTouchEvents = (WrappedComponent: React.ComponentClass<LayerProps
       );
     }
   };
+}
 
 export default layerMouseTouchEvents;

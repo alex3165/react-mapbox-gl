@@ -29,8 +29,8 @@ const mapStyle = {
 };
 
 const lineLayout = {
-  'line-cap': 'round',
-  'line-join': 'round'
+  'line-cap': 'round' as 'round',
+  'line-join': 'round' as 'round'
 };
 
 const linePaint = {

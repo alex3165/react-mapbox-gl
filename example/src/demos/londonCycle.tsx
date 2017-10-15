@@ -67,6 +67,9 @@ export interface State {
   stations: { [id: string]: Station };
 }
 
+const flyToOptions = {
+  speed: .8
+};
 
 export default class LondonCycle extends React.Component<{}, State> {
   public state: State = {
@@ -127,9 +130,7 @@ export default class LondonCycle extends React.Component<{}, State> {
           zoom={zoom}
           onDrag={this.onDrag}
           containerStyle={mapStyle}
-          flyToOptions={{
-            speed: 0.8
-          }}
+          flyToOptions={flyToOptions}
         >
           <Layer
             type="symbol"
