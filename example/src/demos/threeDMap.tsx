@@ -19,7 +19,9 @@ const threeDLayerOpts: Partial<MapboxGL.Layer> = {
   'minzoom': 14
 };
 
-const paintLayer = {
+// TODO: Fix when https://github.com/DefinitelyTyped/DefinitelyTyped/pull/20472/files is merged
+// tslint:disable-next-line:no-any
+const paintLayer: any = {
   'fill-extrusion-color': '#aaa',
   'fill-extrusion-height': {
       'type': 'identity' as  'identity',
