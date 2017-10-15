@@ -137,8 +137,8 @@ export interface Props {
   className?: string;
   movingMethod?: 'jumpTo' | 'easeTo' | 'flyTo';
   animationOptions?: AnimationOptions;
-  flyToOptions?: FlyToOptions;
-  children?: JSX.Element;
+  flyToOptions?: Partial<FlyToOptions>;
+  children?: JSX.Element | JSX.Element[] | Array<JSX.Element | undefined>;
 }
 
 export interface State {
