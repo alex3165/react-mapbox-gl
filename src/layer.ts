@@ -3,12 +3,12 @@ import * as PropTypes from 'prop-types';
 import * as MapboxGL from 'mapbox-gl';
 const isEqual = require('deep-equal'); //tslint:disable-line
 import diff from './util/diff';
-import { Sources, Feature, Context } from './util/types';
+import { Feature, Context } from './util/types';
 import { Props as FeatureProps } from './feature';
 
 export type Paint =
 MapboxGL.BackgroundPaint
-  | Partial<MapboxGL.FillPaint>
+  | MapboxGL.FillPaint
   | MapboxGL.FillExtrusionPaint
   | MapboxGL.SymbolPaint
   | MapboxGL.LinePaint
@@ -45,10 +45,18 @@ export interface LayerCommonProps {
     | ImageDefinitionWithOptions
     | ImageDefinitionWithOptions[];
   before?: string;
-  sourceOptions?: Sources;
   paint?: Paint;
   layout?: Layout;
-  layerOptions?: Partial<MapboxGL.Layer>;
+  // tslint:disable-next-line:no-any
+  metadata?: any;
+  layerRef?: string;
+  sourceLayer?: string;
+  minZoom?: number;
+  maxZoom?: number;
+  interactive?: boolean;
+  geoJSONSourceOptions: MapboxGL.GeoJSONSourceOptions
+  // tslint:disable-next-line:no-any
+  filter?: any[];
   children?: JSX.Element | JSX.Element[];
 }
 
@@ -72,9 +80,9 @@ export default class Layer extends React.Component<Props> {
     paint: {}
   };
 
-  private source: Sources = {
+  private source: MapboxGL.GeoJSONSourceRaw = {
     type: 'geojson',
-    ...this.props.sourceOptions,
+    ...this.props.geoJSONSourceOptions,
     data: {
       type: 'FeatureCollection',
       features: []
@@ -122,11 +130,17 @@ export default class Layer extends React.Component<Props> {
       type,
       layout,
       paint,
-      layerOptions,
       sourceId,
       before,
       images,
-      id
+      id,
+      metadata,
+      layerRef,
+      sourceLayer,
+      minZoom,
+      maxZoom,
+      interactive,
+      filter
     } = this.props;
     const { map } = this.context;
 
@@ -136,7 +150,13 @@ export default class Layer extends React.Component<Props> {
       type,
       layout,
       paint,
-      ...layerOptions
+      metadata,
+      ref: layerRef,
+      'source-layer': sourceLayer,
+      minzoom: minZoom,
+      maxzoom: maxZoom,
+      interactive,
+      filter
     };
 
     if (images) {
@@ -196,7 +216,7 @@ export default class Layer extends React.Component<Props> {
   }
 
   public componentWillReceiveProps(props: Props) {
-    const { paint, layout, before, layerOptions, id } = this.props;
+    const { paint, layout, before, filter, id } = this.props;
     const { map } = this.context;
 
     if (!isEqual(props.paint, paint)) {
@@ -216,11 +236,11 @@ export default class Layer extends React.Component<Props> {
     }
 
     if (
-      props.layerOptions &&
-      layerOptions &&
-      !isEqual(props.layerOptions.filter, layerOptions.filter)
+      props.filter &&
+      filter &&
+      !isEqual(props.filter, filter)
     ) {
-      map.setFilter(id, props.layerOptions.filter || []);
+      map.setFilter(id, props.filter || []);
     }
 
     if (before !== props.before) {
