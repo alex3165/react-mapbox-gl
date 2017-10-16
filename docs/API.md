@@ -144,11 +144,13 @@ import { Layer } from "react-mapbox-gl";
 ### Properties
 - **id** : `String` The id of the layer or generate an incremented number as id
 - **type** *(Default: `symbol`)* : `String` The type of the features childrens elements, possible values :
-  -  `symbol`, Include a Mapbox `symbol` (`Point` GeoJson)
+  - `symbol`, Include a Mapbox `symbol` (`Point` GeoJson)
   - `line`, Include a Mapbox `line` (`LineString` GeoJson)
   - `fill`, Include a Mapbox `polygon` (`Fill` GeoJson)
   - `circle`, Include a Mapbox `circle` (`Point` GeoJson)
   - `raster`, Include a Mapbox raster layer
+  - `fill-extrusion`, Include a Mapbox fill extrusion layer
+  - `background`, Include a Mapbox background layer
 - **layout**: `Object` Mapbox layout object passed down to mapbox `map.addLayer` method [mapbox layout api](https://www.mapbox.com/mapbox-gl-style-spec/#layer-layout)
 - **paint**: `Object` Mapbox paint object passed down to mapbox `map.addLayer` method [mapbox paint api](https://www.mapbox.com/mapbox-gl-style-spec/#layer-paint)
 - **geoJSONSourceOptions**: `Object` Source options merged to object passed to `map.addSource`
