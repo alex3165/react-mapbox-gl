@@ -36,8 +36,6 @@ const StyledEditor = styled(LiveEditor)`
   line-height: 18px;
 `;
 
-const StyledPreview = styled(LivePreview)``;
-
 const MapCode = () => (
   <StyledProvider
     code={code}
@@ -46,7 +44,7 @@ const MapCode = () => (
     noInline={true}
   >
     <StyledEditor contentEditable={false}/>
-    <StyledPreview/>
+    <LivePreview/>
     <LiveError/>
   </StyledProvider>
 );
