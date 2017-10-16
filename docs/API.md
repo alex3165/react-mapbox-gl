@@ -149,10 +149,16 @@ import { Layer } from "react-mapbox-gl";
   - `fill`, Include a Mapbox `polygon` (`Fill` GeoJson)
   - `circle`, Include a Mapbox `circle` (`Point` GeoJson)
   - `raster`, Include a Mapbox raster layer
-- **layout**: `Object` Mapbox layout object passed down to mapbox `addLayer` method [mapbox layout api](https://www.mapbox.com/mapbox-gl-style-spec/#layer-layout)
-- **paint**: `Object` Mapbox paint object passed down to mapbox `addLayer` method [mapbox paint api](https://www.mapbox.com/mapbox-gl-style-spec/#layer-paint)
-- **sourceOptions**: `Object` Options object merged to the object used when calling `GeoJSONSource` method
-- **layerOptions**: `Object` Passed down to the layer object when setting it out.
+- **layout**: `Object` Mapbox layout object passed down to mapbox `map.addLayer` method [mapbox layout api](https://www.mapbox.com/mapbox-gl-style-spec/#layer-layout)
+- **paint**: `Object` Mapbox paint object passed down to mapbox `map.addLayer` method [mapbox paint api](https://www.mapbox.com/mapbox-gl-style-spec/#layer-paint)
+- **geoJSONSourceOptions**: `Object` Source options merged to object passed to `map.addSource`
+- **metadata**: `Object` metadata parameter passed to `map.addLayer`
+- **layerRef**: `String` ref parameter passed to `map.addLayer`
+- **sourceLayer**: `String` source-layer parameter passed to `map.addLayer`
+- **minZoom**: `Number` minzoom parameter passed to `map.addLayer`
+- **maxZoom**: `Number` maxzoom parameter passed to `map.addLayer`
+- **interactive**: `Boolean` interactive parameter passed to `map.addLayer`
+- **filter**: `Array` filter parameter passed to `map.addLayer`
 - **sourceId**: `String` When passed to the layer, the source will not be created but only the layer and it will use the given source id.
 - **before**: `String` Pass the id of a layer, it will display the current layer before the layer defined by the id. [mapbox api](https://www.mapbox.com/mapbox-gl-js/api/#Map#addLayer)
 - **images**: `[imageKey: string, image: HTMLImageElement, options: Object]` Also accept array of the previous image tuple. Add images for use in layout with prop `icon-image`. The value should be the `imageKey` string of the tuple. Alternatively use mapbox studio to upload the image, it will be fetched with the map style object. (see [map.addImage](https://www.mapbox.com/mapbox-gl-js/api/#map#addimage) options for the tuple options).
