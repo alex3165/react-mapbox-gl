@@ -37,7 +37,7 @@ export type ImageDefinitionWithOptions = [
 ];
 
 export interface LayerCommonProps {
-  type?: 'symbol' | 'line' | 'fill' | 'circle' | 'raster';
+  type?: 'symbol' | 'line' | 'fill' | 'circle' | 'raster' | 'fill-extrusion' | 'background';
   sourceId?: string;
   images?:
     | ImageDefinition
@@ -54,7 +54,7 @@ export interface LayerCommonProps {
   minZoom?: number;
   maxZoom?: number;
   interactive?: boolean;
-  geoJSONSourceOptions: MapboxGL.GeoJSONSourceOptions
+  geoJSONSourceOptions?: MapboxGL.GeoJSONSourceOptions
   // tslint:disable-next-line:no-any
   filter?: any[];
   children?: JSX.Element | JSX.Element[];
@@ -144,20 +144,35 @@ export default class Layer extends React.Component<Props> {
     } = this.props;
     const { map } = this.context;
 
-    const layer = {
+    const layer: MapboxGL.Layer = {
       id,
       source: sourceId || id,
       type,
       layout,
       paint,
       metadata,
-      ref: layerRef,
-      'source-layer': sourceLayer,
-      minzoom: minZoom,
-      maxzoom: maxZoom,
-      interactive,
-      filter
+      interactive
     };
+
+    if (sourceLayer) {
+      layer['source-layer'] = sourceLayer;
+    }
+
+    if (minZoom) {
+      layer.minzoom = minZoom;
+    }
+
+    if (maxZoom) {
+      layer.maxzoom = maxZoom;
+    }
+
+    if (filter) {
+      layer.filter = filter;
+    }
+
+    if (layerRef) {
+      layer.ref = layerRef;
+    }
 
     if (images) {
       const normalizedImages = !Array.isArray(images[0]) ? [images] : images;

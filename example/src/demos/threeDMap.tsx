@@ -1,6 +1,5 @@
 import * as React from 'react';
 import ReactMapboxGl, { Layer } from '../../../';
-import * as MapboxGL from 'mapbox-gl';
 
 // tslint:disable-next-line:no-var-requires
 const { token, styles } = require('./config.json');
@@ -10,13 +9,6 @@ const Map = ReactMapboxGl({ accessToken: token });
 const mapStyle = {
   height: '400px',
   width: '100%'
-};
-
-const threeDLayerOpts: Partial<MapboxGL.Layer> = {
-  'source-layer': 'building',
-  'filter': ['==', 'extrude', 'true'],
-  'type': 'fill-extrusion',
-  'minzoom': 14
 };
 
 // TODO: Fix when https://github.com/DefinitelyTyped/DefinitelyTyped/pull/20472/files is merged
@@ -51,7 +43,10 @@ class ThreeDMap extends React.Component<{}, {}> {
         <Layer
           id="3d-buildings"
           sourceId="composite"
-          layerOptions={threeDLayerOpts}
+          sourceLayer="building"
+          filter={['==', 'extrude', 'true']}
+          type="fill-extrusion"
+          minZoom={14}
           paint={paintLayer}
         />
       </Map>
