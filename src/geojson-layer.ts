@@ -242,7 +242,7 @@ export default class GeoJSONLayer extends React.Component<Props, {}> {
   }
 
   public componentWillReceiveProps(props: Props) {
-    const { data, layerOptions } = this.props;
+    const { data, before, layerOptions } = this.props;
     const { map } = this.context;
 
     if (props.data !== data) {
@@ -301,6 +301,10 @@ export default class GeoJSONLayer extends React.Component<Props, {}> {
         }
       });
     });
+
+    if (before !== props.before) {
+      map.moveLayer(this.id, props.before);
+    }
   }
 
   public render() {
