@@ -300,11 +300,13 @@ export default class GeoJSONLayer extends React.Component<Props, {}> {
           }
         }
       });
+
+      if (before !== props.before) {
+        map.moveLayer(layerId, props.before);
+      }
+
     });
 
-    if (before !== props.before) {
-      map.moveLayer(this.id, props.before);
-    }
   }
 
   public render() {
