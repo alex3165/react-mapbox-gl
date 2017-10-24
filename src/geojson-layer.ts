@@ -307,6 +307,12 @@ export default class GeoJSONLayer extends React.Component<Props, {}> {
 
     });
 
+    if (before !== props.before) {
+      ['symbol', 'line', 'fill', 'fill-extrusion', 'circle'].forEach(type => {
+        const layerId = this.buildLayerId(type);
+        map.moveLayer(layerId, props.before);
+      });
+    }
   }
 
   public render() {
