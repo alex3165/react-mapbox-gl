@@ -49,11 +49,9 @@ export interface LayerCommonProps {
   layout?: Layout;
   // tslint:disable-next-line:no-any
   metadata?: any;
-  layerRef?: string;
   sourceLayer?: string;
   minZoom?: number;
   maxZoom?: number;
-  interactive?: boolean;
   geoJSONSourceOptions?: MapboxGL.GeoJSONSourceOptions
   // tslint:disable-next-line:no-any
   filter?: any[];
@@ -135,11 +133,9 @@ export default class Layer extends React.Component<Props> {
       images,
       id,
       metadata,
-      layerRef,
       sourceLayer,
       minZoom,
       maxZoom,
-      interactive,
       filter
     } = this.props;
     const { map } = this.context;
@@ -150,8 +146,7 @@ export default class Layer extends React.Component<Props> {
       type,
       layout,
       paint,
-      metadata,
-      interactive
+      metadata
     };
 
     if (sourceLayer) {
@@ -168,10 +163,6 @@ export default class Layer extends React.Component<Props> {
 
     if (filter) {
       layer.filter = filter;
-    }
-
-    if (layerRef) {
-      layer.ref = layerRef;
     }
 
     if (images) {
