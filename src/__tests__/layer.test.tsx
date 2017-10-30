@@ -62,7 +62,6 @@ describe('Layer', () => {
       paint: {},
       layout: {},
       metadata: {},
-      interactive: true,
       filter: []
     };
 
@@ -70,8 +69,7 @@ describe('Layer', () => {
       minZoom: 2,
       maxZoom: 10,
       sourceLayer: 'sourceTest',
-      sourceId: 'test',
-      layerRef: 'testRef'
+      sourceId: 'test'
     };
 
     mount(<LayerWithContext children={children} {...props} {...mappedProps} before={before}/>);
@@ -81,7 +79,6 @@ describe('Layer', () => {
         minzoom: 2,
         maxzoom: 10,
         source: 'test',
-        ref: 'testRef',
         'source-layer': 'sourceTest'
       },
       before
