@@ -3,12 +3,12 @@ import * as PropTypes from 'prop-types';
 import * as MapboxGL from 'mapbox-gl';
 const isEqual = require('deep-equal'); //tslint:disable-line
 import diff from './util/diff';
-import { Sources, Feature, Context } from './util/types';
+import { Feature, Context } from './util/types';
 import { Props as FeatureProps } from './feature';
 
 export type Paint =
 MapboxGL.BackgroundPaint
-  | Partial<MapboxGL.FillPaint>
+  | MapboxGL.FillPaint
   | MapboxGL.FillExtrusionPaint
   | MapboxGL.SymbolPaint
   | MapboxGL.LinePaint
@@ -37,7 +37,7 @@ export type ImageDefinitionWithOptions = [
 ];
 
 export interface LayerCommonProps {
-  type?: 'symbol' | 'line' | 'fill' | 'circle' | 'raster';
+  type?: 'symbol' | 'line' | 'fill' | 'circle' | 'raster' | 'fill-extrusion' | 'background';
   sourceId?: string;
   images?:
     | ImageDefinition
@@ -45,10 +45,16 @@ export interface LayerCommonProps {
     | ImageDefinitionWithOptions
     | ImageDefinitionWithOptions[];
   before?: string;
-  sourceOptions?: Sources;
   paint?: Paint;
   layout?: Layout;
-  layerOptions?: Partial<MapboxGL.Layer>;
+  // tslint:disable-next-line:no-any
+  metadata?: any;
+  sourceLayer?: string;
+  minZoom?: number;
+  maxZoom?: number;
+  geoJSONSourceOptions?: MapboxGL.GeoJSONSourceOptions
+  // tslint:disable-next-line:no-any
+  filter?: any[];
   children?: JSX.Element | JSX.Element[];
 }
 
@@ -72,9 +78,9 @@ export default class Layer extends React.Component<Props> {
     paint: {}
   };
 
-  private source: Sources = {
+  private source: MapboxGL.GeoJSONSourceRaw = {
     type: 'geojson',
-    ...this.props.sourceOptions,
+    ...this.props.geoJSONSourceOptions,
     data: {
       type: 'FeatureCollection',
       features: []
@@ -122,22 +128,42 @@ export default class Layer extends React.Component<Props> {
       type,
       layout,
       paint,
-      layerOptions,
       sourceId,
       before,
       images,
-      id
+      id,
+      metadata,
+      sourceLayer,
+      minZoom,
+      maxZoom,
+      filter
     } = this.props;
     const { map } = this.context;
 
-    const layer = {
+    const layer: MapboxGL.Layer = {
       id,
       source: sourceId || id,
       type,
       layout,
       paint,
-      ...layerOptions
+      metadata
     };
+
+    if (sourceLayer) {
+      layer['source-layer'] = sourceLayer;
+    }
+
+    if (minZoom) {
+      layer.minzoom = minZoom;
+    }
+
+    if (maxZoom) {
+      layer.maxzoom = maxZoom;
+    }
+
+    if (filter) {
+      layer.filter = filter;
+    }
 
     if (images) {
       const normalizedImages = !Array.isArray(images[0]) ? [images] : images;
@@ -196,7 +222,7 @@ export default class Layer extends React.Component<Props> {
   }
 
   public componentWillReceiveProps(props: Props) {
-    const { paint, layout, before, layerOptions, id } = this.props;
+    const { paint, layout, before, filter, id } = this.props;
     const { map } = this.context;
 
     if (!isEqual(props.paint, paint)) {
@@ -216,11 +242,11 @@ export default class Layer extends React.Component<Props> {
     }
 
     if (
-      props.layerOptions &&
-      layerOptions &&
-      !isEqual(props.layerOptions.filter, layerOptions.filter)
+      props.filter &&
+      filter &&
+      !isEqual(props.filter, filter)
     ) {
-      map.setFilter(id, props.layerOptions.filter || []);
+      map.setFilter(id, props.filter || []);
     }
 
     if (before !== props.before) {
