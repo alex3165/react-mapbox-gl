@@ -300,9 +300,7 @@ const ReactMapboxFactory = ({
         dragPan,
         boxZoom,
         refreshExpiredTiles,
-        // TODO: change when https://github.com/DefinitelyTyped/DefinitelyTyped/pull/20472 is merged
-        // tslint:disable-next-line:no-any
-        logoPosition: logoPosition as any,
+        logoPosition,
         classes,
         bearingSnap,
         failIfMajorPerformanceCaveat

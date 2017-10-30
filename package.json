@@ -73,7 +73,7 @@
     "@types/enzyme": "2.8.8",
     "@types/geojson": "1.0.3",
     "@types/jest": "21.1.0",
-    "@types/mapbox-gl": "0.39.6",
+    "@types/mapbox-gl": "^0.40.1",
     "@types/node": "8.0.29",
     "@types/prettier": "^1.7.0",
     "@types/prop-types": "^15.5.2",
