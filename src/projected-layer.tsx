@@ -69,13 +69,14 @@ export default class ProjectedLayer extends React.Component<Props, any> {
     this.handleMapMove();
   }
 
-  public componentWillReceiveProps(nextProps: Props) {
-    const { coordinates } = this.props;
+  private havePropsChanged(props: Props, nextProps: Props) {
+    return props.coordinates[0] !== nextProps.coordinates[0] ||
+           props.coordinates[1] !== nextProps.coordinates[1] ||
+           props.offset !== nextProps.offset;
+  }
 
-    if (
-      coordinates[0] !== nextProps.coordinates[0] ||
-      coordinates[1] !== nextProps.coordinates[1]
-    ) {
+  public componentWillReceiveProps(nextProps: Props) {
+    if (this.havePropsChanged(this.props, nextProps)) {
       this.setState(overlayState(nextProps, this.context.map, this.container));
     }
   }
