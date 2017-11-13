@@ -11,8 +11,12 @@ export interface EnhancedLayerProps {
 
 type LayerChildren = React.ReactElement<FeatureProps> | undefined;
 
-function layerMouseTouchEvents(WrappedComponent: React.ComponentClass<LayerProps>) {
-  return class EnhancedLayer extends React.Component<EnhancedLayerProps & LayerCommonProps> {
+function layerMouseTouchEvents(
+  WrappedComponent: React.ComponentClass<LayerProps>
+) {
+  return class EnhancedLayer extends React.Component<
+    EnhancedLayerProps & LayerCommonProps
+  > {
     public context: Context;
     public hover: number[] = [];
     public isDragging: boolean = false;
@@ -28,7 +32,10 @@ function layerMouseTouchEvents(WrappedComponent: React.ComponentClass<LayerProps
       ([] as LayerChildren[])
         .concat(this.props.children)
         // TODO: Fix when https://github.com/Microsoft/TypeScript/issues/18562 is merged
-        .filter((el: LayerChildren): el is React.ReactElement<FeatureProps> => typeof el !== 'undefined');
+        .filter(
+          (el: LayerChildren): el is React.ReactElement<FeatureProps> =>
+            typeof el !== 'undefined'
+        );
 
     public areFeaturesDraggable = (
       children: Array<React.ReactElement<FeatureProps>>,

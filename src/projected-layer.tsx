@@ -33,7 +33,10 @@ export interface Context {
   map: Map;
 }
 
-export default class ProjectedLayer extends React.Component<Props, OverlayParams> {
+export default class ProjectedLayer extends React.Component<
+  Props,
+  OverlayParams
+> {
   public context: Context;
   private container: HTMLElement;
   private prevent: boolean = false;
