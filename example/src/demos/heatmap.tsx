@@ -62,10 +62,6 @@ export default class Heatmap extends React.Component<Props> {
   // tslint:disable-next-line:no-any
   private onStyleLoad = (map: any) => {
     const { onStyleLoad } = this.props;
-    setTimeout(() => {
-      // console.log(map.getStyle());
-      // debugger;
-    }, 2000)
     return onStyleLoad && onStyleLoad(map);
   };
 
