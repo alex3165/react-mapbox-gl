@@ -127,16 +127,16 @@ export interface FlyToOptions {
 export interface Props {
   style: string | MapboxGl.Style;
   center?: number[];
-  zoom?: number[];
+  zoom?: [number];
   maxBounds?: MapboxGl.LngLatBounds | FitBounds;
   fitBounds?: FitBounds;
   fitBoundsOptions?: FitBoundsOptions;
-  bearing?: number;
-  pitch?: number;
+  bearing?: [number];
+  pitch?: [number];
   containerStyle?: React.CSSProperties;
   className?: string;
   movingMethod?: 'jumpTo' | 'easeTo' | 'flyTo';
-  animationOptions?: AnimationOptions;
+  animationOptions?: Partial<AnimationOptions>;
   flyToOptions?: Partial<FlyToOptions>;
   children?: JSX.Element | JSX.Element[] | Array<JSX.Element | undefined>;
 }
@@ -273,20 +273,22 @@ const ReactMapboxFactory = ({
         (MapboxGl as any).config.API_URL = apiUrl;
       }
 
+      if (!Array.isArray(zoom)) {
+        throw new Error('zoom need to be an array type of length 1 for reliable update');
+      }
+
       const opts: MapboxGl.MapboxOptions = {
         preserveDrawingBuffer,
         hash,
-        zoom: zoom ? zoom[0] : defaultZoom[0],
+        zoom: zoom[0],
         minZoom,
         maxZoom,
         maxBounds,
-        bearing,
         container: this.container,
         center:
           fitBounds && center === defaultCenter
             ? this.calcCenter(fitBounds)
             : center,
-        pitch,
         style,
         scrollZoom,
         attributionControl,
@@ -305,6 +307,22 @@ const ReactMapboxFactory = ({
         bearingSnap,
         failIfMajorPerformanceCaveat
       };
+
+      if (bearing) {
+        if (!Array.isArray(bearing)) {
+          throw new Error('bearing need to be an array type of length 1 for reliable update');
+        }
+
+        opts.bearing = bearing[0];
+      }
+
+      if (pitch) {
+        if (!Array.isArray(pitch)) {
+          throw new Error('pitch need to be an array type of length 1 for reliable update');
+        }
+
+        opts.pitch = pitch[0];
+      }
 
       const map = new MapboxGl.Map(opts);
       this.setState({ map });
@@ -367,10 +385,11 @@ const ReactMapboxFactory = ({
 
       const didBearingUpdate =
         this.props.bearing !== nextProps.bearing &&
-        nextProps.bearing !== bearing;
+        (nextProps.bearing && nextProps.bearing[0]) !== bearing;
 
       const didPitchUpdate =
-        this.props.pitch !== nextProps.pitch && nextProps.pitch !== pitch;
+        this.props.pitch !== nextProps.pitch &&
+        (nextProps.pitch && nextProps.pitch[0]) !== pitch;
 
       if (nextProps.maxBounds) {
         const didMaxBoundsUpdate = this.props.maxBounds !== nextProps.maxBounds;
@@ -392,7 +411,10 @@ const ReactMapboxFactory = ({
             return c[0] !== (nc && nc[0]) || c[1] !== (nc && nc[1]);
           })[0];
 
-        if (didFitBoundsUpdate) {
+        if (
+          didFitBoundsUpdate ||
+          !isEqual(this.props.fitBoundsOptions, nextProps.fitBoundsOptions)
+        ) {
           map.fitBounds(nextProps.fitBounds, nextProps.fitBoundsOptions);
         }
       }
