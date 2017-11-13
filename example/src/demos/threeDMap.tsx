@@ -29,7 +29,9 @@ export interface Props {
 }
 
 class ThreeDMap extends React.Component<Props, {}> {
-  private zoom = [15];
+  private zoom: [number] = [15];
+  private bearing: [number] = [-60];
+  private pitch: [number] = [60]
   private center = [-0.0824952, 51.5144951];
 
   // tslint:disable-next-line:no-any
@@ -46,8 +48,8 @@ class ThreeDMap extends React.Component<Props, {}> {
         onStyleLoad={this.onStyleLoad}
         zoom={this.zoom}
         center={this.center}
-        pitch={60}
-        bearing={-60}
+        pitch={this.pitch}
+        bearing={this.bearing}
       >
         <Layer
           id="3d-buildings"
