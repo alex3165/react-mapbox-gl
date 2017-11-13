@@ -44,7 +44,8 @@ export interface LayerCommonProps {
     | 'circle'
     | 'raster'
     | 'fill-extrusion'
-    | 'background';
+    | 'background'
+    | 'heatmap';
   sourceId?: string;
   images?:
     | ImageDefinition
@@ -150,7 +151,9 @@ export default class Layer extends React.Component<Props> {
     const layer: MapboxGL.Layer = {
       id,
       source: sourceId || id,
-      type,
+      // TODO: Fix mapbox-gl types
+      // tslint:disable-next-line:no-any
+      type: type as any,
       layout,
       paint,
       metadata
