@@ -64,7 +64,7 @@ class HtmlCluster extends React.Component<Props, State> {
     popup: undefined
   };
 
-  private zoom = [4];
+  private zoom: [number] = [4];
 
   private clusterMarker = (
     coordinates: GeoJSON.Position,
