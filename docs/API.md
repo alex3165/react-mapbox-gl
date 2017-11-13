@@ -46,18 +46,18 @@ const Map = ReactMapboxGl({
 
 
 ### Component Properties
-- **style** *(required)* : `String | Object`  Mapbox map style, if changed, the style will be updated using `setStyle`.
-- **center** *(Default: `[ -0.2416815, 51.5285582 ]`)*: `Array<Number>` Center the map at the position at initialisation
+- **style** *(required)* : `string | Object`  Mapbox map style, if changed, the style will be updated using `setStyle`.
+- **center** *(Default: `[ -0.2416815, 51.5285582 ]`)*: `[number, number]` Center the map at the position at initialisation
   - Must be in longitude, latitude coordinate order (as opposed to latitude, longitude) to match GeoJSON (source: https://www.mapbox.com/mapbox-gl-js/api/#lnglat). 
   - Re-center the map if the value change regarding the prev value or the actual center position [flyTo](https://www.mapbox.com/mapbox-gl-js/api/#Map.flyTo)
-- **zoom** *(Default: `[11]`)*: `Array<Number>` Zoom level of the map at initialisation wrapped in an array.
+- **zoom** *(Default: `[11]`)*: `[number]` Zoom level of the map at initialisation wrapped in an array.
   - Check for reference equality between the previous value of zoom and the new one in order to update it or not.
 - **maxBounds** : `LngLatBounds | Array<Array<number>>` If set, the map is constrained to the given bounds [SouthWest, NorthEast]
 - **fitBounds** : `Array<Array<number>>` If set, the map will center on the given coordinates, [fitBounds](https://www.mapbox.com/mapbox-gl-js/api/#Map#fitBounds)
 - **fitBoundsOptions** : `FitBoundsOptions` Options for [fitBounds](https://www.mapbox.com/mapbox-gl-js/api/#Map#fitBounds)
-- **bearing** *(Default: `0`)*: `Number` Bearing (rotation) of the map at initialisation measured in degrees counter-clockwise from north.
+- **bearing**: `[number]` Bearing (rotation) of the map at initialisation measured in degrees counter-clockwise from north.
   - Check the previous value and the new one, if the value changed update the bearing value [flyTo](https://www.mapbox.com/mapbox-gl-js/api/#Map.flyTo)
-- **pitch** *(Default: `0`)*: `Number` Pitch (tilt) of the map at initialisation, range : `0 - 60`
+- **pitch**: `[number]` Pitch (tilt) of the map at initialisation, range : `0 - 60`
 - **containerStyle** : `Object` The style of the container of the map
 - **ClassName** : `string` ClassName passed down to the container div
 - **movingMethod** *(Default: `flyTo`)*: `String` define the method used when changing the center or zoom position. Possible value :
