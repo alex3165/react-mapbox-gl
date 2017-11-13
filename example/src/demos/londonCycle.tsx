@@ -37,7 +37,7 @@ const StyledPopup = styled.div`
 export interface State {
   fitBounds?: number[][];
   center: number[];
-  zoom: number[];
+  zoom: [number];
   station?: Station;
   stations: StationDict;
 }

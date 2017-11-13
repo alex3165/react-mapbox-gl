@@ -50,6 +50,33 @@ describe('Map', () => {
     expect(mockfitBounds).toBeCalledWith(fitBoundsValues, fitBoundsOptions);
   });
 
+  it('Should update fitBounds if fitBoundsOptions changes', () => {
+    const flyTo = jest.fn();
+    const fitBoundsValues: FitBounds = [[0, 1], [2, 3]];
+    const fitBoundsOptions = { offset: [ 150, 0] };
+    const newFitBoundsOptions = { offset: [ 0, 0] };
+    const MapboxMap = ReactMapboxGl({ accessToken: '' });
+
+    const wrapper = mount(
+      <MapboxMap
+        style=""
+        fitBounds={fitBoundsValues}
+        fitBoundsOptions={fitBoundsOptions}
+      />
+    );
+    wrapper.setState({
+      map: {
+        ...mapState,
+        flyTo,
+        fitBounds: mockfitBounds
+      }
+    });
+
+    wrapper.setProps({ fitBoundsOptions: newFitBoundsOptions });
+
+    expect(mockfitBounds.mock.calls[1][1]).toBe(newFitBoundsOptions);
+  });
+
   it('Should calc the center from fitbounds if center is not given', () => {
     const fitBoundsValues: FitBounds = [[0, 3], [2, 9]];
     const MapboxMap = ReactMapboxGl({ accessToken: '' });
@@ -87,23 +114,6 @@ describe('Map', () => {
     expect(flyTo.mock.calls[0][0].center).toEqual(center);
   });
 
-  it('Should update the zoom on broken reference equality', () => {
-    const flyTo = jest.fn();
-    const MapboxMap = ReactMapboxGl({ accessToken: '' });
-
-    const wrapper = mount(<MapboxMap style="" zoom={[1]} />);
-
-    wrapper.setState({
-      map: {
-        ...mapState,
-        flyTo
-      }
-    });
-    wrapper.setProps({ zoom: [1] });
-
-    expect(flyTo.mock.calls[0][0].zoom).toEqual(1);
-  });
-
   it('Should update maxBounds', () => {
     const flyTo = jest.fn();
     const maxBoundsProps = [[1, 0], [0, 1]];
@@ -123,10 +133,11 @@ describe('Map', () => {
     expect(mockMaxBounds).toBeCalledWith(maxBoundsProps);
   });
 
+  // Handling zoom prop
   it('Should not update zoom when using same reference equality', () => {
     const MapboxMap = ReactMapboxGl({ accessToken: '' });
     const flyTo = jest.fn();
-    const zoom = [3];
+    const zoom: [number] = [3];
 
     const wrapper = mount(<MapboxMap style="" zoom={zoom} />);
 
@@ -141,10 +152,99 @@ describe('Map', () => {
     expect(flyTo).not.toHaveBeenCalled();
   });
 
+  it('Should update the zoom on broken reference equality', () => {
+    const flyTo = jest.fn();
+    const MapboxMap = ReactMapboxGl({ accessToken: '' });
+
+    const wrapper = mount(<MapboxMap style="" zoom={[1]} />);
+
+    wrapper.setState({
+      map: {
+        ...mapState,
+        flyTo
+      }
+    });
+    wrapper.setProps({ zoom: [1] });
+
+    expect(flyTo).toHaveBeenCalled();
+  });
+
+  // Handling bearing prop
+  it('Should not update bearing when using same reference equality', () => {
+    const MapboxMap = ReactMapboxGl({ accessToken: '' });
+    const flyTo = jest.fn();
+    const bearing: [number] = [3];
+
+    const wrapper = mount(<MapboxMap style="" bearing={bearing} />);
+
+    wrapper.setState({
+      map: {
+        ...mapState,
+        flyTo
+      }
+    });
+    wrapper.setProps({ bearing });
+
+    expect(flyTo).not.toHaveBeenCalled();
+  });
+
+  it('Should update the bearing on broken reference equality', () => {
+    const flyTo = jest.fn();
+    const MapboxMap = ReactMapboxGl({ accessToken: '' });
+
+    const wrapper = mount(<MapboxMap style="" bearing={[1]} />);
+
+    wrapper.setState({
+      map: {
+        ...mapState,
+        flyTo
+      }
+    });
+    wrapper.setProps({ bearing: [1] });
+
+    expect(flyTo).toHaveBeenCalled();
+  });
+
+  // Handling pitch prop
+  it('Should not update pitch when using same reference equality', () => {
+    const MapboxMap = ReactMapboxGl({ accessToken: '' });
+    const flyTo = jest.fn();
+    const pitch: [number] = [3];
+
+    const wrapper = mount(<MapboxMap style="" pitch={pitch} />);
+
+    wrapper.setState({
+      map: {
+        ...mapState,
+        flyTo
+      }
+    });
+    wrapper.setProps({ pitch });
+
+    expect(flyTo).not.toHaveBeenCalled();
+  });
+
+  it('Should update the pitch on broken reference equality', () => {
+    const flyTo = jest.fn();
+    const MapboxMap = ReactMapboxGl({ accessToken: '' });
+
+    const wrapper = mount(<MapboxMap style="" pitch={[1]} />);
+
+    wrapper.setState({
+      map: {
+        ...mapState,
+        flyTo
+      }
+    });
+    wrapper.setProps({ pitch: [1] });
+
+    expect(flyTo).toHaveBeenCalled();
+  });
+
   it('Should pass animation options and flyTo options', () => {
     const MapboxMap = ReactMapboxGl({ accessToken: '' });
     const flyTo = jest.fn();
-    const zoom = [3];
+    const zoom: [number] = [3];
     const flyToOptions = {
       speed: 0.1,
       curve: 0.9
