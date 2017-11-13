@@ -55,7 +55,7 @@ export interface State {
   center: number[];
   circleRadius: number;
   routeIndex: number;
-  zoom: number[];
+  zoom: [number];
 }
 
 export interface Props {
