@@ -72,7 +72,8 @@ export default class ProjectedLayer extends React.Component<Props, any> {
   private havePropsChanged(props: Props, nextProps: Props) {
     return props.coordinates[0] !== nextProps.coordinates[0] ||
            props.coordinates[1] !== nextProps.coordinates[1] ||
-           props.offset !== nextProps.offset;
+           props.offset !== nextProps.offset ||
+           props.anchor !== nextProps.anchor;
   }
 
   public componentWillReceiveProps(nextProps: Props) {
