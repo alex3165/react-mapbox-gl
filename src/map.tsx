@@ -442,6 +442,6 @@ const ReactMapboxFactory = ({
       );
     }
   };
-}
+};
 
 export default ReactMapboxFactory;

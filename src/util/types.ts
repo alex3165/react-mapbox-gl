@@ -21,12 +21,23 @@ export interface Feature {
   properties: any;
 }
 
-export type TilesJson = MapboxGL.VectorSource | MapboxGL.RasterSource
+export type TilesJson = MapboxGL.VectorSource | MapboxGL.RasterSource;
 
 export interface Context {
   map: MapboxGL.Map;
 }
 
-export type LayerType = 'fill' | 'line' | 'symbol' | 'circle' | 'fill-extrusion' | 'raster' | 'background';
+export type LayerType =
+  | 'fill'
+  | 'line'
+  | 'symbol'
+  | 'circle'
+  | 'fill-extrusion'
+  | 'raster'
+  | 'background';
 
-export type AnyShapeCoordinates = number[] | number[][] | number[][][] | number[][][][];
+export type AnyShapeCoordinates =
+  | number[]
+  | number[][]
+  | number[][][]
+  | number[][][][];
