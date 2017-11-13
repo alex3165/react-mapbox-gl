@@ -77,7 +77,7 @@ const calculateAnchor = (
 
   if (position.x < offsetWidth / 2) {
     anchor.push(anchors[3]);
-  // tslint:disable-next-line:no-any
+    // tslint:disable-next-line:no-any
   } else if (position.x > (map as any).transform.width - offsetWidth / 2) {
     anchor.push(anchors[4]);
   }
@@ -89,7 +89,9 @@ const calculateAnchor = (
   return anchor.join('-') as Anchor;
 };
 
-const normalizedOffsets = (offset?: number | Point | AnchorsOffset | number[]): AnchorsOffset => {
+const normalizedOffsets = (
+  offset?: number | Point | AnchorsOffset | number[]
+): AnchorsOffset => {
   if (!offset) {
     return normalizedOffsets(new Point(0, 0));
   }
@@ -112,19 +114,25 @@ const normalizedOffsets = (offset?: number | Point | AnchorsOffset | number[]): 
 
   if (offset instanceof Point || Array.isArray(offset)) {
     // input specifies a single offset to be applied to all positions
-    return anchors.reduce((res, anchor) => {
-      res[anchor] = Point.convert(offset);
-      return res;
-    // tslint:disable-next-line:no-object-literal-type-assertion
-    }, {} as AnchorsOffset);
+    return anchors.reduce(
+      (res, anchor) => {
+        res[anchor] = Point.convert(offset);
+        return res;
+        // tslint:disable-next-line:no-object-literal-type-assertion
+      },
+      {} as AnchorsOffset
+    );
   }
 
   // input specifies an offset per position
-  return anchors.reduce((res, anchor) => {
-    res[anchor] = Point.convert(offset[anchor] || defaultPoint);
-    return res;
-  // tslint:disable-next-line:no-object-literal-type-assertion
-  }, {} as AnchorsOffset);
+  return anchors.reduce(
+    (res, anchor) => {
+      res[anchor] = Point.convert(offset[anchor] || defaultPoint);
+      return res;
+      // tslint:disable-next-line:no-object-literal-type-assertion
+    },
+    {} as AnchorsOffset
+  );
 };
 
 export const overlayState = (
@@ -155,7 +163,7 @@ export const overlayTransform = ({
   const res = [];
 
   if (position) {
-    res.push(moveTranslate(position))
+    res.push(moveTranslate(position));
   }
 
   if (offset && offset.x !== undefined && offset.y !== undefined) {

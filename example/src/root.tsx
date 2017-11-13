@@ -1,14 +1,12 @@
 import * as React from 'react';
 import styled from 'styled-components';
-import { Link } from 'react-router';
-import Logo from './logo';
-import { browserHistory, RouteComponentProps } from 'react-router';
+import { Link, browserHistory, RouteComponentProps } from 'react-router';
 import { paths } from './index';
 
 const Container = styled.div`
   display: flex;
   flex-direction: column;
-  min-height: 100vh;
+  height: 100vh;
 `;
 
 const Nav = styled.nav`
@@ -41,11 +39,9 @@ const ExternalLink = styled.a`
 const Header = styled.div`
   border-bottom: 1px solid rgb(235, 235, 235);
   background-color: white;
-  padding-top: 20px;
-`;
-
-const LogoWrapper = styled.div`
-  text-align: center;
+  display: flex;
+  align-items: center;
+  min-height: 74px;
 `;
 
 export interface State {
@@ -72,18 +68,10 @@ export default class Root extends React.Component<RouteComponentProps<void, void
     return (
       <Container>
         <Header>
-          <LogoWrapper>
-            <Logo width={120} height={120}/>
-          </LogoWrapper>
           <Nav>
             <NavLink selected={selected === 0} to={paths[0]}>Home</NavLink>
             <NavLink selected={selected === 1} to={paths[1]}>Demos</NavLink>
-            <ExternalLink
-              href="https://github.com/alex3165/react-mapbox-gl/blob/master/docs/API.md"
-              target="_blank"
-            >
-              Documentation
-            </ExternalLink>
+            <NavLink selected={selected === 2} to={paths[2]}>Documentation</NavLink>
             <ExternalLink
               href="https://github.com/alex3165/react-mapbox-gl"
               target="_blank"
