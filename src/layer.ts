@@ -7,7 +7,7 @@ import { Feature, Context } from './util/types';
 import { Props as FeatureProps } from './feature';
 
 export type Paint =
-MapboxGL.BackgroundPaint
+  | MapboxGL.BackgroundPaint
   | MapboxGL.FillPaint
   | MapboxGL.FillExtrusionPaint
   | MapboxGL.SymbolPaint
@@ -16,13 +16,13 @@ MapboxGL.BackgroundPaint
   | MapboxGL.CirclePaint;
 
 export type Layout =
-MapboxGL.BackgroundLayout
-| MapboxGL.FillLayout
-| MapboxGL.FillExtrusionLayout
-| MapboxGL.LineLayout
-| MapboxGL.SymbolLayout
-| MapboxGL.RasterLayout
-| MapboxGL.CircleLayout;
+  | MapboxGL.BackgroundLayout
+  | MapboxGL.FillLayout
+  | MapboxGL.FillExtrusionLayout
+  | MapboxGL.LineLayout
+  | MapboxGL.SymbolLayout
+  | MapboxGL.RasterLayout
+  | MapboxGL.CircleLayout;
 
 export interface ImageOptions {
   width?: number;
@@ -37,7 +37,14 @@ export type ImageDefinitionWithOptions = [
 ];
 
 export interface LayerCommonProps {
-  type?: 'symbol' | 'line' | 'fill' | 'circle' | 'raster' | 'fill-extrusion' | 'background';
+  type?:
+    | 'symbol'
+    | 'line'
+    | 'fill'
+    | 'circle'
+    | 'raster'
+    | 'fill-extrusion'
+    | 'background';
   sourceId?: string;
   images?:
     | ImageDefinition
@@ -52,7 +59,7 @@ export interface LayerCommonProps {
   sourceLayer?: string;
   minZoom?: number;
   maxZoom?: number;
-  geoJSONSourceOptions?: MapboxGL.GeoJSONSourceOptions
+  geoJSONSourceOptions?: MapboxGL.GeoJSONSourceOptions;
   // tslint:disable-next-line:no-any
   filter?: any[];
   children?: JSX.Element | JSX.Element[];
@@ -241,11 +248,7 @@ export default class Layer extends React.Component<Props> {
       });
     }
 
-    if (
-      props.filter &&
-      filter &&
-      !isEqual(props.filter, filter)
-    ) {
+    if (props.filter && filter && !isEqual(props.filter, filter)) {
       map.setFilter(id, props.filter || []);
     }
 

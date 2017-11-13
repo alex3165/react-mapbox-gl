@@ -72,7 +72,14 @@ describe('Layer', () => {
       sourceId: 'test'
     };
 
-    mount(<LayerWithContext children={children} {...props} {...mappedProps} before={before}/>);
+    mount(
+      <LayerWithContext
+        children={children}
+        {...props}
+        {...mappedProps}
+        before={before}
+      />
+    );
     expect(addLayerMock.mock.calls[0]).toEqual([
       {
         ...props,
@@ -110,7 +117,13 @@ describe('Layer', () => {
       clusterMaxZoom: 10
     };
     const layerSourceId = 'testId';
-    mount(<LayerWithContext children={children} id={layerSourceId} geoJSONSourceOptions={geoJSONSourceOptions} />);
+    mount(
+      <LayerWithContext
+        children={children}
+        id={layerSourceId}
+        geoJSONSourceOptions={geoJSONSourceOptions}
+      />
+    );
 
     expect(addSourceMock.mock.calls[0]).toEqual([
       layerSourceId,

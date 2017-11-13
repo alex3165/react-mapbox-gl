@@ -94,7 +94,9 @@ export default class Cluster extends React.Component<Props, State> {
     }
   }
 
-  private childrenChange = (newChildren: Array<React.Component<MarkerProps>>) => {
+  private childrenChange = (
+    newChildren: Array<React.Component<MarkerProps>>
+  ) => {
     const { superC } = this.state;
     this.featureClusterMap = new WeakMap<
       Feature,
@@ -193,8 +195,7 @@ export default class Cluster extends React.Component<Props, State> {
       <div
         onClick={this.props.zoomOnClick ? this.zoomToClusterBounds : undefined}
       >
-        {
-        clusterPoints.map((feature: Feature) => {
+        {clusterPoints.map((feature: Feature) => {
           if (feature.properties.cluster) {
             return ClusterMarkerFactory(
               feature.geometry.coordinates,
