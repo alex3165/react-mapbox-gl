@@ -151,6 +151,7 @@ import { Layer } from "react-mapbox-gl";
   - `raster`, Include a Mapbox raster layer
   - `fill-extrusion`, Include a Mapbox fill extrusion layer
   - `background`, Include a Mapbox background layer
+  - `heatmap`, Include a Mapbox heatmap layer
 - **layout**: `Object` Mapbox layout object passed down to mapbox `map.addLayer` method [mapbox layout api](https://www.mapbox.com/mapbox-gl-style-spec/#layer-layout)
 - **paint**: `Object` Mapbox paint object passed down to mapbox `map.addLayer` method [mapbox paint api](https://www.mapbox.com/mapbox-gl-style-spec/#layer-paint)
 - **geoJSONSourceOptions**: `Object` Source options merged to object passed to `map.addSource`
