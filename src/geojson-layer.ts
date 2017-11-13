@@ -10,7 +10,7 @@ const types = ['symbol', 'line', 'fill', 'fill-extrusion', 'circle'];
 const toCamelCase = (str: string) => (
   str.replace(/(?:^\w|[A-Z]|\b\w)/g, (letter, index) => (
     index === 0 ? letter.toLowerCase() : letter.toUpperCase()
-  )).replace(/\s+/g, '')
+  )).replace(/[\s+]|-/g, '')
 );
 
 const eventToHandler = {
