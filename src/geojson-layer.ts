@@ -6,13 +6,12 @@ import diff from './util/diff';
 import { generateID } from './util/uid';
 import { Sources, SourceOptionData, Context } from './util/types';
 
-const typeToLayerLUT = {
-  fill: 'fill',
-  'fill-extrusion': 'fillExtrusion',
-  symbol: 'symbol',
-  circle: 'circle',
-  line: 'line'
-};
+const types = ['symbol', 'line', 'fill', 'fill-extrusion', 'circle'];
+const toCamelCase = (str: string) => (
+  str.replace(/(?:^\w|[A-Z]|\b\w)/g, (letter, index) => (
+    index === 0 ? letter.toLowerCase() : letter.toUpperCase()
+  )).replace(/\s+/g, '')
+);
 
 const eventToHandler = {
   mousemove: 'OnMouseMove',
@@ -137,11 +136,11 @@ export default class GeoJSONLayer extends React.Component<Props, {}> {
     const layerId = this.buildLayerId(type);
     this.layerIds.push(layerId);
 
-    const paint: Paints = this.props[`${typeToLayerLUT[type]}Paint`] || {};
+    const paint: Paints = this.props[`${toCamelCase(type)}Paint`] || {};
 
     // default undefined layers to invisible
     const visibility = Object.keys(paint).length ? 'visible' : 'none';
-    const layout: Layouts = this.props[`${typeToLayerLUT[type]}Layout`] || {
+    const layout: Layouts = this.props[`${toCamelCase(type)}Layout`] || {
       visibility
     };
 
@@ -169,7 +168,7 @@ export default class GeoJSONLayer extends React.Component<Props, {}> {
 
     events.forEach(event => {
       const handler =
-        this.props[`${typeToLayerLUT[type]}${eventToHandler[event]}`] || null;
+        this.props[`${toCamelCase(type)}${eventToHandler[event]}`] || null;
 
       if (handler) {
         map.on(event, layerId, handler);
@@ -206,9 +205,9 @@ export default class GeoJSONLayer extends React.Component<Props, {}> {
       map.removeSource(this.id);
     }
 
-    Object.keys(typeToLayerLUT).forEach(type => {
+    types.forEach(type => {
       Object.keys(eventToHandler).forEach(event => {
-        const prop = typeToLayerLUT[type] + eventToHandler[event];
+        const prop = toCamelCase(type) + eventToHandler[event];
 
         if (this.props[prop]) {
           map.off(event, this.buildLayerId(type), this.props[prop]);
@@ -260,14 +259,14 @@ export default class GeoJSONLayer extends React.Component<Props, {}> {
       layerOptions &&
       !isEqual(props.layerOptions.filter, layerOptions.filter);
 
-    Object.keys(typeToLayerLUT).forEach(type => {
+    types.forEach(type => {
       const layerId = this.buildLayerId(type);
 
       if (props.layerOptions && layerFilterChanged) {
         map.setFilter(layerId, props.layerOptions.filter as any);
       }
 
-      const paintProp = typeToLayerLUT[type] + 'Paint';
+      const paintProp = toCamelCase(type) + 'Paint';
 
       if (!isEqual(props[paintProp], this.props[paintProp])) {
         const paintDiff = diff(this.props[paintProp], props[paintProp]);
@@ -277,7 +276,7 @@ export default class GeoJSONLayer extends React.Component<Props, {}> {
         });
       }
 
-      const layoutProp = typeToLayerLUT[type] + 'Layout';
+      const layoutProp = toCamelCase(type) + 'Layout';
 
       if (!isEqual(props[layoutProp], this.props[layoutProp])) {
         const layoutDiff = diff(this.props[layoutProp], props[layoutProp]);
@@ -288,7 +287,7 @@ export default class GeoJSONLayer extends React.Component<Props, {}> {
       }
 
       Object.keys(eventToHandler).forEach(event => {
-        const prop = typeToLayerLUT[type] + eventToHandler[event];
+        const prop = toCamelCase(type) + eventToHandler[event];
 
         if (props[prop] !== this.props[prop]) {
           if (this.props[prop]) {
@@ -306,13 +305,6 @@ export default class GeoJSONLayer extends React.Component<Props, {}> {
       }
 
     });
-
-    if (before !== props.before) {
-      ['symbol', 'line', 'fill', 'fill-extrusion', 'circle'].forEach(type => {
-        const layerId = this.buildLayerId(type);
-        map.moveLayer(layerId, props.before);
-      });
-    }
   }
 
   public render() {
