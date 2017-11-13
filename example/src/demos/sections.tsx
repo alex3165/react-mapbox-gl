@@ -20,6 +20,9 @@ const SwitchStyleRaw = require('raw-loader!./raws/switchStyle.raw');
 import GeoJsonLayer from './geojsonLayer';
 const GeoJsonLayerRaw = require('raw-loader!./raws/geojsonLayer.raw');
 
+import Heatmap from './heatmap';
+const HeatmapRaw = require('raw-loader!./raws/heatmap.raw');
+
 import { Live } from '../live';
 
 export const sections = [
@@ -29,6 +32,13 @@ export const sections = [
     components: ['ReactMapboxGl', 'Layer', 'Feature'],
     DemoComponent: LondonCycleMap,
     reactLive: <Live raw={LondonCycleMapRaw} />
+  },
+  {
+    shortTitle: 'heatmap',
+    title: 'Heatmap of London house prices',
+    components: ['ReactMapboxGl', 'Layer', 'Feature'],
+    DemoComponent: Heatmap,
+    reactLive: <Live raw={HeatmapRaw} />
   },
   {
     shortTitle: 'all-shapes',
