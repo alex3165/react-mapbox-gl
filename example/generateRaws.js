@@ -7,7 +7,8 @@ const files = [
   'threeDMap.tsx',
   'htmlCluster.tsx',
   'switchStyle.tsx',
-  'geojsonLayer.tsx'
+  'geojsonLayer.tsx',
+  'heatmap.tsx'
 ];
 
 files.forEach((file) => {
