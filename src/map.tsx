@@ -269,7 +269,7 @@ const ReactMapboxFactory = ({
       }
 
       // Update event listeners
-      updateEvents(this.listeners, nextProps, map);
+      this.listeners = updateEvents(this.listeners, nextProps, map);
 
       const center = map.getCenter();
       const zoom = map.getZoom();
