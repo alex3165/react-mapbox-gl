@@ -9,14 +9,14 @@ export interface EnhancedLayerProps {
   id?: string;
 }
 
+export type OwnProps = EnhancedLayerProps & LayerCommonProps;
+
 type LayerChildren = React.ReactElement<FeatureProps> | undefined;
 
 function layerMouseTouchEvents(
   WrappedComponent: React.ComponentClass<LayerProps>
 ) {
-  return class EnhancedLayer extends React.Component<
-    EnhancedLayerProps & LayerCommonProps
-  > {
+  return class EnhancedLayer extends React.Component<OwnProps> {
     public context: Context;
     public hover: number[] = [];
     public isDragging: boolean = false;

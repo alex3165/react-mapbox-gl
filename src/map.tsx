@@ -2,102 +2,8 @@ import * as MapboxGl from 'mapbox-gl';
 import * as React from 'react';
 import * as PropTypes from 'prop-types';
 import injectCSS from './util/inject-css';
+import { Events, listenEvents, events, Listener } from './map-events';
 const isEqual = require('deep-equal'); //tslint:disable-line
-
-const events = {
-  onResize: 'resize',
-  onDblClick: 'dblclick',
-  onClick: 'click',
-  onMouseMove: 'mousemove',
-  onMouseOut: 'mouseout',
-  onMoveStart: 'movestart',
-  onMove: 'move',
-  onMoveEnd: 'moveend',
-  onMouseUp: 'mouseup',
-  onMouseDown: 'mousedown',
-  onDragStart: 'dragstart',
-  onDrag: 'drag',
-  onDragEnd: 'dragend',
-  onZoomStart: 'zoomstart',
-  onZoom: 'zoom',
-  onZoomEnd: 'zoomend',
-  onPitch: 'pitch',
-  onPitchStart: 'pitchstart',
-  onPitchEnd: 'pitchend',
-  onWebGlContextLost: 'webglcontextlost',
-  onWebGlContextRestored: 'webglcontextrestored',
-  onRemove: 'remove',
-  onContextMenu: 'contextmenu',
-  onRender: 'render',
-  onError: 'error',
-  onSourceData: 'sourcedata',
-  onDataLoading: 'dataloading',
-  onStyleDataLoading: 'styledataloading',
-  onTouchCancel: 'touchcancel',
-  onData: 'data',
-  onSourceDataLoading: 'sourcedataloading',
-  onTouchMove: 'touchmove',
-  onTouchEnd: 'touchend',
-  onTouchStart: 'touchstart',
-  onStyleData: 'styledata',
-  onBoxZoomStart: 'boxzoomstart',
-  onBoxZoomEnd: 'boxzoomend',
-  onBoxZoomCancel: 'boxzoomcancel',
-  onRotateStart: 'rotatestart',
-  onRotate: 'rotate',
-  onRotateEnd: 'rotateend'
-};
-
-export type MapEvent = (
-  map: MapboxGl.Map,
-  // tslint:disable-next-line:no-any
-  evt: React.SyntheticEvent<any>
-) => void;
-
-export interface Events {
-  onStyleLoad?: MapEvent;
-  onResize?: MapEvent;
-  onDblClick?: MapEvent;
-  onClick?: MapEvent;
-  onMouseMove?: MapEvent;
-  onMouseOut?: MapEvent;
-  onMoveStart?: MapEvent;
-  onMove?: MapEvent;
-  onMoveEnd?: MapEvent;
-  onMouseDown?: MapEvent;
-  onMouseUp?: MapEvent;
-  onDragStart?: MapEvent;
-  onDragEnd?: MapEvent;
-  onDrag?: MapEvent;
-  onZoomStart?: MapEvent;
-  onZoom?: MapEvent;
-  onZoomEnd?: MapEvent;
-  onPitch?: MapEvent;
-  onPitchStart?: MapEvent;
-  onPitchEnd?: MapEvent;
-  onWebGlContextLost?: MapEvent;
-  onWebGlContextRestored?: MapEvent;
-  onRemove?: MapEvent;
-  onContextMenu?: MapEvent;
-  onRender?: MapEvent;
-  onError?: MapEvent;
-  onSourceData?: MapEvent;
-  onDataLoading?: MapEvent;
-  onStyleDataLoading?: MapEvent;
-  onTouchCancel?: MapEvent;
-  onData?: MapEvent;
-  onSourceDataLoading?: MapEvent;
-  onTouchMove?: MapEvent;
-  onTouchEnd?: MapEvent;
-  onTouchStart?: MapEvent;
-  onStyleData?: MapEvent;
-  onBoxZoomStart?: MapEvent;
-  onBoxZoomEnd?: MapEvent;
-  onBoxZoomCancel?: MapEvent;
-  onRotateStart?: MapEvent;
-  onRotate?: MapEvent;
-  onRotateEnd?: MapEvent;
-}
 
 export interface FitBoundsOptions {
   linear?: boolean;
@@ -239,6 +145,8 @@ const ReactMapboxFactory = ({
       ready: false
     };
 
+    public listeners: Listener[] = [];
+
     // tslint:disable-next-line:variable-name
     public _isMounted = true;
 
@@ -342,16 +250,7 @@ const ReactMapboxFactory = ({
         }
       });
 
-      Object.keys(events).forEach((event, index) => {
-        const propEvent = this.props[event];
-
-        if (propEvent) {
-          // tslint:disable-next-line:no-any
-          map.on(events[event], (evt: React.SyntheticEvent<any>) => {
-            propEvent(map, evt);
-          });
-        }
-      });
+      this.listeners = listenEvents(events, this.props, map);
     }
 
     public componentWillUnmount() {
@@ -368,6 +267,8 @@ const ReactMapboxFactory = ({
       if (!map) {
         return null;
       }
+
+      // Update event listeners
 
       const center = map.getCenter();
       const zoom = map.getZoom();
