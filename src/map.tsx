@@ -2,7 +2,7 @@ import * as MapboxGl from 'mapbox-gl';
 import * as React from 'react';
 import * as PropTypes from 'prop-types';
 import injectCSS from './util/inject-css';
-import { Events, listenEvents, events, Listener } from './map-events';
+import { Events, listenEvents, events, Listeners, updateEvents } from './map-events';
 const isEqual = require('deep-equal'); //tslint:disable-line
 
 export interface FitBoundsOptions {
@@ -145,7 +145,7 @@ const ReactMapboxFactory = ({
       ready: false
     };
 
-    public listeners: Listener[] = [];
+    public listeners: Listeners = {};
 
     // tslint:disable-next-line:variable-name
     public _isMounted = true;
@@ -262,13 +262,14 @@ const ReactMapboxFactory = ({
       }
     }
 
-    public componentWillReceiveProps(nextProps: Props) {
+    public componentWillReceiveProps(nextProps: Props & Events) {
       const { map } = this.state as State;
       if (!map) {
         return null;
       }
 
       // Update event listeners
+      updateEvents(this.listeners, nextProps, map);
 
       const center = map.getCenter();
       const zoom = map.getZoom();

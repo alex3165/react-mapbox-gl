@@ -118,8 +118,8 @@ const normalizedOffsets = (
       (res, anchor) => {
         res[anchor] = Point.convert(offset);
         return res;
-        // tslint:disable-next-line:no-object-literal-type-assertion
       },
+      // tslint:disable-next-line:no-object-literal-type-assertion
       {} as AnchorsOffset
     );
   }
@@ -129,8 +129,8 @@ const normalizedOffsets = (
     (res, anchor) => {
       res[anchor] = Point.convert(offset[anchor] || defaultPoint);
       return res;
-      // tslint:disable-next-line:no-object-literal-type-assertion
     },
+    // tslint:disable-next-line:no-object-literal-type-assertion
     {} as AnchorsOffset
   );
 };

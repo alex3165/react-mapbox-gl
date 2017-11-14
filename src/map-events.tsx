@@ -97,16 +97,12 @@ export const events: EventMapping = {
   onRotateEnd: 'rotateend'
 };
 
-export interface Listener {
-  event: keyof Events;
-  // tslint:disable-next-line:no-any
-  listener: (evt: React.SyntheticEvent<any>) => void;
-}
+// tslint:disable-next-line:no-any
+export type Listeners = {[T in keyof Events]: (evt: React.SyntheticEvent<any>) => void };
 
 export const listenEvents = (partialEvents: EventMapping, props: Partial<Events>, map: MapboxGl.Map) =>
-  Object.keys(partialEvents).forEach((event: keyof Events, index) => {
+  Object.keys(partialEvents).reduce((listeners, event: keyof Events) => {
     const propEvent = props[event];
-    const eventListeners: Listener[] = [];
 
     if (propEvent) {
       // tslint:disable-next-line:no-any
@@ -116,14 +112,28 @@ export const listenEvents = (partialEvents: EventMapping, props: Partial<Events>
 
       map.on(partialEvents[event], listener);
 
-      eventListeners.push({ event, listener });
+      listeners[event] = listener;
     }
 
-    return eventListeners;
+    return listeners;
+  // tslint:disable-next-line:no-object-literal-type-assertion
+  }, {} as Listeners);
+
+export const updateEvents = (listeners: Listeners, nextProps: Partial<Events>, map: MapboxGl.Map) => {
+  const toListenOff = Object.keys(events).filter(eventKey =>
+    listeners[eventKey] && typeof nextProps[eventKey] !== 'function'
+  );
+
+  toListenOff.forEach(key => {
+    map.off(events[key], listeners[key]);
+    delete listeners[key];
   });
 
-export const updateEvents = (listeners: Listener[], nextProps: Partial<Events>, map: MapboxGl.Map) => {
-  // TODO: listen off events for which we removed the hanler
-  // TODO: listen on new handlers
+  const toListenOn = Object.keys(events).filter(key =>
+    !listeners[key] && typeof nextProps[key] === 'function'
+  ).reduce((acc, next) => (acc[next] = events[next], acc), {});
 
+  const newListeners = listenEvents(toListenOn, nextProps, map);
+
+  return { ...listeners, ...newListeners };
 }
