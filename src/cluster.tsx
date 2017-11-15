@@ -2,7 +2,7 @@ import * as React from 'react';
 import * as PropTypes from 'prop-types';
 import { Map, LngLatBounds } from 'mapbox-gl';
 import { Props as MarkerProps } from './marker';
-import * as supercluster from 'supercluster'; // tslint:disable-line
+import supercluster from 'supercluster';
 import * as GeoJSON from 'geojson';
 import { Feature } from './util/types';
 import * as bbox from '@turf/bbox';

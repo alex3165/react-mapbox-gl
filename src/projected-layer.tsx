@@ -24,7 +24,7 @@ export interface Props {
   onDoubleClick?: React.MouseEventHandler<HTMLDivElement>;
   onMouseEnter?: React.MouseEventHandler<HTMLDivElement>;
   onMouseLeave?: React.MouseEventHandler<HTMLDivElement>;
-  onScroll?: React.MouseEventHandler<HTMLDivElement>;
+  onScroll?: React.UIEventHandler<HTMLDivElement>;
   onWheel?: React.MouseEventHandler<HTMLDivElement>;
   style?: React.CSSProperties;
   className: string;
