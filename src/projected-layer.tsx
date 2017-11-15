@@ -21,8 +21,11 @@ export interface Props {
   offset?: number | number[] | PointDef;
   children?: JSX.Element;
   onClick?: React.MouseEventHandler<HTMLDivElement>;
+  onDoubleClick?: React.MouseEventHandler<HTMLDivElement>;
   onMouseEnter?: React.MouseEventHandler<HTMLDivElement>;
   onMouseLeave?: React.MouseEventHandler<HTMLDivElement>;
+  onScroll?: React.MouseEventHandler<HTMLDivElement>;
+  onWheel?: React.MouseEventHandler<HTMLDivElement>;
   style?: React.CSSProperties;
   className: string;
 }
@@ -96,8 +99,11 @@ export default class ProjectedLayer extends React.Component<Props, any> {
       children,
       className,
       onClick,
+      onDoubleClick,
       onMouseEnter,
-      onMouseLeave
+      onMouseLeave,
+      onScroll,
+      onWheel
     } = this.props;
 
     const finalStyle = {
@@ -110,8 +116,11 @@ export default class ProjectedLayer extends React.Component<Props, any> {
       <div
         className={className}
         onClick={onClick}
+        onDoubleClick={onDoubleClick}
         onMouseEnter={onMouseEnter}
         onMouseLeave={onMouseLeave}
+        onScroll={onScroll}
+        onWheel={onWheel}
         style={finalStyle}
         ref={this.setContainer}
       >
