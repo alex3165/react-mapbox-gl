@@ -9,8 +9,11 @@ export interface Props {
   anchor?: Anchor;
   offset?: number | number[] | PointDef;
   onClick?: React.MouseEventHandler<HTMLDivElement>;
+  onDoubleClick?: React.MouseEventHandler<HTMLDivElement>;
   onMouseEnter?: React.MouseEventHandler<HTMLDivElement>;
   onMouseLeave?: React.MouseEventHandler<HTMLDivElement>;
+  onScroll?: React.MouseEventHandler<HTMLDivElement>;
+  onWheel?: React.MouseEventHandler<HTMLDivElement>;
   style?: React.CSSProperties;
   className?: string;
 }
