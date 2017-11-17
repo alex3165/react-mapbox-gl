@@ -123,7 +123,6 @@ export default class LondonCycle extends React.Component<Props, State> {
         {station && (
           <Popup
             key={station.id}
-            offset={[0, -50]}
             coordinates={station.position}
           >
             <StyledPopup>
