@@ -5,8 +5,7 @@ import {
   Anchor,
   OverlayParams,
   overlayState,
-  overlayTransform,
-  anchors
+  overlayTransform
 } from './util/overlays';
 import * as GeoJSON from 'geojson';
 
@@ -46,7 +45,6 @@ export default class ProjectedLayer extends React.Component<
   };
 
   public static defaultProps = {
-    anchor: anchors[0],
     offset: 0,
     // tslint:disable-next-line:no-any
     onClick: (...args: any[]) => args
