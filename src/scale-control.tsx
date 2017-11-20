@@ -1,6 +1,7 @@
 import * as React from 'react';
 import * as PropTypes from 'prop-types';
 import { Map } from 'mapbox-gl';
+import { AnchorLimits } from './util/types';
 
 const scales = [
   0.01,
@@ -25,10 +26,10 @@ const scales = [
 ];
 
 const positions = {
-  topRight: { top: 10, right: 10, bottom: 'auto', left: 'auto' },
-  topLeft: { top: 10, left: 10, bottom: 'auto', right: 'auto' },
-  bottomRight: { bottom: 10, right: 10, top: 'auto', left: 'auto' },
-  bottomLeft: { bottom: 10, left: 10, top: 'auto', right: 'auto' }
+  'top-right': { top: 10, right: 10, bottom: 'auto', left: 'auto' },
+  'top-left': { top: 10, left: 10, bottom: 'auto', right: 'auto' },
+  'bottom-right': { bottom: 10, right: 10, top: 'auto', left: 'auto' },
+  'bottom-left': { bottom: 10, left: 10, top: 'auto', right: 'auto' }
 };
 
 const containerStyle: React.CSSProperties = {
@@ -54,7 +55,7 @@ const scaleStyle = {
   borderBottomRightRadius: 1
 };
 
-const POSITIONS = Object.keys(positions) as Position[];
+const POSITIONS = Object.keys(positions);
 const MEASUREMENTS = ['km', 'mi'] as Measurement[];
 
 const MILE_IN_KILOMETERS = 1.60934;
@@ -64,12 +65,12 @@ const KILOMETER_IN_METERS = 1000;
 const MIN_WIDTH_SCALE = 40;
 
 export type Measurement = 'km' | 'mi';
-export type Position = 'topRight' | 'topLeft' | 'bottomRight' | 'bottomLeft';
 
 export interface Props {
   measurement?: Measurement;
-  position?: Position;
+  position?: AnchorLimits;
   style?: React.CSSProperties;
+  className?: string;
 }
 
 export interface State {
@@ -181,11 +182,11 @@ export default class ScaleControl extends React.Component<Props, State> {
   }
 
   public render() {
-    const { measurement, style, position } = this.props;
+    const { measurement, style, position, className } = this.props;
     const { chosenScale, scaleWidth } = this.state;
 
     return (
-      <div style={{ ...containerStyle, ...positions[position!], ...style }}>
+      <div style={{ ...containerStyle, ...positions[position!], ...style }} className={className}>
         <div style={{ ...scaleStyle, width: scaleWidth }} />
         <div style={{ paddingLeft: 10 }}>
           {this._displayMeasurement(measurement!, chosenScale)}

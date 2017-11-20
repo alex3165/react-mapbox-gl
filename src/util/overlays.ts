@@ -1,19 +1,6 @@
 import { LngLat, Point, Map } from 'mapbox-gl';
 import { Props } from '../projected-layer';
-
-export interface AnchorsOffset {
-  center: Point;
-  top: Point;
-  bottom: Point;
-  left: Point;
-  right: Point;
-  'top-left': Point;
-  'top-right': Point;
-  'bottom-left': Point;
-  'bottom-right': Point;
-}
-
-export type Anchor = keyof AnchorsOffset;
+import { Anchor, AnchorsOffset } from './types';
 
 export interface PointDef {
   x: number;

@@ -26,6 +26,8 @@ export interface Props {
   zoomOnClick?: boolean;
   zoomOnClickPadding?: number;
   children?: Array<React.Component<MarkerProps>>;
+  style?: React.CSSProperties;
+  className?: string;
 }
 
 export interface State {
@@ -188,11 +190,13 @@ export default class Cluster extends React.Component<Props, State> {
   }
 
   public render() {
-    const { ClusterMarkerFactory } = this.props;
+    const { ClusterMarkerFactory, style, className } = this.props;
     const { clusterPoints } = this.state;
 
     return (
       <div
+        style={style}
+        className={className}
         onClick={this.props.zoomOnClick ? this.zoomToClusterBounds : undefined}
       >
         {clusterPoints.map((feature: Feature) => {
