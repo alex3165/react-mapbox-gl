@@ -124,7 +124,7 @@ const events = {
 
 ----------
 # Layer
-Create a new Mapbox layer and create all the sources depending on the children `Feature` components.
+Create a new Mapbox layer and create all the sources depending on the children `Feature` components. Layer also create a source if no sourceId is passed.
 
 If you change the value of the paint or the layout property of the layer, it will automatically update this property using respectively either `setLayoutProperty` or `setPaintProperty`.
 > Only work with the first depth of the object.
