@@ -2,12 +2,12 @@ import * as React from 'react';
 import * as PropTypes from 'prop-types';
 import { Map, Point } from 'mapbox-gl';
 import {
-  Anchor,
   OverlayParams,
   overlayState,
   overlayTransform
 } from './util/overlays';
 import * as GeoJSON from 'geojson';
+import { Anchor } from './util/types';
 
 const defaultStyle = {
   zIndex: 3
