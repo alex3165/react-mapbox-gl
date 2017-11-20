@@ -1,6 +1,6 @@
 {
   "name": "react-mapbox-gl",
-  "version": "2.8.0",
+  "version": "3.1.0",
   "description": "A React binding of mapbox-gl-js",
   "main": "lib/index.js",
   "typings": "lib/index.d.ts",
@@ -14,7 +14,7 @@
     "prepublishOnly": "npm run clean && npm run build",
     "version": "npm run build",
     "postversion": "git push && git push --tags",
-    "prettify": "prettier --write --single-quote src/*.ts src/*.tsx src/**/*.ts src/**/*.tsx"
+    "prettify": "prettier --write --single-quote src/*.ts src/*.tsx src/**/*.ts src/**/*.tsx example/src/**/*.ts example/src/**/*.tsx"
   },
   "jest": {
     "transform": {
@@ -62,7 +62,7 @@
     "supercluster": "3.0.1"
   },
   "peerDependencies": {
-    "mapbox-gl": "^0.40.1",
+    "mapbox-gl": "^0.41.0",
     "prop-types": "^15.5.10",
     "react": "^15.6.1",
     "react-dom": "^15.6.1"
@@ -73,19 +73,18 @@
     "@types/enzyme": "2.8.8",
     "@types/geojson": "1.0.3",
     "@types/jest": "21.1.0",
-    "@types/mapbox-gl": "0.39.6",
+    "@types/mapbox-gl": "^0.40.1",
     "@types/node": "8.0.29",
     "@types/prettier": "^1.7.0",
     "@types/prop-types": "^15.5.2",
-    "@types/react": "16.0.7",
-    "@types/react-dom": "16.0.0",
-    "@types/react-test-renderer": "^16.0.0",
+    "@types/react": "16.0.10",
+    "@types/react-dom": "16.0.1",
     "@types/recompose": "0.24.1",
     "@types/supercluster": "^3.0.2",
     "enzyme": "3.1.0",
     "enzyme-adapter-react-16": "1.0.0",
     "jest": "21.2.0",
-    "mapbox-gl": "0.39.1",
+    "mapbox-gl": "0.41.0",
     "prettier": "1.7.0",
     "prop-types": "15.5.10",
     "react": "16.0.0",
@@ -95,6 +94,6 @@
     "ts-jest": "21.0.1",
     "tslint": "5.7.0",
     "tslint-react": "3.2.0",
-    "typescript": "2.5.2"
+    "typescript": "2.5.3"
   }
 }

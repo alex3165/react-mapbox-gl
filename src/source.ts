@@ -11,11 +11,11 @@ export interface Props {
   id: string;
   geoJsonSource?: GeoJSONSourceRaw;
   tileJsonSource?: TilesJson;
-  onSourceAdded?: (source: GeoJSONSource | TilesJson) => any;
-  onSourceLoaded?: (source: GeoJSONSource | TilesJson) => any;
+  onSourceAdded?: (source: GeoJSONSource | TilesJson) => void;
+  onSourceLoaded?: (source: GeoJSONSource | TilesJson) => void;
 }
 
-export default class Source extends React.Component<Props, {}> {
+export default class Source extends React.Component<Props> {
   public context: Context;
 
   public static contextTypes = {
@@ -45,7 +45,12 @@ export default class Source extends React.Component<Props, {}> {
     const { geoJsonSource, tileJsonSource, onSourceAdded } = this.props;
 
     if (!map.getSource(this.id) && (geoJsonSource || tileJsonSource)) {
-      map.addSource(this.id, (geoJsonSource || tileJsonSource) as any);
+      if (geoJsonSource) {
+        map.addSource(this.id, geoJsonSource);
+      } else if (tileJsonSource) {
+        map.addSource(this.id, tileJsonSource);
+      }
+
       map.on('load', this.onData);
 
       if (onSourceAdded) {
@@ -54,6 +59,7 @@ export default class Source extends React.Component<Props, {}> {
     }
   };
 
+  // tslint:disable-next-line:no-any
   private onData = (event: any) => {
     const { map } = this.context;
 
@@ -99,7 +105,7 @@ export default class Source extends React.Component<Props, {}> {
 
       if (hasNewTilesSource) {
         map.removeSource(this.id);
-        map.addSource(this.id, props.tileJsonSource as any);
+        map.addSource(this.id, props.tileJsonSource);
       }
     }
 

@@ -5,22 +5,29 @@
 [![Build Status](https://travis-ci.org/alex3165/react-mapbox-gl.svg?branch=master)](https://travis-ci.org/alex3165/react-mapbox-gl)
 [![npm version](https://img.shields.io/npm/v/react-mapbox-gl.svg?style=flat)](https://www.npmjs.com/package/react-mapbox-gl)
 [![npm downloads](https://img.shields.io/npm/dm/react-mapbox-gl.svg)](https://www.npmjs.com/package/react-mapbox-gl)
-
+[![TypeScript](https://badges.frapsoft.com/typescript/code/typescript.svg?v=101)](https://github.com/ellerbrock/typescript-badges/)
+<br/>
+## React wrapper for [mapbox-gl-js](https://www.mapbox.com/mapbox-gl-js/api/).
 <br/><br/>
 ![London cycle example gif](docs/london-cycle-example.gif "London cycle example gif")
 
-React wrapper for [mapbox-gl-js](https://www.mapbox.com/mapbox-gl-js/api/). Expose a bunch of component meant to be simple to use for React. It is important to understand the difference between the components `Map`, `Layer`, `GeoJsonLayer`, `Source`, `Feature` (proxy between React and Mapbox API) and the components `Marker`, `Popup`, `Cluster`, `ZoomControl`, `ScaleControl`, `RotationControl` which are real React components.
+## Components
 
-Include the following elements:
-- ReactMapboxGl
-- Layer
+### Proxy components (proxy between React and Mapbox API)
+- ReactMapboxGL
+- Layer & Feature
+  - property `symbol` display a mapbox symbol.
+  - property `line` display a lineString.
+  - property `fill` display a polygon.
+  - property `circle` display a mapbox circle.
+  - property `raster` display a mapbox raster tiles.
+  - property `fill-extrusion` display a layer with extruded buildings.
+  - property `background` display a mapbox background layer.
+  - property `heatmap` display a mapbox heatmap layer.
 - Source
-- Feature
-  - Layer type properties `symbol` display a mapbox symbol.
-  - Layer type properties `line` display a lineString.
-  - Layer type properties `fill` display a polygon.
-  - Layer type properties `circle` display a mapbox circle.
 - GeoJSONLayer
+
+### DOM components (normal React components)
 - ZoomControl
 - ScaleControl
 - RotationControl
@@ -28,11 +35,9 @@ Include the following elements:
 - Popup (Projected component)
 - Cluster
 
-> This repository include the Typescript type definition files
-
 ## How to start
 
-```javascript
+```
 npm install react-mapbox-gl mapbox-gl --save
 ```
 
@@ -66,17 +71,13 @@ const Map = ReactMapboxGl({
 </Map>
 ```
 
-## Why is zoom an array
-The zoom property is an array on purpose. With a float as a value we can't tell whether the zoom has changed when checking for value equality `7 === 7 // true`.
-We changed it to an array so that between 2 render it check for a reference equality `[7] === [7] // false`,
-this way we can reliably update the zoom value without having to keep the viewport in the state of the Map component.
+## Why are zoom, bearing and pitch arrays
+If those properties changed at the mapbox-gl-js level and you don't update the value kept in your state, it will be unsynced with the current viewport. At some point you might want to update the viewport value (zoom, pitch or bearing) with the ones in your state but using value equality is not enough. Taking zoom as example, you will still have the unsynced zoom value therefore we can't tell if you want to update or not the prop. In order to explicitely update the current viewport values you can instead break the references of those props and reliably update the current viewport with the one you have in your state to be synced again.
 
-## [Version 2.0 Documentation](docs/API.md)
-
-### [Version 1.12 documentation](https://github.com/alex3165/react-mapbox-gl/blob/archive/1.12/docs/API.md)
+## [Version 3.0 Documentation](docs/API.md)
 
 ## Contributions
-- Ideally before posting an issue you can try to reproduce the bug you encounter using this [boilerplate](https://github.com/alex3165/react-mapbox-gl-debug) or [this webpackbin template](https://www.webpackbin.com/bins/-KqtJN-qkLs4BPaVX0QS)
+Please try to reproduce your problem with the [boilerplate](https://github.com/alex3165/react-mapbox-gl-debug) or [this webpackbin template](https://www.webpackbin.com/bins/-KqtJN-qkLs4BPaVX0QS) before posting an issue
 
 ## Built with react-mapbox-gl
 [monumap.org](https://monumap.org/)

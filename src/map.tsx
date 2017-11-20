@@ -2,101 +2,8 @@ import * as MapboxGl from 'mapbox-gl';
 import * as React from 'react';
 import * as PropTypes from 'prop-types';
 import injectCSS from './util/inject-css';
+import { Events, listenEvents, events, Listeners, updateEvents } from './map-events';
 const isEqual = require('deep-equal'); //tslint:disable-line
-
-const events = {
-  onResize: 'resize',
-  onDblClick: 'dblclick',
-  onClick: 'click',
-  onMouseMove: 'mousemove',
-  onMouseOut: 'mouseout',
-  onMoveStart: 'movestart',
-  onMove: 'move',
-  onMoveEnd: 'moveend',
-  onMouseUp: 'mouseup',
-  onMouseDown: 'mousedown',
-  onDragStart: 'dragstart',
-  onDrag: 'drag',
-  onDragEnd: 'dragend',
-  onZoomStart: 'zoomstart',
-  onZoom: 'zoom',
-  onZoomEnd: 'zoomend',
-  onPitch: 'pitch',
-  onPitchStart: 'pitchstart',
-  onPitchEnd: 'pitchend',
-  onWebGlContextLost: 'webglcontextlost',
-  onWebGlContextRestored: 'webglcontextrestored',
-  onRemove: 'remove',
-  onContextMenu: 'contextmenu',
-  onRender: 'render',
-  onError: 'error',
-  onSourceData: 'sourcedata',
-  onDataLoading: 'dataloading',
-  onStyleDataLoading: 'styledataloading',
-  onTouchCancel: 'touchcancel',
-  onData: 'data',
-  onSourceDataLoading: 'sourcedataloading',
-  onTouchMove: 'touchmove',
-  onTouchEnd: 'touchend',
-  onTouchStart: 'touchstart',
-  onStyleData: 'styledata',
-  onBoxZoomStart: 'boxzoomstart',
-  onBoxZoomEnd: 'boxzoomend',
-  onBoxZoomCancel: 'boxzoomcancel',
-  onRotateStart: 'rotatestart',
-  onRotate: 'rotate',
-  onRotateEnd: 'rotateend'
-};
-
-export type MapEvent = (
-  map: MapboxGl.Map,
-  evt: React.SyntheticEvent<any>
-) => void;
-
-export interface Events {
-  onStyleLoad?: MapEvent;
-  onResize?: MapEvent;
-  onDblClick?: MapEvent;
-  onClick?: MapEvent;
-  onMouseMove?: MapEvent;
-  onMouseOut?: MapEvent;
-  onMoveStart?: MapEvent;
-  onMove?: MapEvent;
-  onMoveEnd?: MapEvent;
-  onMouseDown?: MapEvent;
-  onMouseUp?: MapEvent;
-  onDragStart?: MapEvent;
-  onDragEnd?: MapEvent;
-  onDrag?: MapEvent;
-  onZoomStart?: MapEvent;
-  onZoom?: MapEvent;
-  onZoomEnd?: MapEvent;
-  onPitch?: MapEvent;
-  onPitchStart?: MapEvent;
-  onPitchEnd?: MapEvent;
-  onWebGlContextLost?: MapEvent;
-  onWebGlContextRestored?: MapEvent;
-  onRemove?: MapEvent;
-  onContextMenu?: MapEvent;
-  onRender?: MapEvent;
-  onError?: MapEvent;
-  onSourceData?: MapEvent;
-  onDataLoading?: MapEvent;
-  onStyleDataLoading?: MapEvent;
-  onTouchCancel?: MapEvent;
-  onData?: MapEvent;
-  onSourceDataLoading?: MapEvent;
-  onTouchMove?: MapEvent;
-  onTouchEnd?: MapEvent;
-  onTouchStart?: MapEvent;
-  onStyleData?: MapEvent;
-  onBoxZoomStart?: MapEvent;
-  onBoxZoomEnd?: MapEvent;
-  onBoxZoomCancel?: MapEvent;
-  onRotateStart?: MapEvent;
-  onRotate?: MapEvent;
-  onRotateEnd?: MapEvent;
-}
 
 export interface FitBoundsOptions {
   linear?: boolean;
@@ -126,18 +33,18 @@ export interface FlyToOptions {
 export interface Props {
   style: string | MapboxGl.Style;
   center?: number[];
-  zoom?: number[];
+  zoom?: [number];
   maxBounds?: MapboxGl.LngLatBounds | FitBounds;
   fitBounds?: FitBounds;
   fitBoundsOptions?: FitBoundsOptions;
-  bearing?: number;
-  pitch?: number;
+  bearing?: [number];
+  pitch?: [number];
   containerStyle?: React.CSSProperties;
   className?: string;
   movingMethod?: 'jumpTo' | 'easeTo' | 'flyTo';
-  animationOptions?: AnimationOptions;
-  flyToOptions?: FlyToOptions;
-  children?: JSX.Element;
+  animationOptions?: Partial<AnimationOptions>;
+  flyToOptions?: Partial<FlyToOptions>;
+  children?: JSX.Element | JSX.Element[] | Array<JSX.Element | undefined>;
 }
 
 export interface State {
@@ -213,14 +120,15 @@ const ReactMapboxFactory = ({
   classes,
   bearingSnap = 7,
   injectCss = true
-}: FactoryParameters): any => {
+}: FactoryParameters) => {
   if (injectCss) {
     injectCSS(window);
   }
 
   return class ReactMapboxGl extends React.Component<Props & Events, State> {
     public static defaultProps = {
-      onStyleLoad: (...args: any[]) => args,
+      // tslint:disable-next-line:no-any
+      onStyleLoad: (map: MapboxGl.Map, evt: any) => null,
       center: defaultCenter,
       zoom: defaultZoom,
       bearing: 0,
@@ -237,16 +145,18 @@ const ReactMapboxFactory = ({
       ready: false
     };
 
+    public listeners: Listeners = {};
+
     // tslint:disable-next-line:variable-name
-    private _isMounted = true;
+    public _isMounted = true;
 
     public getChildContext = () => ({
       map: this.state.map
     });
 
-    private container: HTMLElement;
+    public container: HTMLElement;
 
-    private calcCenter = (bounds: FitBounds): number[] => [
+    public calcCenter = (bounds: FitBounds): number[] => [
       (bounds[0][0] + bounds[1][0]) / 2,
       (bounds[0][1] + bounds[1][1]) / 2
     ];
@@ -264,25 +174,29 @@ const ReactMapboxFactory = ({
         maxBounds
       } = this.props;
 
+      // tslint:disable-next-line:no-any
       (MapboxGl as any).accessToken = accessToken;
       if (apiUrl) {
+        // tslint:disable-next-line:no-any
         (MapboxGl as any).config.API_URL = apiUrl;
+      }
+
+      if (!Array.isArray(zoom)) {
+        throw new Error('zoom need to be an array type of length 1 for reliable update');
       }
 
       const opts: MapboxGl.MapboxOptions = {
         preserveDrawingBuffer,
         hash,
-        zoom: zoom ? zoom[0] : defaultZoom[0],
+        zoom: zoom[0],
         minZoom,
         maxZoom,
         maxBounds,
-        bearing,
         container: this.container,
         center:
           fitBounds && center === defaultCenter
             ? this.calcCenter(fitBounds)
             : center,
-        pitch,
         style,
         scrollZoom,
         attributionControl,
@@ -296,11 +210,27 @@ const ReactMapboxFactory = ({
         dragPan,
         boxZoom,
         refreshExpiredTiles,
-        logoPosition: logoPosition as any,
+        logoPosition,
         classes,
         bearingSnap,
         failIfMajorPerformanceCaveat
       };
+
+      if (bearing) {
+        if (!Array.isArray(bearing)) {
+          throw new Error('bearing need to be an array type of length 1 for reliable update');
+        }
+
+        opts.bearing = bearing[0];
+      }
+
+      if (pitch) {
+        if (!Array.isArray(pitch)) {
+          throw new Error('pitch need to be an array type of length 1 for reliable update');
+        }
+
+        opts.pitch = pitch[0];
+      }
 
       const map = new MapboxGl.Map(opts);
       this.setState({ map });
@@ -309,6 +239,7 @@ const ReactMapboxFactory = ({
         map.fitBounds(fitBounds, fitBoundsOptions);
       }
 
+      // tslint:disable-next-line:no-any
       map.on('load', (evt: React.SyntheticEvent<any>) => {
         if (this._isMounted) {
           this.setState({ ready: true });
@@ -319,15 +250,7 @@ const ReactMapboxFactory = ({
         }
       });
 
-      Object.keys(events).forEach((event, index) => {
-        const propEvent = this.props[event];
-
-        if (propEvent) {
-          map.on(events[event], (evt: React.SyntheticEvent<any>) => {
-            propEvent(map, evt);
-          });
-        }
-      });
+      this.listeners = listenEvents(events, this.props, map);
     }
 
     public componentWillUnmount() {
@@ -339,11 +262,14 @@ const ReactMapboxFactory = ({
       }
     }
 
-    public componentWillReceiveProps(nextProps: Props) {
+    public componentWillReceiveProps(nextProps: Props & Events) {
       const { map } = this.state as State;
       if (!map) {
         return null;
       }
+
+      // Update event listeners
+      this.listeners = updateEvents(this.listeners, nextProps, map);
 
       const center = map.getCenter();
       const zoom = map.getZoom();
@@ -361,10 +287,11 @@ const ReactMapboxFactory = ({
 
       const didBearingUpdate =
         this.props.bearing !== nextProps.bearing &&
-        nextProps.bearing !== bearing;
+        (nextProps.bearing && nextProps.bearing[0]) !== bearing;
 
       const didPitchUpdate =
-        this.props.pitch !== nextProps.pitch && nextProps.pitch !== pitch;
+        this.props.pitch !== nextProps.pitch &&
+        (nextProps.pitch && nextProps.pitch[0]) !== pitch;
 
       if (nextProps.maxBounds) {
         const didMaxBoundsUpdate = this.props.maxBounds !== nextProps.maxBounds;
@@ -386,7 +313,10 @@ const ReactMapboxFactory = ({
             return c[0] !== (nc && nc[0]) || c[1] !== (nc && nc[1]);
           })[0];
 
-        if (didFitBoundsUpdate) {
+        if (
+          didFitBoundsUpdate ||
+          !isEqual(this.props.fitBoundsOptions, nextProps.fitBoundsOptions)
+        ) {
           map.fitBounds(nextProps.fitBounds, nextProps.fitBoundsOptions);
         }
       }
@@ -417,7 +347,7 @@ const ReactMapboxFactory = ({
       return null;
     }
 
-    private setRef = (x: HTMLElement | null) => {
+    public setRef = (x: HTMLElement | null) => {
       this.container = x!;
     };
 
@@ -436,6 +366,6 @@ const ReactMapboxFactory = ({
       );
     }
   };
-}
+};
 
 export default ReactMapboxFactory;

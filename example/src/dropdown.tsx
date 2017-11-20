@@ -23,6 +23,7 @@ const Container = styled.div`
   right: 0;
   height: 40px;
   background-color: white;
+  flex: 1;
 `;
 
 const List = styled.ul`

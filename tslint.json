@@ -12,6 +12,7 @@
     "semicolon": [false],
     "arrow-parens": [true, "ban-single-arg-parens"],
     "jsx-wrap-multiline": false,
-    "jsx-no-multiline-js": ["none"]
+    "jsx-no-multiline-js": ["none"],
+    "no-any": true
   }
 }

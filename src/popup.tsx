@@ -1,13 +1,14 @@
 import * as React from 'react';
 import ProjectedLayer from './projected-layer';
-import { anchors, Anchor, PointDef } from './util/overlays';
 import * as GeoJSON from 'geojson';
 import { getClassName } from './util/classname';
+import { Point } from 'mapbox-gl';
+import { Anchor } from './util/types';
 
 export interface Props {
   coordinates: GeoJSON.Position;
   anchor?: Anchor;
-  offset?: number | number[] | PointDef;
+  offset?: number | number[] | Point;
   onClick?: React.MouseEventHandler<HTMLDivElement>;
   onDoubleClick?: React.MouseEventHandler<HTMLDivElement>;
   onMouseEnter?: React.MouseEventHandler<HTMLDivElement>;
@@ -20,11 +21,7 @@ export interface Props {
 
 export const defaultClassName = ['mapboxgl-popup'];
 
-export default class Popup extends React.Component<Props, {}> {
-  public static defaultProps = {
-    anchor: anchors[0]
-  };
-
+export default class Popup extends React.Component<Props> {
   public render() {
     const anchorClass = `mapboxgl-popup-anchor-${this.props.anchor}`;
     const props = { ...this.props, children: undefined };
@@ -34,7 +31,7 @@ export default class Popup extends React.Component<Props, {}> {
     );
 
     return (
-      <ProjectedLayer {...props as any} className={className}>
+      <ProjectedLayer {...props} className={className}>
         <div className="mapboxgl-popup-tip" />
         <div className="mapboxgl-popup-content">{this.props.children}</div>
       </ProjectedLayer>

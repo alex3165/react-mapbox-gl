@@ -1,10 +1,35 @@
-import * as MapboxGL from 'mapbox-gl';
+import {
+  VectorSource,
+  RasterSource,
+  GeoJSONSource,
+  GeoJSONSourceRaw,
+  Point,
+  Map
+} from 'mapbox-gl';
+
+export interface AnchorOffsetLimits {
+  'top-left': Point;
+  'top-right': Point;
+  'bottom-left': Point;
+  'bottom-right': Point;
+}
+
+export interface AnchorsOffset extends AnchorOffsetLimits {
+  center: Point;
+  top: Point;
+  bottom: Point;
+  left: Point;
+  right: Point;
+}
+
+export type Anchor = keyof AnchorsOffset;
+export type AnchorLimits = keyof AnchorOffsetLimits;
 
 export type Sources =
-  | MapboxGL.VectorSource
-  | MapboxGL.RasterSource
-  | MapboxGL.GeoJSONSource
-  | MapboxGL.GeoJSONSourceRaw;
+  | VectorSource
+  | RasterSource
+  | GeoJSONSource
+  | GeoJSONSourceRaw;
 
 export type SourceOptionData =
   | GeoJSON.Feature<GeoJSON.GeometryObject>
@@ -17,18 +42,27 @@ export interface Feature {
     type: string;
     coordinates: GeoJSON.Position;
   };
+  // tslint:disable-next-line:no-any
   properties: any;
 }
 
-export interface TilesJson {
-  type: string;
-  tiles?: string[];
-  url?: string;
-  maxzoom: number;
-  minzoom: number;
-  tileSize?: number;
-}
+export type TilesJson = VectorSource | RasterSource;
 
 export interface Context {
-  map: MapboxGL.Map;
+  map: Map;
 }
+
+export type LayerType =
+  | 'fill'
+  | 'line'
+  | 'symbol'
+  | 'circle'
+  | 'fill-extrusion'
+  | 'raster'
+  | 'background';
+
+export type AnyShapeCoordinates =
+  | number[]
+  | number[][]
+  | number[][][]
+  | number[][][][];

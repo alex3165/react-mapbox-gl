@@ -1,6 +1,7 @@
 import * as React from 'react';
 import * as PropTypes from 'prop-types';
 import { Map } from 'mapbox-gl';
+import { AnchorLimits } from './util/types';
 
 const containerStyle: React.CSSProperties = {
   position: 'absolute',
@@ -12,10 +13,10 @@ const containerStyle: React.CSSProperties = {
 };
 
 const positions = {
-  topRight: { top: 10, right: 10, bottom: 'auto', left: 'auto' },
-  topLeft: { top: 10, left: 10, bottom: 'auto', right: 'auto' },
-  bottomRight: { bottom: 10, right: 10, top: 'auto', left: 'auto' },
-  bottomLeft: { bottom: 10, left: 10, top: 'auto', right: 'auto' }
+  'top-right': { top: 10, right: 10, bottom: 'auto', left: 'auto' },
+  'top-left': { top: 10, left: 10, bottom: 'auto', right: 'auto' },
+  'bottom-right': { bottom: 10, right: 10, top: 'auto', left: 'auto' },
+  'bottom-left': { bottom: 10, left: 10, top: 'auto', right: 'auto' }
 };
 
 const buttonStyle = {
@@ -55,7 +56,7 @@ const POSITIONS = Object.keys(positions);
 export interface Props {
   zoomDiff?: number;
   onControlClick?: (map: Map, zoomDiff: number) => void;
-  position?: 'topRight' | 'topLeft' | 'bottomRight' | 'bottomLeft';
+  position?: AnchorLimits;
   style?: React.CSSProperties;
   className?: string;
 }

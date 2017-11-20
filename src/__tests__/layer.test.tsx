@@ -54,6 +54,44 @@ describe('Layer', () => {
     ]);
   });
 
+  it('Should set all parameters of add layer', () => {
+    const before = 'test1';
+    const props = {
+      id: '123',
+      type: 'symbol',
+      paint: {},
+      layout: {},
+      metadata: {},
+      filter: []
+    };
+
+    const mappedProps = {
+      minZoom: 2,
+      maxZoom: 10,
+      sourceLayer: 'sourceTest',
+      sourceId: 'test'
+    };
+
+    mount(
+      <LayerWithContext
+        children={children}
+        {...props}
+        {...mappedProps}
+        before={before}
+      />
+    );
+    expect(addLayerMock.mock.calls[0]).toEqual([
+      {
+        ...props,
+        minzoom: 2,
+        maxzoom: 10,
+        source: 'test',
+        'source-layer': 'sourceTest'
+      },
+      before
+    ]);
+  });
+
   it('Should render layer with default source', () => {
     mount(<LayerWithContext children={children} />);
 
@@ -61,6 +99,37 @@ describe('Layer', () => {
       undefined,
       {
         type: 'geojson',
+        data: {
+          type: 'FeatureCollection',
+          features: []
+        }
+      }
+    ]);
+  });
+
+  it('Should set all parameters of add source with geojsonSourceOptions', () => {
+    const geoJSONSourceOptions = {
+      maxzoom: 10,
+      buffer: 2,
+      tolerance: 1,
+      cluster: 10,
+      clusterRadius: 50,
+      clusterMaxZoom: 10
+    };
+    const layerSourceId = 'testId';
+    mount(
+      <LayerWithContext
+        children={children}
+        id={layerSourceId}
+        geoJSONSourceOptions={geoJSONSourceOptions}
+      />
+    );
+
+    expect(addSourceMock.mock.calls[0]).toEqual([
+      layerSourceId,
+      {
+        type: 'geojson',
+        ...geoJSONSourceOptions,
         data: {
           type: 'FeatureCollection',
           features: []

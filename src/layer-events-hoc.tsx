@@ -3,14 +3,20 @@ import * as PropTypes from 'prop-types';
 import { Context, Feature } from './util/types';
 import { Props as FeatureProps } from './feature';
 import { generateID } from './util/uid';
-import { Props as LayerProps, LayerCommonProps } from './layer';
+import { LayerCommonProps, Props as LayerProps } from './layer';
 
 export interface EnhancedLayerProps {
   id?: string;
 }
 
-const layerMouseTouchEvents = (WrappedComponent: React.ComponentClass<LayerProps>) =>
-  class EnhancedLayer extends React.Component<EnhancedLayerProps & LayerCommonProps> {
+export type OwnProps = EnhancedLayerProps & LayerCommonProps;
+
+type LayerChildren = React.ReactElement<FeatureProps> | undefined;
+
+function layerMouseTouchEvents(
+  WrappedComponent: React.ComponentClass<LayerProps>
+) {
+  return class EnhancedLayer extends React.Component<OwnProps> {
     public context: Context;
     public hover: number[] = [];
     public isDragging: boolean = false;
@@ -23,9 +29,13 @@ const layerMouseTouchEvents = (WrappedComponent: React.ComponentClass<LayerProps
     public id: string = this.props.id || `layer-${generateID()}`;
 
     public getChildren = () =>
-      ([] as any).concat(this.props.children) as Array<
-        React.ReactElement<FeatureProps>
-      >;
+      ([] as LayerChildren[])
+        .concat(this.props.children)
+        // TODO: Fix when https://github.com/Microsoft/TypeScript/issues/18562 is merged
+        .filter(
+          (el: LayerChildren): el is React.ReactElement<FeatureProps> =>
+            typeof el !== 'undefined'
+        );
 
     public areFeaturesDraggable = (
       children: Array<React.ReactElement<FeatureProps>>,
@@ -36,6 +46,7 @@ const layerMouseTouchEvents = (WrappedComponent: React.ComponentClass<LayerProps
         .filter(Boolean).length;
     };
 
+    // tslint:disable-next-line:no-any
     public onClick = (evt: any) => {
       const features = evt.features as Feature[];
       const children = this.getChildren();
@@ -57,6 +68,7 @@ const layerMouseTouchEvents = (WrappedComponent: React.ComponentClass<LayerProps
       }
     };
 
+    // tslint:disable-next-line:no-any
     public onMouseEnter = (evt: any) => {
       const children = this.getChildren();
       const { map } = this.context;
@@ -81,6 +93,7 @@ const layerMouseTouchEvents = (WrappedComponent: React.ComponentClass<LayerProps
       }
     };
 
+    // tslint:disable-next-line:no-any
     public onMouseLeave = (evt: any) => {
       const children = this.getChildren();
       const { map } = this.context;
@@ -113,6 +126,7 @@ const layerMouseTouchEvents = (WrappedComponent: React.ComponentClass<LayerProps
       map.once('mouseup', this.onDragUp.bind(this, 'mousemove'));
     };
 
+    // tslint:disable-next-line:no-any
     public onTouchStart = (evt: any) => {
       const children = this.getChildren();
       const { map } = this.context;
@@ -130,6 +144,7 @@ const layerMouseTouchEvents = (WrappedComponent: React.ComponentClass<LayerProps
       });
     };
 
+    // tslint:disable-next-line:no-any
     public onDragMove = ({ lngLat }: any) => {
       if (!this.isDragging) {
         return;
@@ -149,6 +164,7 @@ const layerMouseTouchEvents = (WrappedComponent: React.ComponentClass<LayerProps
       this.forceUpdate();
     };
 
+    // tslint:disable-next-line:no-any
     public onDragUp = (moveEvent: string, evt: any) => {
       const { map } = this.context;
       const children = this.getChildren();
@@ -198,5 +214,6 @@ const layerMouseTouchEvents = (WrappedComponent: React.ComponentClass<LayerProps
       );
     }
   };
+}
 
 export default layerMouseTouchEvents;

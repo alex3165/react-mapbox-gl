@@ -1,6 +1,7 @@
 import * as React from 'react';
 import * as PropTypes from 'prop-types';
 import { Map } from 'mapbox-gl';
+import { AnchorLimits } from './util/types';
 
 const containerStyle: React.CSSProperties = {
   position: 'absolute',
@@ -12,10 +13,10 @@ const containerStyle: React.CSSProperties = {
 };
 
 const positions = {
-  topRight: { top: 62, right: 10, bottom: 'auto', left: 'auto' },
-  topLeft: { top: 62, left: 10, bottom: 'auto', right: 'auto' },
-  bottomRight: { bottom: 63, right: 10, top: 'auto', left: 'auto' },
-  bottomLeft: { bottom: 63, left: 10, top: 'auto', right: 'auto' }
+  'top-right': { top: 62, right: 10, bottom: 'auto', left: 'auto' },
+  'top-left': { top: 62, left: 10, bottom: 'auto', right: 'auto' },
+  'bottom-right': { bottom: 63, right: 10, top: 'auto', left: 'auto' },
+  'bottom-left': { bottom: 63, left: 10, top: 'auto', right: 'auto' }
 };
 
 const buttonStyle = {
@@ -58,7 +59,7 @@ const [COMPASS] = [0];
 const POSITIONS = Object.keys(positions);
 
 export interface Props {
-  position?: 'topRight' | 'topLeft' | 'bottomRight' | 'bottomLeft';
+  position?: AnchorLimits;
   style?: React.CSSProperties;
   className?: string;
 }
@@ -94,7 +95,7 @@ export default class RotationControl extends React.Component<Props, State> {
     this.context.map.off('rotate', this.onMapRotate);
   }
 
-  public compassIcon: any;
+  public compassIcon: HTMLSpanElement | null;
 
   private onMouseOut = () => {
     if (!this.state.hover) {
@@ -113,12 +114,17 @@ export default class RotationControl extends React.Component<Props, State> {
   };
 
   private onMapRotate = () => {
-    const map = this.context.map as any;
-    const rotate = `rotate(${map.transform.angle * (180 / Math.PI)}deg)`; // tslint:disable-line
-    this.compassIcon.style.transform = rotate;
+    const map = this.context.map;
+    // tslint:disable-next-line:no-any
+    const rotate = `rotate(${(map as any).transform.angle *
+      (180 / Math.PI)}deg)`;
+
+    if (this.compassIcon) {
+      this.compassIcon.style.transform = rotate;
+    }
   };
 
-  private assignRef = (icon: any) => {
+  private assignRef = (icon: HTMLSpanElement | null) => {
     this.compassIcon = icon;
   };
 
