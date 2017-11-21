@@ -51,7 +51,7 @@ export default class Source extends React.Component<Props> {
         map.addSource(this.id, tileJsonSource);
       }
 
-      map.on('load', this.onData);
+      map.on('sourcedata', this.onData);
 
       if (onSourceAdded) {
         onSourceAdded(map.getSource(this.id) as GeoJSONSource | TilesJson);
@@ -64,6 +64,9 @@ export default class Source extends React.Component<Props> {
     const { map } = this.context;
 
     const source = map.getSource(this.props.id) as GeoJSONSource;
+    if (!source) {
+      return;
+    }
 
     const { onSourceLoaded } = this.props;
     if (source && onSourceLoaded) {
@@ -73,7 +76,7 @@ export default class Source extends React.Component<Props> {
     if (source && this.props.geoJsonSource && this.props.geoJsonSource.data) {
       source.setData(this.props.geoJsonSource.data as SourceOptionData);
     }
-    map.off('load', this.onData);
+    map.off('sourcedata', this.onData);
   };
 
   public componentWillUnmount() {
