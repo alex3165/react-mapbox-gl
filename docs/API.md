@@ -1,7 +1,7 @@
-# ReactMapboxGl
-Factory function that return a React Mapbox component. Parameters of the factory function are static, properties of your component are dynamic and get updated if they changes between rendering.
+# ReactMapboxGL
+Factory function that returns a React Mapbox component. Parameters of the factory function are static; properties of your component are dynamic and get updated if they change between rendering.
 
-> To use the original Mapbox API use `onStyleLoad` property, the callback function will receive the map object as a first arguments, then you can add your own logic alongside react-mapbox-gl. [mapbox gl API](https://www.mapbox.com/mapbox-gl-js/api/).
+> To use the original Mapbox API use the `onStyleLoad` property. The callback function will receive the map object as a first argument, then you can add your own logic alongside react-mapbox-gl. [mapbox gl API](https://www.mapbox.com/mapbox-gl-js/api/).
 
 ### How to use
 ```jsx
@@ -68,9 +68,9 @@ const Map = ReactMapboxGl({
 - **flyToOptions** : `object` Options for flyTo animation [see](https://www.mapbox.com/mapbox-gl-js/api/#map#flyto)
 
 ### Events
-All mapbox map events are implemented, see events section on mapbox documentation [api](https://www.mapbox.com/mapbox-gl-js/api). All the events have the following signature `(map: Mapbox.Map, evt: React.SyntheticEvent<any>) => void`.
+All mapbox map events are implemented in this library, see events section on mapbox documentation [api](https://www.mapbox.com/mapbox-gl-js/api). All the events have the following signature `(map: Mapbox.Map, evt: React.SyntheticEvent<any>) => void`.
 
-The events name are using camelCase:
+The event names are written in camelCase:
 ```js
 
 const events = {
@@ -124,10 +124,10 @@ const events = {
 
 ----------
 # Layer
-Create a new Mapbox layer and create all the sources depending on the children `Feature` components. Layer also create a source if no sourceId is passed.
+Creates a new Mapbox layer and creates all the sources depending on the child `Feature` components. Layer also creates a source if no sourceId is passed.
 
-If you change the value of the paint or the layout property of the layer, it will automatically update this property using respectively either `setLayoutProperty` or `setPaintProperty`.
-> Only work with the first depth of the object.
+If you change the value of the paint or the layout property of the layer, it will automatically update this property using `setPaintProperty` or  `setLayoutProperty` respectively.
+> Only works with the first depth of the object.
 
 ### How to use
 ```jsx
@@ -162,7 +162,7 @@ import { Layer } from "react-mapbox-gl";
 - **filter**: `any[]` filter parameter passed to `map.addLayer`, see how to [use expressions to filter elements](https://www.mapbox.com/mapbox-gl-js/style-spec/#layer-filter)
 - **sourceId**: `string` When passed to the layer, the source will not be created but only the layer and it will use the given source id.
 - **before**: `string` Pass the id of a layer, it will display the current layer before the layer defined by the id. [mapbox api](https://www.mapbox.com/mapbox-gl-js/api/#Map#addLayer)
-- **images**: `[imageKey: string, image: HTMLImageElement, options: object]` Also accept array of the previous image tuple. Add images for use in layout with prop `icon-image`. The value should be the `imageKey` string of the tuple. Alternatively use mapbox studio to upload the image, it will be fetched with the map style object. (see [map.addImage](https://www.mapbox.com/mapbox-gl-js/api/#map#addimage) options for the tuple options).
+- **images**: `[imageKey: string, image: HTMLImageElement, options: object]` Also accepts array of the previous image tuple. Add images for use in layout with prop `icon-image`. The value should be the `imageKey` string of the tuple. Alternatively, use mapbox studio to upload the image, it will be fetched with the map style object. (see [map.addImage](https://www.mapbox.com/mapbox-gl-js/api/#map#addimage) options for the tuple options).
 
 ----------
 # Source
@@ -195,7 +195,7 @@ const RASTER_SOURCE_OPTIONS = {
 
 ----------
 # GeoJSONLayer
-Display on the map all the informations contained in a geojson file.
+Display on the map all the information contained in a geoJSON file.
 
 _Note:_ GeoJSONLayer will not render any layers (`line`, `circle`, `fill`, etc...)
 unless an associated `[layer]Layout` or `[layer]Paint` prop is provided.
@@ -217,22 +217,22 @@ import { GeoJSONLayer } from "react-mapbox-gl";
 ```
 
 ### Properties
-- **data** *(required)* : `string | object` The url to the geojson file or the geojson file itself.
-- **lineLayout** | **symbolLayout** | **circleLayout** | **fillLayout** | **fillExtrusionLayout** : `Object` Layer layout informations. [mapbox layout api](https://www.mapbox.com/mapbox-gl-style-spec/#layer-layout)
-- **linePaint** | **symbolPaint** | **circlePaint** | **fillPaint** | **fillExtrusionPaint** : `Object` Paint informations. [mapbox paint api](https://www.mapbox.com/mapbox-gl-style-spec/#layer-paint)
-- **lineOnMouseDown** | **symbolOnMouseDown** | **circleOnMouseDown** | **fillOnMouseDown** | **fillExtrusionOnMouseDown** : `function` Mouse down handler. [mapbox map mouse event](https://www.mapbox.com/mapbox-gl-js/api/#mapmouseevent)
-- **lineOnMouseUp** | **symbolOnMouseUp** | **circleOnMouseUp** | **fillOnMouseUp** | **fillExtrusionOnMouseUp** : `function` Mouse up handler. [mapbox map mouse event](https://www.mapbox.com/mapbox-gl-js/api/#mapmouseevent)
-- **lineOnMouseMove** | **symbolOnMouseMove** | **circleOnMouseMove** | **fillOnMouseMove** | **fillExtrusionOnMouseMove** : `function` Mouse move handler. [mapbox map mouse event](https://www.mapbox.com/mapbox-gl-js/api/#mapmouseevent)
-- **lineOnMouseEnter** | **symbolOnMouseEnter** | **circleOnMouseEnter** | **fillOnMouseEnter** | **fillExtrusionOnMouseEnter** : `function` Mouse enter handler. [mapbox map mouse event](https://www.mapbox.com/mapbox-gl-js/api/#mapmouseevent)
-- **lineOnMouseLeave** | **symbolOnMouseLeave** | **circleOnMouseLeave** | **fillOnMouseLeave** | **fillExtrusionOnMouseLeave** : `function` Mouse leave handler. [mapbox map api](https://www.mapbox.com/mapbox-gl-js/api/#mapmouseevent)
-- **lineOnClick** | **symbolOnClick** | **circleOnClick** | **fillOnClick** | **fillExtrusionOnClick** : `function` Mouse click handler. [mapbox map mouse event](https://www.mapbox.com/mapbox-gl-js/api/#mapmouseevent)
+- **data** *(required)*: `string | object` The url to the geojson file or the geojson file itself.
+- **lineLayout** | **symbolLayout** | **circleLayout** | **fillLayout** | **fillExtrusionLayout**: `Object` Layer layout information. [mapbox layout api](https://www.mapbox.com/mapbox-gl-style-spec/#layer-layout)
+- **linePaint** | **symbolPaint** | **circlePaint** | **fillPaint** | **fillExtrusionPaint**: `Object` Paint information. [mapbox paint api](https://www.mapbox.com/mapbox-gl-style-spec/#layer-paint)
+- **lineOnMouseDown** | **symbolOnMouseDown** | **circleOnMouseDown** | **fillOnMouseDown** | **fillExtrusionOnMouseDown**: `function` Mouse down handler. [mapbox map mouse event](https://www.mapbox.com/mapbox-gl-js/api/#mapmouseevent)
+- **lineOnMouseUp** | **symbolOnMouseUp** | **circleOnMouseUp** | **fillOnMouseUp** | **fillExtrusionOnMouseUp**: `function` Mouse up handler. [mapbox map mouse event](https://www.mapbox.com/mapbox-gl-js/api/#mapmouseevent)
+- **lineOnMouseMove** | **symbolOnMouseMove** | **circleOnMouseMove** | **fillOnMouseMove** | **fillExtrusionOnMouseMove**: `function` Mouse move handler. [mapbox map mouse event](https://www.mapbox.com/mapbox-gl-js/api/#mapmouseevent)
+- **lineOnMouseEnter** | **symbolOnMouseEnter** | **circleOnMouseEnter** | **fillOnMouseEnter** | **fillExtrusionOnMouseEnter**: `function` Mouse enter handler. [mapbox map mouse event](https://www.mapbox.com/mapbox-gl-js/api/#mapmouseevent)
+- **lineOnMouseLeave** | **symbolOnMouseLeave** | **circleOnMouseLeave** | **fillOnMouseLeave** | **fillExtrusionOnMouseLeave**: `function` Mouse leave handler. [mapbox map api](https://www.mapbox.com/mapbox-gl-js/api/#mapmouseevent)
+- **lineOnClick** | **symbolOnClick** | **circleOnClick** | **fillOnClick** | **fillExtrusionOnClick**: `function` Mouse click handler. [mapbox map mouse event](https://www.mapbox.com/mapbox-gl-js/api/#mapmouseevent)
 - **sourceOptions**: `object` Options object merged to the object used when calling `GeoJSONSource` method
 - **layerOptions**: `object` Passed down to the layer object when setting it out.
-- **before**:`string` Pass the id of a layer, it will display the current layer before the layer defined by the id. [mapbox api](https://www.mapbox.com/mapbox-gl-js/api/#Map#addLayer)
+- **before**: `string` Pass the id of a layer, it will display the current layer before the layer defined by the id. [mapbox api](https://www.mapbox.com/mapbox-gl-js/api/#Map#addLayer)
 
 ----------
 # Feature
-Display a feature on the map, can only be used when wrapped in a `Layer` component. The type of the feature is defined at the `Layer` level. If you want to create a new type, create an associated new layer.
+Displays a feature on the map. Can only be used when wrapped in a `Layer` component. The type of the feature is defined at the `Layer` level. If you want to create a new type, create an associated new layer.
 
 ### How to use
 ```jsx
@@ -252,7 +252,7 @@ import { Feature } from "react-mapbox-gl";
   - Args contain the feature object, the map object and the arguments passed by mapbox from the event `onmousemove`
 - **onMouseLeave** : `(mapWithEvt: object) => void` Triggered when the mouse leave the feature element
   - Args contain the map object and the arguments passed by Mapbox from the event `onmousemove`
-- **draggable** *(Default: `false`)*: `boolean` Define wether the feature is draggable or not.
+- **draggable** *(Default: `false`)* : `boolean` Define wether the feature is draggable or not.
 - **onDragEnd** : `(mapWithEvt: object) => void` Triggered when the user stop dragging the feature.
 
 ----------
@@ -270,7 +270,7 @@ import { ZoomControl } from "react-mapbox-gl";
 
 
 ### Properties
-- **onControlClick** : `(map: object, zoomDiff: number) => void` triggered when user click on minus or plus button
+- **onControlClick** : `(map: object, zoomDiff: number) => void` triggered when user clicks on minus or plus button
 - **style** : `object` Style object merged with internal style into the container
 - **className**: `string` Custom style using className for the container
 - **zoomDiff** : `number` The shift number passed to the callback `onControlClick`
@@ -294,10 +294,10 @@ import { ScaleControl } from "react-mapbox-gl";
 ```
 
 ### Properties
-- **measurement** *(Default: `km`)*: `string`, Possible values :
+- **measurement** *(Default: `km`)*: `string`, Possible values:
   - `km`
   - `mi`
-- **style** : `object` Style object merged with internal style into the container
+- **style**: `object` Style object merged with internal style into the container
 - **className**: `string` Custom style using className for the container
 - **position** *(Default: `bottom-right`)*: `string` The control position, Possible values :
   - `top-right`
@@ -307,7 +307,7 @@ import { ScaleControl } from "react-mapbox-gl";
 
 ----------
 # RotationControl
-Display the current map rotation, also reset the rotation to it's origin value on click.
+Displays the current map rotation, also resets the rotation to it's origin value on click.
 
 ### How to use
 
@@ -330,7 +330,7 @@ import { RotationControl } from "react-mapbox-gl";
 
 ----------
 # Popup
-The popup component allow you to display a popup tooltip on top of the map using mapbox-gl-js.
+The popup component allows you to display a popup tooltip on top of the map using mapbox-gl-js.
 
 ### How to use
 ```jsx
@@ -349,7 +349,7 @@ import { Popup } from "react-mapbox-gl";
 
 ### Properties
 - **coordinates** *(required)*: `[number, number]` Display the popup at the given position.
-- **anchor**: `string` Set the anchor point of the popup, Possible values :
+- **anchor**: `string` Set the anchor point of the popup, Possible values:
   - `top`
   - `bottom`
   - `left`
@@ -369,7 +369,7 @@ import { Popup } from "react-mapbox-gl";
 
 ----------
 # Marker
-Add an html marker to the map.
+Add an HTML marker to the map.
 
 ### How to use
 ```jsx
