@@ -14,6 +14,7 @@ const defaultStyle = {
 };
 
 export interface Props {
+  type: 'marker' | 'popup';
   coordinates: GeoJSON.Position;
   anchor?: Anchor;
   offset?: number | number[] | Point;
@@ -104,18 +105,19 @@ export default class ProjectedLayer extends React.Component<
       onMouseEnter,
       onMouseLeave,
       onScroll,
-      onWheel
+      onWheel,
+      type
     } = this.props;
-
+    const { anchor } = this.state;
     const finalStyle = {
       ...defaultStyle,
       ...style,
       transform: overlayTransform(this.state).join(' ')
     };
-
+    const anchorClassname = (anchor && type === 'popup') ? `mapboxgl-popup-anchor-${anchor}` : '';
     return (
       <div
-        className={className}
+        className={`${className} ${anchorClassname}`}
         onClick={onClick}
         onDoubleClick={onDoubleClick}
         onMouseEnter={onMouseEnter}
