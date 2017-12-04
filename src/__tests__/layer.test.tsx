@@ -13,6 +13,7 @@ describe('Layer', () => {
   let children: any[];
   let childrenWithOneFeature: any[];
   let feature: any;
+  let getSourceMock: any;
 
   beforeEach(() => {
     addLayerMock = jest.fn();
@@ -22,6 +23,7 @@ describe('Layer', () => {
     feature = { coordinates: [-123, 45] };
     children = [{ props: {} }];
     childrenWithOneFeature = [{ props: feature }];
+    getSourceMock = jest.fn().mockReturnValue({ setData: setDataMock });
 
     LayerWithContext = withContext(
       {
@@ -31,9 +33,10 @@ describe('Layer', () => {
         map: {
           addSource: addSourceMock,
           addLayer: addLayerMock,
+          getLayer: jest.fn(() => undefined),
           addImage: addImageMock,
           on: jest.fn(),
-          getSource: jest.fn().mockReturnValue({ setData: setDataMock })
+          getSource: getSourceMock
         }
       })
     )(Layer);
@@ -93,6 +96,7 @@ describe('Layer', () => {
   });
 
   it('Should render layer with default source', () => {
+    getSourceMock = jest.fn(() => undefined);
     mount(<LayerWithContext children={children} />);
 
     expect(addSourceMock.mock.calls[0]).toEqual([
@@ -108,6 +112,8 @@ describe('Layer', () => {
   });
 
   it('Should set all parameters of add source with geojsonSourceOptions', () => {
+    getSourceMock = jest.fn(() => undefined);
+
     const geoJSONSourceOptions = {
       maxzoom: 10,
       buffer: 2,
