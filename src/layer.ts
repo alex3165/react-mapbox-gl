@@ -182,11 +182,13 @@ export default class Layer extends React.Component<Props> {
       });
     }
 
-    if (!sourceId) {
+    if (!sourceId && !map.getSource(id)) {
       map.addSource(id, this.source);
     }
 
-    map.addLayer(layer, before);
+    if (!map.getLayer(id)) {
+      map.addLayer(layer, before);
+    }
   };
 
   private onStyleDataChange = () => {
