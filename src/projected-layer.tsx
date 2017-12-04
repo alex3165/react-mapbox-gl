@@ -6,7 +6,6 @@ import {
   overlayState,
   overlayTransform
 } from './util/overlays';
-import * as GeoJSON from 'geojson';
 import { Anchor } from './util/types';
 
 const defaultStyle = {
@@ -15,7 +14,7 @@ const defaultStyle = {
 
 export interface Props {
   type: 'marker' | 'popup';
-  coordinates: GeoJSON.Position;
+  coordinates: number[];
   anchor?: Anchor;
   offset?: number | number[] | Point;
   children?: JSX.Element | JSX.Element[];
