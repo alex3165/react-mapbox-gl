@@ -7,6 +7,7 @@ const PropTypes = require('prop-types'); // tslint:disable-line
 describe('Layer', () => {
   let LayerWithContext: any;
   let addLayerMock = jest.fn();
+  let setLayerZoomRangeMock = jest.fn();
   let addSourceMock = jest.fn();
   let addImageMock = jest.fn();
   let setDataMock = jest.fn();
@@ -17,6 +18,7 @@ describe('Layer', () => {
 
   beforeEach(() => {
     addLayerMock = jest.fn();
+    setLayerZoomRangeMock = jest.fn();
     addSourceMock = jest.fn();
     setDataMock = jest.fn();
     addImageMock = jest.fn();
@@ -33,6 +35,7 @@ describe('Layer', () => {
         map: {
           addSource: addSourceMock,
           addLayer: addLayerMock,
+          setLayerZoomRange: setLayerZoomRangeMock,
           getLayer: jest.fn(() => undefined),
           addImage: addImageMock,
           on: jest.fn(),
@@ -188,5 +191,23 @@ describe('Layer', () => {
     mount(<LayerWithContext children={children} images={images} />);
 
     expect(addImageMock.mock.calls[0]).toEqual(images);
+  });
+
+  it('Should update minZoom and maxZoom if they change', () => {
+    const wrapper = mount(
+      <LayerWithContext id="zoomer" children={children} />
+    );
+
+    wrapper.setProps({ minZoom: 4 });
+    wrapper.setProps({ maxZoom: 10 });
+    wrapper.setProps({ minZoom: undefined, maxZoom: undefined });
+    wrapper.setProps({ maxZoom: 6 });
+
+    expect(setLayerZoomRangeMock.mock.calls).toEqual([
+      [ 'zoomer', 4, undefined ],
+      [ 'zoomer', 4, 10 ],
+      [ 'zoomer', undefined, undefined ],
+      [ 'zoomer', undefined, 6 ]
+    ]);
   });
 });
