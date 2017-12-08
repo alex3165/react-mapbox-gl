@@ -64,7 +64,7 @@ export default class Source extends React.Component<Props> {
     const { map } = this.context;
 
     const source = map.getSource(this.props.id) as GeoJSONSource;
-    if (!source) {
+    if (!source || !map.isSourceLoaded(this.props.id)) {
       return;
     }
 
