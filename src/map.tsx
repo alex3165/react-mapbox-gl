@@ -5,10 +5,17 @@ import injectCSS from './util/inject-css';
 import { Events, listenEvents, events, Listeners, updateEvents } from './map-events';
 const isEqual = require('deep-equal'); //tslint:disable-line
 
+export interface PaddingOptions {
+  top: number;
+  bottom: number;
+  left: number;
+  right: number;
+}
+
 export interface FitBoundsOptions {
   linear?: boolean;
   easing?: (time: number) => number;
-  padding?: number;
+  padding?: number | PaddingOptions;
   offset?: MapboxGl.Point | number[];
   maxZoom?: number;
 }
