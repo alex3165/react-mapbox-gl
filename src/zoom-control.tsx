@@ -136,6 +136,7 @@ export default class ZoomControl extends React.Component<Props, State> {
         <button
           type="button"
           style={plusStyle}
+          aria-label="Zoom in"
           onMouseOver={this.plusOver}
           onMouseOut={this.onMouseOut}
           onClick={this.onClickPlus}
@@ -143,6 +144,7 @@ export default class ZoomControl extends React.Component<Props, State> {
         <button
           type="button"
           style={minusStyle}
+          aria-label="Zoom out"
           onMouseOver={this.minusOver}
           onMouseOut={this.onMouseOut}
           onClick={this.onClickMinus}
