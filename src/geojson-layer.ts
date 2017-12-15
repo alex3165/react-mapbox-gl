@@ -244,8 +244,9 @@ export default class GeoJSONLayer extends React.Component<Props> {
     const { data, before, layerOptions } = this.props;
     const { map } = this.context;
 
-    if (props.data !== data) {
-      (map.getSource(this.id) as MapboxGL.GeoJSONSource).setData(props.data);
+    const source = map.getSource(this.id) as MapboxGL.GeoJSONSource;
+    if (props.data !== data && source) {
+      source.setData(props.data);
 
       this.source = {
         type: 'geojson',
