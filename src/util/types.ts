@@ -3,6 +3,8 @@ import {
   RasterSource,
   GeoJSONSource,
   GeoJSONSourceRaw,
+  ImageSource,
+  VideoSource,
   Point,
   Map
 } from 'mapbox-gl';
@@ -29,7 +31,9 @@ export type Sources =
   | VectorSource
   | RasterSource
   | GeoJSONSource
-  | GeoJSONSourceRaw;
+  | GeoJSONSourceRaw
+  | ImageSource
+  | VideoSource;
 
 export type SourceOptionData =
   | GeoJSON.Feature<GeoJSON.GeometryObject>

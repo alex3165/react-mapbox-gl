@@ -7,11 +7,14 @@ import { generateID } from './util/uid';
 import { Sources, SourceOptionData, Context, LayerType } from './util/types';
 
 const types = ['symbol', 'line', 'fill', 'fill-extrusion', 'circle'];
-const toCamelCase = (str: string) => (
-  str.replace(/(?:^\w|[A-Z]|\b\w)/g, (letter, index) => (
-    index === 0 ? letter.toLowerCase() : letter.toUpperCase()
-  )).replace(/[\s+]|-/g, '')
-);
+const toCamelCase = (str: string) =>
+  str
+    .replace(
+      /(?:^\w|[A-Z]|\b\w)/g,
+      (letter, index) =>
+        index === 0 ? letter.toLowerCase() : letter.toUpperCase()
+    )
+    .replace(/[\s+]|-/g, '');
 
 const eventToHandler = {
   mousemove: 'OnMouseMove',
@@ -240,12 +243,22 @@ export default class GeoJSONLayer extends React.Component<Props> {
     this.unbind();
   }
 
+  public isGeoJSONSource = (
+    source?: Sources
+  ): source is MapboxGL.GeoJSONSource =>
+    !!source &&
+    typeof (source as MapboxGL.GeoJSONSource).setData === 'function';
+
   public componentWillReceiveProps(props: Props) {
     const { data, before, layerOptions } = this.props;
     const { map } = this.context;
+    const source = map.getSource(this.id);
+    if (!this.isGeoJSONSource(source)) {
+      return;
+    }
 
     if (props.data !== data) {
-      (map.getSource(this.id) as MapboxGL.GeoJSONSource).setData(props.data);
+      source.setData(props.data);
 
       this.source = {
         type: 'geojson',
@@ -303,7 +316,6 @@ export default class GeoJSONLayer extends React.Component<Props> {
       if (before !== props.before) {
         map.moveLayer(layerId, props.before);
       }
-
     });
   }
 
