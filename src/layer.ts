@@ -38,20 +38,20 @@ export type ImageDefinitionWithOptions = [
 
 export interface LayerCommonProps {
   type?:
-    | 'symbol'
-    | 'line'
-    | 'fill'
-    | 'circle'
-    | 'raster'
-    | 'fill-extrusion'
-    | 'background'
-    | 'heatmap';
+  | 'symbol'
+  | 'line'
+  | 'fill'
+  | 'circle'
+  | 'raster'
+  | 'fill-extrusion'
+  | 'background'
+  | 'heatmap';
   sourceId?: string;
   images?:
-    | ImageDefinition
-    | ImageDefinition[]
-    | ImageDefinitionWithOptions
-    | ImageDefinitionWithOptions[];
+  | ImageDefinition
+  | ImageDefinition[]
+  | ImageDefinitionWithOptions
+  | ImageDefinitionWithOptions[];
   before?: string;
   paint?: Paint;
   layout?: Layout;
@@ -216,7 +216,9 @@ export default class Layer extends React.Component<Props> {
       return;
     }
 
-    map.removeLayer(id);
+    if (map.getLayer(id)) {
+      map.removeLayer(id);
+    }
     // if pointing to an existing source, don't remove
     // as other layers may be dependent upon it
     if (!this.props.sourceId) {
@@ -281,9 +283,9 @@ export default class Layer extends React.Component<Props> {
     } else {
       children = Array.isArray(children)
         ? (children as JSX.Element[][]).reduce(
-            (arr, next) => arr.concat(next),
-            [] as JSX.Element[]
-          )
+          (arr, next) => arr.concat(next),
+          [] as JSX.Element[]
+        )
         : [children] as JSX.Element[];
     }
 
