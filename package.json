@@ -64,8 +64,8 @@
   "peerDependencies": {
     "mapbox-gl": "0.42.2",
     "prop-types": "^15.5.10",
-    "react": ">=15.6.1 <17.0.0",
-    "react-dom": "=>15.6.1 <17.0.0"
+    "react": "^15.6.1 || ^16.0.0",
+    "react-dom": "^15.6.1 || ^16.0.0"
   },
   "devDependencies": {
     "@types/core-js": "0.9.43",
