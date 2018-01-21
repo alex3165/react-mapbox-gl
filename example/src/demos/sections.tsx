@@ -23,6 +23,9 @@ const GeoJsonLayerRaw = require('raw-loader!./raws/geojsonLayer.raw');
 import Heatmap from './heatmap';
 const HeatmapRaw = require('raw-loader!./raws/heatmap.raw');
 
+import ToggleLayer from './toggleLayer';
+const ToggleLayerRaw = require('raw-loader!./raws/toggleLayer.raw');
+
 import { Live } from '../live';
 
 export const sections = [
@@ -88,5 +91,12 @@ export const sections = [
     components: ['ReactMapboxGl', 'GeoJsonLayer'],
     DemoComponent: GeoJsonLayer,
     reactLive: <Live raw={GeoJsonLayerRaw} />
+  },
+  {
+    shortTitle: 'toggle-layer',
+    title: 'Swap Mapbox map style',
+    components: ['ReactMapboxGl', 'Source', 'Layer', 'Feature'],
+    DemoComponent: ToggleLayer,
+    reactLive: <Live raw={ToggleLayerRaw} />
   }
 ];
