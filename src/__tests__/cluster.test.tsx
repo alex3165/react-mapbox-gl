@@ -67,6 +67,7 @@ describe('cluster', () => {
           on: jest.fn(),
           getZoom: jest.fn(() => 2),
           getCanvas: jest.fn(() => ({ width: 1020, height: 800 })),
+          getCanvasContainer: jest.fn(() => null),
           unproject: jest.fn(() => mockProjections[unprojectCalls++]),
           project: jest.fn()
         }
