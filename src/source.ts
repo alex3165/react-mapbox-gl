@@ -116,7 +116,8 @@ export default class Source extends React.Component<Props> {
     if (
       geoJsonSource &&
       props.geoJsonSource &&
-      props.geoJsonSource.data !== geoJsonSource.data
+      props.geoJsonSource.data !== geoJsonSource.data &&
+      map.getSource(this.id)
     ) {
       const source = map.getSource(this.id) as GeoJSONSource;
       source.setData(props.geoJsonSource.data as SourceOptionData);
