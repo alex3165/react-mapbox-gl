@@ -89,6 +89,14 @@ export default class Source extends React.Component<Props> {
     map.off('styledata', this.onStyleDataChange);
 
     if (map.getSource(this.id)) {
+      const { layers } = map.getStyle();
+
+      if (layers) {
+        layers
+          .filter(layer => layer.source === this.id)
+          .forEach(layer => map.removeLayer(layer.id));
+      }
+
       map.removeSource(this.id);
     }
   }

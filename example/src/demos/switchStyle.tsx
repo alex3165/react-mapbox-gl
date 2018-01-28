@@ -82,6 +82,7 @@ export interface State {
   styleKey: string;
   userPosition: number[];
   mapCenter: number[];
+  renderLayer: boolean;
 }
 
 export interface Props {
@@ -95,7 +96,8 @@ class StyleUpdate extends React.Component<Props, State> {
   public state: State = {
     styleKey: 'basic',
     userPosition: InitialUserPostion,
-    mapCenter: InitialUserPostion
+    mapCenter: InitialUserPostion,
+    renderLayer: true
   };
 
   public componentWillMount() {
@@ -125,6 +127,12 @@ class StyleUpdate extends React.Component<Props, State> {
     });
   };
 
+  public toggleLayer = () => {
+    const { renderLayer } = this.state;
+
+    this.setState({ renderLayer: !renderLayer });
+  };
+
   private onDragEnd = ({ lngLat }: any) => {
     this.setState({
       userPosition: [lngLat.lng, lngLat.lat]
@@ -137,7 +145,7 @@ class StyleUpdate extends React.Component<Props, State> {
   };
 
   public render() {
-    const { styleKey, userPosition, mapCenter } = this.state;
+    const { styleKey, userPosition, mapCenter, renderLayer } = this.state;
 
     return (
       <Container>
@@ -147,13 +155,20 @@ class StyleUpdate extends React.Component<Props, State> {
           center={mapCenter}
           onStyleLoad={this.onStyleLoad}
         >
-          <Source id="example_id" geoJsonSource={GEOJSON_SOURCE_OPTIONS} />
-          <Layer
-            type="circle"
-            id="example_id_marker"
-            paint={POSITION_CIRCLE_PAINT}
-            sourceId={'example_id'}
-          />
+          {renderLayer ? (
+            <div>
+              <Source id="example_id" geoJsonSource={GEOJSON_SOURCE_OPTIONS} />
+              <Layer
+                type="circle"
+                id="example_id_marker"
+                paint={POSITION_CIRCLE_PAINT}
+                sourceId={'example_id'}
+              />
+            </div>
+          ) : (
+            undefined
+          )}
+
           <Layer
             type="circle"
             id="position-marker"
@@ -178,6 +193,7 @@ class StyleUpdate extends React.Component<Props, State> {
         </Map>
         <BottomBar>
           <Button onClick={this.nextStyle}>Change style</Button>
+          <Button onClick={this.toggleLayer}>Toggle layer</Button>
           <Indicator>{`Using style: ${styleKey}`}</Indicator>
         </BottomBar>
       </Container>
