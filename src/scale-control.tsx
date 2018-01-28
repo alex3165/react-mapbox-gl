@@ -62,7 +62,7 @@ const MILE_IN_KILOMETERS = 1.60934;
 const MILE_IN_FEET = 5280;
 const KILOMETER_IN_METERS = 1000;
 
-const MIN_WIDTH_SCALE = 40;
+const MIN_WIDTH_SCALE = 60;
 
 export type Measurement = 'km' | 'mi';
 
@@ -137,7 +137,7 @@ export default class ScaleControl extends React.Component<Props, State> {
     }, 0);
 
     // tslint:disable-next-line:no-any
-    const scaleWidth = chosenScale / totalWidth * (map as any)._canvas.width;
+    const scaleWidth = chosenScale / totalWidth * clientWidth;
 
     this.setState({
       chosenScale,
