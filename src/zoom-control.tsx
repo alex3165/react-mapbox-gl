@@ -132,6 +132,7 @@ export default class ZoomControl extends React.Component<Props, State> {
       <div
         className={className}
         style={{ ...containerStyle, ...positions[position!], ...style }}
+        tabIndex={-1}
       >
         <button
           type="button"
