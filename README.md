@@ -86,3 +86,6 @@ Please try to reproduce your problem with the [boilerplate](https://github.com/a
 
 ## mapbox-gl-draw compatibility
 Try [react-mapbox-gl-draw](https://github.com/amaurymartiny/react-mapbox-gl-draw)
+
+## Looking for an Angular alternative?
+Try [ngx-mapbox-gl](https://github.com/Wykks/ngx-mapbox-gl)
