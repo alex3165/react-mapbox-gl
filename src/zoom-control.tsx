@@ -89,9 +89,7 @@ export default class ZoomControl extends React.Component<Props, State> {
   };
 
   private onMouseOut = () => {
-    if (!this.state.hover) {
-      this.setState({ hover: undefined });
-    }
+    this.setState({ hover: undefined });
   };
 
   private plusOver = () => {
