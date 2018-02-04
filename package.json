@@ -62,7 +62,7 @@
     "supercluster": "3.0.2"
   },
   "peerDependencies": {
-    "mapbox-gl": "0.43.0",
+    "mapbox-gl": "0.44.0",
     "prop-types": "^15.5.10",
     "react": "^15.6.1 || ^16.0.0",
     "react-dom": "^15.6.1 || ^16.0.0"
@@ -84,7 +84,7 @@
     "enzyme": "3.1.0",
     "enzyme-adapter-react-16": "1.0.0",
     "jest": "21.2.0",
-    "mapbox-gl": "0.43.0",
+    "mapbox-gl": "0.44.0",
     "prettier": "1.7.0",
     "prop-types": "15.5.10",
     "react": "16.0.0",
