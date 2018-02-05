@@ -141,11 +141,9 @@ function layerMouseTouchEvents(
         const { id } = feature.properties;
         this.hover = [id];
 
-
         if (!this.areFeaturesDraggable(children)) {
           return
         }
-
 
         // User did this on a feature
         map.dragPan.disable();
@@ -205,7 +203,7 @@ function layerMouseTouchEvents(
       }
 
       const children = this.getChildren();
-      const { lngLat: {lng, lat} } = evt;
+      const { lngLat: { lng, lat } } = evt;
 
       // Actualy display dragged children
       this.draggedChildren = children.map((child, index) => {
@@ -219,7 +217,6 @@ function layerMouseTouchEvents(
       });
 
       this.forceUpdate();
-
 
       // Trigger onDrag
       const { map } = this.context;
@@ -240,7 +237,6 @@ function layerMouseTouchEvents(
       if(!this.hasDragged) {
         return;
       }
-
 
       const { map } = this.context;
       const children = this.getChildren();
