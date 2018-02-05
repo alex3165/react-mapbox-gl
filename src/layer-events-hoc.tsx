@@ -113,14 +113,20 @@ function layerMouseTouchEvents(
       }
     };
 
-    public onMouseDown = () => {
+    // tslint:disable-next-line:no-any
+    public onMouseDown = (evt: any) => {
       const { map } = this.context;
       const children = this.getChildren();
+
       const isHoverDraggable = this.areFeaturesDraggable(children);
       if (!isHoverDraggable) {
         return;
       }
       map.dragPan.disable();
+      this.firstDragMove = [];
+      evt.features.forEach((feature: Feature) => {
+        this.firstDragMove.push(feature.properties.id);
+      });
 
       this.isDragging = true;
       map.on('mousemove', this.onDragMove);
