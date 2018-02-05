@@ -122,6 +122,7 @@ function layerMouseTouchEvents(
       map.dragPan.disable();
 
       this.isDragging = true;
+      map.once('mousemove', this.onDragDown);
       map.on('mousemove', this.onDragMove);
       map.once('mouseup', this.onDragUp.bind(this, 'mousemove'));
     };
@@ -138,10 +139,33 @@ function layerMouseTouchEvents(
           map.dragPan.disable();
           this.isDragging = true;
 
+          map.once('touchmove', this.onDragDown);
           map.on('touchmove', this.onDragMove);
           map.once('touchend', this.onDragUp.bind(this, 'touchmove'));
         }
       });
+    };
+
+    // tslint:disable-next-line:no-any
+    public onDragDown = (moveEvent: string, evt: any) => {
+      const { map } = this.context;
+      const children = this.getChildren();
+
+      // ? Maybe we could do this here ?
+      // map.dragPan.disable();
+      // this.isDragging = true;
+      // this.draggedChildren = [];
+
+      this.hover.map(id => {
+        const child = children[id];
+        const onDragStart = child && child.props.onDragStart;
+        if (onDragStart) {
+          onDragStart({ ...evt, map });
+        }
+      });
+
+      // ? Maybe we could do this here ?
+      // map.on(moveEvent, this.onDragMove);
     };
 
     // tslint:disable-next-line:no-any

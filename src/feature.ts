@@ -10,6 +10,7 @@ export interface Props {
   onMouseEnter?: React.MouseEventHandler<HTMLElement>;
   onMouseLeave?: React.MouseEventHandler<HTMLElement>;
   draggable?: boolean;
+  onDragStart?: React.MouseEventHandler<HTMLElement>;
   onDragEnd?: React.MouseEventHandler<HTMLElement>;
 }
 
