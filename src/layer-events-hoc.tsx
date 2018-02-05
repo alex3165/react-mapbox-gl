@@ -185,15 +185,25 @@ function layerMouseTouchEvents(
 
       this.hover.map(id => {
         const child = children[id];
+
         const onDragStart = child && child.props.onDragStart;
         if (onDragStart) {
           onDragStart({ ...evt, map });
+        }
+
+        const onDrag = child && child.props.onDrag;
+        if (onDrag) {
+          onDrag({ ...evt, map });
         }
       });
     }
 
     // tslint:disable-next-line:no-any
     public onFeatureDrag = (evt: any) => {
+      if(!this.hasDragged) {
+        return;
+      }
+
       const children = this.getChildren();
       const { lngLat: {lng, lat} } = evt;
 
@@ -211,15 +221,16 @@ function layerMouseTouchEvents(
       this.forceUpdate();
 
 
-      // const { map } = this.context;
+      // Trigger onDrag
+      const { map } = this.context;
 
-      // this.hover.map(id => {
-      //   const child = children[id];
-      //   const onDrag = child && child.props.onDrag;
-      //   if (onDrag) {
-      //     onDrag({ ...evt, map });
-      //   }
-      // });
+      this.hover.map(id => {
+        const child = children[id];
+        const onDrag = child && child.props.onDrag;
+        if (onDrag) {
+          onDrag({ ...evt, map });
+        }
+      });
     }
 
     // tslint:disable-next-line:no-any
