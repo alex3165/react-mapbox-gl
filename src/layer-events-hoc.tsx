@@ -19,6 +19,7 @@ function layerMouseTouchEvents(
   return class EnhancedLayer extends React.Component<OwnProps> {
     public context: Context;
     public hover: number[] = [];
+    public firstDragMove: number[] = [];
     public isDragging: boolean = false;
     public draggedChildren: undefined | JSX.Element[] = undefined;
 
@@ -112,14 +113,20 @@ function layerMouseTouchEvents(
       }
     };
 
-    public onMouseDown = () => {
+    // tslint:disable-next-line:no-any
+    public onMouseDown = (evt: any) => {
       const { map } = this.context;
       const children = this.getChildren();
+
       const isHoverDraggable = this.areFeaturesDraggable(children);
       if (!isHoverDraggable) {
         return;
       }
       map.dragPan.disable();
+      this.firstDragMove = [];
+      evt.features.forEach((feature: Feature) => {
+        this.firstDragMove.push(feature.properties.id);
+      });
 
       this.isDragging = true;
       map.on('mousemove', this.onDragMove);
@@ -130,10 +137,14 @@ function layerMouseTouchEvents(
     public onTouchStart = (evt: any) => {
       const children = this.getChildren();
       const { map } = this.context;
+      this.hover = [];
+      this.firstDragMove = [];
 
       evt.features.forEach((feature: Feature) => {
         const { id } = feature.properties;
-        this.hover = [id];
+        this.hover.push(id);
+        this.firstDragMove.push(id);
+
         if (this.areFeaturesDraggable(children)) {
           map.dragPan.disable();
           this.isDragging = true;
@@ -145,13 +156,19 @@ function layerMouseTouchEvents(
     };
 
     // tslint:disable-next-line:no-any
-    public onDragMove = ({ lngLat }: any) => {
+    public onDragMove = ({ lngLat }: any, evt: any) => {
       if (!this.isDragging) {
         return;
       }
+
       const children = this.getChildren();
 
       this.draggedChildren = children.map((child, index) => {
+        if (this.firstDragMove.includes(index) && child.props.onDragStart) {
+          child.props.onDragStart({ ...evt, map: this.context.map });
+          this.firstDragMove = this.firstDragMove.filter(id => id !== index);
+        }
+
         if (this.hover.includes(index) && child.props.draggable) {
           return React.cloneElement(child, {
             coordinates: [lngLat.lng, lngLat.lat]
@@ -168,6 +185,7 @@ function layerMouseTouchEvents(
     public onDragUp = (moveEvent: string, evt: any) => {
       const { map } = this.context;
       const children = this.getChildren();
+      this.firstDragMove = [];
 
       map.dragPan.enable();
       this.isDragging = false;

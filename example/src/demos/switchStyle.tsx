@@ -178,6 +178,9 @@ class StyleUpdate extends React.Component<Props, State> {
               coordinates={userPosition}
               draggable={true}
               onDragEnd={this.onDragEnd}
+              onDragStart={() => {
+                console.log('onDragStart');
+              }}
             />
           </Layer>
           <GeoJSONLayer

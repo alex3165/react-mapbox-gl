@@ -11,6 +11,7 @@ export interface Props {
   onMouseLeave?: React.MouseEventHandler<HTMLElement>;
   draggable?: boolean;
   onDragEnd?: React.MouseEventHandler<HTMLElement>;
+  onDragStart?: React.MouseEventHandler<HTMLElement>;
 }
 
 class Feature extends Component<Props> {
