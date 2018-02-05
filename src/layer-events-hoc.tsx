@@ -198,7 +198,7 @@ function layerMouseTouchEvents(
 
     // tslint:disable-next-line:no-any
     public onFeatureDrag = (evt: any) => {
-      if(!this.hasDragged) {
+      if (!this.hasDragged) {
         return;
       }
 
@@ -234,7 +234,7 @@ function layerMouseTouchEvents(
     public onFeatureDragEnd = (evt: any) => {
       this.isGrabbing = false;
 
-      if(!this.hasDragged) {
+      if (!this.hasDragged) {
         return;
       }
 
