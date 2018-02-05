@@ -39,7 +39,9 @@ const buttonStyleHovered = {
 const buttonStyleCompass = {
   borderBottom: '1px solid rgba(0, 0, 0, 0.1)',
   borderTopLeftRadius: 2,
-  borderTopRightRadius: 2
+  borderTopRightRadius: 2,
+  borderBottomLeftRadius: 2,
+  borderBottomRightRadius: 2
 };
 
 const Icon = () => (
