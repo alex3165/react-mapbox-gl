@@ -21,7 +21,6 @@ function layerMouseTouchEvents(
     public hover: number[] = [];
     public isGrabbing: boolean = false;
     public hasDragged: boolean = false;
-    public isDragging: boolean = false;
     public draggedChildren: undefined | JSX.Element[] = undefined;
 
     public static contextTypes = {
