@@ -133,26 +133,26 @@ function layerMouseTouchEvents(
 
     // tslint:disable-next-line:no-any
     public onTouchStart = (evt: any) => {
-      const children = this.getChildren();
       const { map } = this.context;
+      const children = this.getChildren();
 
-      evt.features.forEach((feature: Feature) => {
-        // Set hover
-        const { id } = feature.properties;
-        this.hover = [id];
+      // tslint:disable-next-line:no-any
+      this.hover = evt.features.reduce((hover: any, feature: Feature) => ([
+        ...hover,
+        feature.properties.id
+      ]), []);
 
-        if (!this.areFeaturesDraggable(children)) {
-          return
-        }
+      const isHoverDraggable = this.areFeaturesDraggable(children);
+      if (!isHoverDraggable) {
+        return;
+      }
 
-        // User did this on a feature
-        map.dragPan.disable();
+      map.dragPan.disable();
 
-        this.onFeatureDown('touchstart');
+      this.onFeatureDown('touchstart');
 
-        map.once('touchend', () => {
-          map.dragPan.enable()
-        });
+      map.once('touchend', () => {
+        map.dragPan.enable()
       });
     };
 
