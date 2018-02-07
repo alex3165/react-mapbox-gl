@@ -19,7 +19,8 @@ function layerMouseTouchEvents(
   return class EnhancedLayer extends React.Component<OwnProps> {
     public context: Context;
     public hover: number[] = [];
-    public isDragging: boolean = false;
+    public isGrabbing: boolean = false;
+    public hasDragged: boolean = false;
     public draggedChildren: undefined | JSX.Element[] = undefined;
 
     public static contextTypes = {
@@ -107,54 +108,108 @@ function layerMouseTouchEvents(
         }
       });
 
-      if (!this.isDragging) {
+      if (!this.isGrabbing) {
         this.hover = [];
       }
     };
 
     public onMouseDown = () => {
-      const { map } = this.context;
       const children = this.getChildren();
       const isHoverDraggable = this.areFeaturesDraggable(children);
       if (!isHoverDraggable) {
         return;
       }
+
+      // User did this on a feature
+      const { map } = this.context;
       map.dragPan.disable();
 
-      this.isDragging = true;
-      map.on('mousemove', this.onDragMove);
-      map.once('mouseup', this.onDragUp.bind(this, 'mousemove'));
-    };
+      this.onFeatureDown('mousedown');
 
-    // tslint:disable-next-line:no-any
-    public onTouchStart = (evt: any) => {
-      const children = this.getChildren();
-      const { map } = this.context;
-
-      evt.features.forEach((feature: Feature) => {
-        const { id } = feature.properties;
-        this.hover = [id];
-        if (this.areFeaturesDraggable(children)) {
-          map.dragPan.disable();
-          this.isDragging = true;
-
-          map.on('touchmove', this.onDragMove);
-          map.once('touchend', this.onDragUp.bind(this, 'touchmove'));
-        }
+      map.once('mouseup', () => {
+        map.dragPan.enable()
       });
     };
 
     // tslint:disable-next-line:no-any
-    public onDragMove = ({ lngLat }: any) => {
-      if (!this.isDragging) {
-        return;
-      }
+    public onTouchStart = (evt: any) => {
+      const { map } = this.context;
       const children = this.getChildren();
 
+      // tslint:disable-next-line:no-any
+      this.hover = evt.features.reduce((hover: any, feature: Feature) => ([
+        ...hover,
+        feature.properties.id
+      ]), []);
+
+      const isHoverDraggable = this.areFeaturesDraggable(children);
+      if (!isHoverDraggable) {
+        return;
+      }
+
+      map.dragPan.disable();
+
+      this.onFeatureDown('touchstart');
+
+      map.once('touchend', () => {
+        map.dragPan.enable()
+      });
+    };
+
+    public onFeatureDown = (startEvent: string) => {
+      const moveEvent = startEvent === 'mousedown' ? 'mousemove' : 'touchmove';
+      const endEvent = startEvent === 'mousedown' ? 'mouseup' : 'touchend';
+      const { map } = this.context;
+
+      this.isGrabbing = true;
+      this.hasDragged = false;
+
+      this.draggedChildren = [];
+      map.once(moveEvent, this.onFeatureDragStart);
+      map.on(moveEvent, this.onFeatureDrag);
+      map.once(endEvent, this.onFeatureDragEnd);
+      map.once(endEvent, () => {
+        map.off(moveEvent, this.onFeatureDrag)
+        this.draggedChildren = undefined;
+      });
+    }
+
+    // tslint:disable-next-line:no-any
+    public onFeatureDragStart = (evt: any) => {
+      const { map } = this.context;
+      const children = this.getChildren();
+
+      this.hasDragged = true;
+
+      this.hover.map(id => {
+        const child = children[id];
+
+        const onDragStart = child && child.props.onDragStart;
+        if (onDragStart) {
+          onDragStart({ ...evt, map });
+        }
+
+        const onDrag = child && child.props.onDrag;
+        if (onDrag) {
+          onDrag({ ...evt, map });
+        }
+      });
+    }
+
+    // tslint:disable-next-line:no-any
+    public onFeatureDrag = (evt: any) => {
+      if (!this.hasDragged) {
+        return;
+      }
+
+      const children = this.getChildren();
+      const { lngLat: { lng, lat } } = evt;
+
+      // Actualy display dragged children
       this.draggedChildren = children.map((child, index) => {
         if (this.hover.includes(index) && child.props.draggable) {
           return React.cloneElement(child, {
-            coordinates: [lngLat.lng, lngLat.lat]
+            coordinates: [lng, lat]
           });
         }
 
@@ -162,16 +217,29 @@ function layerMouseTouchEvents(
       });
 
       this.forceUpdate();
-    };
+
+      // Trigger onDrag
+      const { map } = this.context;
+
+      this.hover.map(id => {
+        const child = children[id];
+        const onDrag = child && child.props.onDrag;
+        if (onDrag) {
+          onDrag({ ...evt, map });
+        }
+      });
+    }
 
     // tslint:disable-next-line:no-any
-    public onDragUp = (moveEvent: string, evt: any) => {
+    public onFeatureDragEnd = (evt: any) => {
+      this.isGrabbing = false;
+
+      if (!this.hasDragged) {
+        return;
+      }
+
       const { map } = this.context;
       const children = this.getChildren();
-
-      map.dragPan.enable();
-      this.isDragging = false;
-      this.draggedChildren = undefined;
 
       this.hover.map(id => {
         const child = children[id];
@@ -180,9 +248,7 @@ function layerMouseTouchEvents(
           onDragEnd({ ...evt, map });
         }
       });
-
-      map.off(moveEvent, this.onDragMove);
-    };
+    }
 
     public componentWillMount() {
       const { map } = this.context;

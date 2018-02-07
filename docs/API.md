@@ -253,6 +253,8 @@ import { Feature } from "react-mapbox-gl";
 - **onMouseLeave** : `(mapWithEvt: object) => void` Triggered when the mouse leave the feature element
   - Args contain the map object and the arguments passed by Mapbox from the event `onmousemove`
 - **draggable** *(Default: `false`)* : `boolean` Define wether the feature is draggable or not.
+- **onDragStart** : `(mapWithEvt: object) => void` Triggered when the user start dragging the feature.
+- **onDrag** : `(mapWithEvt: object) => void` Triggered when the user continue dragging the feature (ie. move).
 - **onDragEnd** : `(mapWithEvt: object) => void` Triggered when the user stop dragging the feature.
 
 ----------
