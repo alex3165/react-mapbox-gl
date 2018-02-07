@@ -71,6 +71,7 @@ export interface Props {
   position?: AnchorLimits;
   style?: React.CSSProperties;
   className?: string;
+  tabIndex?: number;
 }
 
 export interface State {
@@ -182,11 +183,15 @@ export default class ScaleControl extends React.Component<Props, State> {
   }
 
   public render() {
-    const { measurement, style, position, className } = this.props;
+    const { measurement, style, position, className, tabIndex } = this.props;
     const { chosenScale, scaleWidth } = this.state;
 
     return (
-      <div style={{ ...containerStyle, ...positions[position!], ...style }} className={className}>
+      <div
+        tabIndex={tabIndex}
+        style={{ ...containerStyle, ...positions[position!], ...style }}
+        className={className}
+      >
         <div style={{ ...scaleStyle, width: scaleWidth }} />
         <div style={{ paddingLeft: 10 }}>
           {this._displayMeasurement(measurement!, chosenScale)}

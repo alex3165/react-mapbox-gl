@@ -64,6 +64,7 @@ export interface Props {
   position?: AnchorLimits;
   style?: React.CSSProperties;
   className?: string;
+  tabIndex?: number;
 }
 
 export interface State {
@@ -131,7 +132,7 @@ export default class RotationControl extends React.Component<Props, State> {
   };
 
   public render() {
-    const { position, style, className } = this.props;
+    const { position, style, className, tabIndex } = this.props;
     const { hover } = this.state;
     const controlStyle = {
       ...buttonStyle,
@@ -142,6 +143,7 @@ export default class RotationControl extends React.Component<Props, State> {
     return (
       <div
         className={className}
+        tabIndex={tabIndex}
         style={{ ...containerStyle, ...positions[position!], ...style }}
       >
         <button

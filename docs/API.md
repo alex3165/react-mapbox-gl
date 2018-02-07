@@ -279,6 +279,7 @@ import { ZoomControl } from "react-mapbox-gl";
   - `top-left`
   - `bottom-right`
   - `bottom-left`
+- **tabIndex** : `number` define the tab index value of the top container tag
 
 ----------
 # ScaleControl
@@ -304,6 +305,7 @@ import { ScaleControl } from "react-mapbox-gl";
   - `top-left`
   - `bottom-right`
   - `bottom-left`
+- **tabIndex** : `number` define the tab index value of the top container tag
 
 ----------
 # RotationControl
@@ -327,6 +329,7 @@ import { RotationControl } from "react-mapbox-gl";
   - `top-left`
   - `bottom-right`
   - `bottom-left`
+- **tabIndex** : `number` define the tab index value of the top container tag
 
 ----------
 # Popup
@@ -366,6 +369,7 @@ import { Popup } from "react-mapbox-gl";
 - **onClick**: `function` Triggered whenever user click on the popup
 - **style**: `object` Apply style to the marker container
 - **className**: `string` Apply the className to the container of the popup
+- **tabIndex** : `number` define the tab index value of the top container tag
 
 ----------
 # Marker
@@ -393,6 +397,7 @@ import { Marker } from "react-mapbox-gl";
 - **onClick**: `function` Triggered whenever user click on the marker
 - **style**: `object` Apply style to the marker container
 - **className**: `string` Apply the className to the container of the Marker
+- **tabIndex** : `number` define the tab index value of the top container tag
 
 ________
 # Cluster
@@ -441,3 +446,4 @@ clusterMarker = (coordinates) => (
 - **zoomOnClickPadding**: *Default: 20*:`number` The amount of padding in pixels to add to the cluster bounds for the zoom.
 - **style**: `object` Apply style to the marker container
 - **className**: `string` Apply the className to the container of the Marker
+- **tabIndex** : `number` define the tab index value of the top container tag

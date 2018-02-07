@@ -28,6 +28,7 @@ export interface Props {
   children?: Array<React.Component<MarkerProps>>;
   style?: React.CSSProperties;
   className?: string;
+  tabIndex?: number;
 }
 
 export interface State {
@@ -190,13 +191,14 @@ export default class Cluster extends React.Component<Props, State> {
   }
 
   public render() {
-    const { ClusterMarkerFactory, style, className } = this.props;
+    const { ClusterMarkerFactory, style, className, tabIndex } = this.props;
     const { clusterPoints } = this.state;
 
     return (
       <div
         style={style}
         className={className}
+        tabIndex={tabIndex}
         onClick={this.props.zoomOnClick ? this.zoomToClusterBounds : undefined}
       >
         {clusterPoints.map((feature: Feature) => {

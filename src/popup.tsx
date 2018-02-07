@@ -17,6 +17,7 @@ export interface Props {
   onWheel?: React.MouseEventHandler<HTMLDivElement>;
   style?: React.CSSProperties;
   className?: string;
+  tabIndex?: number;
 }
 
 export const defaultClassName = ['mapboxgl-popup'];
@@ -25,10 +26,7 @@ export default class Popup extends React.Component<Props> {
   public render() {
     const { children, className } = this.props;
     const props = { ...this.props, children: undefined };
-    const childrenClassName = getClassName(
-      defaultClassName,
-      className
-    );
+    const childrenClassName = getClassName(defaultClassName, className);
 
     return (
       <ProjectedLayer {...props} type="popup" className={childrenClassName}>
