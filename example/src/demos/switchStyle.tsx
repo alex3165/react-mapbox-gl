@@ -133,7 +133,16 @@ class StyleUpdate extends React.Component<Props, State> {
     this.setState({ renderLayer: !renderLayer });
   };
 
+  private onDragStart = () => {
+    console.log('onDragStart');
+  };
+
+  private onDrag = () => {
+    console.log('onDrag');
+  };
+
   private onDragEnd = ({ lngLat }: any) => {
+    console.log('onDragEnd');
     this.setState({
       userPosition: [lngLat.lng, lngLat.lat]
     });
@@ -178,6 +187,8 @@ class StyleUpdate extends React.Component<Props, State> {
               coordinates={userPosition}
               draggable={true}
               onDragEnd={this.onDragEnd}
+              onDragStart={this.onDragStart}
+              onDrag={this.onDrag}
             />
           </Layer>
           <GeoJSONLayer

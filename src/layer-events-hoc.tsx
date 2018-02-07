@@ -73,19 +73,20 @@ function layerMouseTouchEvents(
     public onMouseEnter = (evt: any) => {
       const children = this.getChildren();
       const { map } = this.context;
+      if (!children) {
+        return;
+      }
 
       this.hover = [];
 
       evt.features.forEach((feature: Feature) => {
         const { id } = feature.properties;
-        if (children) {
-          const child = children[id];
+        const child = children[id];
+        this.hover.push(id);
 
-          this.hover.push(id);
-          const onMouseEnter = child && child.props.onMouseEnter;
-          if (onMouseEnter) {
-            onMouseEnter({ ...evt, feature, map });
-          }
+        const onMouseEnter = child && child.props.onMouseEnter;
+        if (onMouseEnter) {
+          onMouseEnter({ ...evt, feature, map });
         }
       });
 
@@ -127,32 +128,23 @@ function layerMouseTouchEvents(
       this.onFeatureDown('mousedown');
 
       map.once('mouseup', () => {
-        map.dragPan.enable()
+        map.dragPan.enable();
       });
     };
 
     // tslint:disable-next-line:no-any
     public onTouchStart = (evt: any) => {
       const { map } = this.context;
-      const children = this.getChildren();
 
       // tslint:disable-next-line:no-any
-      this.hover = evt.features.reduce((hover: any, feature: Feature) => ([
-        ...hover,
-        feature.properties.id
-      ]), []);
-
-      const isHoverDraggable = this.areFeaturesDraggable(children);
-      if (!isHoverDraggable) {
-        return;
-      }
+      this.hover = evt.features.map((feature: any) => feature.properties.id);
 
       map.dragPan.disable();
 
       this.onFeatureDown('touchstart');
 
       map.once('touchend', () => {
-        map.dragPan.enable()
+        map.dragPan.enable();
       });
     };
 
@@ -169,10 +161,10 @@ function layerMouseTouchEvents(
       map.on(moveEvent, this.onFeatureDrag);
       map.once(endEvent, this.onFeatureDragEnd);
       map.once(endEvent, () => {
-        map.off(moveEvent, this.onFeatureDrag)
+        map.off(moveEvent, this.onFeatureDrag);
         this.draggedChildren = undefined;
       });
-    }
+    };
 
     // tslint:disable-next-line:no-any
     public onFeatureDragStart = (evt: any) => {
@@ -181,8 +173,11 @@ function layerMouseTouchEvents(
 
       this.hasDragged = true;
 
-      this.hover.map(id => {
+      this.hover.forEach(id => {
         const child = children[id];
+        if (!child.props.draggable) {
+          return;
+        }
 
         const onDragStart = child && child.props.onDragStart;
         if (onDragStart) {
@@ -194,7 +189,7 @@ function layerMouseTouchEvents(
           onDrag({ ...evt, map });
         }
       });
-    }
+    };
 
     // tslint:disable-next-line:no-any
     public onFeatureDrag = (evt: any) => {
@@ -203,32 +198,30 @@ function layerMouseTouchEvents(
       }
 
       const children = this.getChildren();
+      const { map } = this.context;
       const { lngLat: { lng, lat } } = evt;
+      this.draggedChildren = [];
 
-      // Actualy display dragged children
-      this.draggedChildren = children.map((child, index) => {
-        if (this.hover.includes(index) && child.props.draggable) {
-          return React.cloneElement(child, {
-            coordinates: [lng, lat]
-          });
+      this.hover.forEach(id => {
+        const child = children[id];
+        const onDrag = child && child.props.onDrag;
+
+        // drag children if draggable
+        if (child.props.draggable) {
+          this.draggedChildren!.push(
+            React.cloneElement(child, {
+              coordinates: [lng, lat]
+            })
+          );
+
+          if (onDrag) {
+            onDrag({ ...evt, map });
+          }
         }
-
-        return child;
       });
 
       this.forceUpdate();
-
-      // Trigger onDrag
-      const { map } = this.context;
-
-      this.hover.map(id => {
-        const child = children[id];
-        const onDrag = child && child.props.onDrag;
-        if (onDrag) {
-          onDrag({ ...evt, map });
-        }
-      });
-    }
+    };
 
     // tslint:disable-next-line:no-any
     public onFeatureDragEnd = (evt: any) => {
@@ -248,7 +241,7 @@ function layerMouseTouchEvents(
           onDragEnd({ ...evt, map });
         }
       });
-    }
+    };
 
     public componentWillMount() {
       const { map } = this.context;
