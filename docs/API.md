@@ -371,6 +371,8 @@ import { Popup } from "react-mapbox-gl";
 # Marker
 Add an HTML marker to the map.
 
+*Note: When rendering many objects, avoid using `Marker`s as it will negatively affect performance. Use `Layer`s and `Feature`s instead.*
+
 ### How to use
 ```jsx
 import { Marker } from "react-mapbox-gl";
