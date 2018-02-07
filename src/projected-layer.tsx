@@ -1,11 +1,7 @@
 import * as React from 'react';
 import * as PropTypes from 'prop-types';
 import { Map, Point } from 'mapbox-gl';
-import {
-  OverlayParams,
-  overlayState,
-  overlayTransform
-} from './util/overlays';
+import { OverlayParams, overlayState, overlayTransform } from './util/overlays';
 import { Anchor } from './util/types';
 
 const defaultStyle = {
@@ -26,6 +22,7 @@ export interface Props {
   onWheel?: React.MouseEventHandler<HTMLDivElement>;
   style?: React.CSSProperties;
   className: string;
+  tabIndex?: number;
 }
 
 export interface Context {
@@ -74,10 +71,12 @@ export default class ProjectedLayer extends React.Component<
   }
 
   private havePropsChanged(props: Props, nextProps: Props) {
-    return props.coordinates[0] !== nextProps.coordinates[0] ||
-           props.coordinates[1] !== nextProps.coordinates[1] ||
-           props.offset !== nextProps.offset ||
-           props.anchor !== nextProps.anchor;
+    return (
+      props.coordinates[0] !== nextProps.coordinates[0] ||
+      props.coordinates[1] !== nextProps.coordinates[1] ||
+      props.offset !== nextProps.offset ||
+      props.anchor !== nextProps.anchor
+    );
   }
 
   public componentWillReceiveProps(nextProps: Props) {
@@ -105,7 +104,8 @@ export default class ProjectedLayer extends React.Component<
       onMouseLeave,
       onScroll,
       onWheel,
-      type
+      type,
+      tabIndex
     } = this.props;
     const { anchor } = this.state;
     const finalStyle = {
@@ -113,7 +113,8 @@ export default class ProjectedLayer extends React.Component<
       ...style,
       transform: overlayTransform(this.state).join(' ')
     };
-    const anchorClassname = (anchor && type === 'popup') ? `mapboxgl-popup-anchor-${anchor}` : '';
+    const anchorClassname =
+      anchor && type === 'popup' ? `mapboxgl-popup-anchor-${anchor}` : '';
     return (
       <div
         className={`${className} ${anchorClassname}`}
@@ -125,6 +126,7 @@ export default class ProjectedLayer extends React.Component<
         onWheel={onWheel}
         style={finalStyle}
         ref={this.setContainer}
+        tabIndex={tabIndex}
       >
         {children}
       </div>

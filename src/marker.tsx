@@ -15,6 +15,7 @@ export interface Props {
   onMouseLeave?: React.MouseEventHandler<HTMLDivElement>;
   style?: React.CSSProperties;
   className?: string;
+  tabIndex?: number;
 }
 
 const defaultClassName = ['mapboxgl-marker'];
