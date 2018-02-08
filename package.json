@@ -14,7 +14,8 @@
     "prepublishOnly": "npm run clean && npm run build",
     "version": "npm run build",
     "postversion": "git push && git push --tags",
-    "prettify": "prettier --write --single-quote src/*.ts src/*.tsx src/**/*.ts src/**/*.tsx example/src/**/*.ts example/src/**/*.tsx"
+    "prettify": "prettier --write --single-quote src/*.ts src/*.tsx src/**/*.ts src/**/*.tsx example/src/**/*.ts example/src/**/*.tsx",
+    "precommit": "npm run lint && npm run test && npm run prettify"
   },
   "jest": {
     "transform": {
