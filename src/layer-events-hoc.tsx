@@ -146,6 +146,7 @@ function layerMouseTouchEvents(
       map.once(moveEvent, this.onFeatureDragStart);
       map.on(moveEvent, this.onFeatureDrag);
 
+      // tslint:disable-next-line:no-any
       map.once(endEvent, (evt: any) => {
         map.off(moveEvent, this.onFeatureDragStart);
         map.off(moveEvent, this.onFeatureDrag);
