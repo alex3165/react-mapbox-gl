@@ -18,7 +18,7 @@ function layerMouseTouchEvents(
 ) {
   return class EnhancedLayer extends React.Component<OwnProps> {
     public context: Context;
-    public hover: string[] = [];
+    public hover: number[] = [];
     public draggedChildren:
       | Array<React.ReactElement<FeatureProps>>
       | undefined = undefined;
@@ -39,12 +39,12 @@ function layerMouseTouchEvents(
         );
     public getChildFromId = (
       children: Array<React.ReactElement<FeatureProps>>,
-      id: string
-    ) => children.find(child => child.key === id);
+      id: number
+    ) => children[id];
 
     public areFeaturesDraggable = (
       children: Array<React.ReactElement<FeatureProps>>,
-      featureIds: string[] = this.hover
+      featureIds: number[] = this.hover
     ) =>
       !!featureIds
         .map(

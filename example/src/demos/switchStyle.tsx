@@ -193,7 +193,7 @@ class StyleUpdate extends React.Component<Props, State> {
               <Feature
                 key={index}
                 coordinates={loc}
-                draggable={true}
+                draggable={index === 0}
                 onDragEnd={evt => this.onDragEnd(evt, index)}
                 onDragStart={this.onDragStart}
                 onDrag={this.onDrag}

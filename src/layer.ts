@@ -125,13 +125,10 @@ export default class Layer extends React.Component<Props> {
     }
   };
 
-  private makeFeature = (
-    props: FeatureProps,
-    key: string | number | null
-  ): Feature => ({
+  private makeFeature = (props: FeatureProps, id: number): Feature => ({
     type: 'Feature',
     geometry: this.geometry(props.coordinates),
-    properties: { ...props.properties, id: key }
+    properties: { ...props.properties, id }
   });
 
   private initialize = () => {
@@ -306,7 +303,7 @@ export default class Layer extends React.Component<Props> {
     }
 
     const features = (children! as Array<React.ReactElement<FeatureProps>>)
-      .map(({ props, key }) => this.makeFeature(props, key))
+      .map(({ props }, id) => this.makeFeature(props, id))
       .filter(Boolean);
 
     const source = map.getSource(

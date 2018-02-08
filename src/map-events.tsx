@@ -97,9 +97,9 @@ export const events: EventMapping = {
   onRotateEnd: 'rotateend'
 };
 
-// tslint:disable-next-line:no-any
 export type Listeners = {
-  [T in keyof Events]: (evt: React.SyntheticEvent<any>) => void
+  [// tslint:disable-next-line:no-any
+  T in keyof Events]: (evt: React.SyntheticEvent<any>) => void
 };
 
 export const listenEvents = (
@@ -123,8 +123,8 @@ export const listenEvents = (
       }
 
       return listeners;
-      // tslint:disable-next-line:no-object-literal-type-assertion
     },
+    // tslint:disable-next-line:no-object-literal-type-assertion
     {} as Listeners
   );
 
