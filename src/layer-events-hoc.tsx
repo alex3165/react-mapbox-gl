@@ -18,10 +18,10 @@ function layerMouseTouchEvents(
 ) {
   return class EnhancedLayer extends React.Component<OwnProps> {
     public context: Context;
-    public hover: number[] = [];
-    public isGrabbing: boolean = false;
-    public hasDragged: boolean = false;
-    public draggedChildren: undefined | JSX.Element[] = undefined;
+    public hover: string[] = [];
+    public draggedChildren:
+      | Array<React.ReactElement<FeatureProps>>
+      | undefined = undefined;
 
     public static contextTypes = {
       map: PropTypes.object
@@ -37,15 +37,23 @@ function layerMouseTouchEvents(
           (el: LayerChildren): el is React.ReactElement<FeatureProps> =>
             typeof el !== 'undefined'
         );
+    public getChildFromId = (
+      children: Array<React.ReactElement<FeatureProps>>,
+      id: string
+    ) => children.find(child => child.key === id);
 
     public areFeaturesDraggable = (
       children: Array<React.ReactElement<FeatureProps>>,
-      featureIds: number[] = this.hover
-    ) => {
-      return !!featureIds
-        .map(id => (children[id] ? children[id].props.draggable : false))
+      featureIds: string[] = this.hover
+    ) =>
+      !!featureIds
+        .map(
+          id =>
+            this.getChildFromId(children, id)
+              ? this.getChildFromId(children, id)!.props.draggable
+              : false
+        )
         .filter(Boolean).length;
-    };
 
     // tslint:disable-next-line:no-any
     public onClick = (evt: any) => {
@@ -58,7 +66,7 @@ function layerMouseTouchEvents(
         features.forEach(feature => {
           const { id } = feature.properties;
           if (children) {
-            const child = children[id];
+            const child = this.getChildFromId(children, id);
 
             const onClick = child && child.props.onClick;
             if (onClick) {
@@ -72,16 +80,13 @@ function layerMouseTouchEvents(
     // tslint:disable-next-line:no-any
     public onMouseEnter = (evt: any) => {
       const children = this.getChildren();
-      const { map } = this.context;
-      if (!children) {
-        return;
-      }
 
+      const { map } = this.context;
       this.hover = [];
 
       evt.features.forEach((feature: Feature) => {
         const { id } = feature.properties;
-        const child = children[id];
+        const child = this.getChildFromId(children, id);
         this.hover.push(id);
 
         const onMouseEnter = child && child.props.onMouseEnter;
@@ -99,53 +104,38 @@ function layerMouseTouchEvents(
     public onMouseLeave = (evt: any) => {
       const children = this.getChildren();
       const { map } = this.context;
-      map.dragPan.enable();
+      if (this.areFeaturesDraggable(children)) {
+        map.dragPan.enable();
+      }
 
       this.hover.forEach(id => {
-        const child = children[id];
+        const child = this.getChildFromId(children, id);
         const onMouseLeave = child && child.props.onMouseLeave;
         if (onMouseLeave) {
           onMouseLeave({ ...evt, map });
         }
       });
 
-      if (!this.isGrabbing) {
+      if (!this.draggedChildren) {
         this.hover = [];
       }
     };
 
     public onMouseDown = () => {
-      const children = this.getChildren();
-      const isHoverDraggable = this.areFeaturesDraggable(children);
-      if (!isHoverDraggable) {
-        return;
-      }
-
       // User did this on a feature
-      const { map } = this.context;
-      map.dragPan.disable();
-
-      this.onFeatureDown('mousedown');
-
-      map.once('mouseup', () => {
-        map.dragPan.enable();
-      });
+      if (this.hover.length) {
+        this.onFeatureDown('mousedown');
+      }
     };
 
     // tslint:disable-next-line:no-any
     public onTouchStart = (evt: any) => {
-      const { map } = this.context;
-
       // tslint:disable-next-line:no-any
       this.hover = evt.features.map((feature: any) => feature.properties.id);
 
-      map.dragPan.disable();
-
-      this.onFeatureDown('touchstart');
-
-      map.once('touchend', () => {
-        map.dragPan.enable();
-      });
+      if (this.hover.length) {
+        this.onFeatureDown('touchstart');
+      }
     };
 
     public onFeatureDown = (startEvent: string) => {
@@ -153,16 +143,13 @@ function layerMouseTouchEvents(
       const endEvent = startEvent === 'mousedown' ? 'mouseup' : 'touchend';
       const { map } = this.context;
 
-      this.isGrabbing = true;
-      this.hasDragged = false;
-
-      this.draggedChildren = [];
       map.once(moveEvent, this.onFeatureDragStart);
       map.on(moveEvent, this.onFeatureDrag);
-      map.once(endEvent, this.onFeatureDragEnd);
-      map.once(endEvent, () => {
+
+      map.once(endEvent, (evt: any) => {
+        map.off(moveEvent, this.onFeatureDragStart);
         map.off(moveEvent, this.onFeatureDrag);
-        this.draggedChildren = undefined;
+        this.onFeatureDragEnd(evt);
       });
     };
 
@@ -171,11 +158,9 @@ function layerMouseTouchEvents(
       const { map } = this.context;
       const children = this.getChildren();
 
-      this.hasDragged = true;
-
       this.hover.forEach(id => {
-        const child = children[id];
-        if (!child.props.draggable) {
+        const child = this.getChildFromId(children, id);
+        if (child && !child.props.draggable) {
           return;
         }
 
@@ -183,31 +168,22 @@ function layerMouseTouchEvents(
         if (onDragStart) {
           onDragStart({ ...evt, map });
         }
-
-        const onDrag = child && child.props.onDrag;
-        if (onDrag) {
-          onDrag({ ...evt, map });
-        }
       });
     };
 
     // tslint:disable-next-line:no-any
     public onFeatureDrag = (evt: any) => {
-      if (!this.hasDragged) {
-        return;
-      }
-
       const children = this.getChildren();
       const { map } = this.context;
       const { lngLat: { lng, lat } } = evt;
       this.draggedChildren = [];
 
       this.hover.forEach(id => {
-        const child = children[id];
+        const child = this.getChildFromId(children, id);
         const onDrag = child && child.props.onDrag;
 
         // drag children if draggable
-        if (child.props.draggable) {
+        if (child && child.props.draggable) {
           this.draggedChildren!.push(
             React.cloneElement(child, {
               coordinates: [lng, lat]
@@ -225,22 +201,19 @@ function layerMouseTouchEvents(
 
     // tslint:disable-next-line:no-any
     public onFeatureDragEnd = (evt: any) => {
-      this.isGrabbing = false;
-
-      if (!this.hasDragged) {
-        return;
-      }
-
       const { map } = this.context;
       const children = this.getChildren();
 
-      this.hover.map(id => {
-        const child = children[id];
+      this.hover.forEach(id => {
+        const child = this.getChildFromId(children, id);
         const onDragEnd = child && child.props.onDragEnd;
-        if (onDragEnd) {
+
+        if (onDragEnd && child!.props.draggable && this.draggedChildren) {
           onDragEnd({ ...evt, map });
         }
       });
+
+      this.draggedChildren = undefined;
     };
 
     public componentWillMount() {
@@ -267,8 +240,8 @@ function layerMouseTouchEvents(
       return (
         <WrappedComponent
           {...this.props}
-          draggedChildren={this.draggedChildren}
           id={this.id}
+          draggedChildren={this.draggedChildren}
         />
       );
     }

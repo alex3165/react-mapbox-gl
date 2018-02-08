@@ -38,20 +38,20 @@ export type ImageDefinitionWithOptions = [
 
 export interface LayerCommonProps {
   type?:
-  | 'symbol'
-  | 'line'
-  | 'fill'
-  | 'circle'
-  | 'raster'
-  | 'fill-extrusion'
-  | 'background'
-  | 'heatmap';
+    | 'symbol'
+    | 'line'
+    | 'fill'
+    | 'circle'
+    | 'raster'
+    | 'fill-extrusion'
+    | 'background'
+    | 'heatmap';
   sourceId?: string;
   images?:
-  | ImageDefinition
-  | ImageDefinition[]
-  | ImageDefinitionWithOptions
-  | ImageDefinitionWithOptions[];
+    | ImageDefinition
+    | ImageDefinition[]
+    | ImageDefinitionWithOptions
+    | ImageDefinitionWithOptions[];
   before?: string;
   paint?: Paint;
   layout?: Layout;
@@ -125,10 +125,13 @@ export default class Layer extends React.Component<Props> {
     }
   };
 
-  private makeFeature = (props: FeatureProps, id: number): Feature => ({
+  private makeFeature = (
+    props: FeatureProps,
+    key: string | number | null
+  ): Feature => ({
     type: 'Feature',
     geometry: this.geometry(props.coordinates),
-    properties: { ...props.properties, id }
+    properties: { ...props.properties, id: key }
   });
 
   private initialize = () => {
@@ -269,28 +272,41 @@ export default class Layer extends React.Component<Props> {
     }
   }
 
+  public getChildren = () => {
+    const { children } = this.props;
+
+    if (!children) {
+      return [];
+    }
+
+    if (Array.isArray(children)) {
+      return (children as JSX.Element[][]).reduce(
+        (arr, next) => arr.concat(next),
+        [] as JSX.Element[]
+      );
+    }
+
+    return [children] as JSX.Element[];
+  };
+
   public render() {
     const { map } = this.context;
     const { sourceId, draggedChildren } = this.props;
-    let { children } = this.props;
-
-    if (!children) {
-      children = [] as JSX.Element[];
-    }
+    let children = this.getChildren();
 
     if (draggedChildren) {
-      children = draggedChildren;
-    } else {
-      children = Array.isArray(children)
-        ? (children as JSX.Element[][]).reduce(
-          (arr, next) => arr.concat(next),
-          [] as JSX.Element[]
-        )
-        : [children] as JSX.Element[];
+      const draggableChildrenIds = draggedChildren.map(child => child.key);
+      children = children.map(child => {
+        const indexChildren = draggableChildrenIds.indexOf(child.key);
+        if (indexChildren !== -1) {
+          return draggedChildren[indexChildren];
+        }
+        return child;
+      });
     }
 
     const features = (children! as Array<React.ReactElement<FeatureProps>>)
-      .map(({ props }, id) => this.makeFeature(props, id))
+      .map(({ props, key }) => this.makeFeature(props, key))
       .filter(Boolean);
 
     const source = map.getSource(
