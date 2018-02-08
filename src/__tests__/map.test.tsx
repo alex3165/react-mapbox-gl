@@ -53,8 +53,8 @@ describe('Map', () => {
   it('Should update fitBounds if fitBoundsOptions changes', () => {
     const flyTo = jest.fn();
     const fitBoundsValues: FitBounds = [[0, 1], [2, 3]];
-    const fitBoundsOptions = { offset: [ 150, 0] };
-    const newFitBoundsOptions = { offset: [ 0, 0] };
+    const fitBoundsOptions = { offset: [150, 0] };
+    const newFitBoundsOptions = { offset: [0, 0] };
     const MapboxMap = ReactMapboxGl({ accessToken: '' });
 
     const wrapper = mount(

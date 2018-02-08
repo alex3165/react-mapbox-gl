@@ -121,10 +121,7 @@ export default class LondonCycle extends React.Component<Props, State> {
           ))}
         </Layer>
         {station && (
-          <Popup
-            key={station.id}
-            coordinates={station.position}
-          >
+          <Popup key={station.id} coordinates={station.position}>
             <StyledPopup>
               <div>{station.name}</div>
               <div>

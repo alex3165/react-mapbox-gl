@@ -2,7 +2,13 @@ import * as MapboxGl from 'mapbox-gl';
 import * as React from 'react';
 import * as PropTypes from 'prop-types';
 import injectCSS from './util/inject-css';
-import { Events, listenEvents, events, Listeners, updateEvents } from './map-events';
+import {
+  Events,
+  listenEvents,
+  events,
+  Listeners,
+  updateEvents
+} from './map-events';
 const isEqual = require('deep-equal'); //tslint:disable-line
 
 export interface PaddingOptions {
@@ -189,7 +195,9 @@ const ReactMapboxFactory = ({
       }
 
       if (!Array.isArray(zoom)) {
-        throw new Error('zoom need to be an array type of length 1 for reliable update');
+        throw new Error(
+          'zoom need to be an array type of length 1 for reliable update'
+        );
       }
 
       const opts: MapboxGl.MapboxOptions = {
@@ -225,7 +233,9 @@ const ReactMapboxFactory = ({
 
       if (bearing) {
         if (!Array.isArray(bearing)) {
-          throw new Error('bearing need to be an array type of length 1 for reliable update');
+          throw new Error(
+            'bearing need to be an array type of length 1 for reliable update'
+          );
         }
 
         opts.bearing = bearing[0];
@@ -233,7 +243,9 @@ const ReactMapboxFactory = ({
 
       if (pitch) {
         if (!Array.isArray(pitch)) {
-          throw new Error('pitch need to be an array type of length 1 for reliable update');
+          throw new Error(
+            'pitch need to be an array type of length 1 for reliable update'
+          );
         }
 
         opts.pitch = pitch[0];

@@ -1,7 +1,4 @@
-export const getClassName = (
-  defaultClassName: string[],
-  className?: string
-) =>
+export const getClassName = (defaultClassName: string[], className?: string) =>
   className
     ? className
         .split(' ')

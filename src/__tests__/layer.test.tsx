@@ -194,9 +194,7 @@ describe('Layer', () => {
   });
 
   it('Should update minZoom and maxZoom if they change', () => {
-    const wrapper = mount(
-      <LayerWithContext id="zoomer" children={children} />
-    );
+    const wrapper = mount(<LayerWithContext id="zoomer" children={children} />);
 
     wrapper.setProps({ minZoom: 4 });
     wrapper.setProps({ maxZoom: 10 });
@@ -204,10 +202,10 @@ describe('Layer', () => {
     wrapper.setProps({ maxZoom: 6 });
 
     expect(setLayerZoomRangeMock.mock.calls).toEqual([
-      [ 'zoomer', 4, undefined ],
-      [ 'zoomer', 4, 10 ],
-      [ 'zoomer', undefined, undefined ],
-      [ 'zoomer', undefined, 6 ]
+      ['zoomer', 4, undefined],
+      ['zoomer', 4, 10],
+      ['zoomer', undefined, undefined],
+      ['zoomer', undefined, 6]
     ]);
   });
 });
