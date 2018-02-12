@@ -9,7 +9,7 @@ const falls = require('./falls.json');
 
 const Map = ReactMapboxGl({ accessToken: token });
 
-const mapStyle = {
+const mapContainerStyle = {
   flex: 1
 };
 
@@ -118,11 +118,11 @@ class HtmlCluster extends React.Component<Props, State> {
 
     return (
       <Map
-        style={outdoor}
+        mapStyle={outdoor}
         zoom={this.zoom}
         onStyleLoad={this.onStyleLoad}
         onMove={this.onMove}
-        containerStyle={mapStyle}
+        style={mapContainerStyle}
       >
         <Cluster ClusterMarkerFactory={this.clusterMarker}>
           {falls.features.map((feature: any, key: number) => (

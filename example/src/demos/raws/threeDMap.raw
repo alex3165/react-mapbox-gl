@@ -6,7 +6,7 @@ const { token, styles } = require('./config.json');
 
 const Map = ReactMapboxGl({ accessToken: token });
 
-const mapStyle = {
+const mapContainerStyle = {
   flex: 1
 };
 
@@ -43,8 +43,8 @@ class ThreeDMap extends React.Component<Props, {}> {
   public render() {
     return (
       <Map
-        style={styles.light}
-        containerStyle={mapStyle}
+        mapStyle={styles.light}
+        style={mapContainerStyle}
         onStyleLoad={this.onStyleLoad}
         zoom={this.zoom}
         center={this.center}

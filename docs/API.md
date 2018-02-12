@@ -13,7 +13,7 @@ const Map = ReactMapboxGl({
   accessToken: "pk.eyJ1IjoiZmFicmljOCIsImEiOiJjaWc5aTV1ZzUwMDJwdzJrb2w0dXRmc2d0In0.p6GGlfyV-WksaDV_KdN27A"
 });
 
-<Map style="mapbox://styles/mapbox/streets-v8"/>
+<Map mapStyle="mapbox://styles/mapbox/streets-v8"/>
 ```
 
 ### Factory parameters
@@ -45,7 +45,7 @@ const Map = ReactMapboxGl({
 
 
 ### Component Properties
-- **style** *(required)* : `string | object`  Mapbox map style, if changed, the style will be updated using `setStyle`.
+- **mapStyle** *(required)* : `string | object`  Mapbox map style, if changed, the style will be updated using `setStyle`.
 - **center** *(Default: `[ -0.2416815, 51.5285582 ]`)*: `[number, number]` Center the map at the position at initialisation
   - Must be in longitude, latitude coordinate order (as opposed to latitude, longitude) to match GeoJSON (source: https://www.mapbox.com/mapbox-gl-js/api/#lnglat). 
   - Re-center the map if the value change regarding the prev value or the actual center position [flyTo](https://www.mapbox.com/mapbox-gl-js/api/#Map.flyTo)
@@ -57,7 +57,7 @@ const Map = ReactMapboxGl({
 - **bearing**: `[number]` Bearing (rotation) of the map at initialisation measured in degrees counter-clockwise from north.
   - Check the previous value and the new one, if the value changed update the bearing value [flyTo](https://www.mapbox.com/mapbox-gl-js/api/#Map.flyTo)
 - **pitch**: `[number]` Pitch (tilt) of the map at initialisation, range : `0 - 60`
-- **containerStyle** : `object` The style of the container of the map passed as an object
+- **style** : `object` The style of the container of the map passed as an object
 - **className** : `string` ClassName passed down to the container div
 - **movingMethod** *(Default: `flyTo`)*: `string` define the method used when changing the center or zoom position. Possible value :
   - `jumpTo`
