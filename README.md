@@ -1,6 +1,6 @@
 ![Logo](/logo.png)
 
-# React-mapbox-gl [Documentation](docs/API.md)
+# React-mapbox-gl | [Documentation](docs/API.md) | [Demos](http://alex3165.github.io/react-mapbox-gl/demos)
 
 [![Build Status](https://travis-ci.org/alex3165/react-mapbox-gl.svg?branch=master)](https://travis-ci.org/alex3165/react-mapbox-gl)
 [![npm version](https://img.shields.io/npm/v/react-mapbox-gl.svg?style=flat)](https://www.npmjs.com/package/react-mapbox-gl)
