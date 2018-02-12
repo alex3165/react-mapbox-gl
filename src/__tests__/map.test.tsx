@@ -31,7 +31,7 @@ describe('Map', () => {
 
   it('Should render the map correctly', () => {
     const MapboxMap = ReactMapboxGl({ accessToken: '' });
-    mount(<MapboxMap style="" />);
+    mount(<MapboxMap mapStyle="" />);
   });
 
   it('Should call fitBounds with the right parameters', () => {
@@ -41,7 +41,7 @@ describe('Map', () => {
 
     mount(
       <MapboxMap
-        style=""
+        mapStyle=""
         fitBounds={fitBoundsValues}
         fitBoundsOptions={fitBoundsOptions}
       />
@@ -59,7 +59,7 @@ describe('Map', () => {
 
     const wrapper = mount(
       <MapboxMap
-        style=""
+        mapStyle=""
         fitBounds={fitBoundsValues}
         fitBoundsOptions={fitBoundsOptions}
       />
@@ -81,7 +81,7 @@ describe('Map', () => {
     const fitBoundsValues: FitBounds = [[0, 3], [2, 9]];
     const MapboxMap = ReactMapboxGl({ accessToken: '' });
 
-    mount(<MapboxMap style="" fitBounds={fitBoundsValues} />);
+    mount(<MapboxMap mapStyle="" fitBounds={fitBoundsValues} />);
 
     const lastCall = mockMap.mock.calls[mockMap.mock.calls.length - 1];
     expect(lastCall[0].center).toEqual([1, 6]);
@@ -90,7 +90,7 @@ describe('Map', () => {
   it('Should listen onStyleLoad event', () => {
     const MapboxMap = ReactMapboxGl({ accessToken: '' });
 
-    mount(<MapboxMap style="" onStyleLoad={jest.fn()} />);
+    mount(<MapboxMap mapStyle="" onStyleLoad={jest.fn()} />);
 
     expect(mockon).toBeCalledWith('load', jasmine.any(Function));
   });
@@ -100,7 +100,7 @@ describe('Map', () => {
     const center = [3, 4];
     const MapboxMap = ReactMapboxGl({ accessToken: '' });
 
-    const wrapper = mount(<MapboxMap style="" center={[1, 2]} />);
+    const wrapper = mount(<MapboxMap mapStyle="" center={[1, 2]} />);
 
     wrapper.setState({
       map: {
@@ -120,7 +120,7 @@ describe('Map', () => {
     const mockMaxBounds = jest.fn();
 
     const MapboxMap = ReactMapboxGl({ accessToken: '' });
-    const wrapper = mount(<MapboxMap style="" />);
+    const wrapper = mount(<MapboxMap mapStyle="" />);
     wrapper.setState({
       map: {
         setMaxBounds: mockMaxBounds,
@@ -139,7 +139,7 @@ describe('Map', () => {
     const flyTo = jest.fn();
     const zoom: [number] = [3];
 
-    const wrapper = mount(<MapboxMap style="" zoom={zoom} />);
+    const wrapper = mount(<MapboxMap mapStyle="" zoom={zoom} />);
 
     wrapper.setState({
       map: {
@@ -156,7 +156,7 @@ describe('Map', () => {
     const flyTo = jest.fn();
     const MapboxMap = ReactMapboxGl({ accessToken: '' });
 
-    const wrapper = mount(<MapboxMap style="" zoom={[1]} />);
+    const wrapper = mount(<MapboxMap mapStyle="" zoom={[1]} />);
 
     wrapper.setState({
       map: {
@@ -175,7 +175,7 @@ describe('Map', () => {
     const flyTo = jest.fn();
     const bearing: [number] = [3];
 
-    const wrapper = mount(<MapboxMap style="" bearing={bearing} />);
+    const wrapper = mount(<MapboxMap mapStyle="" bearing={bearing} />);
 
     wrapper.setState({
       map: {
@@ -192,7 +192,7 @@ describe('Map', () => {
     const flyTo = jest.fn();
     const MapboxMap = ReactMapboxGl({ accessToken: '' });
 
-    const wrapper = mount(<MapboxMap style="" bearing={[1]} />);
+    const wrapper = mount(<MapboxMap mapStyle="" bearing={[1]} />);
 
     wrapper.setState({
       map: {
@@ -211,7 +211,7 @@ describe('Map', () => {
     const flyTo = jest.fn();
     const pitch: [number] = [3];
 
-    const wrapper = mount(<MapboxMap style="" pitch={pitch} />);
+    const wrapper = mount(<MapboxMap mapStyle="" pitch={pitch} />);
 
     wrapper.setState({
       map: {
@@ -228,7 +228,7 @@ describe('Map', () => {
     const flyTo = jest.fn();
     const MapboxMap = ReactMapboxGl({ accessToken: '' });
 
-    const wrapper = mount(<MapboxMap style="" pitch={[1]} />);
+    const wrapper = mount(<MapboxMap mapStyle="" pitch={[1]} />);
 
     wrapper.setState({
       map: {
@@ -255,7 +255,7 @@ describe('Map', () => {
 
     const wrapper = mount(
       <MapboxMap
-        style=""
+        mapStyle=""
         zoom={zoom}
         flyToOptions={flyToOptions}
         animationOptions={animationOptions}
