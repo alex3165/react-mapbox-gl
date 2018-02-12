@@ -97,31 +97,44 @@ export const events: EventMapping = {
   onRotateEnd: 'rotateend'
 };
 
-// tslint:disable-next-line:no-any
-export type Listeners = {[T in keyof Events]: (evt: React.SyntheticEvent<any>) => void };
+export type Listeners = {
+  [// tslint:disable-next-line:no-any
+  T in keyof Events]: (evt: React.SyntheticEvent<any>) => void
+};
 
-export const listenEvents = (partialEvents: EventMapping, props: Partial<Events>, map: MapboxGl.Map) =>
-  Object.keys(partialEvents).reduce((listeners, event: keyof Events) => {
-    const propEvent = props[event];
+export const listenEvents = (
+  partialEvents: EventMapping,
+  props: Partial<Events>,
+  map: MapboxGl.Map
+) =>
+  Object.keys(partialEvents).reduce(
+    (listeners, event: keyof Events) => {
+      const propEvent = props[event];
 
-    if (propEvent) {
-      // tslint:disable-next-line:no-any
-      const listener = (evt: React.SyntheticEvent<any>) => {
-        propEvent(map, evt);
-      };
+      if (propEvent) {
+        // tslint:disable-next-line:no-any
+        const listener = (evt: React.SyntheticEvent<any>) => {
+          propEvent(map, evt);
+        };
 
-      map.on(partialEvents[event], listener);
+        map.on(partialEvents[event], listener);
 
-      listeners[event] = listener;
-    }
+        listeners[event] = listener;
+      }
 
-    return listeners;
-  // tslint:disable-next-line:no-object-literal-type-assertion
-  }, {} as Listeners);
+      return listeners;
+    },
+    // tslint:disable-next-line:no-object-literal-type-assertion
+    {} as Listeners
+  );
 
-export const updateEvents = (listeners: Listeners, nextProps: Partial<Events>, map: MapboxGl.Map) => {
-  const toListenOff = Object.keys(events).filter(eventKey =>
-    listeners[eventKey] && typeof nextProps[eventKey] !== 'function'
+export const updateEvents = (
+  listeners: Listeners,
+  nextProps: Partial<Events>,
+  map: MapboxGl.Map
+) => {
+  const toListenOff = Object.keys(events).filter(
+    eventKey => listeners[eventKey] && typeof nextProps[eventKey] !== 'function'
   );
 
   toListenOff.forEach(key => {
@@ -129,11 +142,11 @@ export const updateEvents = (listeners: Listeners, nextProps: Partial<Events>, m
     delete listeners[key];
   });
 
-  const toListenOn = Object.keys(events).filter(key =>
-    !listeners[key] && typeof nextProps[key] === 'function'
-  ).reduce((acc, next) => (acc[next] = events[next], acc), {});
+  const toListenOn = Object.keys(events)
+    .filter(key => !listeners[key] && typeof nextProps[key] === 'function')
+    .reduce((acc, next) => ((acc[next] = events[next]), acc), {});
 
   const newListeners = listenEvents(toListenOn, nextProps, map);
 
   return { ...listeners, ...newListeners };
-}
+};

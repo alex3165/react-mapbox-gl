@@ -80,7 +80,7 @@ const switchStyles = Object.keys(styles).filter(k =>
 
 export interface State {
   styleKey: string;
-  userPosition: number[];
+  featuresPostion: number[][];
   mapCenter: number[];
   renderLayer: boolean;
 }
@@ -95,7 +95,8 @@ const InitialUserPostion = [-0.2416815, 51.5285582];
 class StyleUpdate extends React.Component<Props, State> {
   public state: State = {
     styleKey: 'basic',
-    userPosition: InitialUserPostion,
+    featuresPostion: [InitialUserPostion, InitialUserPostion],
+    // userPosition: InitialUserPostion,
     mapCenter: InitialUserPostion,
     renderLayer: true
   };
@@ -106,7 +107,7 @@ class StyleUpdate extends React.Component<Props, State> {
         const { latitude, longitude } = coords;
 
         this.setState({
-          userPosition: [longitude, latitude],
+          featuresPostion: [[longitude, latitude], InitialUserPostion],
           mapCenter: [longitude, latitude]
         });
       },
@@ -133,9 +134,23 @@ class StyleUpdate extends React.Component<Props, State> {
     this.setState({ renderLayer: !renderLayer });
   };
 
-  private onDragEnd = ({ lngLat }: any) => {
+  private onDragStart = () => {
+    console.log('onDragStart');
+  };
+
+  private onDrag = () => {
+    console.log('onDrag');
+  };
+
+  private onDragEnd = ({ lngLat }: any, key: string | number) => {
+    console.log('onDragEnd');
     this.setState({
-      userPosition: [lngLat.lng, lngLat.lat]
+      featuresPostion: this.state.featuresPostion.map((el, index) => {
+        if (key === index) {
+          return [lngLat.lng, lngLat.lat];
+        }
+        return el;
+      })
     });
   };
 
@@ -145,7 +160,7 @@ class StyleUpdate extends React.Component<Props, State> {
   };
 
   public render() {
-    const { styleKey, userPosition, mapCenter, renderLayer } = this.state;
+    const { styleKey, featuresPostion, mapCenter, renderLayer } = this.state;
 
     return (
       <Container>
@@ -174,12 +189,18 @@ class StyleUpdate extends React.Component<Props, State> {
             id="position-marker"
             paint={POSITION_CIRCLE_PAINT}
           >
-            <Feature
-              coordinates={userPosition}
-              draggable={true}
-              onDragEnd={this.onDragEnd}
-            />
+            {featuresPostion.map((loc, index) => (
+              <Feature
+                key={index}
+                coordinates={loc}
+                draggable={index === 0}
+                onDragEnd={evt => this.onDragEnd(evt, index)}
+                onDragStart={this.onDragStart}
+                onDrag={this.onDrag}
+              />
+            ))}
           </Layer>
+
           <GeoJSONLayer
             data={geojson}
             circleLayout={{ visibility: 'visible' }}
