@@ -137,7 +137,7 @@ export default class RotationControl extends React.Component<Props, State> {
     const controlStyle = {
       ...buttonStyle,
       ...buttonStyleCompass,
-      ...hover === COMPASS ? buttonStyleHovered : {}
+      ...(hover === COMPASS ? buttonStyleHovered : {})
     };
 
     return (

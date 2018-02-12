@@ -119,12 +119,12 @@ export default class ZoomControl extends React.Component<Props, State> {
     const plusStyle = {
       ...buttonStyle,
       ...buttonStylePlus,
-      ...hover === PLUS ? buttonStyleHovered : {}
+      ...(hover === PLUS ? buttonStyleHovered : {})
     };
     const minusStyle = {
       ...buttonStyle,
       ...buttonStyleMinus,
-      ...hover === MINUS ? buttonStyleHovered : {}
+      ...(hover === MINUS ? buttonStyleHovered : {})
     };
 
     return (
