@@ -4,9 +4,9 @@ const zoom = [8];
 
 render(
   <Map
-    style="mapbox://styles/mapbox/streets-v8"
+    mapStyle="mapbox://styles/mapbox/streets-v8"
     zoom={zoom}
-    containerStyle={{
+    style={{
       height: "100%",
       width: "500px"
     }}>

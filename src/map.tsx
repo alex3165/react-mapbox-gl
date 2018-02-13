@@ -44,7 +44,7 @@ export interface FlyToOptions {
 
 // React Props updated between re-render
 export interface Props {
-  style: string | MapboxGl.Style;
+  mapStyle: string | MapboxGl.Style;
   center?: number[];
   zoom?: [number];
   maxBounds?: MapboxGl.LngLatBounds | FitBounds;
@@ -52,7 +52,7 @@ export interface Props {
   fitBoundsOptions?: FitBoundsOptions;
   bearing?: [number];
   pitch?: [number];
-  containerStyle?: React.CSSProperties;
+  style?: React.CSSProperties;
   className?: string;
   movingMethod?: 'jumpTo' | 'easeTo' | 'flyTo';
   animationOptions?: Partial<AnimationOptions>;
@@ -176,7 +176,7 @@ const ReactMapboxFactory = ({
 
     public componentDidMount() {
       const {
-        style,
+        mapStyle,
         onStyleLoad,
         center,
         pitch,
@@ -212,7 +212,7 @@ const ReactMapboxFactory = ({
           fitBounds && center === defaultCenter
             ? this.calcCenter(fitBounds)
             : center,
-        style,
+        style: mapStyle,
         scrollZoom,
         attributionControl,
         interactive,
@@ -359,8 +359,8 @@ const ReactMapboxFactory = ({
         });
       }
 
-      if (!isEqual(this.props.style, nextProps.style)) {
-        map.setStyle(nextProps.style);
+      if (!isEqual(this.props.mapStyle, nextProps.mapStyle)) {
+        map.setStyle(nextProps.mapStyle);
       }
 
       return null;
@@ -371,14 +371,14 @@ const ReactMapboxFactory = ({
     };
 
     public render() {
-      const { containerStyle, className, children } = this.props;
+      const { style, className, children } = this.props;
       const { ready } = this.state;
 
       return (
         <div
           ref={this.setRef}
           className={className}
-          style={{ ...containerStyle, ...defaultContainerStyle }}
+          style={{ ...style, ...defaultContainerStyle }}
         >
           {ready && children}
         </div>

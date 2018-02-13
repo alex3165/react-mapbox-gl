@@ -14,7 +14,7 @@ const Mapbox = ReactMapboxGl({
   accessToken: token
 });
 
-const mapStyle = {
+const mapContainerStyle = {
   flex: 1
 };
 
@@ -99,14 +99,14 @@ export default class LondonCycle extends React.Component<Props, State> {
 
     return (
       <Mapbox
-        style={styles.londonCycle}
+        mapStyle={styles.londonCycle}
         onStyleLoad={this.onStyleLoad}
         fitBounds={fitBounds}
         maxBounds={maxBounds}
         center={center}
         zoom={zoom}
         onDrag={this.onDrag}
-        containerStyle={mapStyle}
+        style={mapContainerStyle}
         flyToOptions={flyToOptions}
       >
         <Layer type="symbol" id="marker" layout={layoutLayer} images={images}>

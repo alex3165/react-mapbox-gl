@@ -58,8 +58,8 @@ const Map = ReactMapboxGl({
 });
 
 <Map
-  style="mapbox://styles/mapbox/streets-v9"
-  containerStyle={{
+  mapStyle="mapbox://styles/mapbox/streets-v9"
+  style={{
     height: "100vh",
     width: "100vw"
   }}>
