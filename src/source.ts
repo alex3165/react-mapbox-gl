@@ -1,6 +1,6 @@
 import * as React from 'react';
 import * as PropTypes from 'prop-types';
-import { Map, GeoJSONSource, GeoJSONSourceRaw } from 'mapbox-gl';
+import { Map, GeoJSONSource, GeoJSONSourceRaw, Layer } from 'mapbox-gl';
 import { SourceOptionData, TilesJson } from './util/types';
 
 export interface Context {
@@ -13,6 +13,10 @@ export interface Props {
   tileJsonSource?: TilesJson;
   onSourceAdded?: (source: GeoJSONSource | TilesJson) => void;
   onSourceLoaded?: (source: GeoJSONSource | TilesJson) => void;
+}
+
+export interface LayerWithBefore extends Layer {
+  before?: string;
 }
 
 export default class Source extends React.Component<Props> {
@@ -79,6 +83,29 @@ export default class Source extends React.Component<Props> {
     map.off('sourcedata', this.onData);
   };
 
+  public removeSource(): LayerWithBefore[] {
+    const { map } = this.context;
+
+    if (map.getSource(this.id)) {
+      let { layers = [] } = map.getStyle();
+
+      layers = layers
+        .map((layer, idx) => {
+          const { id: before } = layers[idx + 1] || { id: undefined };
+          return { ...layer, before };
+        })
+        .filter(layer => layer.source === this.id);
+
+      layers.forEach(layer => map.removeLayer(layer.id));
+
+      map.removeSource(this.id);
+
+      return layers.reverse();
+    }
+
+    return [];
+  }
+
   public componentWillUnmount() {
     const { map } = this.context;
 
@@ -87,18 +114,7 @@ export default class Source extends React.Component<Props> {
     }
 
     map.off('styledata', this.onStyleDataChange);
-
-    if (map.getSource(this.id)) {
-      const { layers } = map.getStyle();
-
-      if (layers) {
-        layers
-          .filter(layer => layer.source === this.id)
-          .forEach(layer => map.removeLayer(layer.id));
-      }
-
-      map.removeSource(this.id);
-    }
+    this.removeSource();
   }
 
   public componentWillReceiveProps(props: Props) {
@@ -115,8 +131,10 @@ export default class Source extends React.Component<Props> {
         tileJsonSource.maxzoom !== props.tileJsonSource.maxzoom;
 
       if (hasNewTilesSource) {
-        map.removeSource(this.id);
+        const layers = this.removeSource();
         map.addSource(this.id, props.tileJsonSource);
+
+        layers.forEach(layer => map.addLayer(layer, layer.before));
       }
     }
 
