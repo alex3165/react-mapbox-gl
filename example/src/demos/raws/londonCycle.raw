@@ -23,7 +23,7 @@ const layoutLayer = { 'icon-image': 'londonCycle' };
 
 // Create an image for the Layer
 const image = new Image();
-image.src = 'data:image/svg+xml;charset=utf-8,' + svg;
+image.src = 'data:image/svg+xml;charset=utf-8;base64,' + btoa(svg);
 const images: any = ['londonCycle', image];
 
 const StyledPopup = styled.div`
