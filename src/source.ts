@@ -1,5 +1,7 @@
 import * as React from 'react';
 import * as PropTypes from 'prop-types';
+const isEqual = require('deep-equal'); //tslint:disable-line
+
 import { Map, GeoJSONSource, GeoJSONSourceRaw, Layer } from 'mapbox-gl';
 import { SourceOptionData, TilesJson } from './util/types';
 
@@ -126,7 +128,7 @@ export default class Source extends React.Component<Props> {
       const hasNewTilesSource =
         tileJsonSource.url !== props.tileJsonSource.url ||
         // Check for reference equality on tiles array
-        tileJsonSource.tiles !== props.tileJsonSource.tiles ||
+        !isEqual(tileJsonSource.tiles, props.tileJsonSource.tiles) ||
         tileJsonSource.minzoom !== props.tileJsonSource.minzoom ||
         tileJsonSource.maxzoom !== props.tileJsonSource.maxzoom;
 
