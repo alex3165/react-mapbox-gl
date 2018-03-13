@@ -90,6 +90,7 @@ export interface FactoryParameters {
   classes?: string[];
   bearingSnap?: number;
   injectCss?: boolean;
+  transformRequest?: Function;
 }
 
 // Satisfy typescript pitfall with defaultProps
@@ -105,6 +106,7 @@ declare global {
   namespace mapboxgl {
     export interface MapboxOptions {
       failIfMajorPerformanceCaveat?: boolean;
+      transformRequest?: Function;
     }
   }
 }
@@ -132,7 +134,8 @@ const ReactMapboxFactory = ({
   failIfMajorPerformanceCaveat = false,
   classes,
   bearingSnap = 7,
-  injectCss = true
+  injectCss = true,
+  transformRequest
 }: FactoryParameters) => {
   if (injectCss) {
     injectCSS(window);
@@ -228,7 +231,8 @@ const ReactMapboxFactory = ({
         logoPosition,
         classes,
         bearingSnap,
-        failIfMajorPerformanceCaveat
+        failIfMajorPerformanceCaveat,
+        transformRequest
       };
 
       if (bearing) {
