@@ -96,7 +96,14 @@ export default class Layer extends React.Component<Props> {
   };
 
   // tslint:disable-next-line:no-any
-  private geometry = (coordinates: any) => {
+  private geometry = (coordinates: any, type: string) => {
+    if (type) {
+      return {
+        type: type as string,
+        coordinates
+      };
+    }
+
     switch (this.props.type) {
       case 'symbol':
       case 'circle':
@@ -127,7 +134,7 @@ export default class Layer extends React.Component<Props> {
 
   private makeFeature = (props: FeatureProps, id: number): Feature => ({
     type: 'Feature',
-    geometry: this.geometry(props.coordinates),
+    geometry: this.geometry(props.coordinates, props.type),
     properties: { ...props.properties, id }
   });
 

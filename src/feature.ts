@@ -4,6 +4,7 @@ import { AnyShapeCoordinates } from './util/types';
 export interface Props {
   // lat lng array (circle, line, symbol) or array of array... of lat lng (polygons)
   coordinates: AnyShapeCoordinates;
+  type: string;
   // tslint:disable-next-line:no-any
   properties?: any;
   onClick?: React.MouseEventHandler<HTMLElement>;
