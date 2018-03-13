@@ -58,6 +58,13 @@ export interface Props {
   animationOptions?: Partial<AnimationOptions>;
   flyToOptions?: Partial<FlyToOptions>;
   children?: JSX.Element | JSX.Element[] | Array<JSX.Element | undefined>;
+  doubleClickZoom?: boolean;
+  touchZoomRotate?: boolean;
+  dragPan?: boolean;
+  dragRotate?: boolean;
+  scrollZoom?: boolean;
+  keyboard?: boolean;
+  boxZoom?: boolean;
 }
 
 export interface State {
@@ -363,7 +370,26 @@ const ReactMapboxFactory = ({
         map.setStyle(nextProps.style);
       }
 
+      const handlerNames = ['doubleClickZoom', 'dragPan', 'dragRotate',
+        'touchZoomRotate', 'scrollZoom', 'boxZoom', 'keyboard']
+      for (const name of handlerNames) {
+        this.toggleInteractionHandler(name, nextProps)
+      }
+
       return null;
+    }
+
+    public toggleInteractionHandler(handlerName: string, nextProps: Props & Events) {
+      const {map} = this.state as State;
+      if (this.props[handlerName] === nextProps[handlerName] || !map) {
+        return;
+      }
+
+      if (nextProps[handlerName]) {
+        map[handlerName].enable()
+      } else {
+        map[handlerName].disable()
+      }
     }
 
     public setRef = (x: HTMLElement | null) => {
