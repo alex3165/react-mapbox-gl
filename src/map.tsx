@@ -65,6 +65,10 @@ export interface State {
   ready: boolean;
 }
 
+export type RequestTransformFunction = (url: string,
+                                        // tslint:disable-next-line:no-any
+                                        resourceType: any) => any;
+
 // Static Properties of the map
 export interface FactoryParameters {
   accessToken: string;
@@ -90,7 +94,7 @@ export interface FactoryParameters {
   classes?: string[];
   bearingSnap?: number;
   injectCss?: boolean;
-  transformRequest?: Function;
+  transformRequest?: RequestTransformFunction;
 }
 
 // Satisfy typescript pitfall with defaultProps
@@ -106,7 +110,7 @@ declare global {
   namespace mapboxgl {
     export interface MapboxOptions {
       failIfMajorPerformanceCaveat?: boolean;
-      transformRequest?: Function;
+      transformRequest?: RequestTransformFunction;
     }
   }
 }
