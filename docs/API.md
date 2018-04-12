@@ -48,7 +48,7 @@ const Map = ReactMapboxGl({
 ### Component Properties
 - **style** *(required)* : `string | object`  Mapbox map style, if changed, the style will be updated using `setStyle`.
 - **center** *(Default: `[ -0.2416815, 51.5285582 ]`)*: `[number, number]` Center the map at the position at initialisation
-  - Must be in longitude, latitude coordinate order (as opposed to latitude, longitude) to match GeoJSON (source: https://www.mapbox.com/mapbox-gl-js/api/#lnglat). 
+  - Must be in longitude, latitude coordinate order (as opposed to latitude, longitude) to match GeoJSON (source: https://www.mapbox.com/mapbox-gl-js/api/#lnglat).
   - Re-center the map if the value change regarding the prev value or the actual center position [flyTo](https://www.mapbox.com/mapbox-gl-js/api/#Map.flyTo)
 - **zoom** *(Default: `[11]`)*: `[number]` Zoom level of the map at initialisation wrapped in an array.
   - Check for reference equality between the previous value of zoom and the new one in order to update it or not.
@@ -446,6 +446,7 @@ clusterMarker = (coordinates) => (
 - **log**: *Default: false*:`boolean` Whether timing info should be logged.
 - **zoomOnClick**: *Default: false*:`boolean` Zoom to bounds of cluster on click.
 - **zoomOnClickPadding**: *Default: 20*:`number` The amount of padding in pixels to add to the cluster bounds for the zoom.
+- **zoomOnClickOffset**: `number[]` Offset when zooming on click by e.g [100, 0] pixels.
 - **style**: `object` Apply style to the marker container
 - **className**: `string` Apply the className to the container of the Marker
 - **tabIndex** : `number` define the tab index value of the top container tag
