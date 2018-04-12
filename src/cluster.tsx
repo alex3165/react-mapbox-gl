@@ -25,6 +25,7 @@ export interface Props {
   log?: boolean;
   zoomOnClick?: boolean;
   zoomOnClickPadding?: number;
+  zoomOnClickOffset?: number[];
   children?: Array<React.Component<MarkerProps>>;
   style?: React.CSSProperties;
   className?: string;
@@ -176,7 +177,8 @@ export default class Cluster extends React.Component<Props, State> {
     // https://github.com/mapbox/mapbox-gl-js/issues/5249
     // tslint:disable-next-line:no-any
     this.context.map.fitBounds(LngLatBounds.convert(childrenBbox as any), {
-      padding: this.props.zoomOnClickPadding!
+      padding: this.props.zoomOnClickPadding!,
+      offset: this.props.zoomOnClickOffset
     });
   };
 
