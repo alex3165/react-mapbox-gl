@@ -1,12 +1,21 @@
 import * as React from 'react';
 import * as PropTypes from 'prop-types';
-import { Map, LngLatBounds } from 'mapbox-gl';
+import { Map, LngLatBounds, Point } from 'mapbox-gl';
 import { Props as MarkerProps } from './marker';
 import supercluster, { Supercluster } from 'supercluster';
 import * as GeoJSON from 'geojson';
 import { Feature } from './util/types';
 import * as bbox from '@turf/bbox';
 import { polygon, featureCollection } from '@turf/helpers';
+import { PaddingOptions } from './map';
+
+export interface ZoomOnClickOptions {
+  padding?: number | PaddingOptions;
+  linear?: boolean;
+  easing?: (time: number) => number;
+  offset?: Point | number[];
+  maxZoom?: number;
+}
 
 export interface Props {
   ClusterMarkerFactory(
@@ -24,6 +33,7 @@ export interface Props {
   nodeSize?: number;
   log?: boolean;
   zoomOnClick?: boolean;
+  zoomOnClickOptions?: ZoomOnClickOptions;
   zoomOnClickPadding?: number;
   children?: Array<React.Component<MarkerProps>>;
   style?: React.CSSProperties;
@@ -34,6 +44,7 @@ export interface Props {
 export interface State {
   superC: Supercluster;
   clusterPoints: Array<GeoJSON.Feature<GeoJSON.Point>>;
+  zoomOnClickOptions: ZoomOnClickOptions;
 }
 
 export interface Context {
@@ -54,8 +65,7 @@ export default class Cluster extends React.Component<Props, State> {
     extent: 512,
     nodeSize: 64,
     log: false,
-    zoomOnClick: false,
-    zoomOnClickPadding: 20
+    zoomOnClick: false
   };
 
   public state: State = {
@@ -67,7 +77,8 @@ export default class Cluster extends React.Component<Props, State> {
       nodeSize: this.props.nodeSize,
       log: this.props.log
     }),
-    clusterPoints: []
+    clusterPoints: [],
+    zoomOnClickOptions: this.props.zoomOnClickOptions || {}
   };
 
   private featureClusterMap = new WeakMap<
@@ -75,9 +86,26 @@ export default class Cluster extends React.Component<Props, State> {
     React.Component<MarkerProps>
   >();
 
+  private handleDeprecatedZoomOnClickPadding = () => {
+    console.warn(
+      'react-mapbox-gl: Cluster zoomOnClickPadding prop is deprecated. Use zoomOnClickOptions instead'
+    );
+
+    this.setState(state => ({
+      zoomOnClickOptions: {
+        ...state.zoomOnClickOptions,
+        zoomOnClickPadding: this.props.zoomOnClickPadding
+      }
+    }));
+  };
+
   public componentWillMount() {
     const { map } = this.context;
-    const { children } = this.props;
+    const { children, zoomOnClickPadding } = this.props;
+
+    if (zoomOnClickPadding) {
+      this.handleDeprecatedZoomOnClickPadding();
+    }
 
     if (children) {
       this.childrenChange(children as Array<React.Component<MarkerProps>>);
@@ -172,12 +200,14 @@ export default class Cluster extends React.Component<Props, State> {
       cluster.properties.cluster_id,
       Infinity
     );
+
     const childrenBbox = bbox(featureCollection(children));
-    // https://github.com/mapbox/mapbox-gl-js/issues/5249
-    // tslint:disable-next-line:no-any
-    this.context.map.fitBounds(LngLatBounds.convert(childrenBbox as any), {
-      padding: this.props.zoomOnClickPadding!
-    });
+    this.context.map.fitBounds(
+      // https://github.com/mapbox/mapbox-gl-js/issues/5249
+      // tslint:disable-next-line:no-any
+      LngLatBounds.convert(childrenBbox as any),
+      this.state.zoomOnClickOptions
+    );
   };
 
   private findMarkerElement(
