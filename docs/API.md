@@ -445,8 +445,8 @@ clusterMarker = (coordinates) => (
 - **nodeSize**: *Default: 64*:`number` Size of the KD-tree leaf node. Affects performance.
 - **log**: *Default: false*:`boolean` Whether timing info should be logged.
 - **zoomOnClick**: *Default: false*:`boolean` Zoom to bounds of cluster on click.
-- **zoomOnClickPadding**: *Default: 20*:`number` The amount of padding in pixels to add to the cluster bounds for the zoom.
-- **zoomOnClickOffset**: `number[]` Offset when zooming on click by e.g [100, 0] pixels.
+- **zoomOnClickPadding**: DEPRECATED: `number` The amount of padding in pixels to add to the cluster bounds for the zoom.
+- **zoomOnClickOptions**: `object` Options for zoomOnClick [fitBounds options](https://www.mapbox.com/mapbox-gl-js/api/#Map#fitBounds)
 - **style**: `object` Apply style to the marker container
 - **className**: `string` Apply the className to the container of the Marker
 - **tabIndex** : `number` define the tab index value of the top container tag
