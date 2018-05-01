@@ -3,13 +3,16 @@
   "version": "4.0.0",
   "description": "A React binding of mapbox-gl-js",
   "main": "lib/index.js",
+  "module": "lib-esm/index.js",
   "typings": "lib/index.d.ts",
   "scripts": {
     "clean": "rm -rf dist",
     "test": "jest",
     "test:watch": "jest --watch",
     "lint": "tslint --project tsconfig.json",
-    "build": "npm run lint && npm run test && tsc",
+    "build": "npm run lint && npm run test && npm run build:commonjs && npm run build:esm",
+    "build:commonjs": "tsc -p tsconfig.json",
+    "build:esm": "tsc -p tsconfig-esm.json",
     "build:watch": "tsc --watch",
     "prepublishOnly": "npm run clean && npm run build",
     "version": "npm run build",
@@ -37,6 +40,7 @@
   },
   "files": [
     "lib",
+    "lib-esm",
     "src"
   ],
   "repository": {
