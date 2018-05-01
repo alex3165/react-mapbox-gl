@@ -87,7 +87,14 @@ export default class Cluster extends React.Component<Props, State> {
     map.on('zoom', this.mapChange);
     this.mapChange();
   }
+  
+  public componentWillUnmount() {
+    const { map } = this.context;
 
+    map.off('move', this.mapChange);
+    map.off('zoom', this.mapChange);
+  }
+  
   public componentWillReceiveProps(nextProps: Props) {
     const { children } = this.props;
 
