@@ -230,11 +230,11 @@ function layerMouseTouchEvents(
     public componentWillUnmount() {
       const { map } = this.context;
 
-      map.off('click', this.onClick);
-      map.off('mouseenter', this.onMouseEnter);
-      map.off('mouseleave', this.onMouseLeave);
-      map.off('mousedown', this.onMouseDown);
-      map.off('touchstart', this.onTouchStart);
+      map.off('click', this.id, this.onClick);
+      map.off('mouseenter', this.id, this.onMouseEnter);
+      map.off('mouseleave', this.id, this.onMouseLeave);
+      map.off('mousedown', this.id, this.onMouseDown);
+      map.off('touchstart', this.id, this.onTouchStart);
     }
 
     public render() {
