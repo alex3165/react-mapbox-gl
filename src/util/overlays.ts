@@ -48,32 +48,88 @@ const calculateAnchor = (
   map: Map,
   offsets: AnchorsOffset,
   position: PointDef,
-  { offsetHeight, offsetWidth } = defaultElement
+  { offsetHeight, offsetWidth } = defaultElement,
+  anchor?: Anchor,
+  preferred?: boolean
 ) => {
-  let anchor: string[] = [];
+  if (anchor && !preferred) {
+    return anchor;
+  }
 
-  if (position.y + offsets.bottom.y - offsetHeight < 0) {
-    anchor = [anchors[1]];
+  let result: string[] = [];
+
+  const relativeOffsetHeight = offsetHeight * getVerticalOffsetRatio(anchor || 'bottom');
+
+  if (position.y + offsets.bottom.y - relativeOffsetHeight < 0) {
+    result = [anchors[1]];
   } else if (
-    position.y + offsets.top.y + offsetHeight >
+    position.y + offsets.top.y + offsetHeight - relativeOffsetHeight >
     // tslint:disable-next-line:no-any
     (map as any).transform.height
   ) {
-    anchor = [anchors[2]];
+    result = [anchors[2]];
+  } else if (anchor) {
+    if (anchor.indexOf('top') === 0) {
+      result = ['top'];
+    } else if (anchor.indexOf('bottom') === 0) {
+      result = ['bottom'];
+    }
   }
 
-  if (position.x < offsetWidth / 2) {
-    anchor.push(anchors[3]);
+  const relativeOffsetWidth = offsetWidth * getHorizontalOffsetRatio(anchor || 'center');
+
+  if (position.x < relativeOffsetWidth) {
+    result.push(anchors[3]);
     // tslint:disable-next-line:no-any
-  } else if (position.x > (map as any).transform.width - offsetWidth / 2) {
-    anchor.push(anchors[4]);
+  } else if (position.x > (map as any).transform.width - offsetWidth + relativeOffsetWidth) {
+    result.push(anchors[4]);
+  } else if (anchor) {
+    if (anchor.indexOf('left') !== -1) {
+      result.push('left');
+    } else if (anchor.indexOf('right') !== -1) {
+      result.push('right');
+    }
   }
 
-  if (anchor.length === 0) {
+  if (result.length === 0) {
     return anchors[2];
   }
 
-  return anchor.join('-') as Anchor;
+  return result.join('-') as Anchor;
+};
+
+const getHorizontalOffsetRatio = (anchor: Anchor): number => {
+  switch (anchor) {
+    case 'center':
+    case 'top':
+    case 'bottom':
+      return 0.5;
+    case 'left':
+    case 'top-left':
+    case 'bottom-left':
+      return 0;
+    case 'right':
+    case 'top-right':
+    case 'bottom-right':
+      return 1;
+  }
+};
+
+const getVerticalOffsetRatio = (anchor: Anchor): number => {
+  switch (anchor) {
+    case 'center':
+    case 'left':
+    case 'right':
+      return 0.5;
+    case 'top':
+    case 'top-left':
+    case 'top-right':
+      return 0;
+    case 'bottom':
+    case 'bottom-left':
+    case 'bottom-right':
+      return 1;
+  }
 };
 
 const normalizedOffsets = (
@@ -129,8 +185,7 @@ export const overlayState = (
 ) => {
   const position = projectCoordinates(map, props.coordinates);
   const offsets = normalizedOffsets(props.offset);
-  const anchor =
-    props.anchor || calculateAnchor(map, offsets, position, container);
+  const anchor = calculateAnchor(map, offsets, position, container, props.anchor, props.preferredAnchor);
 
   return {
     anchor,

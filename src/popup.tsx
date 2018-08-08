@@ -18,6 +18,7 @@ export interface Props {
   style?: React.CSSProperties;
   className?: string;
   tabIndex?: number;
+  preferredAnchor?: boolean;
 }
 
 export const defaultClassName = ['mapboxgl-popup'];
