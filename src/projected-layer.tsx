@@ -23,6 +23,7 @@ export interface Props {
   style?: React.CSSProperties;
   className: string;
   tabIndex?: number;
+  preferredAnchor?: boolean;
 }
 
 export interface Context {
