@@ -2,7 +2,7 @@ import * as React from 'react';
 import * as PropTypes from 'prop-types';
 import { Map, Point } from 'mapbox-gl';
 import { OverlayParams, overlayState, overlayTransform } from './util/overlays';
-import { Anchor } from './util/types';
+import { Anchor, OptionalOffset } from './util/types';
 
 const defaultStyle = {
   zIndex: 3
@@ -12,7 +12,7 @@ export interface Props {
   type: 'marker' | 'popup';
   coordinates: number[];
   anchor?: Anchor;
-  offset?: number | number[] | Point;
+  offset?: number | number[] | Point | OptionalOffset;
   children?: JSX.Element | JSX.Element[];
   onClick?: React.MouseEventHandler<HTMLDivElement>;
   onDoubleClick?: React.MouseEventHandler<HTMLDivElement>;
