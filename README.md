@@ -8,7 +8,7 @@
 [![TypeScript](https://badges.frapsoft.com/typescript/code/typescript.svg?v=101)](https://github.com/ellerbrock/typescript-badges/)
 <br/>
 
- #### React wrapper for [mapbox-gl-js](https://www.mapbox.com/mapbox-gl-js/api/).
+#### React wrapper for [mapbox-gl-js](https://www.mapbox.com/mapbox-gl-js/api/).
 <br/><br/>
 ![London cycle example gif](docs/london-cycle-example.gif "London cycle example gif")
 
