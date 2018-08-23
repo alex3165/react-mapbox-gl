@@ -77,7 +77,7 @@ export default class Root extends React.Component<RouteComponentProps<void, void
               target="_blank"
               style={{ borderRight: 0 }}
             >
-              Github
+              GitHub
             </ExternalLink>
           </Nav>
         </Header>
