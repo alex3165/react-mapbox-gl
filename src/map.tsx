@@ -66,9 +66,10 @@ export interface State {
   ready: boolean;
 }
 
-export type RequestTransformFunction = (url: string,
-                                        // tslint:disable-next-line:no-any
-                                        resourceType: any) => any;
+export type RequestTransformFunction = (
+  url: string,
+  resourceType: any // tslint:disable-line:no-any
+) => any; // tslint:disable-line:no-any
 
 // Static Properties of the map
 export interface FactoryParameters {
