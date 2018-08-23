@@ -80,7 +80,7 @@ If those properties changed at the mapbox-gl-js level and you don't update the v
 ## [Version 2.0 Documentation](https://github.com/alex3165/react-mapbox-gl/blob/v2-archive/docs/API.md)
 
 ## Contributions
-Please try to reproduce your problem with the [boilerplate](https://github.com/alex3165/react-mapbox-gl-debug) before posting an issue 
+Please try to reproduce your problem with the [boilerplate](https://github.com/alex3165/react-mapbox-gl-debug) before posting an issue.
 
 ## Built with react-mapbox-gl
 [monumap.org](https://monumap.org/)
