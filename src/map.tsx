@@ -24,6 +24,7 @@ export interface FitBoundsOptions {
   padding?: number | PaddingOptions;
   offset?: MapboxGl.Point | number[];
   maxZoom?: number;
+  duration?: number;
 }
 
 export type FitBounds = number[][];
