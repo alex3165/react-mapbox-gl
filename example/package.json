@@ -5,7 +5,7 @@
   "license": "MIT",
   "homepage": "http://alex3165.github.io/react-mapbox-gl",
   "scripts": {
-    "start": "cross-env NODE_ENV=dev node dev.server.js",
+    "start": "cross-env NODE_ENV=dev webpack-dev-server --hot",
     "build": "cross-env NODE_ENV=prod webpack && cp dist/index.html dist/demos.html",
     "predeploy": "npm run build",
     "deploy": "gh-pages -d dist"
