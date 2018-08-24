@@ -3,7 +3,7 @@ import * as PropTypes from 'prop-types';
 import * as MapboxGL from 'mapbox-gl';
 const isEqual = require('deep-equal'); //tslint:disable-line
 import diff from './util/diff';
-import { Feature, Context } from './util/types';
+import { Context } from './util/types';
 import { Props as FeatureProps } from './feature';
 
 export type Paint =
@@ -96,7 +96,7 @@ export default class Layer extends React.Component<Props> {
   };
 
   // tslint:disable-next-line:no-any
-  private geometry = (coordinates: any) => {
+  private geometry = (coordinates: any): GeoJSON.Geometry => {
     switch (this.props.type) {
       case 'symbol':
       case 'circle':
@@ -106,8 +106,14 @@ export default class Layer extends React.Component<Props> {
         };
 
       case 'fill':
+        if (coordinates.length > 1) {
+          return {
+            type: 'MultiPolygon',
+            coordinates
+          };
+        }
         return {
-          type: coordinates.length > 1 ? 'MultiPolygon' : 'Polygon',
+          type: 'Polygon',
           coordinates
         };
 
@@ -125,7 +131,10 @@ export default class Layer extends React.Component<Props> {
     }
   };
 
-  private makeFeature = (props: FeatureProps, id: number): Feature => ({
+  private makeFeature = (
+    props: FeatureProps,
+    id: number
+  ): GeoJSON.Feature<GeoJSON.Geometry, GeoJSON.GeoJsonProperties> => ({
     type: 'Feature',
     geometry: this.geometry(props.coordinates),
     properties: { ...props.properties, id }
@@ -313,7 +322,7 @@ export default class Layer extends React.Component<Props> {
     if (source && !sourceId && source.setData) {
       source.setData({
         type: 'FeatureCollection',
-        features
+        features: features as GeoJSON.Feature[]
       });
     }
 

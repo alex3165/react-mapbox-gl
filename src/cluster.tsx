@@ -4,7 +4,6 @@ import { Map, LngLatBounds } from 'mapbox-gl';
 import { Props as MarkerProps } from './marker';
 import supercluster, { Supercluster } from 'supercluster';
 import * as GeoJSON from 'geojson';
-import { Feature } from './util/types';
 import * as bbox from '@turf/bbox';
 import { polygon, featureCollection } from '@turf/helpers';
 
@@ -71,7 +70,7 @@ export default class Cluster extends React.Component<Props, State> {
   };
 
   private featureClusterMap = new WeakMap<
-    Feature,
+    GeoJSON.Feature,
     React.Component<MarkerProps>
   >();
 
@@ -102,7 +101,7 @@ export default class Cluster extends React.Component<Props, State> {
   ) => {
     const { superC } = this.state;
     this.featureClusterMap = new WeakMap<
-      Feature,
+      GeoJSON.Feature,
       React.Component<MarkerProps>
     >();
     const features = this.childrenToFeatures(newChildren);
@@ -150,11 +149,19 @@ export default class Cluster extends React.Component<Props, State> {
       return feature;
     });
 
-  private getLeaves = (feature: Feature, limit?: number, offset?: number) => {
+  private getLeaves = (
+    feature: GeoJSON.Feature,
+    limit?: number,
+    offset?: number
+  ) => {
     const { superC } = this.state;
     return superC
-      .getLeaves(feature.properties.cluster_id, limit || Infinity, offset)
-      .map((leave: Feature) => this.featureClusterMap.get(leave));
+      .getLeaves(
+        feature.properties && feature.properties.cluster_id,
+        limit || Infinity,
+        offset
+      )
+      .map((leave: GeoJSON.Feature) => this.featureClusterMap.get(leave));
   };
 
   public zoomToClusterBounds = (event: React.MouseEvent<HTMLElement>) => {
@@ -164,12 +171,12 @@ export default class Cluster extends React.Component<Props, State> {
       event.target as HTMLElement
     );
     const index = markers.indexOf(marker);
-    const cluster = this.state.clusterPoints[index] as Feature;
-    if (!cluster.properties.cluster_id) {
+    const cluster = this.state.clusterPoints[index] as GeoJSON.Feature;
+    if (!cluster.properties || !cluster.properties.cluster_id) {
       return;
     }
     const children = this.state.superC.getLeaves(
-      cluster.properties.cluster_id,
+      cluster.properties && cluster.properties.cluster_id,
       Infinity
     );
     const childrenBbox = bbox(featureCollection(children));
@@ -201,8 +208,8 @@ export default class Cluster extends React.Component<Props, State> {
         tabIndex={tabIndex}
         onClick={this.props.zoomOnClick ? this.zoomToClusterBounds : undefined}
       >
-        {clusterPoints.map((feature: Feature) => {
-          if (feature.properties.cluster) {
+        {clusterPoints.map((feature: GeoJSON.Feature<GeoJSON.Point>) => {
+          if (feature.properties && feature.properties.cluster) {
             return ClusterMarkerFactory(
               feature.geometry.coordinates,
               feature.properties.point_count,

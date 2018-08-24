@@ -3,6 +3,7 @@ import {
   RasterSource,
   GeoJSONSource,
   GeoJSONSourceRaw,
+  RasterDemSource,
   ImageSource,
   VideoSource,
   Point,
@@ -33,22 +34,13 @@ export type Sources =
   | GeoJSONSource
   | GeoJSONSourceRaw
   | ImageSource
-  | VideoSource;
+  | VideoSource
+  | RasterDemSource;
 
 export type SourceOptionData =
   | GeoJSON.Feature<GeoJSON.GeometryObject>
   | GeoJSON.FeatureCollection<GeoJSON.GeometryObject>
   | string;
-
-export interface Feature {
-  type: 'Feature';
-  geometry: {
-    type: string;
-    coordinates: GeoJSON.Position;
-  };
-  // tslint:disable-next-line:no-any
-  properties: any;
-}
 
 export type TilesJson = VectorSource | RasterSource;
 
