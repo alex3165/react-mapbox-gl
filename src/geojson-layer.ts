@@ -4,7 +4,7 @@ import * as MapboxGL from 'mapbox-gl';
 const isEqual = require('deep-equal'); //tslint:disable-line
 import diff from './util/diff';
 import { generateID } from './util/uid';
-import { Sources, SourceOptionData, Context, LayerType } from './util/types';
+import { Sources, Context, LayerType } from './util/types';
 
 const types = ['symbol', 'line', 'fill', 'fill-extrusion', 'circle'];
 const toCamelCase = (str: string) =>
@@ -90,7 +90,7 @@ export interface Props
     FillProps,
     FillExtrusionProps {
   id?: string;
-  data: SourceOptionData;
+  data: GeoJSON.Feature<GeoJSON.Geometry, GeoJSON.GeoJsonProperties>;
   layerOptions?: MapboxGL.Layer;
   sourceOptions?:
     | MapboxGL.VectorSource

@@ -1,7 +1,7 @@
 import * as React from 'react';
 import * as PropTypes from 'prop-types';
 import { Map, GeoJSONSource, GeoJSONSourceRaw, Layer } from 'mapbox-gl';
-import { SourceOptionData, TilesJson } from './util/types';
+import { TilesJson } from './util/types';
 
 export interface Context {
   map: Map;
@@ -78,7 +78,7 @@ export default class Source extends React.Component<Props> {
     }
     // Will fix datasource being empty
     if (source && this.props.geoJsonSource && this.props.geoJsonSource.data) {
-      source.setData(this.props.geoJsonSource.data as SourceOptionData);
+      source.setData(this.props.geoJsonSource.data);
     }
     map.off('sourcedata', this.onData);
   };
@@ -143,10 +143,11 @@ export default class Source extends React.Component<Props> {
       geoJsonSource &&
       props.geoJsonSource &&
       props.geoJsonSource.data !== geoJsonSource.data &&
+      props.geoJsonSource.data &&
       map.getSource(this.id)
     ) {
       const source = map.getSource(this.id) as GeoJSONSource;
-      source.setData(props.geoJsonSource.data as SourceOptionData);
+      source.setData(props.geoJsonSource.data);
     }
   }
 

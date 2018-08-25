@@ -93,7 +93,6 @@ export interface FactoryParameters {
   boxZoom?: boolean;
   refreshExpiredTiles?: boolean;
   failIfMajorPerformanceCaveat?: boolean;
-  classes?: string[];
   bearingSnap?: number;
   injectCss?: boolean;
   transformRequest?: RequestTransformFunction;
@@ -138,7 +137,6 @@ const ReactMapboxFactory = ({
   boxZoom = true,
   refreshExpiredTiles = true,
   failIfMajorPerformanceCaveat = false,
-  classes,
   bearingSnap = 7,
   injectCss = true,
   transformRequest
@@ -235,7 +233,6 @@ const ReactMapboxFactory = ({
         boxZoom,
         refreshExpiredTiles,
         logoPosition,
-        classes,
         bearingSnap,
         failIfMajorPerformanceCaveat,
         transformRequest
