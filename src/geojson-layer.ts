@@ -90,7 +90,10 @@ export interface Props
     FillProps,
     FillExtrusionProps {
   id?: string;
-  data: GeoJSON.Feature<GeoJSON.Geometry, GeoJSON.GeoJsonProperties>;
+  data:
+    | GeoJSON.Feature<GeoJSON.Geometry, GeoJSON.GeoJsonProperties>
+    | GeoJSON.FeatureCollection<GeoJSON.Geometry>
+    | string;
   layerOptions?: MapboxGL.Layer;
   sourceOptions?:
     | MapboxGL.VectorSource

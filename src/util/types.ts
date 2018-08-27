@@ -37,11 +37,6 @@ export type Sources =
   | VideoSource
   | RasterDemSource;
 
-export type SourceOptionData =
-  | GeoJSON.Feature<GeoJSON.GeometryObject>
-  | GeoJSON.FeatureCollection<GeoJSON.GeometryObject>
-  | string;
-
 export type TilesJson = VectorSource | RasterSource;
 
 export interface Context {
