@@ -5,14 +5,14 @@ jest.mock('mapbox-gl', () => ({
 
 import {
   overlayTransform,
-  OverlayProps,
+  OverlayParams,
   anchors,
   Anchor
 } from '../util/overlays';
 
 describe('overlayTransform', () => {
   it('Should transform position anchor and offset accordingly', () => {
-    const overlayProps: OverlayProps = {
+    const overlayProps: OverlayParams = {
       anchor: anchors[1] as Anchor,
       offset: { x: 10, y: 20 },
       position: { x: 1000, y: 2000 }
@@ -28,7 +28,7 @@ describe('overlayTransform', () => {
   });
 
   it('Should transform position and offset only', () => {
-    const overlayProps: OverlayProps = {
+    const overlayProps: OverlayParams = {
       offset: { x: 10, y: 20 },
       position: { x: 1000, y: 2000 }
     };
@@ -39,7 +39,7 @@ describe('overlayTransform', () => {
   });
 
   it('Should not add an undefined offset', () => {
-    const overlayProps: OverlayProps = {
+    const overlayProps: OverlayParams = {
       offset: { x: undefined, y: 20 },
       position: { x: 1000, y: 2000 }
     };
@@ -50,7 +50,7 @@ describe('overlayTransform', () => {
   });
 
   it('Should add offset of 0', () => {
-    const overlayProps: OverlayProps = {
+    const overlayProps: OverlayParams = {
       offset: { x: 0, y: 20 },
       position: { x: 1000, y: 2000 }
     };

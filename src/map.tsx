@@ -1,6 +1,5 @@
-import * as MapboxGl from 'mapbox-gl';
-import * as React from 'react';
-import * as PropTypes from 'prop-types';
+import MapboxGl from 'mapbox-gl';
+import React from 'react';
 import injectCSS from './util/inject-css';
 import {
   Events,
@@ -9,7 +8,8 @@ import {
   Listeners,
   updateEvents
 } from './map-events';
-const isEqual = require('deep-equal'); //tslint:disable-line
+import { MapProvider } from './map-context';
+import isEqual from 'deep-equal';
 
 export interface PaddingOptions {
   top: number;
@@ -45,7 +45,7 @@ export interface FlyToOptions {
 
 // React Props updated between re-render
 export interface Props {
-  style: string | MapboxGl.Style;
+  mapStyle: string | MapboxGl.Style;
   center?: number[];
   zoom?: [number];
   maxBounds?: MapboxGl.LngLatBounds | FitBounds;
@@ -53,7 +53,7 @@ export interface Props {
   fitBoundsOptions?: FitBoundsOptions;
   bearing?: [number];
   pitch?: [number];
-  containerStyle?: React.CSSProperties;
+  style?: React.CSSProperties;
   className?: string;
   movingMethod?: 'jumpTo' | 'easeTo' | 'flyTo';
   animationOptions?: Partial<AnimationOptions>;
@@ -102,7 +102,7 @@ export interface FactoryParameters {
 const defaultZoom = [11];
 const defaultMovingMethod = 'flyTo';
 const defaultCenter = [-0.2416815, 51.5285582];
-const defaultContainerStyle = {
+const defaultContainerStyle: Pick<React.CSSProperties, 'textAlign'> = {
   textAlign: 'left'
 };
 
@@ -156,10 +156,6 @@ const ReactMapboxFactory = ({
       pitch: 0
     };
 
-    public static childContextTypes = {
-      map: PropTypes.object
-    };
-
     public state = {
       map: undefined,
       ready: false
@@ -170,11 +166,7 @@ const ReactMapboxFactory = ({
     // tslint:disable-next-line:variable-name
     public _isMounted = true;
 
-    public getChildContext = () => ({
-      map: this.state.map
-    });
-
-    public container: HTMLElement;
+    public container: HTMLElement | undefined;
 
     public calcCenter = (bounds: FitBounds): number[] => [
       (bounds[0][0] + bounds[1][0]) / 2,
@@ -183,7 +175,7 @@ const ReactMapboxFactory = ({
 
     public componentDidMount() {
       const {
-        style,
+        mapStyle,
         onStyleLoad,
         center,
         pitch,
@@ -219,7 +211,7 @@ const ReactMapboxFactory = ({
           fitBounds && center === defaultCenter
             ? this.calcCenter(fitBounds)
             : center,
-        style,
+        style: mapStyle,
         scrollZoom,
         attributionControl,
         interactive,
@@ -257,8 +249,13 @@ const ReactMapboxFactory = ({
 
         opts.pitch = pitch[0];
       }
-
-      const map = new MapboxGl.Map(opts);
+      let map: MapboxGl.Map;
+      try {
+        map = new MapboxGl.Map(opts);
+      } catch (error) {
+        console.error(error);
+        throw error;
+      }
       this.setState({ map });
 
       if (fitBounds) {
@@ -366,8 +363,8 @@ const ReactMapboxFactory = ({
         });
       }
 
-      if (!isEqual(this.props.style, nextProps.style)) {
-        map.setStyle(nextProps.style);
+      if (!isEqual(this.props.mapStyle, nextProps.mapStyle)) {
+        map.setStyle(nextProps.mapStyle);
       }
 
       return null;
@@ -378,17 +375,18 @@ const ReactMapboxFactory = ({
     };
 
     public render() {
-      const { containerStyle, className, children } = this.props;
-      const { ready } = this.state;
-
+      const { style: userStyle, className, children } = this.props;
+      const { ready, map } = this.state;
+      const style = {
+        ...userStyle,
+        ...defaultContainerStyle
+      };
       return (
-        <div
-          ref={this.setRef}
-          className={className}
-          style={{ ...containerStyle, ...defaultContainerStyle }}
-        >
-          {ready && children}
-        </div>
+        <MapProvider map={map}>
+          <div ref={this.setRef} className={className} style={style}>
+            {ready && children}
+          </div>
+        </MapProvider>
       );
     }
   };

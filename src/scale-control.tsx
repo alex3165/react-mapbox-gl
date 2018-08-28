@@ -1,6 +1,5 @@
-import * as React from 'react';
-import * as PropTypes from 'prop-types';
-import { Map } from 'mapbox-gl';
+import React from 'react';
+import { MapConsumer, MapContext } from './map-context';
 import { AnchorLimits } from './util/types';
 
 const scales = [
@@ -79,17 +78,7 @@ export interface State {
   scaleWidth: number;
 }
 
-export interface Context {
-  map: Map;
-}
-
-export default class ScaleControl extends React.Component<Props, State> {
-  public context: Context;
-
-  public static contextTypes = {
-    map: PropTypes.object
-  };
-
+export class ScaleControl extends React.Component<Props & MapContext, State> {
   public static defaultProps = {
     measurement: MEASUREMENTS[0],
     position: POSITIONS[2]
@@ -103,18 +92,17 @@ export default class ScaleControl extends React.Component<Props, State> {
   public componentWillMount() {
     this.setScale();
 
-    this.context.map.on('zoomend', this.setScale);
+    this.props.map.on('zoomend', this.setScale);
   }
 
   public componentWillUnmount() {
-    if (this.context.map) {
-      this.context.map.off('zoomend', this.setScale);
+    if (this.props.map) {
+      this.props.map.off('zoomend', this.setScale);
     }
   }
 
   private setScale = () => {
-    const { map } = this.context;
-    const { measurement } = this.props;
+    const { map, measurement } = this.props;
 
     // tslint:disable-next-line:no-any
     const clientWidth = (map as any)._canvas.clientWidth;
@@ -127,7 +115,7 @@ export default class ScaleControl extends React.Component<Props, State> {
       measurement
     );
 
-    const relativeWidth = totalWidth / clientWidth * MIN_WIDTH_SCALE;
+    const relativeWidth = (totalWidth / clientWidth) * MIN_WIDTH_SCALE;
 
     const chosenScale = scales.reduce((acc, curr) => {
       if (!acc && curr > relativeWidth) {
@@ -138,7 +126,7 @@ export default class ScaleControl extends React.Component<Props, State> {
     }, 0);
 
     // tslint:disable-next-line:no-any
-    const scaleWidth = chosenScale / totalWidth * clientWidth;
+    const scaleWidth = (chosenScale / totalWidth) * clientWidth;
 
     this.setState({
       chosenScale,
@@ -200,3 +188,11 @@ export default class ScaleControl extends React.Component<Props, State> {
     );
   }
 }
+
+const ScaleControlWithMap: React.SFC<Props> = props => (
+  <MapConsumer>
+    {({ map }) => <ScaleControl {...props} map={map} />}
+  </MapConsumer>
+);
+
+export default ScaleControlWithMap;

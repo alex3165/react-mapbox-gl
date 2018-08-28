@@ -1,19 +1,24 @@
-import * as React from 'react';
-import Layer from '../layer';
-import { withContext } from 'recompose';
+import React from 'react';
+import { Layer } from '../layer';
 import { mount } from 'enzyme';
-const PropTypes = require('prop-types'); // tslint:disable-line
+
+const TestChild: React.SFC<any> = props => <span {...props} />;
 
 describe('Layer', () => {
-  let LayerWithContext: any;
+  // tslint:disable-next-line:no-any
+  let map: any;
   let addLayerMock = jest.fn();
   let setLayerZoomRangeMock = jest.fn();
   let addSourceMock = jest.fn();
   let addImageMock = jest.fn();
   let setDataMock = jest.fn();
-  let children: any[];
-  let childrenWithOneFeature: any[];
+  // tslint:disable-next-line:no-any
+  let children: any;
+  // tslint:disable-next-line:no-any
+  let childrenWithOneFeature: any;
+  // tslint:disable-next-line:no-any
   let feature: any;
+  // tslint:disable-next-line:no-any
   let getSourceMock: any;
 
   beforeEach(() => {
@@ -23,30 +28,23 @@ describe('Layer', () => {
     setDataMock = jest.fn();
     addImageMock = jest.fn();
     feature = { coordinates: [-123, 45] };
-    children = [{ props: {} }];
-    childrenWithOneFeature = [{ props: feature }];
+    children = <TestChild />;
+    childrenWithOneFeature = <TestChild {...feature} />;
     getSourceMock = jest.fn().mockReturnValue({ setData: setDataMock });
 
-    LayerWithContext = withContext(
-      {
-        map: PropTypes.object
-      },
-      () => ({
-        map: {
-          addSource: addSourceMock,
-          addLayer: addLayerMock,
-          setLayerZoomRange: setLayerZoomRangeMock,
-          getLayer: jest.fn(() => undefined),
-          addImage: addImageMock,
-          on: jest.fn(),
-          getSource: getSourceMock
-        }
-      })
-    )(Layer);
+    map = {
+      addSource: addSourceMock,
+      addLayer: addLayerMock,
+      setLayerZoomRange: setLayerZoomRangeMock,
+      getLayer: jest.fn(() => undefined),
+      addImage: addImageMock,
+      on: jest.fn(),
+      getSource: getSourceMock
+    };
   });
 
   it('Should render layer with default options', () => {
-    mount(<LayerWithContext children={children} />);
+    mount(<Layer map={map} children={children} />);
 
     expect(addLayerMock.mock.calls[0]).toEqual([
       {
@@ -79,7 +77,8 @@ describe('Layer', () => {
     };
 
     mount(
-      <LayerWithContext
+      <Layer
+        map={map}
         children={children}
         {...props}
         {...mappedProps}
@@ -100,7 +99,8 @@ describe('Layer', () => {
 
   it('Should render layer with default source', () => {
     getSourceMock = jest.fn(() => undefined);
-    mount(<LayerWithContext children={children} />);
+    map.getSource = getSourceMock;
+    mount(<Layer map={map} children={children} />);
 
     expect(addSourceMock.mock.calls[0]).toEqual([
       undefined,
@@ -116,7 +116,7 @@ describe('Layer', () => {
 
   it('Should set all parameters of add source with geojsonSourceOptions', () => {
     getSourceMock = jest.fn(() => undefined);
-
+    map.getSource = getSourceMock;
     const geoJSONSourceOptions = {
       maxzoom: 10,
       buffer: 2,
@@ -127,7 +127,8 @@ describe('Layer', () => {
     };
     const layerSourceId = 'testId';
     mount(
-      <LayerWithContext
+      <Layer
+        map={map}
         children={children}
         id={layerSourceId}
         geoJSONSourceOptions={geoJSONSourceOptions}
@@ -148,7 +149,7 @@ describe('Layer', () => {
   });
 
   it('Should set features based on children', () => {
-    const layer = mount(<LayerWithContext children={childrenWithOneFeature} />);
+    const layer = mount(<Layer map={map} children={childrenWithOneFeature} />);
 
     expect(setDataMock.mock.calls[0]).toEqual([
       {
@@ -165,7 +166,7 @@ describe('Layer', () => {
   });
 
   it('Should set features to empty array when children disappear', () => {
-    const layer = mount(<LayerWithContext children={childrenWithOneFeature} />);
+    const layer = mount(<Layer map={map} children={childrenWithOneFeature} />);
 
     layer.setProps({ children: undefined });
 
@@ -178,9 +179,12 @@ describe('Layer', () => {
   });
 
   it('Should flatten features', () => {
-    const childrens = [<div>Test</div>, [<div>Test</div>, <div>Test</div>]];
+    const childrens = [
+      <div key="0">Test</div>,
+      [<div key="1">Test</div>, <div key="2">Test</div>]
+    ];
 
-    const layer = mount(<LayerWithContext children={childrens} />);
+    const layer = mount(<Layer map={map} children={childrens} />);
 
     expect(setDataMock.mock.calls[0][0].features).toHaveLength(3);
   });
@@ -188,13 +192,13 @@ describe('Layer', () => {
   it('Should add images', () => {
     const images = ['test', new Image(), {}];
 
-    mount(<LayerWithContext children={children} images={images} />);
+    mount(<Layer map={map} children={children} images={images} />);
 
     expect(addImageMock.mock.calls[0]).toEqual(images);
   });
 
   it('Should update minZoom and maxZoom if they change', () => {
-    const wrapper = mount(<LayerWithContext id="zoomer" children={children} />);
+    const wrapper = mount(<Layer map={map} id="zoomer" children={children} />);
 
     wrapper.setProps({ minZoom: 4 });
     wrapper.setProps({ maxZoom: 10 });

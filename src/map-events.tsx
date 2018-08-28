@@ -1,9 +1,10 @@
-import * as MapboxGl from 'mapbox-gl';
+import { SyntheticEvent } from 'react';
+import { Map } from 'mapbox-gl';
 
 export type MapEvent = (
-  map: MapboxGl.Map,
+  map: Map,
   // tslint:disable-next-line:no-any
-  evt: React.SyntheticEvent<any>
+  evt: SyntheticEvent<any>
 ) => void;
 
 export interface Events {
@@ -98,17 +99,17 @@ export const events: EventMapping = {
 };
 
 export type Listeners = {
-  [// tslint:disable-next-line:no-any
-  T in keyof Events]: (evt: React.SyntheticEvent<any>) => void
+  // tslint:disable-next-line:no-any
+  [T in keyof Events]: (evt: React.SyntheticEvent<any>) => void
 };
 
 export const listenEvents = (
   partialEvents: EventMapping,
   props: Partial<Events>,
-  map: MapboxGl.Map
+  map: Map
 ) =>
   Object.keys(partialEvents).reduce(
-    (listeners, event: keyof Events) => {
+    (listeners, event) => {
       const propEvent = props[event];
 
       if (propEvent) {
@@ -131,7 +132,7 @@ export const listenEvents = (
 export const updateEvents = (
   listeners: Listeners,
   nextProps: Partial<Events>,
-  map: MapboxGl.Map
+  map: Map
 ) => {
   const toListenOff = Object.keys(events).filter(
     eventKey => listeners[eventKey] && typeof nextProps[eventKey] !== 'function'

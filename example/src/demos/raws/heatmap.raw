@@ -8,7 +8,7 @@ const { token, styles } = require('./config.json');
 
 const Map = ReactMapboxGl({ accessToken: token });
 
-const mapStyle = {
+const mapContainerStyle = {
   flex: 1
 };
 
@@ -66,9 +66,9 @@ export default class Heatmap extends React.Component<Props> {
   public render() {
     return (
       <Map
-        style={styles.dark}
+        mapStyle={styles.dark}
         center={this.center}
-        containerStyle={mapStyle}
+        style={mapContainerStyle}
         onStyleLoad={this.onStyleLoad}
       >
         <Layer type="heatmap" paint={layerPaint as any}>

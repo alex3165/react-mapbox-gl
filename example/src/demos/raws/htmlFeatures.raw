@@ -26,7 +26,7 @@ const Mark = styled.div`
 
 const Map = ReactMapboxGl({ accessToken: token });
 
-const mapStyle = {
+const mapContainerStyle = {
   width: '100%',
   height: '100%'
 };
@@ -112,8 +112,8 @@ class HtmlFeatures extends React.Component<Props, State> {
           options={options}
         />
         <Map
-          style={styles.light}
-          containerStyle={mapStyle}
+          mapStyle={styles.light}
+          style={mapContainerStyle}
           center={center}
           onStyleLoad={this.onStyleLoad}
         >
