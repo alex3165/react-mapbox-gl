@@ -84,7 +84,6 @@ describe('Map', () => {
   it('Should calc the center from fitbounds if center is not given', () => {
     const fitBoundsValues: FitBounds = [[0, 3], [2, 9]];
     const MapboxMap = ReactMapboxGl({ accessToken: '' });
-
     const mapBoxMap = mount(
       <MapboxMap mapStyle="" fitBounds={fitBoundsValues} />
     );
