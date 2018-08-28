@@ -1,5 +1,4 @@
 import React from 'react';
-import { createPortal } from 'react-dom';
 import { Point } from 'mapbox-gl';
 import { MapConsumer, MapContext } from './map-context';
 import { OverlayParams, overlayState, overlayTransform } from './util/overlays';
@@ -85,16 +84,6 @@ export class ProjectedLayer extends React.Component<
     map.off('move', this.handleMapMove);
   }
 
-  public renderIntoContainer(child: React.ReactNode): React.ReactNode {
-    if (this.props.type === 'marker') {
-      const container = this.props.map.getCanvasContainer();
-
-      return container ? createPortal(child, container) : child;
-    }
-
-    return child;
-  }
-
   public render() {
     const {
       style,
@@ -117,7 +106,7 @@ export class ProjectedLayer extends React.Component<
     };
     const anchorClassname =
       anchor && type === 'popup' ? `mapboxgl-popup-anchor-${anchor}` : '';
-    return this.renderIntoContainer(
+    return (
       <div
         className={`${className} ${anchorClassname}`}
         onClick={onClick}

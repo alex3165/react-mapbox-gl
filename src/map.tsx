@@ -10,6 +10,7 @@ import {
 } from './map-events';
 import { MapProvider } from './map-context';
 import isEqual from 'deep-equal';
+import { createPortal } from 'react-dom';
 
 export interface PaddingOptions {
   top: number;
@@ -156,7 +157,7 @@ const ReactMapboxFactory = ({
       pitch: 0
     };
 
-    public state = {
+    public state: State = {
       map: undefined,
       ready: false
     };
@@ -249,14 +250,17 @@ const ReactMapboxFactory = ({
 
         opts.pitch = pitch[0];
       }
-      let map: MapboxGl.Map;
-      try {
-        map = new MapboxGl.Map(opts);
-      } catch (error) {
-        console.error(error);
-        throw error;
-      }
+      // let map: MapboxGl.Map;
+      // try {
+      const map = new MapboxGl.Map(opts);
+      // } catch (error) {
+      //   console.error(error);
+      //   throw error;
+      // }
       this.setState({ map });
+
+      // tslint:disable-next-line:no-any
+      (window as any).map = map;
 
       if (fitBounds) {
         map.fitBounds(fitBounds, fitBoundsOptions);
@@ -381,10 +385,14 @@ const ReactMapboxFactory = ({
         ...userStyle,
         ...defaultContainerStyle
       };
+      const container =
+        ready && map && typeof map.getCanvasContainer === 'function'
+          ? map.getCanvasContainer()
+          : undefined;
       return (
         <MapProvider map={map}>
           <div ref={this.setRef} className={className} style={style}>
-            {ready && children}
+            {ready && container && createPortal(children, container)}
           </div>
         </MapProvider>
       );
