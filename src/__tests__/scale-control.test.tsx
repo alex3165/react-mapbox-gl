@@ -1,11 +1,13 @@
-import * as React from 'react';
+import React from 'react';
 import ScaleControl from '../scale-control';
 import { shallow } from 'enzyme';
 import { withContext } from 'recompose';
 const PropTypes = require('prop-types'); // tslint:disable-line
 
 describe('ScaleControl', () => {
+  // tslint:disable:no-any
   let ScaleControlWithContext: any;
+  // tslint:enable:no-any
 
   beforeEach(() => {
     ScaleControlWithContext = withContext(
@@ -20,7 +22,8 @@ describe('ScaleControl', () => {
           }
         }
       })
-    )(ScaleControl);
+      // tslint:disable-next-line:no-any
+    )(ScaleControl as any);
   });
 
   it('should render the component', () => {

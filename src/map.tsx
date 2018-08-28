@@ -1,6 +1,5 @@
-import * as MapboxGl from 'mapbox-gl';
-import * as React from 'react';
-import * as PropTypes from 'prop-types';
+import MapboxGl from 'mapbox-gl';
+import React from 'react';
 import injectCSS from './util/inject-css';
 import {
   Events,
@@ -9,7 +8,9 @@ import {
   Listeners,
   updateEvents
 } from './map-events';
-const isEqual = require('deep-equal'); //tslint:disable-line
+import { MapProvider } from './map-context';
+import isEqual from 'deep-equal';
+import { createPortal } from 'react-dom';
 
 export interface PaddingOptions {
   top: number;
@@ -24,6 +25,7 @@ export interface FitBoundsOptions {
   padding?: number | PaddingOptions;
   offset?: MapboxGl.Point | number[];
   maxZoom?: number;
+  duration?: number;
 }
 
 export type FitBounds = number[][];
@@ -65,6 +67,11 @@ export interface State {
   ready: boolean;
 }
 
+export type RequestTransformFunction = (
+  url: string,
+  resourceType: any // tslint:disable-line:no-any
+) => any; // tslint:disable-line:no-any
+
 // Static Properties of the map
 export interface FactoryParameters {
   accessToken: string;
@@ -87,16 +94,16 @@ export interface FactoryParameters {
   boxZoom?: boolean;
   refreshExpiredTiles?: boolean;
   failIfMajorPerformanceCaveat?: boolean;
-  classes?: string[];
   bearingSnap?: number;
   injectCss?: boolean;
+  transformRequest?: RequestTransformFunction;
 }
 
 // Satisfy typescript pitfall with defaultProps
 const defaultZoom = [11];
 const defaultMovingMethod = 'flyTo';
 const defaultCenter = [-0.2416815, 51.5285582];
-const defaultContainerStyle = {
+const defaultContainerStyle: Pick<React.CSSProperties, 'textAlign'> = {
   textAlign: 'left'
 };
 
@@ -105,6 +112,7 @@ declare global {
   namespace mapboxgl {
     export interface MapboxOptions {
       failIfMajorPerformanceCaveat?: boolean;
+      transformRequest?: RequestTransformFunction;
     }
   }
 }
@@ -130,9 +138,9 @@ const ReactMapboxFactory = ({
   boxZoom = true,
   refreshExpiredTiles = true,
   failIfMajorPerformanceCaveat = false,
-  classes,
   bearingSnap = 7,
-  injectCss = true
+  injectCss = true,
+  transformRequest
 }: FactoryParameters) => {
   if (injectCss) {
     injectCSS(window);
@@ -149,11 +157,7 @@ const ReactMapboxFactory = ({
       pitch: 0
     };
 
-    public static childContextTypes = {
-      map: PropTypes.object
-    };
-
-    public state = {
+    public state: State = {
       map: undefined,
       ready: false
     };
@@ -163,11 +167,7 @@ const ReactMapboxFactory = ({
     // tslint:disable-next-line:variable-name
     public _isMounted = true;
 
-    public getChildContext = () => ({
-      map: this.state.map
-    });
-
-    public container: HTMLElement;
+    public container: HTMLElement | undefined;
 
     public calcCenter = (bounds: FitBounds): number[] => [
       (bounds[0][0] + bounds[1][0]) / 2,
@@ -226,9 +226,9 @@ const ReactMapboxFactory = ({
         boxZoom,
         refreshExpiredTiles,
         logoPosition,
-        classes,
         bearingSnap,
-        failIfMajorPerformanceCaveat
+        failIfMajorPerformanceCaveat,
+        transformRequest
       };
 
       if (bearing) {
@@ -250,9 +250,17 @@ const ReactMapboxFactory = ({
 
         opts.pitch = pitch[0];
       }
-
+      // let map: MapboxGl.Map;
+      // try {
       const map = new MapboxGl.Map(opts);
+      // } catch (error) {
+      //   console.error(error);
+      //   throw error;
+      // }
       this.setState({ map });
+
+      // tslint:disable-next-line:no-any
+      (window as any).map = map;
 
       if (fitBounds) {
         map.fitBounds(fitBounds, fitBoundsOptions);
@@ -371,17 +379,22 @@ const ReactMapboxFactory = ({
     };
 
     public render() {
-      const { style, className, children } = this.props;
-      const { ready } = this.state;
-
+      const { style: userStyle, className, children } = this.props;
+      const { ready, map } = this.state;
+      const style = {
+        ...userStyle,
+        ...defaultContainerStyle
+      };
+      const container =
+        ready && map && typeof map.getCanvasContainer === 'function'
+          ? map.getCanvasContainer()
+          : undefined;
       return (
-        <div
-          ref={this.setRef}
-          className={className}
-          style={{ ...style, ...defaultContainerStyle }}
-        >
-          {ready && children}
-        </div>
+        <MapProvider map={map}>
+          <div ref={this.setRef} className={className} style={style}>
+            {ready && container && createPortal(children, container)}
+          </div>
+        </MapProvider>
       );
     }
   };

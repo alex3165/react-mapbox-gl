@@ -1,9 +1,9 @@
-import * as React from 'react';
-import * as PropTypes from 'prop-types';
-import { Context, Feature } from './util/types';
+import React from 'react';
+import GeoJSON from 'geojson';
 import { Props as FeatureProps } from './feature';
 import { generateID } from './util/uid';
 import { LayerCommonProps, Props as LayerProps } from './layer';
+import { withMapContext, MapContext } from './map-context';
 
 export interface EnhancedLayerProps {
   id?: string;
@@ -14,18 +14,13 @@ export type OwnProps = EnhancedLayerProps & LayerCommonProps;
 type LayerChildren = React.ReactElement<FeatureProps> | undefined;
 
 function layerMouseTouchEvents(
-  WrappedComponent: React.ComponentClass<LayerProps>
+  WrappedComponent: React.ComponentClass<LayerProps> | React.SFC<LayerProps>
 ) {
-  return class EnhancedLayer extends React.Component<OwnProps> {
-    public context: Context;
+  class EnhancedLayer extends React.Component<OwnProps & MapContext> {
     public hover: number[] = [];
     public draggedChildren:
       | Array<React.ReactElement<FeatureProps>>
       | undefined = undefined;
-
-    public static contextTypes = {
-      map: PropTypes.object
-    };
 
     public id: string = this.props.id || `layer-${generateID()}`;
 
@@ -57,10 +52,11 @@ function layerMouseTouchEvents(
 
     // tslint:disable-next-line:no-any
     public onClick = (evt: any) => {
-      const features = evt.features as Feature[];
+      const features = evt.features as Array<
+        GeoJSON.Feature<GeoJSON.GeometryObject, { id: number }>
+      >;
       const children = this.getChildren();
-
-      const { map } = this.context;
+      const { map } = this.props;
 
       if (features) {
         features.forEach(feature => {
@@ -80,20 +76,22 @@ function layerMouseTouchEvents(
     // tslint:disable-next-line:no-any
     public onMouseEnter = (evt: any) => {
       const children = this.getChildren();
+      const { map } = this.props;
 
-      const { map } = this.context;
       this.hover = [];
 
-      evt.features.forEach((feature: Feature) => {
-        const { id } = feature.properties;
-        const child = this.getChildFromId(children, id);
-        this.hover.push(id);
+      evt.features.forEach(
+        (feature: GeoJSON.Feature<GeoJSON.GeometryObject, { id: number }>) => {
+          const { id } = feature.properties;
+          const child = this.getChildFromId(children, id);
+          this.hover.push(id);
 
-        const onMouseEnter = child && child.props.onMouseEnter;
-        if (onMouseEnter) {
-          onMouseEnter({ ...evt, feature, map });
+          const onMouseEnter = child && child.props.onMouseEnter;
+          if (onMouseEnter) {
+            onMouseEnter({ ...evt, feature, map });
+          }
         }
-      });
+      );
 
       if (this.areFeaturesDraggable(children)) {
         map.dragPan.disable();
@@ -103,7 +101,7 @@ function layerMouseTouchEvents(
     // tslint:disable-next-line:no-any
     public onMouseLeave = (evt: any) => {
       const children = this.getChildren();
-      const { map } = this.context;
+      const { map } = this.props;
       if (this.areFeaturesDraggable(children)) {
         map.dragPan.enable();
       }
@@ -141,7 +139,7 @@ function layerMouseTouchEvents(
     public onFeatureDown = (startEvent: string) => {
       const moveEvent = startEvent === 'mousedown' ? 'mousemove' : 'touchmove';
       const endEvent = startEvent === 'mousedown' ? 'mouseup' : 'touchend';
-      const { map } = this.context;
+      const { map } = this.props;
 
       map.once(moveEvent, this.onFeatureDragStart);
       map.on(moveEvent, this.onFeatureDrag);
@@ -156,7 +154,7 @@ function layerMouseTouchEvents(
 
     // tslint:disable-next-line:no-any
     public onFeatureDragStart = (evt: any) => {
-      const { map } = this.context;
+      const { map } = this.props;
       const children = this.getChildren();
 
       this.hover.forEach(id => {
@@ -175,8 +173,10 @@ function layerMouseTouchEvents(
     // tslint:disable-next-line:no-any
     public onFeatureDrag = (evt: any) => {
       const children = this.getChildren();
-      const { map } = this.context;
-      const { lngLat: { lng, lat } } = evt;
+      const { map } = this.props;
+      const {
+        lngLat: { lng, lat }
+      } = evt;
       this.draggedChildren = [];
 
       this.hover.forEach(id => {
@@ -202,7 +202,7 @@ function layerMouseTouchEvents(
 
     // tslint:disable-next-line:no-any
     public onFeatureDragEnd = (evt: any) => {
-      const { map } = this.context;
+      const { map } = this.props;
       const children = this.getChildren();
 
       this.hover.forEach(id => {
@@ -218,7 +218,7 @@ function layerMouseTouchEvents(
     };
 
     public componentWillMount() {
-      const { map } = this.context;
+      const { map } = this.props;
 
       map.on('click', this.id, this.onClick);
       map.on('mouseenter', this.id, this.onMouseEnter);
@@ -228,7 +228,7 @@ function layerMouseTouchEvents(
     }
 
     public componentWillUnmount() {
-      const { map } = this.context;
+      const { map } = this.props;
 
       map.off('click', this.onClick);
       map.off('mouseenter', this.onMouseEnter);
@@ -246,7 +246,9 @@ function layerMouseTouchEvents(
         />
       );
     }
-  };
+  }
+
+  return withMapContext<OwnProps>(EnhancedLayer);
 }
 
 export default layerMouseTouchEvents;

@@ -1,6 +1,5 @@
 {
   "printWidth": 80,
   "singleQuote": true,
-  "formatOnSave": true,
   "trailingComma": "none"
 }

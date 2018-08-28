@@ -1,12 +1,10 @@
-import * as React from 'react';
+import React from 'react';
 // tslint:disable-next-line:no-submodule-imports
-import { mockComponent } from 'react-dom/test-utils';
+import { MapProvider } from '../map-context';
 import layerMouseTouchEvents from '../layer-events-hoc';
 import { mount } from 'enzyme';
-import { withContext } from 'recompose';
-const PropTypes = require('prop-types'); // tslint:disable-line
 
-class MockComponent extends React.Component<any> {
+class MockComponent extends React.Component<{ id: string }> {
   public render() {
     return <h1>{this.props.id}</h1>;
   }
@@ -16,28 +14,30 @@ const LayerHOC = layerMouseTouchEvents(MockComponent);
 
 describe('layer-events-hoc', () => {
   let onMock;
-  let LayerHOCWithContext;
+  // tslint:disable-next-line:no-any
+  let map: any;
   beforeEach(() => {
     onMock = jest.fn();
-    LayerHOCWithContext = withContext(
-      {
-        map: PropTypes.object
-      },
-      () => ({
-        map: {
-          on: onMock
-        }
-      })
-    )(LayerHOC);
+    map = {
+      on: onMock
+    };
   });
 
   it('Should default the id if none is passed', () => {
-    const res = mount(<LayerHOCWithContext />);
+    const res = mount(
+      <MapProvider map={map}>
+        <LayerHOC />
+      </MapProvider>
+    );
     expect(res.find('h1').text()).toBe('layer-1');
   });
 
   it('should listen all mouse and touch events', () => {
-    const res = mount(<LayerHOCWithContext />);
+    const res = mount(
+      <MapProvider map={map}>
+        <LayerHOC />
+      </MapProvider>
+    );
     const events = [
       'click',
       'mouseenter',

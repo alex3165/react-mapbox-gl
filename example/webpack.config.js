@@ -41,6 +41,13 @@ module.exports = {
   entry: entries,
   output: output,
   devtool: devtool,
+  devServer: {
+    port: 3001,
+    watchOptions: {
+      ignored: /node_modules/
+    },
+    historyApiFallback: true
+  },
   resolve: {
     extensions: ['.ts', '.js', '.tsx']
   },

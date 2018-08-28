@@ -1,38 +1,32 @@
-import * as React from 'react';
-import GeoJSONLayer from '../geojson-layer';
-import { withContext } from 'recompose';
+import React from 'react';
+import { GeoJSONLayer } from '../geojson-layer';
 import { mount } from 'enzyme';
-const PropTypes = require('prop-types'); // tslint:disable-line
+import { SourceOptionData } from '../util/types';
 
 describe('GeoJSONLayer', () => {
-  let GeoJSONLayerWithContext: any;
+  // tslint:disable-next-line:no-any
+  let map: any;
   let addLayerMock = jest.fn();
   let mapOnEventMock = jest.fn();
 
   const fillPaint = { 'fill-color': '#001122' };
-  const data = { type: 'FeatureCollection', features: [] };
+  // tslint:disable-next-line:no-object-literal-type-assertion
+  const data = { type: 'FeatureCollection', features: [] } as SourceOptionData;
 
   beforeEach(() => {
     addLayerMock = jest.fn();
     mapOnEventMock = jest.fn();
-
-    GeoJSONLayerWithContext = withContext(
-      {
-        map: PropTypes.object
-      },
-      () => ({
-        map: {
-          addSource: jest.fn(),
-          addLayer: addLayerMock,
-          on: mapOnEventMock
-        }
-      })
-    )(GeoJSONLayer);
+    map = {
+      addSource: jest.fn(),
+      addLayer: addLayerMock,
+      on: mapOnEventMock
+    };
   });
 
   it('Should call addLayer with provided layerOptions', () => {
     mount(
-      <GeoJSONLayerWithContext
+      <GeoJSONLayer
+        map={map}
         fillPaint={fillPaint}
         data={data}
         layerOptions={{ minzoom: 13 }}
@@ -56,7 +50,7 @@ describe('GeoJSONLayer', () => {
   });
 
   it('Should call addLayer when no layerOptions provided', () => {
-    mount(<GeoJSONLayerWithContext fillPaint={fillPaint} data={data} />);
+    mount(<GeoJSONLayer map={map} fillPaint={fillPaint} data={data} />);
 
     const addFillLayerCall = addLayerMock.mock.calls.find(([call]) =>
       call.id.endsWith('-fill')
@@ -75,7 +69,8 @@ describe('GeoJSONLayer', () => {
 
   it('Should start listening onClick mouse event', () => {
     mount(
-      <GeoJSONLayerWithContext
+      <GeoJSONLayer
+        map={map}
         fillPaint={fillPaint}
         data={data}
         fillOnClick={jest.fn()}

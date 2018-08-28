@@ -1,11 +1,10 @@
-import * as React from 'react';
-import * as PropTypes from 'prop-types';
-import { Map, LngLatBounds } from 'mapbox-gl';
+import React from 'react';
+import { MapConsumer, MapContext } from './map-context';
+import { LngLatBounds } from 'mapbox-gl';
 import { Props as MarkerProps } from './marker';
 import supercluster, { Supercluster } from 'supercluster';
-import * as GeoJSON from 'geojson';
-import { Feature } from './util/types';
-import * as bbox from '@turf/bbox';
+import GeoJSON from 'geojson';
+import bbox from '@turf/bbox';
 import { polygon, featureCollection } from '@turf/helpers';
 
 export interface Props {
@@ -35,18 +34,7 @@ export interface State {
   superC: Supercluster;
   clusterPoints: Array<GeoJSON.Feature<GeoJSON.Point>>;
 }
-
-export interface Context {
-  map: Map;
-}
-
-export default class Cluster extends React.Component<Props, State> {
-  public context: Context;
-
-  public static contextTypes = {
-    map: PropTypes.object
-  };
-
+export class Cluster extends React.Component<Props & MapContext, State> {
   public static defaultProps = {
     radius: 60,
     minZoom: 0,
@@ -71,13 +59,12 @@ export default class Cluster extends React.Component<Props, State> {
   };
 
   private featureClusterMap = new WeakMap<
-    Feature,
+    GeoJSON.Feature,
     React.Component<MarkerProps>
   >();
 
   public componentWillMount() {
-    const { map } = this.context;
-    const { children } = this.props;
+    const { map, children } = this.props;
 
     if (children) {
       this.childrenChange(children as Array<React.Component<MarkerProps>>);
@@ -86,6 +73,12 @@ export default class Cluster extends React.Component<Props, State> {
     map.on('move', this.mapChange);
     map.on('zoom', this.mapChange);
     this.mapChange();
+  }
+
+  public componentWillUnmount() {
+    const { map } = this.props;
+    map.off('move', this.mapChange);
+    map.off('zoom', this.mapChange);
   }
 
   public componentWillReceiveProps(nextProps: Props) {
@@ -102,7 +95,7 @@ export default class Cluster extends React.Component<Props, State> {
   ) => {
     const { superC } = this.state;
     this.featureClusterMap = new WeakMap<
-      Feature,
+      GeoJSON.Feature,
       React.Component<MarkerProps>
     >();
     const features = this.childrenToFeatures(newChildren);
@@ -110,7 +103,7 @@ export default class Cluster extends React.Component<Props, State> {
   };
 
   private mapChange = (forceSetState: boolean = false) => {
-    const { map } = this.context;
+    const { map } = this.props;
     const { superC, clusterPoints } = this.state;
 
     const zoom = map.getZoom();
@@ -126,7 +119,8 @@ export default class Cluster extends React.Component<Props, State> {
       Math.round(zoom)
     );
     if (newPoints.length !== clusterPoints.length || forceSetState) {
-      this.setState({ clusterPoints: newPoints });
+      // tslint:disable-next-line:no-any
+      this.setState({ clusterPoints: newPoints as any });
     }
   };
 
@@ -150,11 +144,19 @@ export default class Cluster extends React.Component<Props, State> {
       return feature;
     });
 
-  private getLeaves = (feature: Feature, limit?: number, offset?: number) => {
+  private getLeaves = (
+    feature: GeoJSON.Feature,
+    limit?: number,
+    offset?: number
+  ) => {
     const { superC } = this.state;
     return superC
-      .getLeaves(feature.properties.cluster_id, limit || Infinity, offset)
-      .map((leave: Feature) => this.featureClusterMap.get(leave));
+      .getLeaves(
+        feature.properties && feature.properties.cluster_id,
+        limit || Infinity,
+        offset
+      )
+      .map((leave: GeoJSON.Feature) => this.featureClusterMap.get(leave));
   };
 
   public zoomToClusterBounds = (event: React.MouseEvent<HTMLElement>) => {
@@ -164,18 +166,19 @@ export default class Cluster extends React.Component<Props, State> {
       event.target as HTMLElement
     );
     const index = markers.indexOf(marker);
-    const cluster = this.state.clusterPoints[index] as Feature;
-    if (!cluster.properties.cluster_id) {
+    const cluster = this.state.clusterPoints[index] as GeoJSON.Feature;
+    if (!cluster.properties || !cluster.properties.cluster_id) {
       return;
     }
     const children = this.state.superC.getLeaves(
-      cluster.properties.cluster_id,
+      cluster.properties && cluster.properties.cluster_id,
       Infinity
     );
-    const childrenBbox = bbox(featureCollection(children));
+    // tslint:disable-next-line:no-any
+    const childrenBbox = bbox(featureCollection(children as any));
     // https://github.com/mapbox/mapbox-gl-js/issues/5249
     // tslint:disable-next-line:no-any
-    this.context.map.fitBounds(LngLatBounds.convert(childrenBbox as any), {
+    this.props.map.fitBounds(LngLatBounds.convert(childrenBbox as any), {
       padding: this.props.zoomOnClickPadding!
     });
   };
@@ -201,8 +204,8 @@ export default class Cluster extends React.Component<Props, State> {
         tabIndex={tabIndex}
         onClick={this.props.zoomOnClick ? this.zoomToClusterBounds : undefined}
       >
-        {clusterPoints.map((feature: Feature) => {
-          if (feature.properties.cluster) {
+        {clusterPoints.map((feature: GeoJSON.Feature<GeoJSON.Point>) => {
+          if (feature.properties && feature.properties.cluster) {
             return ClusterMarkerFactory(
               feature.geometry.coordinates,
               feature.properties.point_count,
@@ -215,3 +218,9 @@ export default class Cluster extends React.Component<Props, State> {
     );
   }
 }
+
+const ClusterWithMap: React.SFC<Props> = props => (
+  <MapConsumer>{({ map }) => <Cluster {...props} map={map} />}</MapConsumer>
+);
+
+export default ClusterWithMap;

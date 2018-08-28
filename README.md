@@ -1,6 +1,6 @@
 ![Logo](/logo.png)
 
-# React-mapbox-gl [Documentation](docs/API.md)
+# React-mapbox-gl | [Documentation](docs/API.md) | [Demos](http://alex3165.github.io/react-mapbox-gl/demos)
 
 [![Build Status](https://travis-ci.org/alex3165/react-mapbox-gl.svg?branch=master)](https://travis-ci.org/alex3165/react-mapbox-gl)
 [![npm version](https://img.shields.io/npm/v/react-mapbox-gl.svg?style=flat)](https://www.npmjs.com/package/react-mapbox-gl)
@@ -8,7 +8,7 @@
 [![TypeScript](https://badges.frapsoft.com/typescript/code/typescript.svg?v=101)](https://github.com/ellerbrock/typescript-badges/)
 <br/>
 
- #### React wrapper for [mapbox-gl-js](https://www.mapbox.com/mapbox-gl-js/api/).
+#### React wrapper for [mapbox-gl-js](https://www.mapbox.com/mapbox-gl-js/api/).
 <br/><br/>
 ![London cycle example gif](docs/london-cycle-example.gif "London cycle example gif")
 
@@ -57,6 +57,7 @@ const Map = ReactMapboxGl({
   accessToken: "pk.eyJ1IjoiZmFicmljOCIsImEiOiJjaWc5aTV1ZzUwMDJwdzJrb2w0dXRmc2d0In0.p6GGlfyV-WksaDV_KdN27A"
 });
 
+// in render()
 <Map
   mapStyle="mapbox://styles/mapbox/streets-v9"
   style={{
@@ -79,7 +80,7 @@ If those properties changed at the mapbox-gl-js level and you don't update the v
 ## [Version 2.0 Documentation](https://github.com/alex3165/react-mapbox-gl/blob/v2-archive/docs/API.md)
 
 ## Contributions
-Please try to reproduce your problem with the [boilerplate](https://github.com/alex3165/react-mapbox-gl-debug) or [this webpackbin template](https://www.webpackbin.com/bins/-L2MXLm-gCwvABQZfSnf) before posting an issue.
+Please try to reproduce your problem with the [boilerplate](https://github.com/alex3165/react-mapbox-gl-debug) before posting an issue.
 
 ## Built with react-mapbox-gl
 [monumap.org](https://monumap.org/)
