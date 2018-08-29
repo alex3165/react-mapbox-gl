@@ -1,14 +1,13 @@
-import * as React from 'react';
-import Source from '../source';
-import { withContext } from 'recompose';
+import React from 'react';
+import { Source } from '../source';
 import { mount } from 'enzyme';
-const PropTypes = require('prop-types'); // tslint:disable-line
+import { GeoJSONSourceRaw } from 'mapbox-gl';
 
 describe('Source', () => {
-  let SourceWithContext: any;
-  let addSourceMock: any;
-  let removeSourceMock: any;
-  let setDataMock: any;
+  // tslint:disable-next-line:no-any
+  let map: any;
+  let addSourceMock: jest.Mock;
+  let removeSourceMock: jest.Mock;
   const EMPTY_GEOJSON = {
     type: 'FeatureCollection',
     features: []
@@ -22,27 +21,26 @@ describe('Source', () => {
   beforeEach(() => {
     addSourceMock = jest.fn();
     removeSourceMock = jest.fn();
-    setDataMock = jest.fn();
 
-    SourceWithContext = withContext(
-      {
-        map: PropTypes.object
-      },
-      () => ({
-        map: {
-          addSource: addSourceMock,
-          removeSource: removeSourceMock,
-          on: jest.fn(),
-          off: jest.fn(),
-          getSource: jest.fn(() => this.id)
-        }
+    map = {
+      addSource: addSourceMock,
+      removeSource: removeSourceMock,
+      on: jest.fn(),
+      off: jest.fn(),
+      getSource: jest.fn(function() {
+        // Arrow function will override the `this` context
+        return this.id;
       })
-    )(Source);
+    };
   });
 
   it('Should render source with geoJsonSource', () => {
     mount(
-      <SourceWithContext id="source-1" geoJsonSource={EMPTY_GEOJSON_SRC} />
+      <Source
+        map={map}
+        id="source-1"
+        geoJsonSource={EMPTY_GEOJSON_SRC as GeoJSONSourceRaw}
+      />
     );
 
     expect(addSourceMock.mock.calls[0]).toEqual([

@@ -1,9 +1,9 @@
-import * as React from 'react';
-import * as PropTypes from 'prop-types';
-import * as MapboxGL from 'mapbox-gl';
-const isEqual = require('deep-equal'); //tslint:disable-line
+import React from 'react';
+import GeoJSON from 'geojson';
+import { MapConsumer, MapContext } from './map-context';
+import MapboxGL from 'mapbox-gl';
+import isEqual from 'deep-equal';
 import diff from './util/diff';
-import { Context } from './util/types';
 import { Props as FeatureProps } from './feature';
 
 export type Paint =
@@ -73,13 +73,7 @@ export interface OwnProps {
 
 export type Props = LayerCommonProps & OwnProps;
 
-export default class Layer extends React.Component<Props> {
-  public context: Context;
-
-  public static contextTypes = {
-    map: PropTypes.object
-  };
-
+export class Layer extends React.Component<Props & MapContext> {
   public static defaultProps = {
     type: 'symbol' as 'symbol',
     layout: {},
@@ -153,9 +147,9 @@ export default class Layer extends React.Component<Props> {
       sourceLayer,
       minZoom,
       maxZoom,
-      filter
+      filter,
+      map
     } = this.props;
-    const { map } = this.context;
 
     const layer: MapboxGL.Layer = {
       id,
@@ -203,14 +197,14 @@ export default class Layer extends React.Component<Props> {
   private onStyleDataChange = () => {
     // if the style of the map has been updated and we don't have layer anymore,
     // add it back to the map and force re-rendering to redraw it
-    if (!this.context.map.getLayer(this.props.id)) {
+    if (!this.props.map.getLayer(this.props.id)) {
       this.initialize();
       this.forceUpdate();
     }
   };
 
   public componentWillMount() {
-    const { map } = this.context;
+    const { map } = this.props;
 
     this.initialize();
 
@@ -218,8 +212,7 @@ export default class Layer extends React.Component<Props> {
   }
 
   public componentWillUnmount() {
-    const { map } = this.context;
-    const { images, id } = this.props;
+    const { map, images, id } = this.props;
 
     if (!map || !map.getStyle()) {
       return;
@@ -245,8 +238,16 @@ export default class Layer extends React.Component<Props> {
   }
 
   public componentWillReceiveProps(props: Props) {
-    const { paint, layout, before, filter, id, minZoom, maxZoom } = this.props;
-    const { map } = this.context;
+    const {
+      map,
+      paint,
+      layout,
+      before,
+      filter,
+      id,
+      minZoom,
+      maxZoom
+    } = this.props;
 
     if (!isEqual(props.paint, paint)) {
       const paintDiff = diff(paint, props.paint);
@@ -296,8 +297,7 @@ export default class Layer extends React.Component<Props> {
   };
 
   public render() {
-    const { map } = this.context;
-    const { sourceId, draggedChildren } = this.props;
+    const { map, sourceId, draggedChildren } = this.props;
     let children = this.getChildren();
 
     if (draggedChildren) {
@@ -329,3 +329,9 @@ export default class Layer extends React.Component<Props> {
     return null;
   }
 }
+
+const LayerWithMap: React.SFC<Props> = props => (
+  <MapConsumer>{({ map }) => <Layer {...props} map={map} />}</MapConsumer>
+);
+
+export default LayerWithMap;

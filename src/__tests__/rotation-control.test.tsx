@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import RotationControl from '../rotation-control';
 import { shallow } from 'enzyme';
 

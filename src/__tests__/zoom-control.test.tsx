@@ -1,5 +1,5 @@
-import * as React from 'react';
-import ZoomControl from '../zoom-control';
+import React from 'react';
+import { ZoomControl } from '../zoom-control';
 import { shallow } from 'enzyme';
 
 describe('ZoomControl', () => {

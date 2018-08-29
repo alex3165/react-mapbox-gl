@@ -1,10 +1,11 @@
-import * as React from 'react';
-import * as PropTypes from 'prop-types';
-import * as MapboxGL from 'mapbox-gl';
-const isEqual = require('deep-equal'); //tslint:disable-line
+import React from 'react';
+import { MapConsumer, MapContext } from './map-context';
+import MapboxGL from 'mapbox-gl';
+import GeoJSON from 'geojson';
+import isEqual from 'deep-equal';
 import diff from './util/diff';
 import { generateID } from './util/uid';
-import { Sources, Context, LayerType } from './util/types';
+import { Sources, LayerType } from './util/types';
 
 const types = ['symbol', 'line', 'fill', 'fill-extrusion', 'circle'];
 const toCamelCase = (str: string) =>
@@ -83,6 +84,11 @@ export interface FillExtrusionProps {
   fillExtrusionOnClick?: MouseEvent;
 }
 
+type DataSource =
+  | GeoJSON.Feature<GeoJSON.Geometry, GeoJSON.GeoJsonProperties>
+  | GeoJSON.FeatureCollection<GeoJSON.Geometry>
+  | string;
+
 export interface Props
   extends LineProps,
     CircleProps,
@@ -90,10 +96,7 @@ export interface Props
     FillProps,
     FillExtrusionProps {
   id?: string;
-  data:
-    | GeoJSON.Feature<GeoJSON.Geometry, GeoJSON.GeoJsonProperties>
-    | GeoJSON.FeatureCollection<GeoJSON.Geometry>
-    | string;
+  data: DataSource;
   layerOptions?: MapboxGL.Layer;
   sourceOptions?:
     | MapboxGL.VectorSource
@@ -114,16 +117,10 @@ type Layouts =
   | MapboxGL.CircleLayout
   | MapboxGL.FillExtrusionLayout;
 
-export default class GeoJSONLayer extends React.Component<Props> {
-  public context: Context;
-
-  public static contextTypes = {
-    map: PropTypes.object
-  };
-
+export class GeoJSONLayer extends React.Component<Props & MapContext> {
   private id: string = this.props.id || `geojson-${generateID()}`;
 
-  private source: Sources = {
+  private source: Sources & { data: DataSource } = {
     type: 'geojson',
     ...this.props.sourceOptions,
     data: this.props.data
@@ -136,8 +133,7 @@ export default class GeoJSONLayer extends React.Component<Props> {
   };
 
   private createLayer = (type: LayerType) => {
-    const { before, layerOptions } = this.props;
-    const { map } = this.context;
+    const { map, before, layerOptions } = this.props;
 
     const layerId = this.buildLayerId(type);
     this.layerIds.push(layerId);
@@ -166,7 +162,7 @@ export default class GeoJSONLayer extends React.Component<Props> {
   };
 
   private mapLayerMouseHandlers = (type: string) => {
-    const { map } = this.context;
+    const { map } = this.props;
 
     const layerId = this.buildLayerId(type);
 
@@ -185,7 +181,7 @@ export default class GeoJSONLayer extends React.Component<Props> {
   private onStyleDataChange = () => {
     // if the style of the map has been updated and we don't have layer anymore,
     // add it back to the map and force re-rendering to redraw it
-    if (!this.context.map.getSource(this.id)) {
+    if (!this.props.map.getSource(this.id)) {
       this.unbind();
       this.initialize();
       this.forceUpdate();
@@ -193,7 +189,7 @@ export default class GeoJSONLayer extends React.Component<Props> {
   };
 
   private initialize() {
-    const { map } = this.context;
+    const { map } = this.props;
 
     map.addSource(this.id, this.source);
 
@@ -205,11 +201,10 @@ export default class GeoJSONLayer extends React.Component<Props> {
   }
 
   private unbind() {
-    const { map } = this.context;
+    const { map } = this.props;
 
     if (map.getSource(this.id)) {
       const { layers } = map.getStyle();
-
       if (layers) {
         layers
           .filter(layer => layer.source === this.id)
@@ -237,13 +232,13 @@ export default class GeoJSONLayer extends React.Component<Props> {
   }
 
   public componentWillMount() {
-    const { map } = this.context;
+    const { map } = this.props;
     this.initialize();
     map.on('styledata', this.onStyleDataChange);
   }
 
   public componentWillUnmount() {
-    const { map } = this.context;
+    const { map } = this.props;
 
     if (!map || !map.getStyle()) {
       return;
@@ -261,8 +256,7 @@ export default class GeoJSONLayer extends React.Component<Props> {
     typeof (source as MapboxGL.GeoJSONSource).setData === 'function';
 
   public componentWillReceiveProps(props: Props) {
-    const { data, before, layerOptions } = this.props;
-    const { map } = this.context;
+    const { map, data, before, layerOptions } = this.props;
     const source = map.getSource(this.id);
     if (!this.isGeoJSONSource(source)) {
       return;
@@ -334,3 +328,11 @@ export default class GeoJSONLayer extends React.Component<Props> {
     return null;
   }
 }
+
+const GeoJSONLayerWithMap: React.SFC<Props> = props => (
+  <MapConsumer>
+    {({ map }) => <GeoJSONLayer {...props} map={map} />}
+  </MapConsumer>
+);
+
+export default GeoJSONLayerWithMap;
