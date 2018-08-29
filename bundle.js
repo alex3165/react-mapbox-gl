@@ -2842,7 +2842,7 @@ exports.default = map_1.default;
 /* 10 */
 /***/ (function(module, exports) {
 
-module.exports = {"token":"pk.eyJ1IjoiYWxleDMxNjUiLCJhIjoiY2o0MHp2cGtiMGFrajMycG5nbzBuY2pjaiJ9.QDApU0XH2v35viSwQuln5w","styles":{"londonCycle":"mapbox://styles/alex3165/cj2hv9v4y00242slphcyk9oca","light":"mapbox://styles/mapbox/light-v9","dark":"mapbox://styles/mapbox/dark-v9","basic":"mapbox://styles/mapbox/basic-v9","outdoor":"mapbox://styles/mapbox/outdoors-v10"}}
+module.exports = {"token":"pk.eyJ1IjoiYWxleDMxNjUiLCJhIjoiY2psZXViZnIyMG5xdDNqbmpiejcydTE4MSJ9.Feyg1TyWWRs6nclrYcYTJA","styles":{"londonCycle":"mapbox://styles/alex3165/cj2hv9v4y00242slphcyk9oca","light":"mapbox://styles/mapbox/light-v9","dark":"mapbox://styles/mapbox/dark-v9","basic":"mapbox://styles/mapbox/basic-v9","outdoor":"mapbox://styles/mapbox/outdoors-v10"}}
 
 /***/ }),
 /* 11 */
