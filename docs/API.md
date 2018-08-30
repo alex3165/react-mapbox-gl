@@ -26,6 +26,7 @@ const Map = ReactMapboxGl({
 - **preserveDrawingBuffer** *(Default: `false`)*: `boolean`, [See mapbox doc](https://www.mapbox.com/mapbox-gl-js/api/#Map)
 - **interactive** *(Default: `true`)*: `boolean` Set to `false` to disable interaction with the map.
 - **attributionControl** *(Default: `true`)*: `boolean` Set to `false` to remove the attribution on the map.
+- **customAttribution**: `string | string[]` String or strings to show in an AttributionControl. Only applicable if `attributionControl` option is set to `true`.
 - **logoPosition** *(Default: `bottom-left`)*: `string` Set the position of the mapbox logo. Possible values:
   - `top-left`
   - `top-right`
