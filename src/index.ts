@@ -7,7 +7,7 @@ import Feature, { Props } from './feature';
 import ZoomControl from './zoom-control';
 import Popup from './popup';
 import ScaleControl from './scale-control';
-import Marker from './marker';
+import Marker, { Props as MarkerProps } from './marker';
 import Source from './source';
 import Cluster from './cluster';
 import RotationControl from './rotation-control';
@@ -32,6 +32,7 @@ export {
   ZoomControl,
   ScaleControl,
   Marker,
+  MarkerProps,
   Source,
   Cluster,
   RotationControl

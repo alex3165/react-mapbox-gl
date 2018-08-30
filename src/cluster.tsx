@@ -7,15 +7,17 @@ import GeoJSON from 'geojson';
 import bbox from '@turf/bbox';
 import { polygon, featureCollection } from '@turf/helpers';
 
+type ClusterMarkerFactoryFunction = (
+  coordinates: GeoJSON.Position,
+  pointCount: number,
+  getLeaves: (
+    limit?: number,
+    offset?: number
+  ) => Array<React.ReactElement<MarkerProps>>
+) => React.ReactElement<MarkerProps>;
+
 export interface Props {
-  ClusterMarkerFactory(
-    coordinates: GeoJSON.Position,
-    pointCount: number,
-    getLeaves: (
-      limit?: number,
-      offset?: number
-    ) => Array<React.ReactElement<MarkerProps>>
-  ): React.ReactElement<MarkerProps>;
+  ClusterMarkerFactory: ClusterMarkerFactoryFunction;
   radius?: number;
   maxZoom?: number;
   minZoom?: number;

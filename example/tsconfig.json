@@ -1,6 +1,7 @@
 {
   "compilerOptions": {
-    "declaration": false,
+    "allowSyntheticDefaultImports": true,
+    "declaration": true,
     "experimentalDecorators": true,
     "forceConsistentCasingInFileNames": true,
     "jsx": "react",
@@ -13,13 +14,11 @@
     "noUnusedLocals": true,
     "outDir": "./dist",
     "removeComments": true,
+    "skipLibCheck": true,
     "sourceMap": true,
     "strictNullChecks": true,
     "suppressImplicitAnyIndexErrors": true,
     "target": "es5"
   },
-  "exclude": [
-    "node_modules",
-    "static"
-  ]
+  "exclude": ["node_modules", "static"]
 }

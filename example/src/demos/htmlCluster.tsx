@@ -1,5 +1,5 @@
 import * as React from 'react';
-import ReactMapboxGl, { Marker, Cluster, Popup } from '../../../';
+import ReactMapboxGl, { Marker, MarkerProps, Cluster, Popup } from '../../../';
 import styled from 'styled-components';
 
 // tslint:disable-next-line:no-var-requires
@@ -53,7 +53,7 @@ export interface State {
   popup?: {
     coordinates: GeoJSON.Position;
     total: number;
-    leaves: Array<React.ReactElement<any>>;
+    leaves: Array<React.ReactElement<MarkerProps>>;
   };
 }
 
@@ -75,17 +75,23 @@ class HtmlCluster extends React.Component<Props, State> {
     getLeaves: (
       limit?: number,
       offset?: number
-    ) => Array<React.ReactElement<any>>
-  ) => (
-    <Marker
-      key={coordinates.toString()}
-      coordinates={coordinates}
-      style={styles.clusterMarker}
-      onClick={this.clusterClick.bind(this, coordinates, pointCount, getLeaves)}
-    >
-      <div>{pointCount}</div>
-    </Marker>
-  );
+    ) => Array<React.ReactElement<MarkerProps>>
+  ) =>
+    (
+      <Marker
+        key={coordinates.toString()}
+        coordinates={coordinates}
+        style={styles.clusterMarker}
+        onClick={this.clusterClick.bind(
+          this,
+          coordinates,
+          pointCount,
+          getLeaves
+        )}
+      >
+        <div>{pointCount}</div>
+      </Marker>
+    ) as React.ReactElement<MarkerProps>;
 
   private onMove = () => {
     if (this.state.popup) {
@@ -99,7 +105,7 @@ class HtmlCluster extends React.Component<Props, State> {
     getLeaves: (
       limit?: number,
       offset?: number
-    ) => Array<React.ReactElement<any>>
+    ) => Array<React.ReactElement<MarkerProps>>
   ) => {
     this.setState({
       popup: {
@@ -145,7 +151,7 @@ class HtmlCluster extends React.Component<Props, State> {
           <Popup offset={[0, -50]} coordinates={popup.coordinates}>
             <StyledPopup>
               {popup.leaves.map(
-                (leaf: React.ReactElement<any>, index: number) => (
+                (leaf: React.ReactElement<MarkerProps>, index: number) => (
                   <div key={index}>
                     {leaf.props['data-feature'].properties.name}
                   </div>
