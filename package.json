@@ -32,8 +32,7 @@
       "<rootDir>/src/jest/setupFile.ts"
     ],
     "setupTestFrameworkScriptFile": "<rootDir>/src/jest/setupTestFrameworkScriptFile.ts",
-    "browser": true,
-    "verbose": true
+    "browser": true
   },
   "files": [
     "lib",
@@ -65,38 +64,34 @@
   },
   "peerDependencies": {
     "mapbox-gl": "0.48.0",
-    "prop-types": "^15.5.10",
-    "react": "^16.0.0",
-    "react-dom": "^16.0.0"
+    "react": "^16.4.1",
+    "react-dom": "^16.4.1"
   },
   "devDependencies": {
     "@types/core-js": "0.9.43",
     "@types/deep-equal": "1.0.1",
-    "@types/enzyme": "2.8.8",
+    "@types/enzyme": "3.1.13",
     "@types/geojson": "^7946.0.4",
-    "@types/jest": "21.1.0",
+    "@types/jest": "^23.3.1",
     "@types/mapbox-gl": "^0.47.1",
     "@types/node": "8.0.29",
     "@types/prettier": "1.10.0",
-    "@types/prop-types": "15.5.2",
-    "@types/react": "16.0.34",
-    "@types/react-dom": "16.0.3",
-    "@types/recompose": "0.24.4",
+    "@types/react": "^16.4.7",
+    "@types/react-dom": "^16.0.6",
     "@types/supercluster": "3.0.2",
-    "enzyme": "3.1.0",
-    "enzyme-adapter-react-16": "1.0.0",
+    "enzyme": "3.4.4",
+    "enzyme-adapter-react-16": "1.2.0",
     "husky": "^0.14.3",
-    "jest": "21.2.0",
+    "jest": "23.5.0",
     "mapbox-gl": "0.48.0",
-    "prettier": "1.10.2",
-    "prop-types": "15.5.10",
-    "react": "16.0.0",
-    "react-dom": "16.0.0",
+    "prettier": "^1.14.2",
+    "prop-types": "^15.6.2",
+    "react": "^16.4.1",
+    "react-dom": "^16.4.1",
     "react-test-renderer": "16.0.0",
-    "recompose": "0.26.0",
-    "ts-jest": "21.0.1",
+    "ts-jest": "23.1.4",
     "tslint": "5.7.0",
     "tslint-react": "3.2.0",
-    "typescript": "2.5.3"
+    "typescript": "^2.9.2"
   }
 }

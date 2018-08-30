@@ -6,37 +6,37 @@ jest.mock('../util/overlays', () => ({
   overlayTransform: jest.fn(() => []),
   anchors: []
 }));
-import * as React from 'react';
+import React from 'react';
 import Popup, { defaultClassName } from '../popup';
-import { withContext } from 'recompose';
+import { MapProvider } from '../map-context';
 import { mount } from 'enzyme';
-const PropTypes = require('prop-types'); // tslint:disable-line
 
 describe('Popup', () => {
-  let PopupWithContext: any;
+  // tslint:disable:no-any
+  let map: any;
+  // tslint:enable:no-any
 
   beforeEach(() => {
-    PopupWithContext = withContext(
-      {
-        map: PropTypes.object
-      },
-      () => ({
-        map: {
-          on: jest.fn()
-        }
-      })
-    )(Popup);
+    map = {
+      on: jest.fn()
+    };
   });
 
   it('Should render component', () => {
-    const wrapper = mount(<PopupWithContext coordinates={[0, 0]} />);
+    const wrapper = mount(
+      <MapProvider map={map}>
+        <Popup coordinates={[0, 0]} />
+      </MapProvider>
+    );
 
     expect(wrapper).toBeDefined();
   });
 
   it('Should add custom className', () => {
     const wrapper = mount(
-      <PopupWithContext className="custom-classname" coordinates={[0, 0]} />
+      <MapProvider map={map}>
+        <Popup className="custom-classname" coordinates={[0, 0]} />
+      </MapProvider>
     );
 
     expect(wrapper.find('Popup').hasClass('custom-classname')).toEqual(true);
@@ -44,7 +44,9 @@ describe('Popup', () => {
 
   it('Should concat custom className to defaultClassName', () => {
     const wrapper = mount(
-      <PopupWithContext className="custom-classname" coordinates={[0, 0]} />
+      <MapProvider map={map}>
+        <Popup className="custom-classname" coordinates={[0, 0]} />
+      </MapProvider>
     );
     expect(
       wrapper

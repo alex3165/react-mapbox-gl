@@ -8,12 +8,11 @@ jest.mock('../util/overlays', () => ({
   anchors: []
 }));
 
-import * as React from 'react';
+import React from 'react';
 import Cluster from '../cluster';
 import Marker from '../marker';
-import { withContext } from 'recompose';
 import { mount } from 'enzyme';
-const PropTypes = require('prop-types'); // tslint:disable-line
+import { MapProvider } from '../map-context';
 
 const coordinates = [
   [-12.408741828510017, 58.16339752811908],
@@ -53,38 +52,31 @@ const mockProjections = {
 };
 
 describe('cluster', () => {
-  let ClusterWithContext: any;
-
+  // tslint:disable-next-line:no-any
+  let map: any;
   beforeEach(() => {
     let unprojectCalls = 0;
-
-    ClusterWithContext = withContext(
-      {
-        map: PropTypes.object
-      },
-      () => ({
-        map: {
-          on: jest.fn(),
-          getZoom: jest.fn(() => 2),
-          getCanvas: jest.fn(() => ({ width: 1020, height: 800 })),
-          getCanvasContainer: jest.fn(() => null),
-          unproject: jest.fn(() => mockProjections[unprojectCalls++]),
-          project: jest.fn()
-        }
-      })
-    )(Cluster);
+    map = {
+      on: jest.fn(),
+      getZoom: jest.fn(() => 2),
+      getCanvas: jest.fn(() => ({ width: 1020, height: 800 })),
+      getCanvasContainer: jest.fn(() => null),
+      unproject: jest.fn(() => mockProjections[unprojectCalls++]),
+      project: jest.fn()
+    };
   });
 
   it('should render the correct number of cluster', () => {
     const clusterMarkerFactory = jest.fn();
-
     mount(
-      <ClusterWithContext
-        children={coordinates.map((coord, index) => (
-          <Marker coordinates={coord} key={index} />
-        ))}
-        ClusterMarkerFactory={clusterMarkerFactory}
-      />
+      <MapProvider map={map}>
+        <Cluster
+          children={coordinates.map((coord, index) => (
+            <Marker coordinates={coord} key={index} />
+          ))}
+          ClusterMarkerFactory={clusterMarkerFactory}
+        />
+      </MapProvider>
     );
 
     const call = clusterMarkerFactory.mock.calls[0];

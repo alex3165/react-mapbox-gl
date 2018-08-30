@@ -1,5 +1,5 @@
-import * as React from 'react';
-import * as PropTypes from 'prop-types';
+import React from 'react';
+import { MapConsumer, MapContext } from './map-context';
 import { Map } from 'mapbox-gl';
 import { AnchorLimits } from './util/types';
 
@@ -66,13 +66,7 @@ export interface State {
   hover?: number;
 }
 
-export interface Context {
-  map: Map;
-}
-
-export default class ZoomControl extends React.Component<Props, State> {
-  public context: Context;
-
+export class ZoomControl extends React.Component<Props & MapContext, State> {
   public static defaultProps = {
     position: POSITIONS[0],
     zoomDiff: 0.5,
@@ -83,10 +77,6 @@ export default class ZoomControl extends React.Component<Props, State> {
 
   public state = {
     hover: undefined
-  };
-
-  public static contextTypes = {
-    map: PropTypes.object
   };
 
   private onMouseOut = () => {
@@ -106,11 +96,11 @@ export default class ZoomControl extends React.Component<Props, State> {
   };
 
   private onClickPlus = () => {
-    this.props.onControlClick!(this.context.map, this.props.zoomDiff!);
+    this.props.onControlClick!(this.props.map, this.props.zoomDiff!);
   };
 
   private onClickMinus = () => {
-    this.props.onControlClick!(this.context.map, -this.props.zoomDiff!);
+    this.props.onControlClick!(this.props.map, -this.props.zoomDiff!);
   };
 
   public render() {
@@ -153,3 +143,9 @@ export default class ZoomControl extends React.Component<Props, State> {
     );
   }
 }
+
+const ZoomControlWithMap: React.SFC<Props> = props => (
+  <MapConsumer>{({ map }) => <ZoomControl {...props} map={map} />}</MapConsumer>
+);
+
+export default ZoomControlWithMap;

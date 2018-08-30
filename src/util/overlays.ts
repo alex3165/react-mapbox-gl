@@ -2,6 +2,7 @@ import { LngLat, Point, Map } from 'mapbox-gl';
 import { Props } from '../projected-layer';
 import { Anchor, AnchorsOffset } from './types';
 
+export { Anchor };
 export interface PointDef {
   x: number;
   y: number;
@@ -9,8 +10,8 @@ export interface PointDef {
 
 export interface OverlayParams {
   anchor?: Anchor;
-  offset?: Point;
-  position?: Point;
+  offset?: Point | PointDef;
+  position?: Point | PointDef;
 }
 
 export const anchors = [
@@ -150,11 +151,11 @@ export const overlayTransform = ({
   const res = [];
 
   if (position) {
-    res.push(moveTranslate(position));
+    res.push(moveTranslate(position as Point));
   }
 
   if (offset && offset.x !== undefined && offset.y !== undefined) {
-    res.push(moveTranslate(offset));
+    res.push(moveTranslate(offset as Point));
   }
 
   if (anchor) {

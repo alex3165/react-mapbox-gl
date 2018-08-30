@@ -1,7 +1,6 @@
-import * as React from 'react';
-import { createPortal } from 'react-dom';
-import * as PropTypes from 'prop-types';
-import { Map, Point } from 'mapbox-gl';
+import React from 'react';
+import { Point } from 'mapbox-gl';
+import { MapConsumer, MapContext } from './map-context';
 import { OverlayParams, overlayState, overlayTransform } from './util/overlays';
 import { Anchor } from './util/types';
 
@@ -26,21 +25,12 @@ export interface Props {
   tabIndex?: number;
 }
 
-export interface Context {
-  map: Map;
-}
-
-export default class ProjectedLayer extends React.Component<
-  Props,
+export class ProjectedLayer extends React.Component<
+  Props & MapContext,
   OverlayParams
 > {
-  public context: Context;
-  private container: HTMLElement;
+  private container?: HTMLElement;
   private prevent: boolean = false;
-
-  public static contextTypes = {
-    map: PropTypes.object
-  };
 
   public static defaultProps = {
     offset: 0,
@@ -58,12 +48,12 @@ export default class ProjectedLayer extends React.Component<
 
   private handleMapMove = () => {
     if (!this.prevent) {
-      this.setState(overlayState(this.props, this.context.map, this.container));
+      this.setState(overlayState(this.props, this.props.map, this.container!));
     }
   };
 
   public componentDidMount() {
-    const { map } = this.context;
+    const { map } = this.props;
 
     map.on('move', this.handleMapMove);
     // Now this.container is rendered and the size of container is known.
@@ -82,26 +72,16 @@ export default class ProjectedLayer extends React.Component<
 
   public componentWillReceiveProps(nextProps: Props) {
     if (this.havePropsChanged(this.props, nextProps)) {
-      this.setState(overlayState(nextProps, this.context.map, this.container));
+      this.setState(overlayState(nextProps, this.props.map, this.container!));
     }
   }
 
   public componentWillUnmount() {
-    const { map } = this.context;
+    const { map } = this.props;
 
     this.prevent = true;
 
     map.off('move', this.handleMapMove);
-  }
-
-  public renderIntoContainer(child: React.ReactNode): React.ReactNode {
-    if (this.props.type === 'marker') {
-      const container = this.context.map.getCanvasContainer();
-
-      return container ? createPortal(child, container) : child;
-    }
-
-    return child;
   }
 
   public render() {
@@ -126,7 +106,7 @@ export default class ProjectedLayer extends React.Component<
     };
     const anchorClassname =
       anchor && type === 'popup' ? `mapboxgl-popup-anchor-${anchor}` : '';
-    return this.renderIntoContainer(
+    return (
       <div
         className={`${className} ${anchorClassname}`}
         onClick={onClick}
@@ -144,3 +124,11 @@ export default class ProjectedLayer extends React.Component<
     );
   }
 }
+
+const ProjectedLayerWithMap: React.SFC<Props> = props => (
+  <MapConsumer>
+    {({ map }) => <ProjectedLayer {...props} map={map} />}
+  </MapConsumer>
+);
+
+export default ProjectedLayerWithMap;

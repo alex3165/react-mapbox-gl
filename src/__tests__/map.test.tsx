@@ -1,17 +1,20 @@
+import { MapboxOptions } from 'mapbox-gl';
 let mockfitBounds = jest.fn();
 let mockon = jest.fn();
-
-const mockMap = jest.fn(() => ({
-  fitBounds: mockfitBounds,
-  on: mockon,
-  getCenter: jest.fn()
-}));
+let mockCenter = jest.fn();
 
 jest.mock('mapbox-gl', () => ({
-  Map: mockMap
+  Map(opts: MapboxOptions) {
+    return {
+      opts,
+      fitBounds: mockfitBounds,
+      on: mockon,
+      getCenter: mockCenter
+    };
+  }
 }));
 
-import * as React from 'react';
+import React from 'react';
 import ReactMapboxGl, { FitBounds } from '../map';
 import { mount } from 'enzyme';
 
@@ -20,6 +23,7 @@ describe('Map', () => {
   beforeEach(() => {
     mockfitBounds = jest.fn();
     mockon = jest.fn();
+    mockCenter = jest.fn();
 
     mapState = {
       getCenter: jest.fn(() => ({ lng: 1, lat: 2 })),
@@ -80,11 +84,12 @@ describe('Map', () => {
   it('Should calc the center from fitbounds if center is not given', () => {
     const fitBoundsValues: FitBounds = [[0, 3], [2, 9]];
     const MapboxMap = ReactMapboxGl({ accessToken: '' });
-
-    mount(<MapboxMap mapStyle="" fitBounds={fitBoundsValues} />);
-
-    const lastCall = mockMap.mock.calls[mockMap.mock.calls.length - 1];
-    expect(lastCall[0].center).toEqual([1, 6]);
+    const mapBoxMap = mount(
+      <MapboxMap mapStyle="" fitBounds={fitBoundsValues} />
+    );
+    // tslint:disable-next-line:no-any
+    const opts = (mapBoxMap.state('map') as any).opts as MapboxOptions;
+    expect(opts.center).toEqual([1, 6]);
   });
 
   it('Should listen onStyleLoad event', () => {
