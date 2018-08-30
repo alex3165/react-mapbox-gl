@@ -358,6 +358,7 @@ import { Popup } from "react-mapbox-gl";
   - `bottom`
   - `left`
   - `right`
+  - `center`
   - `top-left`
   - `top-right`
   - `bottom-left`
