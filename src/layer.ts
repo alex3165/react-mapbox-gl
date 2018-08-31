@@ -6,6 +6,15 @@ import diff from './util/diff';
 import { Context } from './util/types';
 import { Props as FeatureProps } from './feature';
 
+const eventToHandler = {
+  mousemove: 'OnMouseMove',
+  mouseenter: 'OnMouseEnter',
+  mouseleave: 'OnMouseLeave',
+  mousedown: 'OnMouseDown',
+  mouseup: 'OnMouseUp',
+  click: 'OnClick'
+};
+
 export type Paint =
   | MapboxGL.BackgroundPaint
   | MapboxGL.FillPaint
@@ -140,6 +149,18 @@ export default class Layer extends React.Component<Props> {
     properties: { ...props.properties, id }
   });
 
+  private mapLayerMouseHandlers = (id: string) => {
+    const { map } = this.props;
+    const events = Object.keys(eventToHandler);
+    events.forEach(event => {
+      const handler =
+        this.props[eventToHandler[event]] || null;
+      if (handler) {
+        map.on(event, id, handler);
+      }
+    });
+  };
+
   private initialize = () => {
     const {
       type,
@@ -197,6 +218,7 @@ export default class Layer extends React.Component<Props> {
 
     if (!map.getLayer(id)) {
       map.addLayer(layer, before);
+      this.mapLayerMouseHandlers(id);
     }
   };
 
@@ -227,12 +249,20 @@ export default class Layer extends React.Component<Props> {
 
     if (map.getLayer(id)) {
       map.removeLayer(id);
+      Object.keys(eventToHandler).forEach(event => {
+        const prop = eventToHandler[event];
+        if (this.props[prop]) {
+          map.off(event, id, this.props[prop]);
+        }
+      });
     }
     // if pointing to an existing source, don't remove
     // as other layers may be dependent upon it
     if (!this.props.sourceId) {
       map.removeSource(id);
     }
+
+    
 
     if (images) {
       const normalizedImages = !Array.isArray(images[0]) ? [images] : images;
@@ -263,6 +293,20 @@ export default class Layer extends React.Component<Props> {
         map.setLayoutProperty(id, key, layoutDiff[key]);
       });
     }
+
+    Object.keys(eventToHandler).forEach(event => {
+      const prop = eventToHandler[event];
+
+      if (props[prop] !== this.props[prop]) {
+        if (this.props[prop]) {
+          map.off(event, id, this.props[prop]);
+        }
+
+        if (props[prop]) {
+          map.on(event, id, props[prop]);
+        }
+      }
+    });
 
     if (props.filter && filter && !isEqual(props.filter, filter)) {
       map.setFilter(id, props.filter || []);
