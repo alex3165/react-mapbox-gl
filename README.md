@@ -82,9 +82,6 @@ If those properties changed at the mapbox-gl-js level and you don't update the v
 ## Contributions
 Please try to reproduce your problem with the [boilerplate](https://github.com/alex3165/react-mapbox-gl-debug) before posting an issue.
 
-## Built with react-mapbox-gl
-[monumap.org](https://monumap.org/)
-
 ## mapbox-gl-draw compatibility
 Try [react-mapbox-gl-draw](https://github.com/amaurymartiny/react-mapbox-gl-draw)
 
