@@ -1,7 +1,11 @@
 import cssRules from '../constants/css';
 
 const injectCSS = () => {
-  if (window && typeof window === 'object' && window.document) {
+  if (
+    typeof window !== 'undefined'
+    && typeof window === 'object'
+    && window.document
+  ) {
     const { document } = window;
     const head = document.head || document.getElementsByTagName('head')[0];
 
