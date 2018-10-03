@@ -144,7 +144,7 @@ const ReactMapboxFactory = ({
   transformRequest
 }: FactoryParameters) => {
   if (injectCss) {
-    injectCSS(window);
+    injectCSS();
   }
 
   return class ReactMapboxGl extends React.Component<Props & Events, State> {
