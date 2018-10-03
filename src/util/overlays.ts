@@ -1,6 +1,6 @@
 import { LngLat, Point, Map } from 'mapbox-gl';
 import { Props } from '../projected-layer';
-import { Anchor, AnchorsOffset } from './types';
+import { Anchor, AnchorsOffset, OptionalOffset } from './types';
 
 export interface PointDef {
   x: number;
@@ -77,7 +77,7 @@ const calculateAnchor = (
 };
 
 const normalizedOffsets = (
-  offset?: number | Point | AnchorsOffset | number[]
+  offset?: number | Point | OptionalOffset | number[]
 ): AnchorsOffset => {
   if (!offset) {
     return normalizedOffsets(new Point(0, 0));

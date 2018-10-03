@@ -57,3 +57,7 @@ export type AnyShapeCoordinates =
   | number[][]
   | number[][][]
   | number[][][][];
+
+export type OptionalOffset = {
+  [P in Anchor]?: number[] | Point;
+}
