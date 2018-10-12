@@ -1,5 +1,4 @@
 import * as React from 'react';
-import * as PropTypes from 'prop-types';
 import { Map } from 'mapbox-gl';
 import { AnchorLimits } from './util/types';
 
@@ -65,19 +64,14 @@ export interface Props {
   style?: React.CSSProperties;
   className?: string;
   tabIndex?: number;
+  map: Map;
 }
 
 export interface State {
   hover?: number;
 }
 
-export interface Context {
-  map: Map;
-}
-
 export default class RotationControl extends React.Component<Props, State> {
-  public context: Context;
-
   public static defaultProps = {
     position: POSITIONS[0]
   };
@@ -86,19 +80,15 @@ export default class RotationControl extends React.Component<Props, State> {
     hover: undefined
   };
 
-  public static contextTypes = {
-    map: PropTypes.object
-  };
-
   public componentDidMount() {
-    this.context.map.on('rotate', this.onMapRotate);
+    this.props.map.on('rotate', this.onMapRotate);
   }
 
   public componentWillUnmount() {
-    this.context.map.off('rotate', this.onMapRotate);
+    this.props.map.off('rotate', this.onMapRotate);
   }
 
-  public compassIcon: HTMLSpanElement | null;
+  public compassIcon: HTMLSpanElement | null = null;
 
   private onMouseOut = () => {
     if (!this.state.hover) {
@@ -113,11 +103,11 @@ export default class RotationControl extends React.Component<Props, State> {
   };
 
   private onClickCompass = () => {
-    this.context.map.resetNorth();
+    this.props.map.resetNorth();
   };
 
   private onMapRotate = () => {
-    const map = this.context.map;
+    const { map } = this.props;
     // tslint:disable-next-line:no-any
     const rotate = `rotate(${(map as any).transform.angle *
       (180 / Math.PI)}deg)`;

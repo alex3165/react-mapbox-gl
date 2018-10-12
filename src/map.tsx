@@ -1,6 +1,5 @@
 import * as MapboxGl from 'mapbox-gl';
 import * as React from 'react';
-import * as PropTypes from 'prop-types';
 import injectCSS from './util/inject-css';
 import {
   Events,
@@ -9,6 +8,7 @@ import {
   Listeners,
   updateEvents
 } from './map-events';
+import { MapContext } from './context';
 const isEqual = require('deep-equal'); //tslint:disable-line
 
 export interface PaddingOptions {
@@ -22,12 +22,12 @@ export interface FitBoundsOptions {
   linear?: boolean;
   easing?: (time: number) => number;
   padding?: number | PaddingOptions;
-  offset?: MapboxGl.Point | number[];
+  offset?: MapboxGl.Point | [number, number];
   maxZoom?: number;
   duration?: number;
 }
 
-export type FitBounds = number[][];
+export type FitBounds = [number, number, number, number];
 
 export interface AnimationOptions {
   duration: number;
@@ -46,7 +46,7 @@ export interface FlyToOptions {
 // React Props updated between re-render
 export interface Props {
   style: string | MapboxGl.Style;
-  center?: number[];
+  center?: [number, number];
   zoom?: [number];
   maxBounds?: MapboxGl.LngLatBounds | FitBounds;
   fitBounds?: FitBounds;
@@ -103,9 +103,6 @@ export interface FactoryParameters {
 const defaultZoom = [11];
 const defaultMovingMethod = 'flyTo';
 const defaultCenter = [-0.2416815, 51.5285582];
-const defaultContainerStyle = {
-  textAlign: 'left'
-};
 
 // tslint:disable-next-line:no-namespace
 declare global {
@@ -155,11 +152,10 @@ const ReactMapboxFactory = ({
       zoom: defaultZoom,
       bearing: 0,
       movingMethod: defaultMovingMethod,
-      pitch: 0
-    };
-
-    public static childContextTypes = {
-      map: PropTypes.object
+      pitch: 0,
+      containerStyle: {
+        textAlign: 'left'
+      }
     };
 
     public state = {
@@ -172,13 +168,9 @@ const ReactMapboxFactory = ({
     // tslint:disable-next-line:variable-name
     public _isMounted = true;
 
-    public getChildContext = () => ({
-      map: this.state.map
-    });
+    public container?: HTMLElement;
 
-    public container: HTMLElement;
-
-    public calcCenter = (bounds: FitBounds): number[] => [
+    public calcCenter = (bounds: FitBounds): [number, number] => [
       (bounds[0][0] + bounds[1][0]) / 2,
       (bounds[0][1] + bounds[1][1]) / 2
     ];
@@ -216,7 +208,7 @@ const ReactMapboxFactory = ({
         minZoom,
         maxZoom,
         maxBounds,
-        container: this.container,
+        container: this.container!,
         center:
           fitBounds && center === defaultCenter
             ? this.calcCenter(fitBounds)
@@ -385,13 +377,15 @@ const ReactMapboxFactory = ({
       const { ready } = this.state;
 
       return (
-        <div
-          ref={this.setRef}
-          className={className}
-          style={{ ...containerStyle, ...defaultContainerStyle }}
-        >
-          {ready && children}
-        </div>
+        <MapContext.Provider value={this.state.map}>
+          <div
+            ref={this.setRef}
+            className={className}
+            style={{ ...containerStyle }}
+          >
+            {ready && children}
+          </div>
+        </MapContext.Provider>
       );
     }
   };

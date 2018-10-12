@@ -66,8 +66,8 @@
   "peerDependencies": {
     "mapbox-gl": "0.48.0",
     "prop-types": "^15.5.10",
-    "react": "^15.6.1 || ^16.0.0",
-    "react-dom": "^15.6.1 || ^16.0.0"
+    "react": "16.5.2",
+    "react-dom": "16.5.2"
   },
   "devDependencies": {
     "@types/core-js": "0.9.43",
@@ -75,13 +75,13 @@
     "@types/enzyme": "2.8.8",
     "@types/geojson": "^7946.0.4",
     "@types/jest": "21.1.0",
-    "@types/mapbox-gl": "^0.48.0",
+    "@types/mapbox-gl": "0.49.0",
     "@types/node": "8.0.29",
     "@types/prettier": "1.10.0",
     "@types/prop-types": "15.5.2",
-    "@types/react": "16.0.34",
-    "@types/react-dom": "16.0.3",
-    "@types/recompose": "0.24.4",
+    "@types/react": "16.4.16",
+    "@types/react-dom": "16.0.9",
+    "@types/recompose": "0.27.0",
     "@types/supercluster": "3.0.2",
     "enzyme": "3.1.0",
     "enzyme-adapter-react-16": "1.0.0",
@@ -97,6 +97,6 @@
     "ts-jest": "21.0.1",
     "tslint": "5.7.0",
     "tslint-react": "3.2.0",
-    "typescript": "2.5.3"
+    "typescript": "3.1.3"
   }
 }

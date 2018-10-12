@@ -1,9 +1,7 @@
 import * as React from 'react';
-import * as PropTypes from 'prop-types';
 import * as MapboxGL from 'mapbox-gl';
 const isEqual = require('deep-equal'); //tslint:disable-line
 import diff from './util/diff';
-import { Context } from './util/types';
 import { Props as FeatureProps } from './feature';
 
 export type Paint =
@@ -69,17 +67,12 @@ export interface LayerCommonProps {
 export interface OwnProps {
   id: string;
   draggedChildren?: JSX.Element[];
+  map: MapboxGL.Map;
 }
 
 export type Props = LayerCommonProps & OwnProps;
 
 export default class Layer extends React.Component<Props> {
-  public context: Context;
-
-  public static contextTypes = {
-    map: PropTypes.object
-  };
-
   public static defaultProps = {
     type: 'symbol' as 'symbol',
     layout: {},
@@ -155,7 +148,7 @@ export default class Layer extends React.Component<Props> {
       maxZoom,
       filter
     } = this.props;
-    const { map } = this.context;
+    const { map } = this.props;
 
     const layer: MapboxGL.Layer = {
       id,
@@ -203,14 +196,14 @@ export default class Layer extends React.Component<Props> {
   private onStyleDataChange = () => {
     // if the style of the map has been updated and we don't have layer anymore,
     // add it back to the map and force re-rendering to redraw it
-    if (!this.context.map.getLayer(this.props.id)) {
+    if (!this.props.map.getLayer(this.props.id)) {
       this.initialize();
       this.forceUpdate();
     }
   };
 
   public componentWillMount() {
-    const { map } = this.context;
+    const { map } = this.props;
 
     this.initialize();
 
@@ -218,7 +211,7 @@ export default class Layer extends React.Component<Props> {
   }
 
   public componentWillUnmount() {
-    const { map } = this.context;
+    const { map } = this.props;
     const { images, id } = this.props;
 
     if (!map || !map.getStyle()) {
@@ -246,7 +239,7 @@ export default class Layer extends React.Component<Props> {
 
   public componentWillReceiveProps(props: Props) {
     const { paint, layout, before, filter, id, minZoom, maxZoom } = this.props;
-    const { map } = this.context;
+    const { map } = this.props;
 
     if (!isEqual(props.paint, paint)) {
       const paintDiff = diff(paint, props.paint);
@@ -296,7 +289,7 @@ export default class Layer extends React.Component<Props> {
   };
 
   public render() {
-    const { map } = this.context;
+    const { map } = this.props;
     const { sourceId, draggedChildren } = this.props;
     let children = this.getChildren();
 

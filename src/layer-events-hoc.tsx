@@ -1,6 +1,6 @@
 import * as React from 'react';
-import * as PropTypes from 'prop-types';
-import { Context } from './util/types';
+// import * as PropTypes from 'prop-types';
+// import { Context } from './util/types';
 import { Props as FeatureProps } from './feature';
 import { generateID } from './util/uid';
 import { LayerCommonProps, Props as LayerProps } from './layer';
@@ -17,24 +17,18 @@ function layerMouseTouchEvents(
   WrappedComponent: React.ComponentClass<LayerProps>
 ) {
   return class EnhancedLayer extends React.Component<OwnProps> {
-    public context: Context;
     public hover: number[] = [];
     public draggedChildren:
       | Array<React.ReactElement<FeatureProps>>
       | undefined = undefined;
-
-    public static contextTypes = {
-      map: PropTypes.object
-    };
 
     public id: string = this.props.id || `layer-${generateID()}`;
 
     public getChildren = () =>
       ([] as LayerChildren[])
         .concat(this.props.children)
-        // TODO: Fix when https://github.com/Microsoft/TypeScript/issues/18562 is merged
         .filter(
-          (el: LayerChildren): el is React.ReactElement<FeatureProps> =>
+          (el): el is React.ReactElement<FeatureProps> =>
             typeof el !== 'undefined'
         );
     public getChildFromId = (
@@ -246,6 +240,7 @@ function layerMouseTouchEvents(
         <WrappedComponent
           {...this.props}
           id={this.id}
+          map={this.context.map}
           draggedChildren={this.draggedChildren}
         />
       );

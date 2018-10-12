@@ -108,7 +108,7 @@ export const listenEvents = (
   map: MapboxGl.Map
 ) =>
   Object.keys(partialEvents).reduce(
-    (listeners, event: keyof Events) => {
+    (listeners, event) => {
       const propEvent = props[event];
 
       if (propEvent) {
