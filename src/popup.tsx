@@ -22,8 +22,6 @@ export interface Props {
 
 export const defaultClassName = ['mapboxgl-popup'];
 
-const AnyProjectedLayer = ProjectedLayer as any;
-
 export default class Popup extends React.Component<Props> {
   public render() {
     const { children, className } = this.props;
@@ -31,10 +29,10 @@ export default class Popup extends React.Component<Props> {
     const childrenClassName = getClassName(defaultClassName, className);
 
     return (
-      <AnyProjectedLayer {...props} type="popup" className={childrenClassName}>
+      <ProjectedLayer {...props} type="popup" className={childrenClassName}>
         <div className="mapboxgl-popup-tip" />
         <div className="mapboxgl-popup-content">{children}</div>
-      </AnyProjectedLayer>
+      </ProjectedLayer>
     );
   }
 }

@@ -37,10 +37,6 @@ export interface State {
   clusterPoints: Array<GeoJSON.Feature<GeoJSON.Point>>;
 }
 
-// export interface Context {
-//   map: Map;
-// }
-
 class Cluster extends React.Component<Props, State> {
   public static defaultProps = {
     radius: 60,

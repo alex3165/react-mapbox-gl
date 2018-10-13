@@ -1,6 +1,5 @@
 import * as MapboxGl from 'mapbox-gl';
 import * as React from 'react';
-import injectCSS from './util/inject-css';
 import {
   Events,
   listenEvents,
@@ -95,7 +94,7 @@ export interface FactoryParameters {
   refreshExpiredTiles?: boolean;
   failIfMajorPerformanceCaveat?: boolean;
   bearingSnap?: number;
-  injectCss?: boolean;
+  injectCSS?: boolean;
   transformRequest?: RequestTransformFunction;
 }
 
@@ -137,11 +136,11 @@ const ReactMapboxFactory = ({
   refreshExpiredTiles = true,
   failIfMajorPerformanceCaveat = false,
   bearingSnap = 7,
-  injectCss = true,
+  injectCSS = true,
   transformRequest
 }: FactoryParameters) => {
-  if (injectCss) {
-    injectCSS(window);
+  if (injectCSS) {
+    require('mapbox-gl/dist/mapbox-gl.css');
   }
 
   return class ReactMapboxGl extends React.Component<Props & Events, State> {
@@ -158,7 +157,7 @@ const ReactMapboxFactory = ({
       }
     };
 
-    public state = {
+    public state: State = {
       map: undefined,
       ready: false
     };
@@ -275,7 +274,7 @@ const ReactMapboxFactory = ({
     }
 
     public componentWillUnmount() {
-      const { map } = this.state as State;
+      const { map } = this.state;
       this._isMounted = false;
 
       if (map) {
@@ -284,7 +283,7 @@ const ReactMapboxFactory = ({
     }
 
     public componentWillReceiveProps(nextProps: Props & Events) {
-      const { map } = this.state as State;
+      const { map } = this.state;
       if (!map) {
         return null;
       }

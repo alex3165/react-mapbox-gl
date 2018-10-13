@@ -6,10 +6,10 @@ export const MapContext = React.createContext(undefined) as React.Context<
 >;
 
 export function withMap(Component: React.ComponentClass<any>) {
-  return function ThemedComponent() {
+  return function MappedComponent<T>(props: T) {
     return (
       <MapContext.Consumer>
-        {map => <Component map={map} />}
+        {map => <Component map={map} {...props} />}
       </MapContext.Consumer>
     );
   };
