@@ -13,7 +13,14 @@ const Menu = styled.ul`
   width: 200px;
 `;
 
-const Item = styled.li`
+interface ItemProps {
+  selected: boolean;
+}
+
+const Item =
+  styled.li <
+  ItemProps >
+  `
   margin: 0px 10px;
   padding: 20px 0px;
   font-weight: ${({ selected }) => (selected ? 700 : 100)};

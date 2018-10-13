@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { Map } from 'mapbox-gl';
 import { AnchorLimits } from './util/types';
+import { withMap } from './context';
 
 const containerStyle: React.CSSProperties = {
   position: 'absolute',
@@ -71,7 +72,7 @@ export interface State {
   hover?: number;
 }
 
-export default class RotationControl extends React.Component<Props, State> {
+class RotationControl extends React.Component<Props, State> {
   public static defaultProps = {
     position: POSITIONS[0]
   };
@@ -150,3 +151,5 @@ export default class RotationControl extends React.Component<Props, State> {
     );
   }
 }
+
+export default withMap(RotationControl);

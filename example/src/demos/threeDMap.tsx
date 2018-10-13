@@ -28,11 +28,11 @@ export interface Props {
   onStyleLoad?: (map: any) => any;
 }
 
-class ThreeDMap extends React.Component<Props, {}> {
+class ThreeDMap extends React.Component<Props> {
   private zoom: [number] = [15];
   private bearing: [number] = [-60];
   private pitch: [number] = [60];
-  private center = [-0.0824952, 51.5144951];
+  private center = [-0.0824952, 51.5144951] as [number, number];
 
   // tslint:disable-next-line:no-any
   private onStyleLoad = (map: any) => {

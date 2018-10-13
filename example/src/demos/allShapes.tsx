@@ -23,7 +23,9 @@ interface Route {
 // tslint:disable-next-line:no-var-requires
 const route: Route = require('./route.json');
 
-const mappedRoute = route.points.map(point => [point.lat, point.lng]);
+const mappedRoute = route.points.map(
+  point => [point.lat, point.lng] as [number, number]
+);
 
 const Map = ReactMapboxGl({ accessToken: token });
 
@@ -52,7 +54,7 @@ const multiPolygonPaint = {
 };
 
 export interface State {
-  center: number[];
+  center: [number, number];
   circleRadius: number;
   routeIndex: number;
   zoom: [number];

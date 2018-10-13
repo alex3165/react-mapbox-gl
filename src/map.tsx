@@ -26,7 +26,7 @@ export interface FitBoundsOptions {
   duration?: number;
 }
 
-export type FitBounds = [number, number, number, number];
+export type FitBounds = [[number, number], [number, number]];
 
 export interface AnimationOptions {
   duration: number;
@@ -374,7 +374,7 @@ const ReactMapboxFactory = ({
     public render() {
       const { containerStyle, className, children } = this.props;
       const { ready } = this.state;
-
+      console.log(this.state.map);
       return (
         <MapContext.Provider value={this.state.map}>
           <div
