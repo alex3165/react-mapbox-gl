@@ -1,6 +1,5 @@
 import * as React from 'react';
-import * as MapboxGL from 'mapbox-gl';
-import { LngLatBounds } from 'mapbox-gl';
+import { LngLatBounds, Map } from 'mapbox-gl';
 import { Props as MarkerProps } from './marker';
 import supercluster, { Supercluster } from 'supercluster';
 import * as GeoJSON from 'geojson';
@@ -29,7 +28,7 @@ export interface Props {
   style?: React.CSSProperties;
   className?: string;
   tabIndex?: number;
-  map: MapboxGL.Map;
+  map: Map;
 }
 
 export interface State {

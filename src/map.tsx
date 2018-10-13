@@ -140,6 +140,7 @@ const ReactMapboxFactory = ({
   transformRequest
 }: FactoryParameters) => {
   if (injectCSS) {
+    // tslint:disable-next-line:no-submodule-imports
     require('mapbox-gl/dist/mapbox-gl.css');
   }
 

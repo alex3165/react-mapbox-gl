@@ -104,6 +104,8 @@ export interface Props
   map: MapboxGL.Map;
 }
 
+type MapboxEventTypes = Array<keyof MapboxGL.MapLayerEventType>;
+
 type Paints =
   | MapboxGL.LinePaint
   | MapboxGL.SymbolPaint
@@ -123,6 +125,7 @@ class GeoJSONLayer extends React.Component<Props> {
     type: 'geojson',
     ...this.props.sourceOptions,
     data: this.props.data
+    // tslint:disable-next-line:no-any
   } as any;
 
   private layerIds: string[] = [];
@@ -165,9 +168,7 @@ class GeoJSONLayer extends React.Component<Props> {
 
     const layerId = this.buildLayerId(type);
 
-    const events = Object.keys(
-      eventToHandler
-    ) as (keyof MapboxGL.MapLayerEventType)[];
+    const events = Object.keys(eventToHandler) as MapboxEventTypes;
 
     events.forEach(event => {
       const handler =
@@ -217,9 +218,7 @@ class GeoJSONLayer extends React.Component<Props> {
     }
 
     types.forEach(type => {
-      const events = Object.keys(
-        eventToHandler
-      ) as (keyof MapboxGL.MapLayerEventType)[];
+      const events = Object.keys(eventToHandler) as MapboxEventTypes;
       events.forEach(event => {
         const prop = toCamelCase(type) + eventToHandler[event];
 
@@ -274,6 +273,7 @@ class GeoJSONLayer extends React.Component<Props> {
         type: 'geojson',
         ...props.sourceOptions,
         data: props.data
+        // tslint:disable-next-line:no-any
       } as any;
     }
 
@@ -309,9 +309,7 @@ class GeoJSONLayer extends React.Component<Props> {
         });
       }
 
-      const events = Object.keys(
-        eventToHandler
-      ) as (keyof MapboxGL.MapLayerEventType)[];
+      const events = Object.keys(eventToHandler) as MapboxEventTypes;
 
       events.forEach(event => {
         const prop = toCamelCase(type) + eventToHandler[event];
