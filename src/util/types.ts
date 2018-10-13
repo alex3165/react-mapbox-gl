@@ -6,8 +6,7 @@ import {
   RasterDemSource,
   ImageSource,
   VideoSource,
-  Point,
-  Map
+  Point
 } from 'mapbox-gl';
 
 export interface AnchorOffsetLimits {
@@ -38,10 +37,6 @@ export type Sources =
   | RasterDemSource;
 
 export type TilesJson = VectorSource | RasterSource;
-
-export interface Context {
-  map: Map;
-}
 
 export type LayerType =
   | 'fill'

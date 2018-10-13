@@ -41,7 +41,7 @@ export const anchorTranslates = {
 const defaultElement = { offsetWidth: 0, offsetHeight: 0 };
 const defaultPoint = [0, 0];
 
-const projectCoordinates = (map: Map, coordinates: number[]) =>
+const projectCoordinates = (map: Map, coordinates: [number, number]) =>
   map.project(LngLat.convert(coordinates));
 
 const calculateAnchor = (
@@ -77,7 +77,7 @@ const calculateAnchor = (
 };
 
 const normalizedOffsets = (
-  offset?: number | Point | AnchorsOffset | number[]
+  offset?: number | Point | AnchorsOffset | [number, number]
 ): AnchorsOffset => {
   if (!offset) {
     return normalizedOffsets(new Point(0, 0));
