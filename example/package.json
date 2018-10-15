@@ -6,12 +6,13 @@
   "homepage": "http://alex3165.github.io/react-mapbox-gl",
   "scripts": {
     "start": "cross-env NODE_ENV=dev webpack-dev-server --hot",
-    "build": "cross-env NODE_ENV=prod webpack && cp dist/index.html dist/demos.html",
+    "build":
+      "cross-env NODE_ENV=prod webpack && cp dist/index.html dist/demos.html",
     "predeploy": "npm run build",
     "deploy": "gh-pages -d dist"
   },
   "dependencies": {
-    "@types/enzyme": "2.8.10",
+    "@types/enzyme": "3.1.14",
     "immutable": "3.8.1",
     "react": "16.5.2",
     "react-dom": "16.5.2",
