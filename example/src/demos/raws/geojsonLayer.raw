@@ -34,7 +34,7 @@ export interface Props {
 }
 
 class GeoJsonLayer extends React.Component<Props> {
-  private center = [-77.01239, 38.91275];
+  private center = [-77.01239, 38.91275] as [number, number];
 
   // tslint:disable-next-line:no-any
   private onClickCircle = (evt: any) => {

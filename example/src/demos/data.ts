@@ -1,7 +1,9 @@
+import { FitBounds } from '../../../lib/map';
+
 export const londonCycleMaxBounds = [
   [-0.481747846041145, 51.3233379650232],
   [0.23441119994140536, 51.654967740310525]
-];
+] as FitBounds;
 
 export const AllShapesPolygonCoords = [
   [

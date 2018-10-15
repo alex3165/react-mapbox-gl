@@ -11,10 +11,7 @@ var output = {
 };
 
 // Add more files to copy to the dist folder (Eventually an assets folder)
-var toCopy = [
-  { from: 'index.html' },
-  { from: 'style.css' }
-];
+var toCopy = [{ from: 'index.html' }, { from: 'style.css' }];
 
 var plugins = [
   new webpack.DefinePlugin({
@@ -32,9 +29,7 @@ if (env === 'dev') {
   devtool = 'eval';
   // plugins.push(new webpack.HotModuleReplacementPlugin());
 } else {
-  plugins = plugins.concat([
-    new CopyWebpackPlugin(toCopy)
-  ]);
+  plugins = plugins.concat([new CopyWebpackPlugin(toCopy)]);
 }
 
 module.exports = {
@@ -56,6 +51,10 @@ module.exports = {
       {
         test: /\.tsx?$/,
         loader: 'ts-loader'
+      },
+      {
+        test: /\.css$/,
+        use: ['style-loader', 'css-loader']
       }
     ]
   },

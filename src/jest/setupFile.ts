@@ -4,7 +4,7 @@ import * as React from 'react';
 // https://github.com/facebook/react/issues/9102#issuecomment-283873039
 // https://stackoverflow.com/a/43950142/583830
 
-global.window = global;
+// global.window = global;
 window.addEventListener = () => {}; // tslint:disable-line
 window.requestAnimationFrame = () => {
   throw new Error('requestAnimationFrame is not supported in Node');

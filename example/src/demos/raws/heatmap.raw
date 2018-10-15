@@ -55,7 +55,7 @@ const layerPaint = {
 };
 
 export default class Heatmap extends React.Component<Props> {
-  private center = [-0.109970527, 51.52916347];
+  private center = [-0.109970527, 51.52916347] as [number, number];
 
   // tslint:disable-next-line:no-any
   private onStyleLoad = (map: any) => {

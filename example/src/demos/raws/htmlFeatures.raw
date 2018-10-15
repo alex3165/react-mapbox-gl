@@ -34,14 +34,14 @@ const mapStyle = {
 export interface Place {
   id: string;
   name: string;
-  center: number[];
+  center: [number, number];
 }
 
 export interface State {
   query: string;
   options: Place[];
   selected?: Place;
-  center: number[];
+  center: [number, number];
 }
 
 const req = (url: string, body?: any, method = 'GET') =>

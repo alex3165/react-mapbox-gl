@@ -1,8 +1,8 @@
 import * as React from 'react';
-import * as PropTypes from 'prop-types';
 import { Map, Point } from 'mapbox-gl';
 import { OverlayParams, overlayState, overlayTransform } from './util/overlays';
 import { Anchor } from './util/types';
+import { withMap } from './context';
 
 const defaultStyle = {
   zIndex: 3
@@ -10,9 +10,9 @@ const defaultStyle = {
 
 export interface Props {
   type: 'marker' | 'popup';
-  coordinates: number[];
+  coordinates: [number, number];
   anchor?: Anchor;
-  offset?: number | number[] | Point;
+  offset?: number | [number, number] | Point;
   children?: JSX.Element | JSX.Element[];
   onClick?: React.MouseEventHandler<HTMLDivElement>;
   onDoubleClick?: React.MouseEventHandler<HTMLDivElement>;
@@ -23,23 +23,12 @@ export interface Props {
   style?: React.CSSProperties;
   className: string;
   tabIndex?: number;
-}
-
-export interface Context {
   map: Map;
 }
 
-export default class ProjectedLayer extends React.Component<
-  Props,
-  OverlayParams
-> {
-  public context: Context;
-  private container: HTMLElement;
+export class ProjectedLayer extends React.Component<Props, OverlayParams> {
+  private container: HTMLElement | undefined = undefined;
   private prevent: boolean = false;
-
-  public static contextTypes = {
-    map: PropTypes.object
-  };
 
   public static defaultProps = {
     offset: 0,
@@ -57,12 +46,12 @@ export default class ProjectedLayer extends React.Component<
 
   private handleMapMove = () => {
     if (!this.prevent) {
-      this.setState(overlayState(this.props, this.context.map, this.container));
+      this.setState(overlayState(this.props, this.props.map, this.container!));
     }
   };
 
   public componentDidMount() {
-    const { map } = this.context;
+    const { map } = this.props;
 
     map.on('move', this.handleMapMove);
     // Now this.container is rendered and the size of container is known.
@@ -81,12 +70,12 @@ export default class ProjectedLayer extends React.Component<
 
   public componentWillReceiveProps(nextProps: Props) {
     if (this.havePropsChanged(this.props, nextProps)) {
-      this.setState(overlayState(nextProps, this.context.map, this.container));
+      this.setState(overlayState(nextProps, this.props.map, this.container!));
     }
   }
 
   public componentWillUnmount() {
-    const { map } = this.context;
+    const { map } = this.props;
 
     this.prevent = true;
 
@@ -133,3 +122,5 @@ export default class ProjectedLayer extends React.Component<
     );
   }
 }
+
+export default withMap(ProjectedLayer);

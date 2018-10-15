@@ -1,7 +1,7 @@
 import * as React from 'react';
-import * as PropTypes from 'prop-types';
 import { Map } from 'mapbox-gl';
 import { AnchorLimits } from './util/types';
+import { withMap } from './context';
 
 const scales = [
   0.01,
@@ -72,6 +72,7 @@ export interface Props {
   style?: React.CSSProperties;
   className?: string;
   tabIndex?: number;
+  map: Map;
 }
 
 export interface State {
@@ -79,17 +80,7 @@ export interface State {
   scaleWidth: number;
 }
 
-export interface Context {
-  map: Map;
-}
-
-export default class ScaleControl extends React.Component<Props, State> {
-  public context: Context;
-
-  public static contextTypes = {
-    map: PropTypes.object
-  };
-
+export class ScaleControl extends React.Component<Props, State> {
   public static defaultProps = {
     measurement: MEASUREMENTS[0],
     position: POSITIONS[2]
@@ -103,18 +94,17 @@ export default class ScaleControl extends React.Component<Props, State> {
   public componentWillMount() {
     this.setScale();
 
-    this.context.map.on('zoomend', this.setScale);
+    this.props.map.on('zoomend', this.setScale);
   }
 
   public componentWillUnmount() {
-    if (this.context.map) {
-      this.context.map.off('zoomend', this.setScale);
+    if (this.props.map) {
+      this.props.map.off('zoomend', this.setScale);
     }
   }
 
   private setScale = () => {
-    const { map } = this.context;
-    const { measurement } = this.props;
+    const { measurement, map } = this.props;
 
     // tslint:disable-next-line:no-any
     const clientWidth = (map as any)._canvas.clientWidth;
@@ -200,3 +190,5 @@ export default class ScaleControl extends React.Component<Props, State> {
     );
   }
 }
+
+export default withMap(ScaleControl);

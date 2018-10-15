@@ -1,7 +1,7 @@
 import * as React from 'react';
-import * as PropTypes from 'prop-types';
 import { Map } from 'mapbox-gl';
 import { AnchorLimits } from './util/types';
+import { withMap } from './context';
 
 const containerStyle: React.CSSProperties = {
   position: 'absolute',
@@ -60,19 +60,14 @@ export interface Props {
   style?: React.CSSProperties;
   className?: string;
   tabIndex?: number;
+  map: Map;
 }
 
 export interface State {
   hover?: number;
 }
 
-export interface Context {
-  map: Map;
-}
-
-export default class ZoomControl extends React.Component<Props, State> {
-  public context: Context;
-
+export class ZoomControl extends React.Component<Props, State> {
   public static defaultProps = {
     position: POSITIONS[0],
     zoomDiff: 0.5,
@@ -83,10 +78,6 @@ export default class ZoomControl extends React.Component<Props, State> {
 
   public state = {
     hover: undefined
-  };
-
-  public static contextTypes = {
-    map: PropTypes.object
   };
 
   private onMouseOut = () => {
@@ -106,11 +97,11 @@ export default class ZoomControl extends React.Component<Props, State> {
   };
 
   private onClickPlus = () => {
-    this.props.onControlClick!(this.context.map, this.props.zoomDiff!);
+    this.props.onControlClick!(this.props.map, this.props.zoomDiff!);
   };
 
   private onClickMinus = () => {
-    this.props.onControlClick!(this.context.map, -this.props.zoomDiff!);
+    this.props.onControlClick!(this.props.map, -this.props.zoomDiff!);
   };
 
   public render() {
@@ -134,6 +125,7 @@ export default class ZoomControl extends React.Component<Props, State> {
         style={{ ...containerStyle, ...positions[position!], ...style }}
       >
         <button
+          id="zoomIn"
           type="button"
           style={plusStyle}
           aria-label="Zoom in"
@@ -142,6 +134,7 @@ export default class ZoomControl extends React.Component<Props, State> {
           onClick={this.onClickPlus}
         />
         <button
+          id="zoomOut"
           type="button"
           style={minusStyle}
           aria-label="Zoom out"
@@ -153,3 +146,5 @@ export default class ZoomControl extends React.Component<Props, State> {
     );
   }
 }
+
+export default withMap(ZoomControl);

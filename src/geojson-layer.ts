@@ -1,10 +1,10 @@
 import * as React from 'react';
-import * as PropTypes from 'prop-types';
 import * as MapboxGL from 'mapbox-gl';
 const isEqual = require('deep-equal'); //tslint:disable-line
 import diff from './util/diff';
 import { generateID } from './util/uid';
-import { Sources, Context, LayerType } from './util/types';
+import { Sources, LayerType } from './util/types';
+import { withMap } from './context';
 
 const types = ['symbol', 'line', 'fill', 'fill-extrusion', 'circle'];
 const toCamelCase = (str: string) =>
@@ -101,7 +101,10 @@ export interface Props
     | MapboxGL.GeoJSONSource
     | MapboxGL.GeoJSONSourceRaw;
   before?: string;
+  map: MapboxGL.Map;
 }
+
+type MapboxEventTypes = Array<keyof MapboxGL.MapLayerEventType>;
 
 type Paints =
   | MapboxGL.LinePaint
@@ -114,20 +117,16 @@ type Layouts =
   | MapboxGL.CircleLayout
   | MapboxGL.FillExtrusionLayout;
 
-export default class GeoJSONLayer extends React.Component<Props> {
-  public context: Context;
-
-  public static contextTypes = {
-    map: PropTypes.object
-  };
-
+export class GeoJSONLayer extends React.Component<Props> {
   private id: string = this.props.id || `geojson-${generateID()}`;
 
+  // TODO: Refactor to use defaultProps
   private source: Sources = {
     type: 'geojson',
     ...this.props.sourceOptions,
     data: this.props.data
-  };
+    // tslint:disable-next-line:no-any
+  } as any;
 
   private layerIds: string[] = [];
 
@@ -136,8 +135,7 @@ export default class GeoJSONLayer extends React.Component<Props> {
   };
 
   private createLayer = (type: LayerType) => {
-    const { before, layerOptions } = this.props;
-    const { map } = this.context;
+    const { before, layerOptions, map } = this.props;
 
     const layerId = this.buildLayerId(type);
     this.layerIds.push(layerId);
@@ -166,11 +164,11 @@ export default class GeoJSONLayer extends React.Component<Props> {
   };
 
   private mapLayerMouseHandlers = (type: string) => {
-    const { map } = this.context;
+    const { map } = this.props;
 
     const layerId = this.buildLayerId(type);
 
-    const events = Object.keys(eventToHandler);
+    const events = Object.keys(eventToHandler) as MapboxEventTypes;
 
     events.forEach(event => {
       const handler =
@@ -185,7 +183,7 @@ export default class GeoJSONLayer extends React.Component<Props> {
   private onStyleDataChange = () => {
     // if the style of the map has been updated and we don't have layer anymore,
     // add it back to the map and force re-rendering to redraw it
-    if (!this.context.map.getSource(this.id)) {
+    if (!this.props.map.getSource(this.id)) {
       this.unbind();
       this.initialize();
       this.forceUpdate();
@@ -193,7 +191,7 @@ export default class GeoJSONLayer extends React.Component<Props> {
   };
 
   private initialize() {
-    const { map } = this.context;
+    const { map } = this.props;
 
     map.addSource(this.id, this.source);
 
@@ -205,7 +203,7 @@ export default class GeoJSONLayer extends React.Component<Props> {
   }
 
   private unbind() {
-    const { map } = this.context;
+    const { map } = this.props;
 
     if (map.getSource(this.id)) {
       const { layers } = map.getStyle();
@@ -220,7 +218,8 @@ export default class GeoJSONLayer extends React.Component<Props> {
     }
 
     types.forEach(type => {
-      Object.keys(eventToHandler).forEach(event => {
+      const events = Object.keys(eventToHandler) as MapboxEventTypes;
+      events.forEach(event => {
         const prop = toCamelCase(type) + eventToHandler[event];
 
         if (this.props[prop]) {
@@ -237,13 +236,13 @@ export default class GeoJSONLayer extends React.Component<Props> {
   }
 
   public componentWillMount() {
-    const { map } = this.context;
+    const { map } = this.props;
     this.initialize();
     map.on('styledata', this.onStyleDataChange);
   }
 
   public componentWillUnmount() {
-    const { map } = this.context;
+    const { map } = this.props;
 
     if (!map || !map.getStyle()) {
       return;
@@ -261,8 +260,7 @@ export default class GeoJSONLayer extends React.Component<Props> {
     typeof (source as MapboxGL.GeoJSONSource).setData === 'function';
 
   public componentWillReceiveProps(props: Props) {
-    const { data, before, layerOptions } = this.props;
-    const { map } = this.context;
+    const { data, before, layerOptions, map } = this.props;
     const source = map.getSource(this.id);
     if (!this.isGeoJSONSource(source)) {
       return;
@@ -275,7 +273,8 @@ export default class GeoJSONLayer extends React.Component<Props> {
         type: 'geojson',
         ...props.sourceOptions,
         data: props.data
-      };
+        // tslint:disable-next-line:no-any
+      } as any;
     }
 
     const layerFilterChanged =
@@ -310,7 +309,9 @@ export default class GeoJSONLayer extends React.Component<Props> {
         });
       }
 
-      Object.keys(eventToHandler).forEach(event => {
+      const events = Object.keys(eventToHandler) as MapboxEventTypes;
+
+      events.forEach(event => {
         const prop = toCamelCase(type) + eventToHandler[event];
 
         if (props[prop] !== this.props[prop]) {
@@ -334,3 +335,5 @@ export default class GeoJSONLayer extends React.Component<Props> {
     return null;
   }
 }
+
+export default withMap(GeoJSONLayer);

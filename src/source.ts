@@ -1,16 +1,13 @@
 import * as React from 'react';
-import * as PropTypes from 'prop-types';
 import { Map, GeoJSONSource, GeoJSONSourceRaw, Layer } from 'mapbox-gl';
 import { TilesJson } from './util/types';
-
-export interface Context {
-  map: Map;
-}
+import { withMap } from './context';
 
 export interface Props {
   id: string;
   geoJsonSource?: GeoJSONSourceRaw;
   tileJsonSource?: TilesJson;
+  map: Map;
   onSourceAdded?: (source: GeoJSONSource | TilesJson) => void;
   onSourceLoaded?: (source: GeoJSONSource | TilesJson) => void;
 }
@@ -19,35 +16,28 @@ export interface LayerWithBefore extends Layer {
   before?: string;
 }
 
-export default class Source extends React.Component<Props> {
-  public context: Context;
-
-  public static contextTypes = {
-    map: PropTypes.object
-  };
-
+export class Source extends React.Component<Props> {
   private id = this.props.id;
 
   private onStyleDataChange = () => {
     // if the style of the map has been updated we won't have any sources anymore,
     // add it back to the map and force re-rendering to redraw it
-    if (!this.context.map.getLayer(this.id)) {
+    if (!this.props.map.getLayer(this.id)) {
       this.initialize();
       this.forceUpdate();
     }
   };
 
   public componentWillMount() {
-    const { map } = this.context;
+    const { map } = this.props;
 
     map.on('styledata', this.onStyleDataChange);
     this.initialize();
   }
 
   private initialize = () => {
-    const { map } = this.context;
+    const { map } = this.props;
     const { geoJsonSource, tileJsonSource, onSourceAdded } = this.props;
-
     if (!map.getSource(this.id) && (geoJsonSource || tileJsonSource)) {
       if (geoJsonSource) {
         map.addSource(this.id, geoJsonSource);
@@ -63,9 +53,8 @@ export default class Source extends React.Component<Props> {
     }
   };
 
-  // tslint:disable-next-line:no-any
-  private onData = (event: any) => {
-    const { map } = this.context;
+  private onData = () => {
+    const { map } = this.props;
 
     const source = map.getSource(this.props.id) as GeoJSONSource;
     if (!source || !map.isSourceLoaded(this.props.id)) {
@@ -84,7 +73,7 @@ export default class Source extends React.Component<Props> {
   };
 
   public removeSource(): LayerWithBefore[] {
-    const { map } = this.context;
+    const { map } = this.props;
 
     if (map.getSource(this.id)) {
       let { layers = [] } = map.getStyle();
@@ -107,7 +96,7 @@ export default class Source extends React.Component<Props> {
   }
 
   public componentWillUnmount() {
-    const { map } = this.context;
+    const { map } = this.props;
 
     if (!map || !map.getStyle()) {
       return;
@@ -118,8 +107,7 @@ export default class Source extends React.Component<Props> {
   }
 
   public componentWillReceiveProps(props: Props) {
-    const { geoJsonSource, tileJsonSource } = this.props;
-    const { map } = this.context;
+    const { geoJsonSource, tileJsonSource, map } = this.props;
 
     // Update tilesJsonSource
     if (tileJsonSource && props.tileJsonSource) {
@@ -155,3 +143,5 @@ export default class Source extends React.Component<Props> {
     return null;
   }
 }
+
+export default withMap(Source);

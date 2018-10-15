@@ -15,7 +15,7 @@ export interface Props {
   onDragEnd?: React.MouseEventHandler<HTMLElement>;
 }
 
-class Feature extends Component<Props> {
+export class Feature extends Component<Props> {
   public render() {
     return null;
   }

@@ -1,57 +1,19 @@
 import * as React from 'react';
-import Layer from '../layer';
-import { withContext } from 'recompose';
+import Layer, { ImageDefinitionWithOptions } from '../layer';
+import { getMapMock } from '../jest/util';
 import { mount } from 'enzyme';
-const PropTypes = require('prop-types'); // tslint:disable-line
 
 describe('Layer', () => {
-  let LayerWithContext: any;
-  let addLayerMock = jest.fn();
-  let setLayerZoomRangeMock = jest.fn();
-  let addSourceMock = jest.fn();
-  let addImageMock = jest.fn();
-  let setDataMock = jest.fn();
-  let children: any[];
-  let childrenWithOneFeature: any[];
-  let feature: any;
-  let getSourceMock: any;
-
-  beforeEach(() => {
-    addLayerMock = jest.fn();
-    setLayerZoomRangeMock = jest.fn();
-    addSourceMock = jest.fn();
-    setDataMock = jest.fn();
-    addImageMock = jest.fn();
-    feature = { coordinates: [-123, 45] };
-    children = [{ props: {} }];
-    childrenWithOneFeature = [{ props: feature }];
-    getSourceMock = jest.fn().mockReturnValue({ setData: setDataMock });
-
-    LayerWithContext = withContext(
-      {
-        map: PropTypes.object
-      },
-      () => ({
-        map: {
-          addSource: addSourceMock,
-          addLayer: addLayerMock,
-          setLayerZoomRange: setLayerZoomRangeMock,
-          getLayer: jest.fn(() => undefined),
-          addImage: addImageMock,
-          on: jest.fn(),
-          getSource: getSourceMock
-        }
-      })
-    )(Layer);
-  });
-
   it('Should render layer with default options', () => {
-    mount(<LayerWithContext children={children} />);
+    const children = [{ props: {}, type: 'symbol', key: '1' }];
+    const mockMap = getMapMock();
+    // tslint:disable-next-line:no-any
+    mount(<Layer id="1" map={mockMap as any} children={children} />);
 
-    expect(addLayerMock.mock.calls[0]).toEqual([
+    expect(mockMap.addLayer.mock.calls[0]).toEqual([
       {
-        id: undefined,
-        source: undefined,
+        id: '1',
+        source: '1',
         type: 'symbol',
         layout: {},
         paint: {}
@@ -62,9 +24,12 @@ describe('Layer', () => {
 
   it('Should set all parameters of add layer', () => {
     const before = 'test1';
+    const children = [{ props: {}, type: 'symbol', key: '1' }];
+    const mockMap = getMapMock();
+
     const props = {
       id: '123',
-      type: 'symbol',
+      type: 'symbol' as 'symbol',
       paint: {},
       layout: {},
       metadata: {},
@@ -79,14 +44,16 @@ describe('Layer', () => {
     };
 
     mount(
-      <LayerWithContext
+      <Layer
         children={children}
+        // tslint:disable-next-line:no-any
+        map={mockMap as any}
         {...props}
         {...mappedProps}
         before={before}
       />
     );
-    expect(addLayerMock.mock.calls[0]).toEqual([
+    expect(mockMap.addLayer.mock.calls[0]).toEqual([
       {
         ...props,
         minzoom: 2,
@@ -99,11 +66,14 @@ describe('Layer', () => {
   });
 
   it('Should render layer with default source', () => {
-    getSourceMock = jest.fn(() => undefined);
-    mount(<LayerWithContext children={children} />);
+    const children = [{ props: {}, type: 'symbol', key: '1' }];
+    const mockMap = getMapMock({ getSource: jest.fn(() => undefined) });
 
-    expect(addSourceMock.mock.calls[0]).toEqual([
-      undefined,
+    // tslint:disable-next-line:no-any
+    mount(<Layer id="1" map={mockMap as any} children={children} />);
+
+    expect(mockMap.addSource.mock.calls[0]).toEqual([
+      '1',
       {
         type: 'geojson',
         data: {
@@ -115,7 +85,8 @@ describe('Layer', () => {
   });
 
   it('Should set all parameters of add source with geojsonSourceOptions', () => {
-    getSourceMock = jest.fn(() => undefined);
+    const children = [{ props: {}, type: 'symbol', key: '1' }];
+    const mockMap = getMapMock({ getSource: jest.fn(() => undefined) });
 
     const geoJSONSourceOptions = {
       maxzoom: 10,
@@ -127,14 +98,16 @@ describe('Layer', () => {
     };
     const layerSourceId = 'testId';
     mount(
-      <LayerWithContext
+      <Layer
         children={children}
+        // tslint:disable-next-line:no-any
+        map={mockMap as any}
         id={layerSourceId}
         geoJSONSourceOptions={geoJSONSourceOptions}
       />
     );
 
-    expect(addSourceMock.mock.calls[0]).toEqual([
+    expect(mockMap.addSource.mock.calls[0]).toEqual([
       layerSourceId,
       {
         type: 'geojson',
@@ -148,9 +121,16 @@ describe('Layer', () => {
   });
 
   it('Should set features based on children', () => {
-    const layer = mount(<LayerWithContext children={childrenWithOneFeature} />);
+    const mockMap = getMapMock();
+    const feature = { coordinates: [-123, 45] };
+    const children = [{ props: feature, type: 'symbol', key: '1' }];
 
-    expect(setDataMock.mock.calls[0]).toEqual([
+    mount(
+      // tslint:disable-next-line:no-any
+      <Layer id="1" map={mockMap as any} children={children} />
+    );
+
+    expect(mockMap.getSource().setData.mock.calls[0]).toEqual([
       {
         type: 'FeatureCollection',
         features: [
@@ -165,11 +145,18 @@ describe('Layer', () => {
   });
 
   it('Should set features to empty array when children disappear', () => {
-    const layer = mount(<LayerWithContext children={childrenWithOneFeature} />);
+    const mockMap = getMapMock();
+    const feature = { coordinates: [-123, 45] };
+    const children = [{ props: feature, type: 'symbol', key: '1' }];
+
+    const layer = mount(
+      // tslint:disable-next-line:no-any
+      <Layer id="1" map={mockMap as any} children={children} />
+    );
 
     layer.setProps({ children: undefined });
 
-    expect(setDataMock.mock.calls[1]).toEqual([
+    expect(mockMap.getSource().setData.mock.calls[1]).toEqual([
       {
         type: 'FeatureCollection',
         features: []
@@ -178,30 +165,49 @@ describe('Layer', () => {
   });
 
   it('Should flatten features', () => {
-    const childrens = [<div>Test</div>, [<div>Test</div>, <div>Test</div>]];
+    const mockMap = getMapMock();
 
-    const layer = mount(<LayerWithContext children={childrens} />);
+    // tslint:disable-next-line:no-any
+    const children: any = [
+      <div key="1">Test</div>,
+      [<div key="2">Test</div>, <div key="3">Test</div>]
+    ];
 
-    expect(setDataMock.mock.calls[0][0].features).toHaveLength(3);
+    // tslint:disable-next-line:no-any
+    mount(<Layer id="1" map={mockMap as any} children={children} />);
+
+    expect(mockMap.getSource().setData.mock.calls[0][0].features).toHaveLength(
+      3
+    );
   });
 
   it('Should add images', () => {
-    const images = ['test', new Image(), {}];
+    const mockMap = getMapMock();
+    const images: ImageDefinitionWithOptions = ['test', new Image(), {}];
+    const children = [{ props: {}, type: 'symbol', key: '1' }];
 
-    mount(<LayerWithContext children={children} images={images} />);
+    mount(
+      // tslint:disable-next-line:no-any
+      <Layer id="1" children={children} map={mockMap as any} images={images} />
+    );
 
-    expect(addImageMock.mock.calls[0]).toEqual(images);
+    expect(mockMap.addImage.mock.calls[0]).toEqual(images);
   });
 
   it('Should update minZoom and maxZoom if they change', () => {
-    const wrapper = mount(<LayerWithContext id="zoomer" children={children} />);
+    const mockMap = getMapMock();
+    const children = [{ props: {}, type: 'symbol', key: '1' }];
+    const wrapper = mount(
+      // tslint:disable-next-line:no-any
+      <Layer map={mockMap as any} id="zoomer" children={children} />
+    );
 
     wrapper.setProps({ minZoom: 4 });
     wrapper.setProps({ maxZoom: 10 });
     wrapper.setProps({ minZoom: undefined, maxZoom: undefined });
     wrapper.setProps({ maxZoom: 6 });
 
-    expect(setLayerZoomRangeMock.mock.calls).toEqual([
+    expect(mockMap.setLayerZoomRange.mock.calls).toEqual([
       ['zoomer', 4, undefined],
       ['zoomer', 4, 10],
       ['zoomer', undefined, undefined],
