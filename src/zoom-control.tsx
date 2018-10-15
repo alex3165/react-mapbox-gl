@@ -67,7 +67,7 @@ export interface State {
   hover?: number;
 }
 
-class ZoomControl extends React.Component<Props, State> {
+export class ZoomControl extends React.Component<Props, State> {
   public static defaultProps = {
     position: POSITIONS[0],
     zoomDiff: 0.5,
@@ -125,6 +125,7 @@ class ZoomControl extends React.Component<Props, State> {
         style={{ ...containerStyle, ...positions[position!], ...style }}
       >
         <button
+          id="zoomIn"
           type="button"
           style={plusStyle}
           aria-label="Zoom in"
@@ -133,6 +134,7 @@ class ZoomControl extends React.Component<Props, State> {
           onClick={this.onClickPlus}
         />
         <button
+          id="zoomOut"
           type="button"
           style={minusStyle}
           aria-label="Zoom out"

@@ -117,7 +117,7 @@ type Layouts =
   | MapboxGL.CircleLayout
   | MapboxGL.FillExtrusionLayout;
 
-class GeoJSONLayer extends React.Component<Props> {
+export class GeoJSONLayer extends React.Component<Props> {
   private id: string = this.props.id || `geojson-${generateID()}`;
 
   // TODO: Refactor to use defaultProps

@@ -16,7 +16,7 @@ export interface LayerWithBefore extends Layer {
   before?: string;
 }
 
-class Source extends React.Component<Props> {
+export class Source extends React.Component<Props> {
   private id = this.props.id;
 
   private onStyleDataChange = () => {
@@ -38,7 +38,6 @@ class Source extends React.Component<Props> {
   private initialize = () => {
     const { map } = this.props;
     const { geoJsonSource, tileJsonSource, onSourceAdded } = this.props;
-
     if (!map.getSource(this.id) && (geoJsonSource || tileJsonSource)) {
       if (geoJsonSource) {
         map.addSource(this.id, geoJsonSource);

@@ -11,9 +11,7 @@ jest.mock('../util/overlays', () => ({
 import * as React from 'react';
 import Cluster from '../cluster';
 import Marker from '../marker';
-import { withContext } from 'recompose';
-import { mount } from 'enzyme';
-const PropTypes = require('prop-types'); // tslint:disable-line
+import { mountWithMap, getMapMock } from '../jest/util';
 
 const coordinates = [
   [-12.408741828510017, 58.16339752811908],
@@ -53,37 +51,22 @@ const mockProjections = {
 };
 
 describe('cluster', () => {
-  let ClusterWithContext: any;
-
-  beforeEach(() => {
-    let unprojectCalls = 0;
-
-    ClusterWithContext = withContext(
-      {
-        map: PropTypes.object
-      },
-      () => ({
-        map: {
-          on: jest.fn(),
-          getZoom: jest.fn(() => 2),
-          getCanvas: jest.fn(() => ({ width: 1020, height: 800 })),
-          unproject: jest.fn(() => mockProjections[unprojectCalls++]),
-          project: jest.fn()
-        }
-      })
-    )(Cluster);
-  });
-
   it('should render the correct number of cluster', () => {
     const clusterMarkerFactory = jest.fn();
+    let unprojectCalls = 0;
 
-    mount(
-      <ClusterWithContext
+    mountWithMap(
+      <Cluster
         children={coordinates.map((coord, index) => (
           <Marker coordinates={coord} key={index} />
         ))}
         ClusterMarkerFactory={clusterMarkerFactory}
-      />
+      />,
+      getMapMock({
+        getZoom: jest.fn(() => 2),
+        getCanvas: jest.fn(() => ({ width: 1020, height: 800 })),
+        unproject: jest.fn(() => mockProjections[unprojectCalls++])
+      })
     );
 
     const call = clusterMarkerFactory.mock.calls[0];

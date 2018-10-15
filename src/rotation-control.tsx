@@ -72,7 +72,7 @@ export interface State {
   hover?: number;
 }
 
-class RotationControl extends React.Component<Props, State> {
+export class RotationControl extends React.Component<Props, State> {
   public static defaultProps = {
     position: POSITIONS[0]
   };

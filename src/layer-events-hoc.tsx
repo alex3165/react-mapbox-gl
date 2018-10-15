@@ -13,7 +13,7 @@ export type OwnProps = EnhancedLayerProps & LayerCommonProps;
 
 type LayerChildren = React.ReactElement<FeatureProps> | undefined;
 
-function layerMouseTouchEvents(
+export function layerMouseTouchEvents(
   WrappedComponent: React.ComponentClass<LayerProps>
 ) {
   return class EnhancedLayer extends React.Component<OwnProps> {

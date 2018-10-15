@@ -26,7 +26,7 @@ export interface Props {
   map: Map;
 }
 
-class ProjectedLayer extends React.Component<Props, OverlayParams> {
+export class ProjectedLayer extends React.Component<Props, OverlayParams> {
   private container: HTMLElement | undefined = undefined;
   private prevent: boolean = false;
 

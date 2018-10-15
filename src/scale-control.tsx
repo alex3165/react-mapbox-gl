@@ -80,7 +80,7 @@ export interface State {
   scaleWidth: number;
 }
 
-class ScaleControl extends React.Component<Props, State> {
+export class ScaleControl extends React.Component<Props, State> {
   public static defaultProps = {
     measurement: MEASUREMENTS[0],
     position: POSITIONS[2]

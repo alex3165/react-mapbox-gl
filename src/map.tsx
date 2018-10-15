@@ -375,7 +375,6 @@ const ReactMapboxFactory = ({
     public render() {
       const { containerStyle, className, children } = this.props;
       const { ready } = this.state;
-      console.log(this.state.map);
       return (
         <MapContext.Provider value={this.state.map}>
           <div

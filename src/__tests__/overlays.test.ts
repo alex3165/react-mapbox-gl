@@ -3,19 +3,16 @@ jest.mock('mapbox-gl', () => ({
   LngLat: {}
 }));
 
-import {
-  overlayTransform,
-  OverlayProps,
-  anchors,
-  Anchor
-} from '../util/overlays';
+import { overlayTransform, OverlayParams, anchors } from '../util/overlays';
 
 describe('overlayTransform', () => {
   it('Should transform position anchor and offset accordingly', () => {
-    const overlayProps: OverlayProps = {
-      anchor: anchors[1] as Anchor,
-      offset: { x: 10, y: 20 },
-      position: { x: 1000, y: 2000 }
+    const overlayProps: OverlayParams = {
+      anchor: anchors[1],
+      // tslint:disable-next-line:no-any
+      offset: { x: 10, y: 20 } as any,
+      // tslint:disable-next-line:no-any
+      position: { x: 1000, y: 2000 } as any
     };
 
     const res = overlayTransform(overlayProps);
@@ -28,7 +25,8 @@ describe('overlayTransform', () => {
   });
 
   it('Should transform position and offset only', () => {
-    const overlayProps: OverlayProps = {
+    // tslint:disable-next-line:no-any
+    const overlayProps: any = {
       offset: { x: 10, y: 20 },
       position: { x: 1000, y: 2000 }
     };
@@ -39,7 +37,8 @@ describe('overlayTransform', () => {
   });
 
   it('Should not add an undefined offset', () => {
-    const overlayProps: OverlayProps = {
+    // tslint:disable-next-line:no-any
+    const overlayProps: any = {
       offset: { x: undefined, y: 20 },
       position: { x: 1000, y: 2000 }
     };
@@ -50,7 +49,8 @@ describe('overlayTransform', () => {
   });
 
   it('Should add offset of 0', () => {
-    const overlayProps: OverlayProps = {
+    // tslint:disable-next-line:no-any
+    const overlayProps: any = {
       offset: { x: 0, y: 20 },
       position: { x: 1000, y: 2000 }
     };
