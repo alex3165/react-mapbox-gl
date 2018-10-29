@@ -13,7 +13,7 @@ describe('Layer', () => {
     expect(mockMap.addLayer.mock.calls[0]).toEqual([
       {
         id: '1',
-        source: '1',
+        source: '1-source',
         type: 'symbol',
         layout: {},
         paint: {}
@@ -73,7 +73,7 @@ describe('Layer', () => {
     mount(<Layer id="1" map={mockMap as any} children={children} />);
 
     expect(mockMap.addSource.mock.calls[0]).toEqual([
-      '1',
+      '1-source',
       {
         type: 'geojson',
         data: {
@@ -108,14 +108,14 @@ describe('Layer', () => {
     );
 
     expect(mockMap.addSource.mock.calls[0]).toEqual([
-      layerSourceId,
+      layerSourceId + '-source',
       {
         type: 'geojson',
-        ...geoJSONSourceOptions,
         data: {
           type: 'FeatureCollection',
           features: []
-        }
+        },
+        ...geoJSONSourceOptions
       }
     ]);
   });

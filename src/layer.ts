@@ -81,11 +81,11 @@ export default class Layer extends React.Component<Props> {
 
   private source: MapboxGL.GeoJSONSourceRaw = {
     type: 'geojson',
-    ...this.props.geoJSONSourceOptions,
     data: {
       type: 'FeatureCollection',
       features: []
-    }
+    },
+    ...this.props.geoJSONSourceOptions
   };
 
   // tslint:disable-next-line:no-any
@@ -150,9 +150,12 @@ export default class Layer extends React.Component<Props> {
     } = this.props;
     const { map } = this.props;
 
+    // This must be different from id of layer, otherwise it won't render
+    const generatedSourceId = id + '-source';
+
     const layer: MapboxGL.Layer = {
       id,
-      source: sourceId || id,
+      source: sourceId || generatedSourceId,
       // TODO: Fix mapbox-gl types
       // tslint:disable-next-line:no-any
       type: type as any,
@@ -185,7 +188,7 @@ export default class Layer extends React.Component<Props> {
     }
 
     if (!sourceId && !map.getSource(id)) {
-      map.addSource(id, this.source);
+      map.addSource(generatedSourceId, this.source);
     }
 
     if (!map.getLayer(id)) {
