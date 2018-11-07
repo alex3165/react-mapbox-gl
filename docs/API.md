@@ -404,6 +404,7 @@ import { Popup } from "react-mapbox-gl";
   * `bottom-left`
   * `bottom-right`
   * `null | undefined`: When not set, the anchor is automatically calculated to keep the content of the popup visible.
+* **preferredAnchor**: `boolean` When set to true, the **anchor** property is considered a soft constraint. The anchor may be mirrored horizontally or vertically to keep the popup visible. For example `'top'` can flip to `'bottom'`.
 * **offset** _(Default: 0)_: `number | number[] | object` Set the offset of popup, where the tip of the popup will be pointing.
   * When `number` is passed, the popup will be offset by that number for all anchor positions.
   * When an `number[]` is passed (e.g. [-12, 30]), the popup will be offset by that point.
