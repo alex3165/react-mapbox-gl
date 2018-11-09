@@ -71,7 +71,7 @@ export default class Heatmap extends React.Component<Props> {
         containerStyle={mapStyle}
         onStyleLoad={this.onStyleLoad}
       >
-        <Layer type="heatmap" paint={layerPaint as any}>
+        <Layer type="heatmap" paint={layerPaint}>
           {data.map((el: any, index: number) => (
             <Feature key={index} coordinates={el.latlng} properties={el} />
           ))}
