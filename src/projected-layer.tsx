@@ -109,27 +109,30 @@ export default class ProjectedLayer extends React.Component<
       tabIndex
     } = this.props;
     const { anchor } = this.state;
+    const { left, top, transform } = overlayTransform(this.state);
     const finalStyle = {
       ...defaultStyle,
       ...style,
-      transform: overlayTransform(this.state).join(' ')
+      transform
     };
     const anchorClassname =
       anchor && type === 'popup' ? `mapboxgl-popup-anchor-${anchor}` : '';
     return (
-      <div
-        className={`${className} ${anchorClassname}`}
-        onClick={onClick}
-        onDoubleClick={onDoubleClick}
-        onMouseEnter={onMouseEnter}
-        onMouseLeave={onMouseLeave}
-        onScroll={onScroll}
-        onWheel={onWheel}
-        style={finalStyle}
-        ref={this.setContainer}
-        tabIndex={tabIndex}
-      >
-        {children}
+      <div style={{ position: 'absolute', left, top }}>
+        <div
+          className={`${className} ${anchorClassname}`}
+          onClick={onClick}
+          onDoubleClick={onDoubleClick}
+          onMouseEnter={onMouseEnter}
+          onMouseLeave={onMouseLeave}
+          onScroll={onScroll}
+          onWheel={onWheel}
+          style={finalStyle}
+          ref={this.setContainer}
+          tabIndex={tabIndex}
+        >
+          {children}
+        </div>
       </div>
     );
   }

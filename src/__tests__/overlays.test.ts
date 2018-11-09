@@ -20,11 +20,11 @@ describe('overlayTransform', () => {
 
     const res = overlayTransform(overlayProps);
 
-    expect(res).toEqual([
-      'translate(1000px, 2000px)',
-      'translate(10px, 20px)',
-      'translate(-50%, 0)'
-    ]);
+    expect(res).toEqual({
+      top: 2020,
+      left: 1010,
+      transform: 'translate(-50%, 0)'
+    });
   });
 
   it('Should transform position and offset only', () => {
@@ -35,7 +35,11 @@ describe('overlayTransform', () => {
 
     const res = overlayTransform(overlayProps);
 
-    expect(res).toEqual(['translate(1000px, 2000px)', 'translate(10px, 20px)']);
+    expect(res).toEqual({
+      left: 1010,
+      top: 2020,
+      transform: 'translate(0, 0)'
+    });
   });
 
   it('Should not add an undefined offset', () => {
@@ -46,7 +50,11 @@ describe('overlayTransform', () => {
 
     const res = overlayTransform(overlayProps);
 
-    expect(res).toEqual(['translate(1000px, 2000px)']);
+    expect(res).toEqual({
+      left: 1000,
+      top: 2000,
+      transform: 'translate(0, 0)'
+    });
   });
 
   it('Should add offset of 0', () => {
@@ -57,6 +65,10 @@ describe('overlayTransform', () => {
 
     const res = overlayTransform(overlayProps);
 
-    expect(res).toEqual(['translate(1000px, 2000px)', 'translate(0px, 20px)']);
+    expect(res).toEqual({
+      left: 1000,
+      top: 2020,
+      transform: 'translate(0, 0)'
+    });
   });
 });
