@@ -18,6 +18,8 @@ export interface Props {
   onDoubleClick?: React.MouseEventHandler<HTMLDivElement>;
   onMouseEnter?: React.MouseEventHandler<HTMLDivElement>;
   onMouseLeave?: React.MouseEventHandler<HTMLDivElement>;
+  onMouseDown?: React.MouseEventHandler<HTMLDivElement>;
+  onMouseUp?: React.MouseEventHandler<HTMLDivElement>;
   onScroll?: React.UIEventHandler<HTMLDivElement>;
   onWheel?: React.MouseEventHandler<HTMLDivElement>;
   style?: React.CSSProperties;
@@ -91,6 +93,8 @@ export class ProjectedLayer extends React.Component<Props, OverlayParams> {
       onDoubleClick,
       onMouseEnter,
       onMouseLeave,
+      onMouseDown,
+      onMouseUp,
       onScroll,
       onWheel,
       type,
@@ -111,6 +115,8 @@ export class ProjectedLayer extends React.Component<Props, OverlayParams> {
         onDoubleClick={onDoubleClick}
         onMouseEnter={onMouseEnter}
         onMouseLeave={onMouseLeave}
+        onMouseDown={onMouseDown}
+        onMouseUp={onMouseUp}
         onScroll={onScroll}
         onWheel={onWheel}
         style={finalStyle}
