@@ -78,7 +78,7 @@ export class Cluster extends React.Component<Props, State> {
   }
 
   public componentWillUnmount() {
-    const { map } = this.context;
+    const { map } = this.props;
 
     map.off('move', this.mapChange);
     map.off('zoom', this.mapChange);
