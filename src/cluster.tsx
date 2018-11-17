@@ -24,7 +24,7 @@ export interface Props {
   log?: boolean;
   zoomOnClick?: boolean;
   zoomOnClickPadding?: number;
-  children?: Array<React.Component<MarkerProps>>;
+  children?: Array<React.ReactElement<MarkerProps>>;
   style?: React.CSSProperties;
   className?: string;
   tabIndex?: number;
@@ -62,14 +62,14 @@ export class Cluster extends React.Component<Props, State> {
 
   private featureClusterMap = new WeakMap<
     GeoJSON.Feature,
-    React.Component<MarkerProps>
+    React.ReactElement<MarkerProps>
   >();
 
   public componentWillMount() {
     const { children, map } = this.props;
 
     if (children) {
-      this.childrenChange(children as Array<React.Component<MarkerProps>>);
+      this.childrenChange(children as Array<React.ReactElement<MarkerProps>>);
     }
 
     map.on('move', this.mapChange);
@@ -94,12 +94,12 @@ export class Cluster extends React.Component<Props, State> {
   }
 
   private childrenChange = (
-    newChildren: Array<React.Component<MarkerProps>>
+    newChildren: Array<React.ReactElement<MarkerProps>>
   ) => {
     const { superC } = this.state;
     this.featureClusterMap = new WeakMap<
       GeoJSON.Feature,
-      React.Component<MarkerProps>
+      React.ReactElement<MarkerProps>
     >();
     const features = this.childrenToFeatures(newChildren);
     superC.load(features);
@@ -138,7 +138,7 @@ export class Cluster extends React.Component<Props, State> {
   }
 
   private childrenToFeatures = (
-    children: Array<React.Component<MarkerProps>>
+    children: Array<React.ReactElement<MarkerProps>>
   ) =>
     children.map(child => {
       const feature = this.feature(child && child.props.coordinates);
