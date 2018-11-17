@@ -17,6 +17,6 @@ files.forEach((file) => {
       return console.log(err);
     }
 
-    writeFile(`./src/demos/raws/${file.replace('tsx', 'raw')}`, data);
+    writeFile(`./src/demos/raws/${file.replace('tsx', 'raw')}`, data, () => {});
   });
 });
