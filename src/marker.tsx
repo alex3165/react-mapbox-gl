@@ -8,7 +8,7 @@ import { Anchor } from './util/types';
 export interface Props {
   coordinates: GeoJSON.Position;
   anchor?: Anchor;
-  offset?: number | number[] | Point;
+  offset?: number | [number, number] | Point;
   children?: JSX.Element;
   onClick?: React.MouseEventHandler<HTMLDivElement>;
   onMouseEnter?: React.MouseEventHandler<HTMLDivElement>;

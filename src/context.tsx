@@ -1,17 +1,22 @@
 import * as React from 'react';
 import * as MapboxGl from 'mapbox-gl';
 
+type Omit<T, K> = Pick<T, Exclude<keyof T, keyof K>>;
+
+interface ContextProps {
+  map: MapboxGl.Map | undefined;
+}
+
 export const MapContext = React.createContext(undefined) as React.Context<
   MapboxGl.Map | undefined
 >;
 
-// tslint:disable-next-line:no-any
-export function withMap(Component: React.ComponentClass<any>) {
-  return function MappedComponent<T>(props: T) {
-    return (
-      <MapContext.Consumer>
-        {map => <Component map={map} {...props} />}
-      </MapContext.Consumer>
-    );
-  };
+export function withMap<Props extends ContextProps>(
+  Component: React.ComponentType<Props>
+): React.SFC<Omit<Props, ContextProps>> {
+  return props => (
+    <MapContext.Consumer>
+      {map => <Component {...props} map={map} />}
+    </MapContext.Consumer>
+  );
 }

@@ -10,7 +10,7 @@ const defaultStyle = {
 
 export interface Props {
   type: 'marker' | 'popup';
-  coordinates: [number, number];
+  coordinates: GeoJSON.Position;
   anchor?: Anchor;
   offset?: number | [number, number] | Point;
   children?: JSX.Element | JSX.Element[];

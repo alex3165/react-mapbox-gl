@@ -1,5 +1,5 @@
 import * as React from 'react';
-import ReactMapboxGl, { Marker } from '../../../';
+import ReactMapboxGl, { Marker, MapContext } from '../../../';
 import styled from 'styled-components';
 import Dropdown from '../dropdown';
 
@@ -106,6 +106,11 @@ class HtmlFeatures extends React.Component<Props, State> {
     const { options, selected, center } = this.state;
     return (
       <Container>
+        <MapContext.Consumer>
+          {map => (
+            <button onClick={() => console.log({ lol: map })}>teddy</button>
+          )}
+        </MapContext.Consumer>
         <Dropdown
           onSearch={this.onSearch}
           onSelectItem={this.onSelectItem}
