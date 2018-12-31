@@ -34,6 +34,18 @@ export type ImageDefinitionWithOptions = [
   ImageOptions
 ];
 
+// tslint:disable-next-line:no-any
+export type MouseEvent = (evt: any) => any;
+
+export interface LayerEvents {
+  onMouseMove?: MouseEvent;
+  onMouseEnter?: MouseEvent;
+  onMouseLeave?: MouseEvent;
+  onMouseDown?: MouseEvent;
+  onMouseUp?: MouseEvent;
+  onClick?: MouseEvent;
+}
+
 export interface LayerCommonProps {
   type?:
     | 'symbol'
@@ -70,7 +82,20 @@ export interface OwnProps {
   map: MapboxGL.Map;
 }
 
-export type Props = LayerCommonProps & OwnProps;
+export type Props = LayerCommonProps & LayerEvents & OwnProps;
+
+type EventToHandlersType = {
+  [key in keyof MapboxGL.MapLayerEventType]?: keyof LayerEvents
+};
+
+const eventToHandler: EventToHandlersType = {
+  mousemove: 'onMouseMove',
+  mouseenter: 'onMouseEnter',
+  mouseleave: 'onMouseLeave',
+  mousedown: 'onMouseDown',
+  mouseup: 'onMouseUp',
+  click: 'onClick'
+};
 
 export default class Layer extends React.Component<Props> {
   public static defaultProps = {
@@ -191,6 +216,15 @@ export default class Layer extends React.Component<Props> {
     if (!map.getLayer(id)) {
       map.addLayer(layer, before);
     }
+
+    (Object.entries(eventToHandler) as Array<
+      [keyof EventToHandlersType, keyof LayerEvents]
+    >).forEach(([event, propName]) => {
+      const handler = this.props[propName];
+      if (handler) {
+        map.on(event, id, handler);
+      }
+    });
   };
 
   private onStyleDataChange = () => {
@@ -235,6 +269,15 @@ export default class Layer extends React.Component<Props> {
     }
 
     map.off('styledata', this.onStyleDataChange);
+
+    (Object.entries(eventToHandler) as Array<
+      [keyof EventToHandlersType, keyof LayerEvents]
+    >).forEach(([event, propName]) => {
+      const handler = this.props[propName];
+      if (handler) {
+        map.off(event, id, handler);
+      }
+    });
   }
 
   public componentWillReceiveProps(props: Props) {
@@ -269,6 +312,23 @@ export default class Layer extends React.Component<Props> {
       // TODO: Fix when PR https://github.com/DefinitelyTyped/DefinitelyTyped/pull/22036 is merged
       map.setLayerZoomRange(id, props.minZoom!, props.maxZoom!);
     }
+
+    (Object.entries(eventToHandler) as Array<
+      [keyof EventToHandlersType, keyof LayerEvents]
+    >).forEach(([event, propName]) => {
+      const oldHandler = this.props[propName];
+      const newHandler = props[propName];
+
+      if (oldHandler !== newHandler) {
+        if (oldHandler) {
+          map.off(event, id, oldHandler);
+        }
+
+        if (newHandler) {
+          map.on(event, id, newHandler);
+        }
+      }
+    });
   }
 
   public getChildren = () => {
