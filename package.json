@@ -10,14 +10,16 @@
     "test": "jest",
     "test:watch": "jest --watch",
     "lint": "tslint --project tsconfig.json",
-    "build": "npm run lint && npm run test && npm run build:commonjs && npm run build:esm",
+    "build":
+      "npm run lint && npm run test && npm run build:commonjs && npm run build:esm",
     "build:commonjs": "tsc -p tsconfig.json",
     "build:esm": "tsc -p tsconfig-esm.json",
     "build:watch": "tsc --watch",
     "prepublishOnly": "npm run clean && npm run build",
     "version": "npm run build",
     "postversion": "git push && git push --tags",
-    "prettify": "prettier --write src/*.ts src/*.tsx src/**/*.ts src/**/*.tsx example/src/**/*.ts example/src/**/*.tsx",
+    "prettify":
+      "prettier --write src/*.ts src/*.tsx src/**/*.ts src/**/*.tsx example/src/**/*.ts example/src/**/*.tsx",
     "precommit": "npm run prettify && cd example && node generateRaws.js",
     "prepush": "npm run build"
   },
@@ -26,23 +28,14 @@
       ".(ts|tsx)": "<rootDir>/node_modules/ts-jest/preprocessor.js"
     },
     "testRegex": "(/__tests__/.*|\\.(test|spec))\\.(ts|tsx|js)$",
-    "moduleFileExtensions": [
-      "ts",
-      "tsx",
-      "js"
-    ],
-    "setupFiles": [
-      "<rootDir>/src/jest/setupFile.ts"
-    ],
-    "setupTestFrameworkScriptFile": "<rootDir>/src/jest/setupTestFrameworkScriptFile.ts",
+    "moduleFileExtensions": ["ts", "tsx", "js"],
+    "setupFiles": ["<rootDir>/src/jest/setupFile.ts"],
+    "setupTestFrameworkScriptFile":
+      "<rootDir>/src/jest/setupTestFrameworkScriptFile.ts",
     "browser": true,
     "verbose": true
   },
-  "files": [
-    "lib",
-    "lib-esm",
-    "src"
-  ],
+  "files": ["lib", "lib-esm", "src"],
   "repository": {
     "type": "git",
     "url": "git+https://github.com/alex3165/react-mapbox-gl.git"
@@ -84,7 +77,7 @@
     "@types/node": "8.0.29",
     "@types/prettier": "1.10.0",
     "@types/prop-types": "15.5.6",
-    "@types/react": "16.4.16",
+    "@types/react": "*",
     "@types/react-dom": "16.0.9",
     "@types/recompose": "0.27.0",
     "@types/supercluster": "3.0.2",
