@@ -214,4 +214,16 @@ describe('Layer', () => {
       ['zoomer', undefined, 6]
     ]);
   });
+
+  it('Should start listening onClick mouse event', () => {
+    const mockMap = getMapMock();
+    const id = 'layer-test';
+    mount(
+      // tslint:disable-next-line:no-any
+      <Layer id={id} map={mockMap as any} onClick={jest.fn()} />
+    );
+
+    expect(mockMap.on.mock.calls[0][0]).toEqual('click');
+    expect(mockMap.on.mock.calls[0][1]).toEqual(id);
+  });
 });

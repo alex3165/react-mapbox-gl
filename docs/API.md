@@ -176,6 +176,12 @@ import { Layer } from "react-mapbox-gl";
 * **sourceId**: `string` When passed to the layer, the source will not be created but only the layer and it will use the given source id.
 * **before**: `string` Pass the id of a layer, it will display the current layer before the layer defined by the id. [mapbox api](https://www.mapbox.com/mapbox-gl-js/api/#Map#addLayer)
 * **images**: `[imageKey: string, image: HTMLImageElement, options: object]` Also accepts array of the previous image tuple. Add images for use in layout with prop `icon-image`. The value should be the `imageKey` string of the tuple. Alternatively, use mapbox studio to upload the image, it will be fetched with the map style object. (see [map.addImage](https://www.mapbox.com/mapbox-gl-js/api/#map#addimage) options for the tuple options).
+* **onMouseMove** `function` Mouse move handler. [mapbox map mouse event](https://www.mapbox.com/mapbox-gl-js/api/#mapmouseevent)
+* **onMouseEnter** `function` Mouse enter handler. [mapbox map mouse event](https://www.mapbox.com/mapbox-gl-js/api/#mapmouseevent)
+* **onMouseLeave** `function` Mouse leave handler. [mapbox map mouse event](https://www.mapbox.com/mapbox-gl-js/api/#mapmouseevent)
+* **onMouseDown** `function` Mouse down handler. [mapbox map mouse event](https://www.mapbox.com/mapbox-gl-js/api/#mapmouseevent)
+* **onMouseUp** `function` Mouse up handler. [mapbox map mouse event](https://www.mapbox.com/mapbox-gl-js/api/#mapmouseevent)
+* **onClick** `function` Mouse click handler. [mapbox map mouse event](https://www.mapbox.com/mapbox-gl-js/api/#mapmouseevent)
 
 ---
 
