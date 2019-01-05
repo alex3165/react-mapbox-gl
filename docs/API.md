@@ -289,6 +289,31 @@ import { Feature } from "react-mapbox-gl";
 
 ---
 
+# Image
+
+Adds to the map a image that can be used as [`icon-image`](https://www.mapbox.com/mapbox-gl-js/style-spec#layout-symbol-icon-image)
+### How to use
+
+ Load local image. [see docs](https://www.mapbox.com/mapbox-gl-js/api#map#addimage)
+```jsx harmony
+<Image id={'image-uid'} data={someImage} />
+```
+
+ Load image from url. [see docs](https://www.mapbox.com/mapbox-gl-js/api#map#loadimage)
+```jsx harmony
+<Image id={'image-uid'} url={'url/to/image'} />
+```
+
+### Properties
+* **id** _(required)_: `string` the image name
+* **url** `string` A url to load the image from [see docs](https://www.mapbox.com/mapbox-gl-js/api#map#loadimage)
+* **data** `ImageDataType` The image data [see docs](https://www.mapbox.com/mapbox-gl-js/api#map#loadimage)
+* **options** `ImageOptionsType` The image options [see docs](https://www.mapbox.com/mapbox-gl-js/api#map#loadimage)
+* **onLoaded** `() => void` Will be called when image loaded to map
+* **onError** `(error: Error) => void` Will be called if image did not load 
+  
+---
+
 # ZoomControl
 
 A custom react zoom control component.
