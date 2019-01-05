@@ -13,6 +13,8 @@ export const getMapMock = (override?: { [key: string]: any }) => ({
   setLayerZoomRange: jest.fn(),
   getLayer: jest.fn(),
   addImage: jest.fn(),
+  loadImage: jest.fn(),
+  removeImage: jest.fn(),
   hasImage: jest.fn(),
   getSource: jest.fn().mockReturnValue({ setData: jest.fn() }),
   project: jest.fn(),
