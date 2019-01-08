@@ -6,7 +6,7 @@ Factory function that returns a React Mapbox component. Parameters of the factor
 
 ## Pre-requirement
 
-Have a CSS Loader installed unless you set `injectCSS` to `false`.
+You will need a CSS loader to use this library as it inject mapbox-gl css .
 
 ### How to use
 
@@ -49,7 +49,6 @@ const Map = ReactMapboxGl({
 * **refreshExpiredTiles** _(Default: `true`)_: `boolean` If `false` , the map won't attempt to re-request tiles once they expire per their HTTP cacheControl / expires headers.
 * **failIfMajorPerformanceCaveat** _(Default: `false`)_: `boolean` If `true` , map creation will fail if the performance of Mapbox GL JS would be dramatically worse than expected (i.e. a software renderer would be used).
 * **bearingSnap** _(Default: `7`)_: `number` The threshold, measured in degrees, that determines when the map's bearing (rotation) will snap to north. For example, with a bearingSnap of 7, if the user rotates the map within 7 degrees of north, the map will automatically snap to exact north.
-* **injectCss** _(Default: `true`)_: `boolean` If `false`, the factory won't require the mapbox-gl.css sheet.
 
 ### Component Properties
 
