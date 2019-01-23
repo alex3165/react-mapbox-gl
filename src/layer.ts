@@ -204,9 +204,11 @@ export default class Layer extends React.Component<Props> {
 
     if (images) {
       const normalizedImages = !Array.isArray(images[0]) ? [images] : images;
-      (normalizedImages as ImageDefinitionWithOptions[]).forEach(image => {
-        map.addImage(image[0], image[1], image[2]);
-      });
+      (normalizedImages as ImageDefinitionWithOptions[])
+        .filter(image => !map.hasImage(image[0]))
+        .forEach(image => {
+          map.addImage(image[0], image[1], image[2]);
+        });
     }
 
     if (!sourceId && !map.getSource(id)) {
