@@ -35,10 +35,7 @@ export default class Popup extends React.Component<Props> {
 
     return (
       <ProjectedLayer {...props} type="popup" className={childrenClassName}>
-        <div
-          style={{ backgroundColor }}
-          className="mapboxgl-popup-tip"
-        />
+        <div style={{ backgroundColor }} className="mapboxgl-popup-tip" />
         <div style={{ backgroundColor }} className="mapboxgl-popup-content">
           {children}
         </div>
