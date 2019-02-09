@@ -32,7 +32,8 @@ var eventToHandler = {
     mousedown: 'onMouseDown',
     mouseup: 'onMouseUp',
     click: 'onClick',
-    touchend: 'onTouchEnd'
+    touchend: 'onTouchEnd',
+    touchstart: 'onTouchStart'
 };
 var Layer = (function (_super) {
     __extends(Layer, _super);

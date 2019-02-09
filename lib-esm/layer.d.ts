@@ -18,6 +18,7 @@ export interface LayerEvents {
     onMouseUp?: MouseEvent;
     onClick?: MouseEvent;
     onTouchEnd?: MouseEvent;
+    onTouchStart?: MouseEvent;
 }
 export interface LayerCommonProps {
     type?: 'symbol' | 'line' | 'fill' | 'circle' | 'raster' | 'fill-extrusion' | 'background' | 'heatmap';
