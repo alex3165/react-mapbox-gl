@@ -17,6 +17,7 @@ export interface Props {
   onWheel?: React.MouseEventHandler<HTMLDivElement>;
   style?: React.CSSProperties;
   className?: string;
+  backgroundColor?: string;
   tabIndex?: number;
 }
 

@@ -126,6 +126,7 @@ export function layerMouseTouchEvents(
       }
     };
 
+    // tslint:disable-next-line:no-any
     public onTouchEnd = (evt: any) => {
       const features = evt.features as Array<
         GeoJSON.Feature<GeoJSON.GeometryObject, { id: number }>
@@ -257,7 +258,7 @@ export function layerMouseTouchEvents(
       map.off('mouseleave', this.onMouseLeave);
       map.off('mousedown', this.onMouseDown);
       map.off('touchstart', this.onTouchStart);
-      map.on('touchend', this.id, this.onTouchEnd);
+      map.off('touchend', this.onTouchEnd);
     }
 
     public render() {
