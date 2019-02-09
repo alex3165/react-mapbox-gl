@@ -36,7 +36,7 @@ var Popup = (function (_super) {
         var props = __assign({}, this.props, { children: undefined, backgroundColor: undefined });
         var childrenClassName = getClassName(defaultClassName, className);
         return (React.createElement(ProjectedLayer, __assign({}, props, { type: "popup", className: childrenClassName }),
-            React.createElement("div", { style: { borderLeftColor: backgroundColor }, className: "mapboxgl-popup-tip" }),
+            React.createElement("div", { style: { backgroundColor: backgroundColor }, className: "mapboxgl-popup-tip" }),
             React.createElement("div", { style: { backgroundColor: backgroundColor }, className: "mapboxgl-popup-content" }, children)));
     };
     return Popup;
