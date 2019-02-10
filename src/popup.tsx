@@ -25,11 +25,7 @@ export const defaultClassName = ['mapboxgl-popup'];
 export default class Popup extends React.Component<Props> {
   public render() {
     const { children, className } = this.props;
-    const props = {
-      ...this.props,
-      children: undefined,
-      backgroundColor: undefined
-    };
+    const props = { ...this.props, children: undefined };
     const childrenClassName = getClassName(defaultClassName, className);
 
     return (
