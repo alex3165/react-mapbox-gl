@@ -33,7 +33,7 @@ var Popup = (function (_super) {
     }
     Popup.prototype.render = function () {
         var _a = this.props, children = _a.children, className = _a.className;
-        var props = __assign({}, this.props, { children: undefined, backgroundColor: undefined });
+        var props = __assign({}, this.props, { children: undefined });
         var childrenClassName = getClassName(defaultClassName, className);
         return (React.createElement(ProjectedLayer, __assign({}, props, { type: "popup", className: childrenClassName }),
             React.createElement("div", { className: "mapboxgl-popup-tip" }),
