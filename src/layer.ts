@@ -44,8 +44,6 @@ export interface LayerEvents {
   onMouseDown?: MouseEvent;
   onMouseUp?: MouseEvent;
   onClick?: MouseEvent;
-  onTouchEnd?: MouseEvent;
-  onTouchStart?: MouseEvent;
 }
 
 export interface LayerCommonProps {
@@ -96,9 +94,7 @@ const eventToHandler: EventToHandlersType = {
   mouseleave: 'onMouseLeave',
   mousedown: 'onMouseDown',
   mouseup: 'onMouseUp',
-  click: 'onClick',
-  touchend: 'onTouchEnd',
-  touchstart: 'onTouchStart'
+  click: 'onClick'
 };
 
 export default class Layer extends React.Component<Props> {
