@@ -290,6 +290,8 @@ import { Feature } from "react-mapbox-gl";
 * **onDragStart** : `(mapWithEvt: object) => void` Triggered when the user start dragging the feature.
 * **onDrag** : `(mapWithEvt: object) => void` Triggered when the user continue dragging the feature (ie. move).
 * **onDragEnd** : `(mapWithEvt: object) => void` Triggered when the user stop dragging the feature.
+* **onTouchStart** : `(mapWithEvt: object) => void` Triggered when user starts touching the feature on a touch device.
+* **onTouchEnd** : `(mapWithEvt: object) => void` Triggered when user finishes touching the feature on a touch device.
 
 ---
 
