@@ -181,8 +181,8 @@ import { Layer } from "react-mapbox-gl";
 * **onMouseDown** `function` Mouse down handler. [mapbox map mouse event](https://www.mapbox.com/mapbox-gl-js/api/#mapmouseevent)
 * **onMouseUp** `function` Mouse up handler. [mapbox map mouse event](https://www.mapbox.com/mapbox-gl-js/api/#mapmouseevent)
 * **onClick** `function` Mouse click handler. [mapbox map mouse event](https://www.mapbox.com/mapbox-gl-js/api/#mapmouseevent)
-* **onTouchStart** `function` Touch start handler. [mapbox touch event](https://www.mapbox.com/mapbox-gl-js/api/#maptouchevent)
-* **onTouchEnd** `function` Touch end handler. [mapbox touch event](https://www.mapbox.com/mapbox-gl-js/api/#maptouchevent)
+* **onTouchStart** `function` Touch start handler. [mapbox map touch event](https://www.mapbox.com/mapbox-gl-js/api/#maptouchevent)
+* **onTouchEnd** `function` Touch end handler. [mapbox map touch event](https://www.mapbox.com/mapbox-gl-js/api/#maptouchevent)
 
 ---
 
