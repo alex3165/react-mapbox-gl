@@ -10,6 +10,8 @@ export interface LineProps {
     lineOnMouseDown?: MouseEvent;
     lineOnMouseUp?: MouseEvent;
     lineOnClick?: MouseEvent;
+    lineOnTouchStart?: MouseEvent;
+    lineOnTouchEnd?: MouseEvent;
 }
 export interface CircleProps {
     circlePaint?: MapboxGL.CirclePaint;
@@ -20,6 +22,8 @@ export interface CircleProps {
     circleOnMouseDown?: MouseEvent;
     circleOnMouseUp?: MouseEvent;
     circleOnClick?: MouseEvent;
+    circleOnTouchStart?: MouseEvent;
+    circleOnTouchEnd?: MouseEvent;
 }
 export interface SymbolProps {
     symbolLayout?: MapboxGL.SymbolLayout;
@@ -30,6 +34,8 @@ export interface SymbolProps {
     symbolOnMouseDown?: MouseEvent;
     symbolOnMouseUp?: MouseEvent;
     symbolOnClick?: MouseEvent;
+    symbolOnTouchStart?: MouseEvent;
+    symbolOnTouchEnd?: MouseEvent;
 }
 export interface FillProps {
     fillLayout?: MapboxGL.FillLayout;
@@ -40,6 +46,8 @@ export interface FillProps {
     fillOnMouseDown?: MouseEvent;
     fillOnMouseUp?: MouseEvent;
     fillOnClick?: MouseEvent;
+    fillOnTouchStart?: MouseEvent;
+    fillOnTouchEnd?: MouseEvent;
 }
 export interface FillExtrusionProps {
     fillExtrusionLayout?: MapboxGL.FillExtrusionLayout;
@@ -50,6 +58,8 @@ export interface FillExtrusionProps {
     fillExtrusionOnMouseDown?: MouseEvent;
     fillExtrusionOnMouseUp?: MouseEvent;
     fillExtrusionOnClick?: MouseEvent;
+    fillExtrusionOnTouchStart?: MouseEvent;
+    fillExtrusionOnTouchEnd?: MouseEvent;
 }
 export interface Props extends LineProps, CircleProps, SymbolProps, FillProps, FillExtrusionProps {
     id?: string;
