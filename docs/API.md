@@ -41,7 +41,6 @@ const Map = ReactMapboxGl({
   * `bottom-left`
 * **renderWorldCopies** _(Default: `true`)_: `boolean` If `true`, multiple copies of the world will be rendered, when zoomed out.
 * **dragRotate** _(Default: `true`)_: `boolean` Set to `false` to disable drag rotation, see [mapbox DragRotateHandler](https://www.mapbox.com/mapbox-gl-js/api/#DragRotateHandler)
-* **pitchWithRotate** _(Default: `true`)_: `boolean` Set to `false` to disable pitch with rotation, see [mapbox PitchWithRotate](https://docs.mapbox.com/mapbox-gl-js/api/#map)
 * **trackResize** _(Default: `true`)_: `boolean` If `true`, the map will automatically resize when the browser window resizes.
 * **touchZoomRotate** _(Default: `true`)_: `boolean` If `true`, the "pinch to rotate and zoom" interaction is enabled. An Object value is passed as options to TouchZoomRotateHandler#enable .
 * **doubleClickZoom** _(Default: `true`)_: `boolean` If `true`, the "double click to zoom" interaction is enabled (see DoubleClickZoomHandler).
@@ -447,7 +446,6 @@ import { Popup } from "react-mapbox-gl";
 * **style**: `object` Apply style to the marker container
 * **className**: `string` Apply the className to the container of the popup
 * **tabIndex** : `number` define the tab index value of the top container tag
-* **backgroundColor** : `number` Apply background color to popup and popup tip
 
 ---
 
