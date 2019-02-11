@@ -20,7 +20,8 @@ describe('layer-events-hoc', () => {
       'mouseenter',
       'mouseleave',
       'mousedown',
-      'touchstart'
+      'touchstart',
+      'touchend'
     ];
 
     expect(mapMock.on.mock.calls.map(call => call[0])).toEqual(events);
