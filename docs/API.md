@@ -6,7 +6,7 @@ Factory function that returns a React Mapbox component. Parameters of the factor
 
 ## Pre-requirement
 
-You will need a CSS loader to use this library as it inject mapbox-gl css .
+You will need a CSS loader to use this library as it injects mapbox-gl css.
 
 ### How to use
 
