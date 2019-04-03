@@ -257,7 +257,7 @@ const ReactMapboxFactory = ({
       this.setState({ map });
 
       if (fitBounds) {
-        map.fitBounds(fitBounds, fitBoundsOptions);
+        map.fitBounds(fitBounds, fitBoundsOptions, { auto: true });
       }
 
       // tslint:disable-next-line:no-any
@@ -338,7 +338,9 @@ const ReactMapboxFactory = ({
           didFitBoundsUpdate ||
           !isEqual(this.props.fitBoundsOptions, nextProps.fitBoundsOptions)
         ) {
-          map.fitBounds(nextProps.fitBounds, nextProps.fitBoundsOptions);
+          map.fitBounds(nextProps.fitBounds, nextProps.fitBoundsOptions, {
+            auto: true
+          });
         }
       }
 
