@@ -65,7 +65,8 @@ describe('cluster', () => {
       getMapMock({
         getZoom: jest.fn(() => 2),
         getCanvas: jest.fn(() => ({ width: 1020, height: 800 })),
-        unproject: jest.fn(() => mockProjections[unprojectCalls++])
+        unproject: jest.fn(() => mockProjections[unprojectCalls++]),
+        getCanvasContainer: jest.fn()
       })
     );
 
