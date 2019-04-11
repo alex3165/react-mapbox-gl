@@ -24,7 +24,7 @@ interface Route {
 const route: Route = require('./route.json');
 
 const mappedRoute = route.points.map(
-  point => [point.lat, point.lng] as [number, number]
+  point => [point.lng, point.lat] as [number, number]
 );
 
 const Map = ReactMapboxGl({ accessToken: token });
