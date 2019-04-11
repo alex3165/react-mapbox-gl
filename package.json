@@ -68,10 +68,10 @@
     "supercluster": "3.0.2"
   },
   "peerDependencies": {
-    "mapbox-gl": "0.51.0",
-    "prop-types": "15.6.2",
-    "react": "16.5.2",
-    "react-dom": "16.5.2"
+    "mapbox-gl": "^0.51.0",
+    "prop-types": "^15.6.2",
+    "react": "^16.5.2",
+    "react-dom": "^16.5.2"
   },
   "devDependencies": {
     "@types/core-js": "0.9.43",
