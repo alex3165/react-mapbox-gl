@@ -4,10 +4,11 @@ import styled from 'styled-components';
 
 const StyledLiveProvider = styled(LiveProvider)`
   flex: 1;
+  max-height: calc(100vh - 74px);
   overflow: auto;
   display: flex;
-  justify-content: ${props => props.scope ? 'center' : 'flex-start'};
-  background-color: ${props => props.scope ? 'none' : '#F4F1E8'};
+  justify-content: ${props => (props.scope ? 'center' : 'flex-start')};
+  background-color: ${props => (props.scope ? 'none' : '#F4F1E8')};
 `;
 
 const StyledEditor = styled(LiveEditor)`
@@ -23,16 +24,18 @@ export interface Props {
   preview?: boolean;
 }
 
-export const Live: React.StatelessComponent<Props> = ({ raw, scope, preview }) => (
+export const Live: React.StatelessComponent<Props> = ({
+  raw,
+  scope,
+  preview
+}) => (
   <StyledLiveProvider
     code={raw}
     mountStylesheet={false}
     noInline={true}
     scope={scope}
   >
-    <StyledEditor contentEditable={false}/>
-    {
-      preview && <LivePreview/>
-    }
+    <StyledEditor contentEditable={false} />
+    {preview && <LivePreview />}
   </StyledLiveProvider>
 );
