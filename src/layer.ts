@@ -254,6 +254,17 @@ export default class Layer extends React.Component<Props> {
       return;
     }
 
+    map.off('styledata', this.onStyleDataChange);
+
+    (Object.entries(eventToHandler) as Array<
+      [keyof EventToHandlersType, keyof LayerEvents]
+    >).forEach(([event, propName]) => {
+      const handler = this.props[propName];
+      if (handler) {
+        map.off(event, id, handler);
+      }
+    });
+
     if (map.getLayer(id)) {
       map.removeLayer(id);
     }
@@ -267,19 +278,8 @@ export default class Layer extends React.Component<Props> {
       const normalizedImages = !Array.isArray(images[0]) ? [images] : images;
       (normalizedImages as ImageDefinitionWithOptions[])
         .map(([key, ...rest]) => key)
-        .forEach(map.removeImage);
+        .forEach(map.removeImage.bind(map));
     }
-
-    map.off('styledata', this.onStyleDataChange);
-
-    (Object.entries(eventToHandler) as Array<
-      [keyof EventToHandlersType, keyof LayerEvents]
-    >).forEach(([event, propName]) => {
-      const handler = this.props[propName];
-      if (handler) {
-        map.off(event, id, handler);
-      }
-    });
   }
 
   public componentWillReceiveProps(props: Props) {
