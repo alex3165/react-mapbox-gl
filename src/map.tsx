@@ -81,6 +81,7 @@ export interface FactoryParameters {
   scrollZoom?: boolean;
   interactive?: boolean;
   dragRotate?: boolean;
+  pitchWithRotate?: boolean;
   attributionControl?: boolean;
   customAttribution?: string | string[];
   logoPosition?: 'top-left' | 'top-right' | 'bottom-left' | 'bottom-right';
@@ -123,6 +124,7 @@ const ReactMapboxFactory = ({
   scrollZoom = true,
   interactive = true,
   dragRotate = true,
+  pitchWithRotate = true,
   attributionControl = true,
   customAttribution,
   logoPosition = 'bottom-left',
@@ -219,6 +221,7 @@ const ReactMapboxFactory = ({
         customAttribution,
         interactive,
         dragRotate,
+        pitchWithRotate,
         renderWorldCopies,
         trackResize,
         touchZoomRotate,
