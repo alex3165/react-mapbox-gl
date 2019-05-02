@@ -36,6 +36,7 @@ export interface Events {
   onSourceData?: MapEvent;
   onDataLoading?: MapEvent;
   onStyleDataLoading?: MapEvent;
+  onStyleImageMissing?: MapEvent;
   onTouchCancel?: MapEvent;
   onData?: MapEvent;
   onSourceDataLoading?: MapEvent;
@@ -82,6 +83,7 @@ export const events: EventMapping = {
   onSourceData: 'sourcedata',
   onDataLoading: 'dataloading',
   onStyleDataLoading: 'styledataloading',
+  onStyleImageMissing: 'styleimagemissing',
   onTouchCancel: 'touchcancel',
   onData: 'data',
   onSourceDataLoading: 'sourcedataloading',
@@ -98,8 +100,8 @@ export const events: EventMapping = {
 };
 
 export type Listeners = {
-  [// tslint:disable-next-line:no-any
-  T in keyof Events]: (evt: React.SyntheticEvent<any>) => void
+  // tslint:disable-next-line:no-any
+  [T in keyof Events]: (evt: React.SyntheticEvent<any>) => void
 };
 
 export const listenEvents = (
