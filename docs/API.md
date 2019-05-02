@@ -114,6 +114,7 @@ const events = {
   onSourceData: 'sourcedata',
   onDataLoading: 'dataloading',
   onStyleDataLoading: 'styledataloading',
+  onStyleImageMissing: 'styleimagemissing',
   onTouchCancel: 'touchcancel',
   onData: 'data',
   onSourceDataLoading: 'sourcedataloading',
