@@ -8,6 +8,7 @@ import {
   updateEvents
 } from './map-events';
 import { MapContext } from './context';
+import { createPortal } from 'react-dom';
 const isEqual = require('deep-equal'); //tslint:disable-line
 
 export interface PaddingOptions {
@@ -377,15 +378,19 @@ const ReactMapboxFactory = ({
 
     public render() {
       const { containerStyle, className, children } = this.props;
-      const { ready } = this.state;
+      const { ready, map } = this.state;
+      const container =
+        ready && map && typeof map.getCanvasContainer === 'function'
+          ? map.getCanvasContainer()
+          : undefined;
       return (
-        <MapContext.Provider value={this.state.map}>
+        <MapContext.Provider value={map}>
           <div
             ref={this.setRef}
             className={className}
             style={{ ...containerStyle }}
           >
-            {ready && children}
+            {ready && container && createPortal(children, container)}
           </div>
         </MapContext.Provider>
       );
