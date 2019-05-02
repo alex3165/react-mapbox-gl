@@ -108,7 +108,7 @@ declare global {
   namespace mapboxgl {
     export interface MapboxOptions {
       failIfMajorPerformanceCaveat?: boolean;
-      transformRequest?: RequestTransformFunction;
+      transformRequest?: MapboxGl.TransformRequestFunction;
     }
   }
 }
