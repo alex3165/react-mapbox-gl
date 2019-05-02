@@ -59,7 +59,7 @@ const Map = ReactMapboxGl({
 * **zoom** _(Default: `[11]`)_: `[number]` Zoom level of the map at initialisation wrapped in an array.
   * Check for reference equality between the previous value of zoom and the new one in order to update it or not.
 * **maxBounds** : `LngLatBounds | number[][]` If set, the map is constrained to the given bounds [SouthWest, NorthEast]
-* **fitBounds** : `number[][]` If set, the map will center on the given coordinates, [fitBounds](https://www.mapbox.com/mapbox-gl-js/api/#Map#fitBounds)
+* **fitBounds** : `[[number, number], [number, number]]` If set, the map will center on the given coordinates, [fitBounds](https://www.mapbox.com/mapbox-gl-js/api/#Map#fitBounds)
 * **fitBoundsOptions** : `object` Options for [fitBounds](https://www.mapbox.com/mapbox-gl-js/api/#Map#fitBounds)
 * **bearing**: `[number]` Bearing (rotation) of the map at initialisation measured in degrees counter-clockwise from north.
   * Check the previous value and the new one, if the value changed update the bearing value [flyTo](https://www.mapbox.com/mapbox-gl-js/api/#Map.flyTo)
