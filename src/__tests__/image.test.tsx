@@ -59,12 +59,11 @@ describe('Image', () => {
     expect(mapMock.addImage).toBeCalled();
     expect(onLoaded).toBeCalled();
 
-
     component.unmount();
     expect(mapMock.removeImage).toBeCalled();
   });
 
-  it('Should not call removeImage when map styles are undefined', function () {
+  it('Should not call removeImage when map styles are undefined', () => {
     const mapMock = getMapMock({
       getStyle: jest.fn(() => undefined)
     });
