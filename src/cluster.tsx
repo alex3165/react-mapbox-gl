@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { LngLatBounds, Map } from 'mapbox-gl';
 import { Props as MarkerProps } from './marker';
-import supercluster, { Supercluster } from 'supercluster';
+import * as Supercluster from 'supercluster';
 import * as GeoJSON from 'geojson';
 import * as bbox from '@turf/bbox';
 import { polygon, featureCollection } from '@turf/helpers';
@@ -49,7 +49,7 @@ export class Cluster extends React.Component<Props, State> {
   };
 
   public state: State = {
-    superC: supercluster({
+    superC: new Supercluster({
       radius: this.props.radius,
       maxZoom: this.props.maxZoom,
       minZoom: this.props.minZoom,

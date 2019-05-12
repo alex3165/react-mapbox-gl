@@ -65,7 +65,7 @@
     "@turf/bbox": "4.7.3",
     "@turf/helpers": "4.7.3",
     "deep-equal": "1.0.1",
-    "supercluster": "3.0.2"
+    "supercluster": "^6.0.1"
   },
   "peerDependencies": {
     "mapbox-gl": "^0.54.0",
@@ -87,7 +87,7 @@
     "@types/react": "*",
     "@types/react-dom": "16.0.9",
     "@types/recompose": "0.27.0",
-    "@types/supercluster": "3.0.2",
+    "@types/supercluster": "^5.0.1",
     "enzyme": "3.7.0",
     "enzyme-adapter-react-16": "1.6.0",
     "husky": "^0.14.3",
