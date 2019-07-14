@@ -73,7 +73,7 @@ class Image extends React.Component<Props> {
 
   private static removeImage(props: Props) {
     const { id, map } = props;
-    if (map) {
+    if (map && map.getStyle()) {
       map.removeImage(id);
     }
   }
