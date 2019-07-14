@@ -59,6 +59,7 @@ export interface Props {
   animationOptions?: Partial<AnimationOptions>;
   flyToOptions?: Partial<FlyToOptions>;
   children?: JSX.Element | JSX.Element[] | Array<JSX.Element | undefined>;
+  renderChildrenInPortal?: boolean;
 }
 
 export interface State {
@@ -377,12 +378,34 @@ const ReactMapboxFactory = ({
     };
 
     public render() {
-      const { containerStyle, className, children } = this.props;
+      const {
+        containerStyle,
+        className,
+        children,
+        renderChildrenInPortal
+      } = this.props;
+
       const { ready, map } = this.state;
-      const container =
-        ready && map && typeof map.getCanvasContainer === 'function'
-          ? map.getCanvasContainer()
-          : undefined;
+
+      if (renderChildrenInPortal) {
+        const container =
+          ready && map && typeof map.getCanvasContainer === 'function'
+            ? map.getCanvasContainer()
+            : undefined;
+
+        return (
+          <MapContext.Provider value={map}>
+            <div
+              ref={this.setRef}
+              className={className}
+              style={{ ...containerStyle }}
+            >
+              {ready && container && createPortal(children, container)}
+            </div>
+          </MapContext.Provider>
+        );
+      }
+
       return (
         <MapContext.Provider value={map}>
           <div
@@ -390,7 +413,7 @@ const ReactMapboxFactory = ({
             className={className}
             style={{ ...containerStyle }}
           >
-            {ready && container && createPortal(children, container)}
+            {ready && children}
           </div>
         </MapContext.Provider>
       );

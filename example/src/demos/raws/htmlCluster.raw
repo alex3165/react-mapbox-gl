@@ -123,6 +123,7 @@ class HtmlCluster extends React.Component<Props, State> {
         onStyleLoad={this.onStyleLoad}
         onMove={this.onMove}
         containerStyle={mapStyle}
+        renderChildrenInPortal={true}
       >
         <Cluster ClusterMarkerFactory={this.clusterMarker}>
           {falls.features.map((feature: any, key: number) => (
