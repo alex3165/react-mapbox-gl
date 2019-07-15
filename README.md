@@ -87,3 +87,6 @@ Try [react-mapbox-gl-draw](https://github.com/amaurymartiny/react-mapbox-gl-draw
 
 ## Looking for an Angular alternative?
 Try [ngx-mapbox-gl](https://github.com/Wykks/ngx-mapbox-gl)
+
+## License
+MIT © [Alexandre](https://github.com/alex3165)
