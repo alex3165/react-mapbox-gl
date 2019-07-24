@@ -79,9 +79,11 @@ const Map = ReactMapboxGl({
 
 If those properties changed at the mapbox-gl-js level and you don't update the value kept in your state, it will be unsynced with the current viewport. At some point you might want to update the viewport value (zoom, pitch or bearing) with the ones in your state but using value equality is not enough. Taking zoom as example, you will still have the unsynced zoom value therefore we can't tell if you want to update the prop or not. In order to explicitly update the current viewport values you can instead break the references of those props and reliably update the current viewport with the one you have in your state to be synced again.
 
-## [Version 3.0 Documentation](docs/API.md)
+## [Current version documentation](docs/API.md)
 
-## [Version 2.0 Documentation](https://github.com/alex3165/react-mapbox-gl/blob/v2-archive/docs/API.md)
+## [Version 3.0 documentation](https://github.com/alex3165/react-mapbox-gl/blob/v3.9.2/docs/API.md)
+
+## [Version 2.0 documentation](https://github.com/alex3165/react-mapbox-gl/blob/v2-archive/docs/API.md)
 
 ## Contributions
 
