@@ -1,6 +1,6 @@
 {
   "name": "react-mapbox-gl",
-  "version": "4.4.0",
+  "version": "4.6.0",
   "description": "A React binding of mapbox-gl-js",
   "main": "lib/index.js",
   "module": "lib-esm/index.js",
@@ -68,7 +68,7 @@
     "supercluster": "^6.0.1"
   },
   "peerDependencies": {
-    "mapbox-gl": "^0.54.0",
+    "mapbox-gl": "^1.1.1",
     "prop-types": "^15.6.2",
     "react": "^16.5.2",
     "react-dom": "^16.5.2"
@@ -92,7 +92,7 @@
     "enzyme-adapter-react-16": "1.6.0",
     "husky": "^0.14.3",
     "jest": "23.6.0",
-    "mapbox-gl": "^0.54.0",
+    "mapbox-gl": "^1.1.1",
     "prettier": "1.10.2",
     "prop-types": "15.6.2",
     "react": "^16.8.6",
