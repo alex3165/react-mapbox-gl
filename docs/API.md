@@ -2,8 +2,6 @@
 
 Factory function that returns a React Mapbox component. Parameters of the factory function are static; properties of your component are dynamic and get updated if they change between rendering.
 
-> To use the original Mapbox API use the `onStyleLoad` property. The callback function will receive the map object as a first argument, then you can add your own logic alongside react-mapbox-gl. [mapbox gl API](https://www.mapbox.com/mapbox-gl-js/api/).
-
 ## Pre-requirement
 
 You will need a CSS loader to use this library as it injects mapbox-gl css.
@@ -54,6 +52,7 @@ const Map = ReactMapboxGl({
 ### Component Properties
 
 * **style** _(required)_ : `string | object` Mapbox map style, if changed, the style will be updated using `setStyle`.
+* **onStyleLoad**: `(map, loadEvent) => void` called with the Mapbox Map instance when the `load` event is fired. You can use the callback's first argument to then interact with the Mapbox API.
 * **center** _(Default: `[ -0.2416815, 51.5285582 ]`)_: `[number, number]` Center the map at the position at initialisation
   * Must be in longitude, latitude coordinate order (as opposed to latitude, longitude) to match GeoJSON (source: https://www.mapbox.com/mapbox-gl-js/api/#lnglat).
   * Re-center the map if the value change regarding the prev value or the actual center position [flyTo](https://www.mapbox.com/mapbox-gl-js/api/#Map.flyTo)
@@ -530,3 +529,35 @@ clusterMarker = (coordinates) => (
 * **style**: `object` Apply style to the marker container
 * **className**: `string` Apply the className to the container of the Marker
 * **tabIndex** : `number` define the tab index value of the top container tag
+
+---
+
+# Using the original Mapbox API
+
+Sometimes, react-mapbox-gl hasn't wrapped all of the functionality you need. In that case, you might want to access the original [mapbox-gl-js API](https://docs.mapbox.com/mapbox-gl-js/api).
+
+For this, there are two options:
+
+### onStyleLoad
+
+`onStyleLoad` property on the component. The callback function will receive the map object as a first argument, then you can add your own logic alongside react-mapbox-gl.
+
+### Context API
+
+Arguably the nicer way to do this is to use the React context, which v4 added support for. You can grab the Map instance from the context anywhere within the `<Map />` component.
+
+```
+import ReactMapboxGL, { MapContext } from 'react-mapbox-gl';
+
+const Map = ReactMapboxGL({ /* factory options */ });
+
+const MyMap = () => (
+  <Map style="your-style-here">
+    <MapContext.Consumer>
+      {(map) => {
+        // use `map` here
+      }}
+    </MapContext.Consumer>
+  </Map>
+);
+```

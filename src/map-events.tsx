@@ -100,8 +100,7 @@ export const events: EventMapping = {
 };
 
 export type Listeners = {
-  // tslint:disable-next-line:no-any
-  [T in keyof Events]: (evt: React.SyntheticEvent<any>) => void
+  [T in keyof Events]: (evt: React.SyntheticEvent<any>) => void // tslint:disable-line:no-any
 };
 
 export const listenEvents = (
