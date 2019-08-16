@@ -60,7 +60,7 @@ export default class LondonCycle extends React.Component<Props, State> {
     stations: {}
   };
 
-  public componentWillMount() {
+  public UNSAFE_componentWillMount() {
     getCycleStations().then(res => {
       this.setState(({ stations }) => ({
         stations: {

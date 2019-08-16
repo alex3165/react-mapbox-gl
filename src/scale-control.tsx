@@ -91,7 +91,7 @@ export class ScaleControl extends React.Component<Props, State> {
     scaleWidth: MIN_WIDTH_SCALE
   };
 
-  public componentWillMount() {
+  public UNSAFE_componentWillMount() {
     this.setScale();
 
     this.props.map.on('zoomend', this.setScale);

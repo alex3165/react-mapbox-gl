@@ -77,7 +77,7 @@ class AllShapes extends React.Component<Props, State> {
   private timeoutHandle: any = undefined;
   private mounted = false;
 
-  public componentWillMount() {
+  public UNSAFE_componentWillMount() {
     this.mounted = true;
     this.timeoutHandle = setTimeout(() => {
       if (this.mounted) {
