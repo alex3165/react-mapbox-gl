@@ -287,7 +287,7 @@ export default class Layer extends React.Component<Props> {
     const { map } = this.props;
 
     if (!map.getSource(id)) {
-      return null;
+      return;
     }
 
     if (!isEqual(props.paint, paint)) {
