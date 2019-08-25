@@ -137,6 +137,10 @@ export class GeoJSONLayer extends React.Component<Props> {
   private createLayer = (type: LayerType) => {
     const { before, layerOptions, map } = this.props;
 
+    if (layerOptions && layerOptions.type && layerOptions.type !== type) {
+      return;
+    }
+
     const layerId = this.buildLayerId(type);
     this.layerIds.push(layerId);
 

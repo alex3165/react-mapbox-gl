@@ -246,6 +246,7 @@ import { GeoJSONLayer } from "react-mapbox-gl";
 ### Properties
 
 * **data** _(required)_: `string | object` The url to the geojson file or the geojson file itself.
+* **id**: `string` An id to give to the source.
 * **lineLayout** | **symbolLayout** | **circleLayout** | **fillLayout** | **fillExtrusionLayout**: `Object` Layer layout information. [mapbox layout api](https://www.mapbox.com/mapbox-gl-style-spec/#layer-layout)
 * **linePaint** | **symbolPaint** | **circlePaint** | **fillPaint** | **fillExtrusionPaint**: `Object` Paint information. [mapbox paint api](https://www.mapbox.com/mapbox-gl-style-spec/#layer-paint)
 * **lineOnMouseDown** | **symbolOnMouseDown** | **circleOnMouseDown** | **fillOnMouseDown** | **fillExtrusionOnMouseDown**: `function` Mouse down handler. [mapbox map mouse event](https://www.mapbox.com/mapbox-gl-js/api/#mapmouseevent)
