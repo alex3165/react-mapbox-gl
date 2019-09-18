@@ -48,6 +48,7 @@ const Map = ReactMapboxGl({
 * **refreshExpiredTiles** _(Default: `true`)_: `boolean` If `false` , the map won't attempt to re-request tiles once they expire per their HTTP cacheControl / expires headers.
 * **failIfMajorPerformanceCaveat** _(Default: `false`)_: `boolean` If `true` , map creation will fail if the performance of Mapbox GL JS would be dramatically worse than expected (i.e. a software renderer would be used).
 * **bearingSnap** _(Default: `7`)_: `number` The threshold, measured in degrees, that determines when the map's bearing (rotation) will snap to north. For example, with a bearingSnap of 7, if the user rotates the map within 7 degrees of north, the map will automatically snap to exact north.
+* **antialias** _(Default: `false`)_: `boolean` If  true, the gl context will be created with MSA antialiasing, which can be useful for antialiasing custom layers. This is false by default as a performance optimization.
 
 ### Component Properties
 
