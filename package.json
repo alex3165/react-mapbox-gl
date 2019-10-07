@@ -80,7 +80,7 @@
     "@types/enzyme-adapter-react-16": "^1.0.3",
     "@types/geojson": "7946.0.4",
     "@types/jest": "23.3.5",
-    "@types/mapbox-gl": "^0.51.6",
+    "@types/mapbox-gl": "^0.54.3",
     "@types/node": "8.0.29",
     "@types/prettier": "1.10.0",
     "@types/prop-types": "15.5.6",
