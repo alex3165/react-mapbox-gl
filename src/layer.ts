@@ -286,6 +286,10 @@ export default class Layer extends React.Component<Props> {
     const { paint, layout, before, filter, id, minZoom, maxZoom } = this.props;
     const { map } = this.props;
 
+    if (!map.getSource(id)) {
+      return;
+    }
+
     if (!isEqual(props.paint, paint)) {
       const paintDiff = diff(paint, props.paint);
 
