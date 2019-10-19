@@ -1,9 +1,9 @@
 import * as React from 'react';
 import { LngLatBounds, Map } from 'mapbox-gl';
 import { Props as MarkerProps } from './marker';
-import * as Supercluster from 'supercluster';
+import Supercluster from 'supercluster';
 import * as GeoJSON from 'geojson';
-import * as bbox from '@turf/bbox';
+import bbox from '@turf/bbox';
 import { polygon, featureCollection } from '@turf/helpers';
 import { withMap } from './context';
 
