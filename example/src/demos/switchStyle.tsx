@@ -101,7 +101,7 @@ class StyleUpdate extends React.Component<Props, State> {
     renderLayer: true
   };
 
-  public componentWillMount() {
+  public UNSAFE_componentWillMount() {
     navigator.geolocation.getCurrentPosition(
       ({ coords }: any) => {
         const { latitude, longitude } = coords;
