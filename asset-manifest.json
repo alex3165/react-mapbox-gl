@@ -1,0 +1,24 @@
+{
+  "files": {
+    "main.css": "/react-mapbox-gl/static/css/main.52b3d25a.chunk.css",
+    "main.js": "/react-mapbox-gl/static/js/main.e4b9c1c6.chunk.js",
+    "main.js.map": "/react-mapbox-gl/static/js/main.e4b9c1c6.chunk.js.map",
+    "runtime-main.js": "/react-mapbox-gl/static/js/runtime-main.b2e33279.js",
+    "runtime-main.js.map": "/react-mapbox-gl/static/js/runtime-main.b2e33279.js.map",
+    "static/css/2.a2e8617b.chunk.css": "/react-mapbox-gl/static/css/2.a2e8617b.chunk.css",
+    "static/js/2.6863bf70.chunk.js": "/react-mapbox-gl/static/js/2.6863bf70.chunk.js",
+    "static/js/2.6863bf70.chunk.js.map": "/react-mapbox-gl/static/js/2.6863bf70.chunk.js.map",
+    "index.html": "/react-mapbox-gl/index.html",
+    "precache-manifest.28feb76576a0dbe169c12ded6ac00429.js": "/react-mapbox-gl/precache-manifest.28feb76576a0dbe169c12ded6ac00429.js",
+    "service-worker.js": "/react-mapbox-gl/service-worker.js",
+    "static/css/2.a2e8617b.chunk.css.map": "/react-mapbox-gl/static/css/2.a2e8617b.chunk.css.map",
+    "static/css/main.52b3d25a.chunk.css.map": "/react-mapbox-gl/static/css/main.52b3d25a.chunk.css.map"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.b2e33279.js",
+    "static/css/2.a2e8617b.chunk.css",
+    "static/js/2.6863bf70.chunk.js",
+    "static/css/main.52b3d25a.chunk.css",
+    "static/js/main.e4b9c1c6.chunk.js"
+  ]
+}
