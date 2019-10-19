@@ -291,7 +291,7 @@ const ReactMapboxFactory = ({
       }
     }
 
-    private shouldFitBoundUpdate(next: FitBounds, current?: FitBounds) {
+    public shouldFitBoundUpdate(next: FitBounds, current?: FitBounds) {
       // Compare top level array references
       if (current !== next) {
         return true;
