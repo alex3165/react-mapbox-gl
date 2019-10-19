@@ -16,7 +16,6 @@ const Container = styled.div`
 
 const Description = styled.p`
   text-align: center;
-  maxwidth: 900px;
   color: #34495e;
   line-height: 30px;
   font-size: 20px;
