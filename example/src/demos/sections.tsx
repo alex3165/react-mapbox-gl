@@ -25,14 +25,14 @@ export const sections = [
     title: 'Bike stations in London',
     components: ['ReactMapboxGl', 'Layer', 'Feature'],
     DemoComponent: LondonCycleMap,
-    reactLive: <Live raw={LondonCycleMapRaw} />
+    reactLive: <Live full={true} raw={LondonCycleMapRaw} />
   },
   {
     shortTitle: 'heatmap',
     title: 'Heatmap of London house prices',
     components: ['ReactMapboxGl', 'Layer', 'Feature'],
     DemoComponent: Heatmap,
-    reactLive: <Live raw={HeatmapRaw} />
+    reactLive: <Live full={true} raw={HeatmapRaw} />
   },
   {
     shortTitle: 'all-shapes',
@@ -46,41 +46,41 @@ export const sections = [
       'RotationControl'
     ],
     DemoComponent: AllShapes,
-    reactLive: <Live raw={AllShapesRaw} />
+    reactLive: <Live full={true} raw={AllShapesRaw} />
   },
   {
     shortTitle: 'html-marker',
     title: 'Html features (Marker)',
     components: ['ReactMapboxGl', 'Marker'],
     DemoComponent: HtmlFeatures,
-    reactLive: <Live raw={HtmlFeaturesRaw} />
+    reactLive: <Live full={true} raw={HtmlFeaturesRaw} />
   },
   {
     shortTitle: '3d-map',
     title: '3D extrusion map',
     components: ['ReactMapboxGl', 'Layer'],
     DemoComponent: ThreeDMap,
-    reactLive: <Live raw={ThreeDMapRaw} />
+    reactLive: <Live full={true} raw={ThreeDMapRaw} />
   },
   {
     shortTitle: 'html-cluster',
     title: 'Cluster of Html markers',
     components: ['ReactMapboxGl', 'Marker', 'Cluster'],
     DemoComponent: HtmlCluster,
-    reactLive: <Live raw={HtmlClusterRaw} />
+    reactLive: <Live full={true} raw={HtmlClusterRaw} />
   },
   {
     shortTitle: 'switch-style',
     title: 'Swap Mapbox map style',
     components: ['ReactMapboxGl', 'Source', 'Layer', 'Feature'],
     DemoComponent: SwitchStyle,
-    reactLive: <Live raw={SwitchStyleRaw} />
+    reactLive: <Live full={true} raw={SwitchStyleRaw} />
   },
   {
     shortTitle: 'geojson-data',
     title: 'Display data from GeoJson',
     components: ['ReactMapboxGl', 'GeoJsonLayer'],
     DemoComponent: GeoJsonLayer,
-    reactLive: <Live raw={GeoJsonLayerRaw} />
+    reactLive: <Live full={true} raw={GeoJsonLayerRaw} />
   }
 ];

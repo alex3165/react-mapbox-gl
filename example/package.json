@@ -15,11 +15,7 @@
     "extends": "react-app"
   },
   "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
-    ],
+    "production": [">0.2%", "not dead", "not op_mini all"],
     "development": [
       "last 1 chrome version",
       "last 1 firefox version",
@@ -33,7 +29,8 @@
     "react-markdown": "2.5.1",
     "react-router": "3.0.5",
     "styled-components": "3.4.10",
-    "xml2js": "0.4.19"
+    "xml2js": "0.4.19",
+    "raw.macro": "^0.3.0"
   },
   "devDependencies": {
     "@types/enzyme": "3.1.14",
@@ -44,7 +41,6 @@
     "@types/xml2js": "0.4.0",
     "es6-promisify": "5.0.0",
     "gh-pages": "1.0.0",
-    "raw.macro": "^0.3.0",
     "react-scripts": "^3.2.0",
     "typescript": "3.1.3"
   }

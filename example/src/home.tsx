@@ -40,10 +40,6 @@ const Body = styled.div`
   justify-content: center;
 `;
 
-const Wrapper = styled.div`
-  display: flex;
-`;
-
 class Home extends React.Component {
   public render() {
     return (
@@ -57,13 +53,12 @@ class Home extends React.Component {
           </Description>
         </Header>
         <Body>
-          <Wrapper>
-            <Live
-              raw={code}
-              scope={{ ReactMapboxGl, Layer, Feature, accessToken: token }}
-              preview={true}
-            />
-          </Wrapper>
+          <Live
+            full={false}
+            raw={code}
+            scope={{ ReactMapboxGl, Layer, Feature, accessToken: token }}
+            preview={true}
+          />
         </Body>
       </Container>
     );

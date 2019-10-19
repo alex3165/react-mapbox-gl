@@ -2,13 +2,15 @@ import * as React from 'react';
 import { LiveProvider, LiveEditor, LivePreview } from 'react-live';
 import styled from 'styled-components';
 
-const StyledLiveProvider = styled(LiveProvider)`
-  flex: 1;
-  height: calc(100vh - 74px);
+const Wrapper =
+  // eslint-disable-next-line
+  styled.div <
+  { full: boolean } >
+  `
+  background-color: #363431;
+  max-height: calc(100vh - 74px);
+  display: ${props => (props.full ? 'block' : 'flex')};
   overflow: auto;
-  display: flex;
-  justify-content: ${props => (props.scope ? 'center' : 'flex-start')};
-  background-color: ${props => (props.scope ? 'none' : '#F4F1E8')};
 `;
 
 const StyledEditor = styled(LiveEditor)`
@@ -22,15 +24,19 @@ export interface Props {
   // tslint:disable-next-line:no-any
   scope?: any;
   preview?: boolean;
+  full: boolean;
 }
 
 export const Live: React.StatelessComponent<Props> = ({
   raw,
   scope,
-  preview
+  preview,
+  full
 }) => (
-  <StyledLiveProvider code={raw} noInline={true} scope={scope}>
-    <StyledEditor contentEditable={false} />
-    {preview && <LivePreview />}
-  </StyledLiveProvider>
+  <Wrapper full={full}>
+    <LiveProvider code={raw} noInline={true} scope={scope}>
+      <StyledEditor contentEditable={false} />
+      {preview && <LivePreview />}
+    </LiveProvider>
+  </Wrapper>
 );
