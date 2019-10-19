@@ -293,8 +293,8 @@ const ReactMapboxFactory = ({
 
     public shouldFitBoundUpdate(next: FitBounds, current?: FitBounds) {
       // Compare top level array references
-      if (current !== next) {
-        return true;
+      if (current === next) {
+        return false;
       }
 
       // If next is provided but current doesn't have fitbound it should update
@@ -302,8 +302,15 @@ const ReactMapboxFactory = ({
         return true;
       }
 
-      // Other possiblities:
-      // - Check for ref equality of children arrays: next[0] === current[0] && next[1] === current[1]
+      // Content value equality check: If any number change then update
+      if (
+        current[0][0] !== next[0][0] ||
+        current[0][1] !== next[0][1] ||
+        current[1][0] !== next[1][0] ||
+        current[1][1] !== next[1][1]
+      ) {
+        return true;
+      }
 
       return false;
     }
