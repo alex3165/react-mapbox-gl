@@ -16,7 +16,7 @@ const Container = styled.div`
 
 const Description = styled.p`
   text-align: center;
-  maxWidth: 900px;
+  maxwidth: 900px;
   color: #34495e;
   line-height: 30px;
   font-size: 20px;
@@ -37,30 +37,37 @@ const Body = styled.div`
   flex: 1;
   align-items: center;
   display: flex;
+  justify-content: center;
+`;
+
+const Wrapper = styled.div`
+  display: flex;
 `;
 
 class Home extends React.Component {
   public render() {
     return (
       <Container>
-          <Header>
-            <LogoWrapper>
-              <Logo width={120} height={120}/>
-            </LogoWrapper>
-            <Description>
-              Simple to use with declarative API WebGl Mapbox map in React.
-            </Description>
-          </Header>
-          <Body>
+        <Header>
+          <LogoWrapper>
+            <Logo width={120} height={120} />
+          </LogoWrapper>
+          <Description>
+            Simple to use with declarative API WebGl Mapbox map in React.
+          </Description>
+        </Header>
+        <Body>
+          <Wrapper>
             <Live
               raw={code}
               scope={{ ReactMapboxGl, Layer, Feature, accessToken: token }}
               preview={true}
             />
-          </Body>
+          </Wrapper>
+        </Body>
       </Container>
     );
   }
-};
+}
 
 export default Home;

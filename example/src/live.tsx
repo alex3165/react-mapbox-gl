@@ -4,7 +4,7 @@ import styled from 'styled-components';
 
 const StyledLiveProvider = styled(LiveProvider)`
   flex: 1;
-  max-height: calc(100vh - 74px);
+  height: calc(100vh - 74px);
   overflow: auto;
   display: flex;
   justify-content: ${props => (props.scope ? 'center' : 'flex-start')};
