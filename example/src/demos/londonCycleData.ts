@@ -31,8 +31,8 @@ export const getCycleStations = () =>
     .then(parse)
     .then(res => res.stations.station.map(normalize))
     .then((stations: Station[]) =>
-      stations.reduce(
-        (acc: StationDict, station) => ((acc[station.id] = station), acc),
-        {}
-      )
+      stations.reduce((acc: StationDict, station) => {
+        acc[station.id] = station;
+        return acc;
+      }, {})
     );
