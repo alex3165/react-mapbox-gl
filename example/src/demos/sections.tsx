@@ -1,29 +1,29 @@
 import * as React from 'react';
 import LondonCycleMap from './londonCycle';
-const LondonCycleMapRaw = require('raw-loader!./raws/londonCycle.raw');
-
 import AllShapes from './allShapes';
-const AllShapesRaw = require('raw-loader!./raws/allShapes.raw');
-
 import HtmlFeatures from './htmlFeatures';
-const HtmlFeaturesRaw = require('raw-loader!./raws/htmlFeatures.raw');
-
 import ThreeDMap from './threeDMap';
-const ThreeDMapRaw = require('raw-loader!./raws/threeDMap.raw');
-
 import HtmlCluster from './htmlCluster';
-const HtmlClusterRaw = require('raw-loader!./raws/htmlCluster.raw');
-
 import SwitchStyle from './switchStyle';
-const SwitchStyleRaw = require('raw-loader!./raws/switchStyle.raw');
-
 import GeoJsonLayer from './geojsonLayer';
-const GeoJsonLayerRaw = require('raw-loader!./raws/geojsonLayer.raw');
-
 import Heatmap from './heatmap';
-const HeatmapRaw = require('raw-loader!./raws/heatmap.raw');
-
 import { Live } from '../live';
+
+const LondonCycleMapRaw = require('./raws/londonCycle.raw');
+
+const AllShapesRaw = require('./raws/allShapes.raw');
+
+const HtmlFeaturesRaw = require('./raws/htmlFeatures.raw');
+
+const ThreeDMapRaw = require('./raws/threeDMap.raw');
+
+const HtmlClusterRaw = require('./raws/htmlCluster.raw');
+
+const SwitchStyleRaw = require('./raws/switchStyle.raw');
+
+const GeoJsonLayerRaw = require('./raws/geojsonLayer.raw');
+
+const HeatmapRaw = require('./raws/heatmap.raw');
 
 export const sections = [
   {

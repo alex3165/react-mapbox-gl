@@ -29,12 +29,7 @@ export const Live: React.StatelessComponent<Props> = ({
   scope,
   preview
 }) => (
-  <StyledLiveProvider
-    code={raw}
-    mountStylesheet={false}
-    noInline={true}
-    scope={scope}
-  >
+  <StyledLiveProvider code={raw} noInline={true} scope={scope}>
     <StyledEditor contentEditable={false} />
     {preview && <LivePreview />}
   </StyledLiveProvider>
