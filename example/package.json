@@ -5,8 +5,9 @@
   "license": "MIT",
   "homepage": "http://alex3165.github.io/react-mapbox-gl",
   "scripts": {
-    "start": "react-scripts start",
-    "build": "cp ../docs/API.md ./src && react-scripts build",
+    "start": "npm run copy-doc && react-scripts start",
+    "build": "npm run copy-doc && react-scripts build",
+    "copy-doc": "cp ../docs/API.md ./src/API.md.raw",
     "predeploy": "npm run build",
     "deploy": "gh-pages -d build"
   },
@@ -14,7 +15,11 @@
     "extends": "react-app"
   },
   "browserslist": {
-    "production": [">0.2%", "not dead", "not op_mini all"],
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
     "development": [
       "last 1 chrome version",
       "last 1 firefox version",
@@ -39,6 +44,7 @@
     "@types/xml2js": "0.4.0",
     "es6-promisify": "5.0.0",
     "gh-pages": "1.0.0",
+    "raw.macro": "^0.3.0",
     "react-scripts": "^3.2.0",
     "typescript": "3.1.3"
   }

@@ -8,22 +8,16 @@ import SwitchStyle from './switchStyle';
 import GeoJsonLayer from './geojsonLayer';
 import Heatmap from './heatmap';
 import { Live } from '../live';
+import raw from 'raw.macro';
 
-const LondonCycleMapRaw = require('./raws/londonCycle.raw');
-
-const AllShapesRaw = require('./raws/allShapes.raw');
-
-const HtmlFeaturesRaw = require('./raws/htmlFeatures.raw');
-
-const ThreeDMapRaw = require('./raws/threeDMap.raw');
-
-const HtmlClusterRaw = require('./raws/htmlCluster.raw');
-
-const SwitchStyleRaw = require('./raws/switchStyle.raw');
-
-const GeoJsonLayerRaw = require('./raws/geojsonLayer.raw');
-
-const HeatmapRaw = require('./raws/heatmap.raw');
+const LondonCycleMapRaw = raw('./raws/londonCycle.raw');
+const AllShapesRaw = raw('./raws/allShapes.raw');
+const HtmlFeaturesRaw = raw('./raws/htmlFeatures.raw');
+const ThreeDMapRaw = raw('./raws/threeDMap.raw');
+const HtmlClusterRaw = raw('./raws/htmlCluster.raw');
+const SwitchStyleRaw = raw('./raws/switchStyle.raw');
+const GeoJsonLayerRaw = raw('./raws/geojsonLayer.raw');
+const HeatmapRaw = raw('./raws/heatmap.raw');
 
 export const sections = [
   {

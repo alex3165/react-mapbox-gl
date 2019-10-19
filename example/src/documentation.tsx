@@ -1,9 +1,9 @@
 import * as React from 'react';
 import ReactMarkdown from 'react-markdown';
 import styled from 'styled-components';
-const rawAPI = require('./API.md');
+import raw from 'raw.macro';
 
-console.log(rawAPI);
+const rawAPI = raw('./API.md.raw');
 
 const Container = styled.div`
   max-width: 900px;
