@@ -18,6 +18,7 @@ interface ItemProps {
 }
 
 const Item =
+  // eslint-disable-next-line
   styled.li <
   ItemProps >
   `
