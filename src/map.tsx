@@ -291,6 +291,23 @@ const ReactMapboxFactory = ({
       }
     }
 
+    private shouldFitBoundUpdate(next: FitBounds, current?: FitBounds) {
+      // Compare top level array references
+      if (current !== next) {
+        return true;
+      }
+
+      // If next is provided but current doesn't have fitbound it should update
+      if (!current) {
+        return true;
+      }
+
+      // Other possiblities:
+      // - Check for ref equality of children arrays: next[0] === current[0] && next[1] === current[1]
+
+      return false;
+    }
+
     public UNSAFE_componentWillReceiveProps(nextProps: Props & Events) {
       const { map } = this.state;
       if (!map) {
@@ -333,17 +350,8 @@ const ReactMapboxFactory = ({
       if (nextProps.fitBounds) {
         const { fitBounds } = this.props;
 
-        const didFitBoundsUpdate =
-          fitBounds !== nextProps.fitBounds || // Check for reference equality
-          nextProps.fitBounds.length !== (fitBounds && fitBounds.length) || // Added element
-          !!fitBounds.filter((c, i) => {
-            // Check for equality
-            const nc = nextProps.fitBounds && nextProps.fitBounds[i];
-            return c[0] !== (nc && nc[0]) || c[1] !== (nc && nc[1]);
-          })[0];
-
         if (
-          didFitBoundsUpdate ||
+          this.shouldFitBoundUpdate(nextProps.fitBounds, fitBounds) ||
           !isEqual(this.props.fitBoundsOptions, nextProps.fitBoundsOptions)
         ) {
           map.fitBounds(nextProps.fitBounds, nextProps.fitBoundsOptions);
