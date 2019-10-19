@@ -238,7 +238,7 @@ export default class Layer extends React.Component<Props> {
     }
   };
 
-  public componentWillMount() {
+  public UNSAFE_componentWillMount() {
     const { map } = this.props;
 
     this.initialize();
@@ -282,7 +282,7 @@ export default class Layer extends React.Component<Props> {
     }
   }
 
-  public componentWillReceiveProps(props: Props) {
+  public UNSAFE_componentWillReceiveProps(props: Props) {
     const { paint, layout, before, filter, id, minZoom, maxZoom } = this.props;
     const { map } = this.props;
 

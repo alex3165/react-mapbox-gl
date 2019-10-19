@@ -291,7 +291,7 @@ const ReactMapboxFactory = ({
       }
     }
 
-    public componentWillReceiveProps(nextProps: Props & Events) {
+    public UNSAFE_componentWillReceiveProps(nextProps: Props & Events) {
       const { map } = this.state;
       if (!map) {
         return null;
