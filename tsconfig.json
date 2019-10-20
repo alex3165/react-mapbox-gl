@@ -19,7 +19,8 @@
     "strict": true,
     "noUnusedLocals": true,
     "declaration": true,
-    "suppressImplicitAnyIndexErrors": true
+    "suppressImplicitAnyIndexErrors": true,
+    "esModuleInterop": true
   },
   "include": [
     "src/**/*"

@@ -67,7 +67,7 @@
     "@turf/bbox": "4.7.3",
     "@turf/helpers": "4.7.3",
     "deep-equal": "1.0.1",
-    "supercluster": "3.0.2"
+    "supercluster": "^6.0.2"
   },
   "peerDependencies": {
     "mapbox-gl": "^1.1.1",
@@ -89,7 +89,7 @@
     "@types/react": "^16.8.17",
     "@types/react-dom": "^16.8.4",
     "@types/recompose": "0.27.0",
-    "@types/supercluster": "3.0.2",
+    "@types/supercluster": "^5.0.1",
     "enzyme": "3.7.0",
     "enzyme-adapter-react-16": "1.6.0",
     "husky": "^0.14.3",
@@ -104,6 +104,6 @@
     "ts-jest": "24.1.0",
     "tslint": "5.7.0",
     "tslint-react": "3.2.0",
-    "typescript": "3.1.3"
+    "typescript": "3.1.6"
   }
 }
