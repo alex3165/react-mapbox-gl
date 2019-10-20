@@ -10,16 +10,14 @@
     "test": "jest",
     "test:watch": "jest --watch",
     "lint": "tslint --project tsconfig.json",
-    "build":
-      "npm run lint && npm run test && npm run build:commonjs && npm run build:esm",
+    "build": "npm run lint && npm run test && npm run build:commonjs && npm run build:esm",
     "build:commonjs": "tsc -p tsconfig.json",
     "build:esm": "tsc -p tsconfig-esm.json",
     "build:watch": "tsc --watch",
     "prepublishOnly": "npm run clean && npm run build",
     "version": "npm run build",
     "postversion": "git push && git push --tags",
-    "prettify":
-      "prettier --write src/*.ts src/*.tsx src/**/*.ts src/**/*.tsx example/src/**/*.ts example/src/**/*.tsx",
+    "prettify": "prettier --write src/*.ts src/*.tsx src/**/*.ts src/**/*.tsx example/src/**/*.ts example/src/**/*.tsx",
     "precommit": "npm run prettify && cd example && node generateRaws.js",
     "prepush": "npm run build"
   },
@@ -28,15 +26,25 @@
       ".(ts|tsx)": "ts-jest"
     },
     "testRegex": "(/__tests__/.*|\\.(test|spec))\\.(ts|tsx|js)$",
-    "moduleFileExtensions": ["ts", "tsx", "js"],
-    "setupFiles": ["<rootDir>/src/jest/setupFile.ts"],
+    "moduleFileExtensions": [
+      "ts",
+      "tsx",
+      "js"
+    ],
+    "setupFiles": [
+      "<rootDir>/src/jest/setupFile.ts"
+    ],
     "setupFilesAfterEnv": [
       "<rootDir>/src/jest/setupTestFrameworkScriptFile.ts"
     ],
     "browser": true,
     "verbose": true
   },
-  "files": ["lib", "lib-esm", "src"],
+  "files": [
+    "lib",
+    "lib-esm",
+    "src"
+  ],
   "repository": {
     "type": "git",
     "url": "git+https://github.com/alex3165/react-mapbox-gl.git"
