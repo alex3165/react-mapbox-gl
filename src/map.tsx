@@ -99,6 +99,7 @@ export interface FactoryParameters {
   bearingSnap?: number;
   injectCSS?: boolean;
   transformRequest?: RequestTransformFunction;
+  antialias?: boolean;
 }
 
 // Satisfy typescript pitfall with defaultProps
@@ -141,6 +142,7 @@ const ReactMapboxFactory = ({
   failIfMajorPerformanceCaveat = false,
   bearingSnap = 7,
   injectCSS = true,
+  antialias = false,
   transformRequest
 }: FactoryParameters) => {
   if (injectCSS) {
@@ -235,6 +237,7 @@ const ReactMapboxFactory = ({
         logoPosition,
         bearingSnap,
         failIfMajorPerformanceCaveat,
+        antialias,
         transformRequest
       };
 
@@ -288,7 +291,7 @@ const ReactMapboxFactory = ({
       }
     }
 
-    public componentWillReceiveProps(nextProps: Props & Events) {
+    public UNSAFE_componentWillReceiveProps(nextProps: Props & Events) {
       const { map } = this.state;
       if (!map) {
         return null;

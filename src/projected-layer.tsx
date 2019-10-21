@@ -68,7 +68,7 @@ export class ProjectedLayer extends React.Component<Props, OverlayParams> {
     );
   }
 
-  public componentWillReceiveProps(nextProps: Props) {
+  public UNSAFE_componentWillReceiveProps(nextProps: Props) {
     if (this.havePropsChanged(this.props, nextProps)) {
       this.setState(overlayState(nextProps, this.props.map, this.container!));
     }

@@ -28,7 +28,7 @@ export class Source extends React.Component<Props> {
     }
   };
 
-  public componentWillMount() {
+  public UNSAFE_componentWillMount() {
     const { map } = this.props;
 
     map.on('styledata', this.onStyleDataChange);
@@ -106,7 +106,7 @@ export class Source extends React.Component<Props> {
     this.removeSource();
   }
 
-  public componentWillReceiveProps(props: Props) {
+  public UNSAFE_componentWillReceiveProps(props: Props) {
     const { geoJsonSource, tileJsonSource, map } = this.props;
 
     // Update tilesJsonSource
