@@ -49,7 +49,7 @@ describe('Map', () => {
     );
 
     expect(mockfitBounds).toBeCalledWith(fitBoundsValues, fitBoundsOptions, {
-      auto: true
+      fitboundUpdate: true
     });
   });
 
