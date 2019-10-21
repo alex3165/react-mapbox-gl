@@ -124,7 +124,7 @@ export default class Layer extends React.Component<Props> {
         };
 
       case 'fill':
-        if (coordinates.length > 1) {
+        if (Array.isArray(coordinates[0][0][0])) {
           return {
             type: 'MultiPolygon',
             coordinates

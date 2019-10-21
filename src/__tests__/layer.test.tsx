@@ -194,6 +194,54 @@ describe('Layer', () => {
     expect(mockMap.addImage.mock.calls[0]).toEqual(images);
   });
 
+  it('Should render Polygon for fill', () => {
+    const mockMap = getMapMock();
+    const feature = { coordinates: [[[-123, 45], [123, 45]]] };
+    const children = [{ props: feature, type: 'symbol', key: '1' }];
+
+    mount(
+      // tslint:disable-next-line:no-any
+      <Layer id="1" type="fill" children={children} map={mockMap as any} />
+    );
+
+    expect(mockMap.getSource().setData.mock.calls[0]).toEqual([
+      {
+        type: 'FeatureCollection',
+        features: [
+          {
+            geometry: { ...feature, type: 'Polygon' },
+            properties: { id: 0 },
+            type: 'Feature'
+          }
+        ]
+      }
+    ]);
+  });
+
+  it('Should render MultiPolygon for fill', () => {
+    const mockMap = getMapMock();
+    const feature = { coordinates: [[[[-123, 45], [123, 45]]]] };
+    const children = [{ props: feature, type: 'symbol', key: '1' }];
+
+    mount(
+      // tslint:disable-next-line:no-any
+      <Layer id="1" type="fill" children={children} map={mockMap as any} />
+    );
+
+    expect(mockMap.getSource().setData.mock.calls[0]).toEqual([
+      {
+        type: 'FeatureCollection',
+        features: [
+          {
+            geometry: { ...feature, type: 'MultiPolygon' },
+            properties: { id: 0 },
+            type: 'Feature'
+          }
+        ]
+      }
+    ]);
+  });
+
   it('Should update minZoom and maxZoom if they change', () => {
     const mockMap = getMapMock();
     const children = [{ props: {}, type: 'symbol', key: '1' }];
