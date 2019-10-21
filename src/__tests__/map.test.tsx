@@ -86,7 +86,8 @@ describe('Map', () => {
 
     mount(<MapboxMap style="" fitBounds={fitBoundsValues} />);
 
-    const lastCall = mockMap.mock.calls[mockMap.mock.calls.length - 1];
+    // tslint:disable-next-line:no-any
+    const lastCall: any = mockMap.mock.calls[mockMap.mock.calls.length - 1];
     expect(lastCall[0].center).toEqual([1, 6]);
   });
 

@@ -1,9 +1,9 @@
 import * as React from 'react';
 import { LngLatBounds, Map } from 'mapbox-gl';
 import { Props as MarkerProps } from './marker';
-import supercluster, { Supercluster } from 'supercluster';
+import Supercluster from 'supercluster';
 import * as GeoJSON from 'geojson';
-import * as bbox from '@turf/bbox';
+import bbox from '@turf/bbox';
 import { polygon, featureCollection } from '@turf/helpers';
 import { withMap } from './context';
 
@@ -49,7 +49,7 @@ export class Cluster extends React.Component<Props, State> {
   };
 
   public state: State = {
-    superC: supercluster({
+    superC: new Supercluster({
       radius: this.props.radius,
       maxZoom: this.props.maxZoom,
       minZoom: this.props.minZoom,
@@ -65,7 +65,7 @@ export class Cluster extends React.Component<Props, State> {
     React.ReactElement<MarkerProps>
   >();
 
-  public componentWillMount() {
+  public UNSAFE_componentWillMount() {
     const { children, map } = this.props;
 
     if (children) {
@@ -84,7 +84,7 @@ export class Cluster extends React.Component<Props, State> {
     map.off('zoom', this.mapChange);
   }
 
-  public componentWillReceiveProps(nextProps: Props) {
+  public UNSAFE_componentWillReceiveProps(nextProps: Props) {
     const { children } = this.props;
 
     if (children !== nextProps.children && nextProps.children) {

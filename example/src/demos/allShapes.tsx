@@ -24,7 +24,7 @@ interface Route {
 const route: Route = require('./route.json');
 
 const mappedRoute = route.points.map(
-  point => [point.lat, point.lng] as [number, number]
+  point => [point.lng, point.lat] as [number, number]
 );
 
 const Map = ReactMapboxGl({ accessToken: token });
@@ -77,7 +77,7 @@ class AllShapes extends React.Component<Props, State> {
   private timeoutHandle: any = undefined;
   private mounted = false;
 
-  public componentWillMount() {
+  public UNSAFE_componentWillMount() {
     this.mounted = true;
     this.timeoutHandle = setTimeout(() => {
       if (this.mounted) {

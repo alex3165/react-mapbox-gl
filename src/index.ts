@@ -12,7 +12,7 @@ import Source from './source';
 import Cluster from './cluster';
 import RotationControl from './rotation-control';
 import Image from './image';
-import { withMap } from './context';
+import { withMap, MapContext } from './context';
 
 const Layer = withMap(layerMouseTouchEvents(BaseLayer));
 
@@ -28,7 +28,8 @@ export {
   Source,
   Cluster,
   RotationControl,
-  Image
+  Image,
+  MapContext
 };
 
 export default Map;

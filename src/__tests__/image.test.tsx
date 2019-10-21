@@ -35,7 +35,9 @@ describe('Image', () => {
   });
 
   it('Should remove image on unmount', () => {
-    const mapMock = getMapMock();
+    const mapMock = getMapMock({
+      getStyle: jest.fn(() => ({}))
+    });
     const onLoaded = jest.fn();
     const onError = jest.fn();
 
@@ -59,5 +61,34 @@ describe('Image', () => {
 
     component.unmount();
     expect(mapMock.removeImage).toBeCalled();
+  });
+
+  it('Should not call removeImage when map styles are undefined', () => {
+    const mapMock = getMapMock({
+      getStyle: jest.fn(() => undefined)
+    });
+
+    const onLoaded = jest.fn();
+    const onError = jest.fn();
+
+    const imageId = 'image';
+    const imageData = {};
+    const imageOptions = {};
+
+    const component = mount(
+      <Image
+        id={imageId}
+        map={mapMock}
+        data={imageData}
+        options={imageOptions}
+        onError={onError}
+        onLoaded={onLoaded}
+      />
+    );
+
+    expect(onLoaded).toBeCalled();
+
+    component.unmount();
+    expect(mapMock.removeImage).not.toBeCalled();
   });
 });

@@ -8,6 +8,7 @@ import {
   updateEvents
 } from './map-events';
 import { MapContext } from './context';
+import { createPortal } from 'react-dom';
 const isEqual = require('deep-equal'); //tslint:disable-line
 
 export interface PaddingOptions {
@@ -58,6 +59,7 @@ export interface Props {
   animationOptions?: Partial<AnimationOptions>;
   flyToOptions?: Partial<FlyToOptions>;
   children?: JSX.Element | JSX.Element[] | Array<JSX.Element | undefined>;
+  renderChildrenInPortal?: boolean;
 }
 
 export interface State {
@@ -81,6 +83,7 @@ export interface FactoryParameters {
   scrollZoom?: boolean;
   interactive?: boolean;
   dragRotate?: boolean;
+  pitchWithRotate?: boolean;
   attributionControl?: boolean;
   customAttribution?: string | string[];
   logoPosition?: 'top-left' | 'top-right' | 'bottom-left' | 'bottom-right';
@@ -96,6 +99,7 @@ export interface FactoryParameters {
   bearingSnap?: number;
   injectCSS?: boolean;
   transformRequest?: RequestTransformFunction;
+  antialias?: boolean;
 }
 
 // Satisfy typescript pitfall with defaultProps
@@ -108,7 +112,7 @@ declare global {
   namespace mapboxgl {
     export interface MapboxOptions {
       failIfMajorPerformanceCaveat?: boolean;
-      transformRequest?: RequestTransformFunction;
+      transformRequest?: MapboxGl.TransformRequestFunction;
     }
   }
 }
@@ -123,6 +127,7 @@ const ReactMapboxFactory = ({
   scrollZoom = true,
   interactive = true,
   dragRotate = true,
+  pitchWithRotate = true,
   attributionControl = true,
   customAttribution,
   logoPosition = 'bottom-left',
@@ -137,6 +142,7 @@ const ReactMapboxFactory = ({
   failIfMajorPerformanceCaveat = false,
   bearingSnap = 7,
   injectCSS = true,
+  antialias = false,
   transformRequest
 }: FactoryParameters) => {
   if (injectCSS) {
@@ -219,6 +225,7 @@ const ReactMapboxFactory = ({
         customAttribution,
         interactive,
         dragRotate,
+        pitchWithRotate,
         renderWorldCopies,
         trackResize,
         touchZoomRotate,
@@ -230,6 +237,7 @@ const ReactMapboxFactory = ({
         logoPosition,
         bearingSnap,
         failIfMajorPerformanceCaveat,
+        antialias,
         transformRequest
       };
 
@@ -283,7 +291,7 @@ const ReactMapboxFactory = ({
       }
     }
 
-    public componentWillReceiveProps(nextProps: Props & Events) {
+    public UNSAFE_componentWillReceiveProps(nextProps: Props & Events) {
       const { map } = this.state;
       if (!map) {
         return null;
@@ -375,10 +383,36 @@ const ReactMapboxFactory = ({
     };
 
     public render() {
-      const { containerStyle, className, children } = this.props;
-      const { ready } = this.state;
+      const {
+        containerStyle,
+        className,
+        children,
+        renderChildrenInPortal
+      } = this.props;
+
+      const { ready, map } = this.state;
+
+      if (renderChildrenInPortal) {
+        const container =
+          ready && map && typeof map.getCanvasContainer === 'function'
+            ? map.getCanvasContainer()
+            : undefined;
+
+        return (
+          <MapContext.Provider value={map}>
+            <div
+              ref={this.setRef}
+              className={className}
+              style={{ ...containerStyle }}
+            >
+              {ready && container && createPortal(children, container)}
+            </div>
+          </MapContext.Provider>
+        );
+      }
+
       return (
-        <MapContext.Provider value={this.state.map}>
+        <MapContext.Provider value={map}>
           <div
             ref={this.setRef}
             className={className}

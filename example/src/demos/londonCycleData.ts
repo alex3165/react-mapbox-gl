@@ -1,5 +1,5 @@
 import { parseString } from 'xml2js';
-import * as promisify from 'es6-promisify';
+import promisify from 'es6-promisify';
 export interface Station {
   id: string;
   name: string;
@@ -8,7 +8,9 @@ export interface Station {
   slots: number;
 }
 
-export type StationDict = { [id: string]: Station };
+export interface StationDict {
+  [id: string]: Station;
+}
 
 const parse = promisify(parseString);
 
@@ -29,9 +31,8 @@ export const getCycleStations = () =>
     .then(parse)
     .then(res => res.stations.station.map(normalize))
     .then((stations: Station[]) =>
-      // tslint:disable-next-line:no-object-literal-type-assertion
-      stations.reduce(
-        (acc, station) => ((acc[station.id] = station), acc),
-        {} as StationDict
-      )
+      stations.reduce((acc: StationDict, station) => {
+        acc[station.id] = station;
+        return acc;
+      }, {})
     );

@@ -1,29 +1,23 @@
 import * as React from 'react';
 import LondonCycleMap from './londonCycle';
-const LondonCycleMapRaw = require('raw-loader!./raws/londonCycle.raw');
-
 import AllShapes from './allShapes';
-const AllShapesRaw = require('raw-loader!./raws/allShapes.raw');
-
 import HtmlFeatures from './htmlFeatures';
-const HtmlFeaturesRaw = require('raw-loader!./raws/htmlFeatures.raw');
-
 import ThreeDMap from './threeDMap';
-const ThreeDMapRaw = require('raw-loader!./raws/threeDMap.raw');
-
 import HtmlCluster from './htmlCluster';
-const HtmlClusterRaw = require('raw-loader!./raws/htmlCluster.raw');
-
 import SwitchStyle from './switchStyle';
-const SwitchStyleRaw = require('raw-loader!./raws/switchStyle.raw');
-
 import GeoJsonLayer from './geojsonLayer';
-const GeoJsonLayerRaw = require('raw-loader!./raws/geojsonLayer.raw');
-
 import Heatmap from './heatmap';
-const HeatmapRaw = require('raw-loader!./raws/heatmap.raw');
-
 import { Live } from '../live';
+import raw from 'raw.macro';
+
+const LondonCycleMapRaw = raw('./raws/londonCycle.raw');
+const AllShapesRaw = raw('./raws/allShapes.raw');
+const HtmlFeaturesRaw = raw('./raws/htmlFeatures.raw');
+const ThreeDMapRaw = raw('./raws/threeDMap.raw');
+const HtmlClusterRaw = raw('./raws/htmlCluster.raw');
+const SwitchStyleRaw = raw('./raws/switchStyle.raw');
+const GeoJsonLayerRaw = raw('./raws/geojsonLayer.raw');
+const HeatmapRaw = raw('./raws/heatmap.raw');
 
 export const sections = [
   {
@@ -31,14 +25,14 @@ export const sections = [
     title: 'Bike stations in London',
     components: ['ReactMapboxGl', 'Layer', 'Feature'],
     DemoComponent: LondonCycleMap,
-    reactLive: <Live raw={LondonCycleMapRaw} />
+    reactLive: <Live full={true} raw={LondonCycleMapRaw} />
   },
   {
     shortTitle: 'heatmap',
     title: 'Heatmap of London house prices',
     components: ['ReactMapboxGl', 'Layer', 'Feature'],
     DemoComponent: Heatmap,
-    reactLive: <Live raw={HeatmapRaw} />
+    reactLive: <Live full={true} raw={HeatmapRaw} />
   },
   {
     shortTitle: 'all-shapes',
@@ -52,41 +46,41 @@ export const sections = [
       'RotationControl'
     ],
     DemoComponent: AllShapes,
-    reactLive: <Live raw={AllShapesRaw} />
+    reactLive: <Live full={true} raw={AllShapesRaw} />
   },
   {
     shortTitle: 'html-marker',
     title: 'Html features (Marker)',
     components: ['ReactMapboxGl', 'Marker'],
     DemoComponent: HtmlFeatures,
-    reactLive: <Live raw={HtmlFeaturesRaw} />
+    reactLive: <Live full={true} raw={HtmlFeaturesRaw} />
   },
   {
     shortTitle: '3d-map',
     title: '3D extrusion map',
     components: ['ReactMapboxGl', 'Layer'],
     DemoComponent: ThreeDMap,
-    reactLive: <Live raw={ThreeDMapRaw} />
+    reactLive: <Live full={true} raw={ThreeDMapRaw} />
   },
   {
     shortTitle: 'html-cluster',
     title: 'Cluster of Html markers',
     components: ['ReactMapboxGl', 'Marker', 'Cluster'],
     DemoComponent: HtmlCluster,
-    reactLive: <Live raw={HtmlClusterRaw} />
+    reactLive: <Live full={true} raw={HtmlClusterRaw} />
   },
   {
     shortTitle: 'switch-style',
     title: 'Swap Mapbox map style',
     components: ['ReactMapboxGl', 'Source', 'Layer', 'Feature'],
     DemoComponent: SwitchStyle,
-    reactLive: <Live raw={SwitchStyleRaw} />
+    reactLive: <Live full={true} raw={SwitchStyleRaw} />
   },
   {
     shortTitle: 'geojson-data',
     title: 'Display data from GeoJson',
     components: ['ReactMapboxGl', 'GeoJsonLayer'],
     DemoComponent: GeoJsonLayer,
-    reactLive: <Live raw={GeoJsonLayerRaw} />
+    reactLive: <Live full={true} raw={GeoJsonLayerRaw} />
   }
 ];

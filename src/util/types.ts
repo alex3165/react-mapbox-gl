@@ -6,6 +6,7 @@ import {
   RasterDemSource,
   ImageSource,
   VideoSource,
+  CanvasSource,
   Point
 } from 'mapbox-gl';
 
@@ -34,6 +35,7 @@ export type Sources =
   | GeoJSONSourceRaw
   | ImageSource
   | VideoSource
+  | CanvasSource
   | RasterDemSource;
 
 export type TilesJson = VectorSource | RasterSource;

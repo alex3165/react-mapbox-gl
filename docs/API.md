@@ -2,11 +2,9 @@
 
 Factory function that returns a React Mapbox component. Parameters of the factory function are static; properties of your component are dynamic and get updated if they change between rendering.
 
-> To use the original Mapbox API use the `onStyleLoad` property. The callback function will receive the map object as a first argument, then you can add your own logic alongside react-mapbox-gl. [mapbox gl API](https://www.mapbox.com/mapbox-gl-js/api/).
-
 ## Pre-requirement
 
-You will need a CSS loader to use this library as it inject mapbox-gl css .
+You will need a CSS loader to use this library as it injects mapbox-gl css.
 
 ### How to use
 
@@ -41,6 +39,7 @@ const Map = ReactMapboxGl({
   * `bottom-left`
 * **renderWorldCopies** _(Default: `true`)_: `boolean` If `true`, multiple copies of the world will be rendered, when zoomed out.
 * **dragRotate** _(Default: `true`)_: `boolean` Set to `false` to disable drag rotation, see [mapbox DragRotateHandler](https://www.mapbox.com/mapbox-gl-js/api/#DragRotateHandler)
+* **pitchWithRotate** _(Default: `true`)_: `boolean` Set to `false` to disable pitch with rotation, see [mapbox PitchWithRotate](https://docs.mapbox.com/mapbox-gl-js/api/#map)
 * **trackResize** _(Default: `true`)_: `boolean` If `true`, the map will automatically resize when the browser window resizes.
 * **touchZoomRotate** _(Default: `true`)_: `boolean` If `true`, the "pinch to rotate and zoom" interaction is enabled. An Object value is passed as options to TouchZoomRotateHandler#enable .
 * **doubleClickZoom** _(Default: `true`)_: `boolean` If `true`, the "double click to zoom" interaction is enabled (see DoubleClickZoomHandler).
@@ -49,17 +48,19 @@ const Map = ReactMapboxGl({
 * **refreshExpiredTiles** _(Default: `true`)_: `boolean` If `false` , the map won't attempt to re-request tiles once they expire per their HTTP cacheControl / expires headers.
 * **failIfMajorPerformanceCaveat** _(Default: `false`)_: `boolean` If `true` , map creation will fail if the performance of Mapbox GL JS would be dramatically worse than expected (i.e. a software renderer would be used).
 * **bearingSnap** _(Default: `7`)_: `number` The threshold, measured in degrees, that determines when the map's bearing (rotation) will snap to north. For example, with a bearingSnap of 7, if the user rotates the map within 7 degrees of north, the map will automatically snap to exact north.
+* **antialias** _(Default: `false`)_: `boolean` If  true, the gl context will be created with MSA antialiasing, which can be useful for antialiasing custom layers. This is false by default as a performance optimization.
 
 ### Component Properties
 
 * **style** _(required)_ : `string | object` Mapbox map style, if changed, the style will be updated using `setStyle`.
+* **onStyleLoad**: `(map, loadEvent) => void` called with the Mapbox Map instance when the `load` event is fired. You can use the callback's first argument to then interact with the Mapbox API.
 * **center** _(Default: `[ -0.2416815, 51.5285582 ]`)_: `[number, number]` Center the map at the position at initialisation
   * Must be in longitude, latitude coordinate order (as opposed to latitude, longitude) to match GeoJSON (source: https://www.mapbox.com/mapbox-gl-js/api/#lnglat).
   * Re-center the map if the value change regarding the prev value or the actual center position [flyTo](https://www.mapbox.com/mapbox-gl-js/api/#Map.flyTo)
 * **zoom** _(Default: `[11]`)_: `[number]` Zoom level of the map at initialisation wrapped in an array.
   * Check for reference equality between the previous value of zoom and the new one in order to update it or not.
 * **maxBounds** : `LngLatBounds | number[][]` If set, the map is constrained to the given bounds [SouthWest, NorthEast]
-* **fitBounds** : `number[][]` If set, the map will center on the given coordinates, [fitBounds](https://www.mapbox.com/mapbox-gl-js/api/#Map#fitBounds)
+* **fitBounds** : `[[number, number], [number, number]]` If set, the map will center on the given coordinates, [fitBounds](https://www.mapbox.com/mapbox-gl-js/api/#Map#fitBounds)
 * **fitBoundsOptions** : `object` Options for [fitBounds](https://www.mapbox.com/mapbox-gl-js/api/#Map#fitBounds)
 * **bearing**: `[number]` Bearing (rotation) of the map at initialisation measured in degrees counter-clockwise from north.
   * Check the previous value and the new one, if the value changed update the bearing value [flyTo](https://www.mapbox.com/mapbox-gl-js/api/#Map.flyTo)
@@ -72,6 +73,7 @@ const Map = ReactMapboxGl({
   * `flyTo`
 * **animationOptions** : `object` Options for moving animation [see](https://www.mapbox.com/mapbox-gl-js/api/#animationoptions)
 * **flyToOptions** : `object` Options for flyTo animation [see](https://www.mapbox.com/mapbox-gl-js/api/#map#flyto)
+* **renderChildrenInPortal** : `boolean` If `true`, Popup and Marker elements will be rendered in a React portal, allowing mouse events to pass through them.
 
 ### Events
 
@@ -113,6 +115,7 @@ const events = {
   onSourceData: 'sourcedata',
   onDataLoading: 'dataloading',
   onStyleDataLoading: 'styledataloading',
+  onStyleImageMissing: 'styleimagemissing',
   onTouchCancel: 'touchcancel',
   onData: 'data',
   onSourceDataLoading: 'sourcedataloading',
@@ -292,26 +295,30 @@ import { Feature } from "react-mapbox-gl";
 # Image
 
 Adds to the map a image that can be used as [`icon-image`](https://www.mapbox.com/mapbox-gl-js/style-spec#layout-symbol-icon-image)
+
 ### How to use
 
- Load local image. [see docs](https://www.mapbox.com/mapbox-gl-js/api#map#addimage)
+Load local image. [see docs](https://www.mapbox.com/mapbox-gl-js/api#map#addimage)
+
 ```jsx harmony
 <Image id={'image-uid'} data={someImage} />
 ```
 
- Load image from url. [see docs](https://www.mapbox.com/mapbox-gl-js/api#map#loadimage)
+Load image from url. [see docs](https://www.mapbox.com/mapbox-gl-js/api#map#loadimage)
+
 ```jsx harmony
 <Image id={'image-uid'} url={'url/to/image'} />
 ```
 
 ### Properties
+
 * **id** _(required)_: `string` the image name
 * **url** `string` A url to load the image from [see docs](https://www.mapbox.com/mapbox-gl-js/api#map#loadimage)
 * **data** `ImageDataType` The image data [see docs](https://www.mapbox.com/mapbox-gl-js/api#map#loadimage)
 * **options** `ImageOptionsType` The image options [see docs](https://www.mapbox.com/mapbox-gl-js/api#map#loadimage)
 * **onLoaded** `() => void` Will be called when image loaded to map
-* **onError** `(error: Error) => void` Will be called if image did not load 
-  
+* **onError** `(error: Error) => void` Will be called if image did not load
+
 ---
 
 # ZoomControl
@@ -528,3 +535,35 @@ clusterMarker = (coordinates) => (
 * **style**: `object` Apply style to the marker container
 * **className**: `string` Apply the className to the container of the Marker
 * **tabIndex** : `number` define the tab index value of the top container tag
+
+---
+
+# Using the original Mapbox API
+
+Sometimes, react-mapbox-gl hasn't wrapped all of the functionality you need. In that case, you might want to access the original [mapbox-gl-js API](https://docs.mapbox.com/mapbox-gl-js/api).
+
+For this, there are two options:
+
+### onStyleLoad
+
+`onStyleLoad` property on the component. The callback function will receive the map object as a first argument, then you can add your own logic alongside react-mapbox-gl.
+
+### Context API
+
+Arguably the nicer way to do this is to use the React context, which v4 added support for. You can grab the Map instance from the context anywhere within the `<Map />` component.
+
+```
+import ReactMapboxGL, { MapContext } from 'react-mapbox-gl';
+
+const Map = ReactMapboxGL({ /* factory options */ });
+
+const MyMap = () => (
+  <Map style="your-style-here">
+    <MapContext.Consumer>
+      {(map) => {
+        // use `map` here
+      }}
+    </MapContext.Consumer>
+  </Map>
+);
+```
