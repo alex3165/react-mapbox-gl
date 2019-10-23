@@ -132,6 +132,20 @@ const events = {
 };
 ```
 
+Note: You can check whether `onZoomEnd` has been triggered by changed some `Map` property (contrary to being triggered by user interaction like dragging), by checking `fitboundUpdate` extra event data, like so:
+
+```
+<Map
+  onZoomEnd={(_, event) => {
+    if (event.fitboundUpdate) {
+      console.log('Map bounds have been programmatically changed')
+    } else {
+      console.log('Map bounds have been changed by user interaction')
+    }
+  }}
+/>
+```
+
 ---
 
 # Layer
