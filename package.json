@@ -72,8 +72,8 @@
   "peerDependencies": {
     "mapbox-gl": "^1.1.1",
     "prop-types": "^15.6.2",
-    "react": "^16.5.2",
-    "react-dom": "^16.5.2"
+    "react": "^16.11.0",
+    "react-dom": "^16.11.0"
   },
   "devDependencies": {
     "@types/core-js": "0.9.43",
@@ -86,8 +86,8 @@
     "@types/node": "8.0.29",
     "@types/prettier": "1.10.0",
     "@types/prop-types": "15.5.6",
-    "@types/react": "^16.8.17",
-    "@types/react-dom": "^16.8.4",
+    "@types/react": "^16.9.11",
+    "@types/react-dom": "^16.9.3",
     "@types/recompose": "0.27.0",
     "@types/supercluster": "^5.0.1",
     "enzyme": "3.7.0",
