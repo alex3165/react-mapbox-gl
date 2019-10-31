@@ -10,14 +10,16 @@
     "test": "jest",
     "test:watch": "jest --watch",
     "lint": "tslint --project tsconfig.json",
-    "build": "npm run lint && npm run test && npm run build:commonjs && npm run build:esm",
+    "build":
+      "npm run lint && npm run test && npm run build:commonjs && npm run build:esm",
     "build:commonjs": "tsc -p tsconfig.json",
     "build:esm": "tsc -p tsconfig-esm.json",
     "build:watch": "tsc --watch",
     "prepublishOnly": "npm run clean && npm run build",
     "version": "npm run build",
     "postversion": "git push && git push --tags",
-    "prettify": "prettier --write src/*.ts src/*.tsx src/**/*.ts src/**/*.tsx example/src/**/*.ts example/src/**/*.tsx",
+    "prettify":
+      "prettier --write src/*.ts src/*.tsx src/**/*.ts src/**/*.tsx example/src/**/*.ts example/src/**/*.tsx",
     "precommit": "npm run prettify && cd example && node generateRaws.js",
     "prepush": "npm run build"
   },
@@ -26,25 +28,15 @@
       ".(ts|tsx)": "ts-jest"
     },
     "testRegex": "(/__tests__/.*|\\.(test|spec))\\.(ts|tsx|js)$",
-    "moduleFileExtensions": [
-      "ts",
-      "tsx",
-      "js"
-    ],
-    "setupFiles": [
-      "<rootDir>/src/jest/setupFile.ts"
-    ],
+    "moduleFileExtensions": ["ts", "tsx", "js"],
+    "setupFiles": ["<rootDir>/src/jest/setupFile.ts"],
     "setupFilesAfterEnv": [
       "<rootDir>/src/jest/setupTestFrameworkScriptFile.ts"
     ],
     "browser": true,
     "verbose": true
   },
-  "files": [
-    "lib",
-    "lib-esm",
-    "src"
-  ],
+  "files": ["lib", "lib-esm", "src"],
   "repository": {
     "type": "git",
     "url": "git+https://github.com/alex3165/react-mapbox-gl.git"
@@ -72,8 +64,8 @@
   "peerDependencies": {
     "mapbox-gl": "^1.1.1",
     "prop-types": "^15.6.2",
-    "react": "^16.5.2",
-    "react-dom": "^16.5.2"
+    "react": "^16.11.0",
+    "react-dom": "^16.11.0"
   },
   "devDependencies": {
     "@types/core-js": "0.9.43",
@@ -86,8 +78,8 @@
     "@types/node": "8.0.29",
     "@types/prettier": "1.10.0",
     "@types/prop-types": "15.5.6",
-    "@types/react": "^16.8.17",
-    "@types/react-dom": "^16.8.4",
+    "@types/react": "^16.9.11",
+    "@types/react-dom": "^16.9.3",
     "@types/recompose": "0.27.0",
     "@types/supercluster": "^5.0.1",
     "enzyme": "3.7.0",
@@ -97,8 +89,8 @@
     "mapbox-gl": "^1.1.1",
     "prettier": "1.10.2",
     "prop-types": "15.6.2",
-    "react": "^16.8.6",
-    "react-dom": "^16.8.6",
+    "react": "^16.11.0",
+    "react-dom": "^16.11.0",
     "react-test-renderer": "16.5.2",
     "recompose": "0.26.0",
     "ts-jest": "24.1.0",
