@@ -66,6 +66,7 @@
   "dependencies": {
     "@turf/bbox": "4.7.3",
     "@turf/helpers": "4.7.3",
+    "@types/supercluster": "^5.0.1",
     "deep-equal": "1.0.1",
     "supercluster": "^7.0.0"
   },
@@ -89,7 +90,6 @@
     "@types/react": "^16.9.11",
     "@types/react-dom": "^16.9.3",
     "@types/recompose": "0.27.0",
-    "@types/supercluster": "^5.0.1",
     "enzyme": "3.7.0",
     "enzyme-adapter-react-16": "1.6.0",
     "husky": "^0.14.3",
