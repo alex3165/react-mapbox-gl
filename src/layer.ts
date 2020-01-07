@@ -302,8 +302,8 @@ export default class Layer extends React.Component<Props> {
       });
     }
 
-    if (props.filter && filter && !isEqual(props.filter, filter)) {
-      map.setFilter(id, props.filter || []);
+    if (!isEqual(props.filter, filter)) {
+      map.setFilter(id, props.filter);
     }
 
     if (before !== props.before) {
