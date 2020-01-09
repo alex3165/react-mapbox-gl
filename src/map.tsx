@@ -58,7 +58,7 @@ export interface Props {
   movingMethod?: 'jumpTo' | 'easeTo' | 'flyTo';
   animationOptions?: Partial<AnimationOptions>;
   flyToOptions?: Partial<FlyToOptions>;
-  children?: JSX.Element | JSX.Element[] | Array<JSX.Element | undefined>;
+  children?: React.ReactNode;
   renderChildrenInPortal?: boolean;
 }
 
