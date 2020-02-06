@@ -73,13 +73,18 @@ class Image extends React.Component<Props> {
     }
   }
 
-  private addOrUpdateImage(map: Map, id: string, image: ImageDataType, options?: ImageOptionsType) {
+  private addOrUpdateImage(
+    map: Map,
+    id: string,
+    image: ImageDataType,
+    options?: ImageOptionsType
+  ) {
     if (map.hasImage(id)) {
       // updateImage is not a part of mapbox typings, but is a part of the libary
       // https://docs.mapbox.com/mapbox-gl-js/api/#map#updateimage
       if ('updateImage' in map) {
         // @ts-ignore
-        map.updateImage(id, image)
+        map.updateImage(id, image);
       }
     } else {
       map.addImage(id, image, options);
