@@ -91,4 +91,94 @@ describe('Image', () => {
     component.unmount();
     expect(mapMock.removeImage).not.toBeCalled();
   });
+
+  it('Should not add image if image id already exists', () => {
+    const imageExists = jest.fn().mockReturnValue(true);
+    const updateImage = jest.fn();
+
+    const mapMock = getMapMock({ hasImage: imageExists, updateImage });
+    const onLoaded = jest.fn();
+    const onError = jest.fn();
+
+    const imageId = 'image';
+    const imageData = {};
+    const imageOptions = {};
+
+    mount(
+      <Image
+        id={imageId}
+        map={mapMock}
+        data={imageData}
+        options={imageOptions}
+        onError={onError}
+        onLoaded={onLoaded}
+      />
+    );
+
+    expect(mapMock.hasImage).toBeCalled();
+    expect(mapMock.addImage).not.toBeCalled();
+
+    expect(onLoaded).toBeCalled();
+    expect(onError).not.toBeCalled();
+  });
+
+  it('Should update image if image id does exist', () => {
+    const imageExists = jest.fn().mockReturnValue(true);
+    const updateImage = jest.fn();
+
+    const mapMock = getMapMock({ hasImage: imageExists, updateImage });
+    const onLoaded = jest.fn();
+    const onError = jest.fn();
+
+    const imageId = 'image';
+    const imageData = {};
+    const imageOptions = {};
+
+    mount(
+      <Image
+        id={imageId}
+        map={mapMock}
+        data={imageData}
+        options={imageOptions}
+        onError={onError}
+        onLoaded={onLoaded}
+      />
+    );
+
+    expect(mapMock.hasImage).toBeCalled();
+    expect(mapMock.addImage).not.toBeCalled();
+    expect(updateImage).toBeCalled();
+
+    expect(onLoaded).toBeCalled();
+    expect(onError).not.toBeCalled();
+  });
+
+  it('Should add image if image id does not exist', () => {
+    const imageDoesNotExist = jest.fn().mockReturnValue(false);
+
+    const mapMock = getMapMock({ hasImage: imageDoesNotExist });
+    const onLoaded = jest.fn();
+    const onError = jest.fn();
+
+    const imageId = 'image';
+    const imageData = {};
+    const imageOptions = {};
+
+    mount(
+      <Image
+        id={imageId}
+        map={mapMock}
+        data={imageData}
+        options={imageOptions}
+        onError={onError}
+        onLoaded={onLoaded}
+      />
+    );
+
+    expect(mapMock.hasImage).toBeCalled();
+    expect(mapMock.addImage).toBeCalled();
+
+    expect(onLoaded).toBeCalled();
+    expect(onError).not.toBeCalled();
+  });
 });
