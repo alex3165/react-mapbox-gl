@@ -198,7 +198,7 @@ export class GeoJSONLayer extends React.Component<Props> {
     if (existingSource) {
       if ('setData' in existingSource) {
         // Type conflict: Source is not assignable if vector source
-        // But this is a GeoJSON component andvector source does not
+        // But this is a GeoJSON component and vector source does not
         // return a setData method, so this will never be a concern
         // @ts-ignore
         existingSource.setData(this.source);
