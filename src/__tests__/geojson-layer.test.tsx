@@ -72,49 +72,39 @@ describe('GeoJSONLayer', () => {
   it('Should mount new source if source id does not exist', () => {
     const noMatchingSourceFound = void 0;
 
-    const mapMock = getMapMock({ getSource: jest.fn().mockReturnValue(noMatchingSourceFound)});
+    const mapMock = getMapMock({
+      getSource: jest.fn().mockReturnValue(noMatchingSourceFound)
+    });
 
     const GeoJSONLayerComp = (
-      <GeoJSONLayer
-        layer
-        fillPaint={fillPaint}
-        data={data}
-      />
+      <GeoJSONLayer layer fillPaint={fillPaint} data={data} />
     );
 
     mountWithMap(GeoJSONLayerComp, mapMock);
 
     expect(mapMock.getSource).toBeCalled();
     expect(mapMock.addSource).toBeCalled();
-  })
+  });
 
   it('Should not mount new source if source id exists', () => {
     const mapMock = getMapMock();
 
-    const GeoJSONLayerComp = (
-      <GeoJSONLayer
-        fillPaint={fillPaint}
-        data={data}
-      />
-    );
+    const GeoJSONLayerComp = <GeoJSONLayer fillPaint={fillPaint} data={data} />;
 
     mountWithMap(GeoJSONLayerComp, mapMock);
 
     expect(mapMock.getSource).toBeCalled();
     expect(mapMock.addSource).not.toBeCalled();
-  })
+  });
 
   it('Should should update existing source on mount if source id exists', () => {
     const setDataMock = jest.fn();
     const getSourceReturn = { setData: setDataMock };
-    const mapMock = getMapMock({ getSource: jest.fn().mockReturnValue(getSourceReturn) });
+    const mapMock = getMapMock({
+      getSource: jest.fn().mockReturnValue(getSourceReturn)
+    });
 
-    const GeoJSONLayerComp = (
-      <GeoJSONLayer
-        fillPaint={fillPaint}
-        data={data}
-      />
-    );
+    const GeoJSONLayerComp = <GeoJSONLayer fillPaint={fillPaint} data={data} />;
 
     mountWithMap(GeoJSONLayerComp, mapMock);
 
@@ -123,5 +113,5 @@ describe('GeoJSONLayer', () => {
     expect(setDataMock).toBeCalled();
 
     expect(mapMock.addSource).not.toBeCalled();
-  })
+  });
 });
