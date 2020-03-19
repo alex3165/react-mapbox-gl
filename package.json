@@ -71,7 +71,7 @@
     "supercluster": "^7.0.0"
   },
   "peerDependencies": {
-    "mapbox-gl": "^1.6.0",
+    "mapbox-gl": "^1.8.1",
     "prop-types": "^15.6.2",
     "react": "^16.11.0",
     "react-dom": "^16.11.0"
@@ -83,7 +83,7 @@
     "@types/enzyme-adapter-react-16": "^1.0.3",
     "@types/geojson": "7946.0.4",
     "@types/jest": "24.0.19",
-    "@types/mapbox-gl": "^1.5.2",
+    "@types/mapbox-gl": "^1.8.1",
     "@types/node": "8.0.29",
     "@types/prettier": "1.10.0",
     "@types/prop-types": "15.5.6",
@@ -94,7 +94,7 @@
     "enzyme-adapter-react-16": "1.6.0",
     "husky": "^0.14.3",
     "jest": "24.9.0",
-    "mapbox-gl": "^1.6.0",
+    "mapbox-gl": "^1.8.1",
     "prettier": "1.10.2",
     "prop-types": "15.6.2",
     "react": "^16.11.0",
