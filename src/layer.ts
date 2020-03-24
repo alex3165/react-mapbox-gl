@@ -291,7 +291,7 @@ export default class Layer extends React.Component<Props> {
       id,
       minZoom,
       maxZoom,
-      map,
+      map
     } = prevProps;
 
     if (!isEqual(this.props.paint, paint)) {

@@ -61,10 +61,10 @@ export class ProjectedLayer extends React.Component<Props, OverlayParams> {
 
   private havePropsChanged(props: Props, prevProps: Props) {
     return (
-      props.coordinates[0] !== prevProps.coordinates[0]
-      || props.coordinates[1] !== prevProps.coordinates[1]
-      || props.offset !== prevProps.offset
-      || props.anchor !== prevProps.anchor
+      props.coordinates[0] !== prevProps.coordinates[0] ||
+      props.coordinates[1] !== prevProps.coordinates[1] ||
+      props.offset !== prevProps.offset ||
+      props.anchor !== prevProps.anchor
     );
   }
 

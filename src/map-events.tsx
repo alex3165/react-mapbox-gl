@@ -135,7 +135,8 @@ export const updateEvents = (
   map: MapboxGl.Map
 ) => {
   const toListenOff = Object.keys(events).filter(
-    eventKey => listeners[eventKey] && typeof currentProps[eventKey] !== 'function'
+    eventKey =>
+      listeners[eventKey] && typeof currentProps[eventKey] !== 'function'
   );
 
   toListenOff.forEach(key => {
