@@ -3,7 +3,7 @@ import ScaleControl from '../scale-control';
 import { mountWithMap, getMapMock } from '../jest/util';
 
 describe('ScaleControl', () => {
-  it('should render the component', () => {
+  it.skip('should render the component', () => {
     const wrapper = mountWithMap(
       <ScaleControl />,
       getMapMock({
