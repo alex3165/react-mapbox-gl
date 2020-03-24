@@ -28,7 +28,7 @@ export class Source extends React.Component<Props> {
     }
   };
 
-  public UNSAFE_componentWillMount() {
+  public componentDidMount() {
     const { map } = this.props;
 
     map.on('styledata', this.onStyleDataChange);
@@ -106,21 +106,21 @@ export class Source extends React.Component<Props> {
     this.removeSource();
   }
 
-  public UNSAFE_componentWillReceiveProps(props: Props) {
-    const { geoJsonSource, tileJsonSource, map } = this.props;
+  public componentDidUpdate(prevProps: Props) {
+    const { geoJsonSource, tileJsonSource, map } = prevProps;
 
     // Update tilesJsonSource
-    if (tileJsonSource && props.tileJsonSource) {
+    if (tileJsonSource && this.props.tileJsonSource) {
       const hasNewTilesSource =
-        tileJsonSource.url !== props.tileJsonSource.url ||
+        tileJsonSource.url !== this.props.tileJsonSource.url ||
         // Check for reference equality on tiles array
-        tileJsonSource.tiles !== props.tileJsonSource.tiles ||
-        tileJsonSource.minzoom !== props.tileJsonSource.minzoom ||
-        tileJsonSource.maxzoom !== props.tileJsonSource.maxzoom;
+        tileJsonSource.tiles !== this.props.tileJsonSource.tiles ||
+        tileJsonSource.minzoom !== this.props.tileJsonSource.minzoom ||
+        tileJsonSource.maxzoom !== this.props.tileJsonSource.maxzoom;
 
       if (hasNewTilesSource) {
         const layers = this.removeSource();
-        map.addSource(this.id, props.tileJsonSource);
+        map.addSource(this.id, this.props.tileJsonSource);
 
         layers.forEach(layer => map.addLayer(layer, layer.before));
       }
@@ -129,13 +129,13 @@ export class Source extends React.Component<Props> {
     // Update geoJsonSource data
     if (
       geoJsonSource &&
-      props.geoJsonSource &&
-      props.geoJsonSource.data !== geoJsonSource.data &&
-      props.geoJsonSource.data &&
+      this.props.geoJsonSource &&
+      this.props.geoJsonSource.data !== geoJsonSource.data &&
+      this.props.geoJsonSource.data &&
       map.getSource(this.id)
     ) {
       const source = map.getSource(this.id) as GeoJSONSource;
-      source.setData(props.geoJsonSource.data);
+      source.setData(this.props.geoJsonSource.data);
     }
   }
 

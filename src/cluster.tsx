@@ -65,7 +65,7 @@ export class Cluster extends React.Component<Props, State> {
     React.ReactElement<MarkerProps>
   >();
 
-  public UNSAFE_componentWillMount() {
+  public componentDidMount() {
     const { children, map } = this.props;
 
     if (children) {
@@ -84,11 +84,11 @@ export class Cluster extends React.Component<Props, State> {
     map.off('zoom', this.mapChange);
   }
 
-  public UNSAFE_componentWillReceiveProps(nextProps: Props) {
-    const { children } = this.props;
+  public componentDidUpdate(prevProps: Props) {
+    const { children } = prevProps;
 
-    if (children !== nextProps.children && nextProps.children) {
-      this.childrenChange(nextProps.children);
+    if (children !== this.props.children && this.props.children) {
+      this.childrenChange(this.props.children);
       this.mapChange(true);
     }
   }

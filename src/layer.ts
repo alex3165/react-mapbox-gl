@@ -238,7 +238,7 @@ export default class Layer extends React.Component<Props> {
     }
   };
 
-  public UNSAFE_componentWillMount() {
+  public componentDidMount() {
     const { map } = this.props;
 
     this.initialize();
@@ -282,44 +282,52 @@ export default class Layer extends React.Component<Props> {
     }
   }
 
-  public UNSAFE_componentWillReceiveProps(props: Props) {
-    const { paint, layout, before, filter, id, minZoom, maxZoom } = this.props;
-    const { map } = this.props;
+  public componentDidUpdate(prevProps: Props) {
+    const {
+      paint,
+      layout,
+      before,
+      filter,
+      id,
+      minZoom,
+      maxZoom,
+      map,
+    } = prevProps;
 
-    if (!isEqual(props.paint, paint)) {
-      const paintDiff = diff(paint, props.paint);
+    if (!isEqual(this.props.paint, paint)) {
+      const paintDiff = diff(paint, this.props.paint);
 
       Object.keys(paintDiff).forEach(key => {
         map.setPaintProperty(id, key, paintDiff[key]);
       });
     }
 
-    if (!isEqual(props.layout, layout)) {
-      const layoutDiff = diff(layout, props.layout);
+    if (!isEqual(this.props.layout, layout)) {
+      const layoutDiff = diff(layout, this.props.layout);
 
       Object.keys(layoutDiff).forEach(key => {
         map.setLayoutProperty(id, key, layoutDiff[key]);
       });
     }
 
-    if (!isEqual(props.filter, filter)) {
-      map.setFilter(id, props.filter);
+    if (!isEqual(this.props.filter, filter)) {
+      map.setFilter(id, this.props.filter);
     }
 
-    if (before !== props.before) {
-      map.moveLayer(id, props.before);
+    if (before !== this.props.before) {
+      map.moveLayer(id, this.props.before);
     }
 
-    if (minZoom !== props.minZoom || maxZoom !== props.maxZoom) {
+    if (minZoom !== this.props.minZoom || maxZoom !== this.props.maxZoom) {
       // TODO: Fix when PR https://github.com/DefinitelyTyped/DefinitelyTyped/pull/22036 is merged
-      map.setLayerZoomRange(id, props.minZoom!, props.maxZoom!);
+      map.setLayerZoomRange(id, this.props.minZoom!, this.props.maxZoom!);
     }
 
     (Object.entries(eventToHandler) as Array<
       [keyof EventToHandlersType, keyof LayerEvents]
     >).forEach(([event, propName]) => {
-      const oldHandler = this.props[propName];
-      const newHandler = props[propName];
+      const oldHandler = prevProps[propName];
+      const newHandler = this.props[propName];
 
       if (oldHandler !== newHandler) {
         if (oldHandler) {

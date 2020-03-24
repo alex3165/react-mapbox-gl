@@ -131,11 +131,11 @@ export const listenEvents = (
 
 export const updateEvents = (
   listeners: Listeners,
-  nextProps: Partial<Events>,
+  currentProps: Partial<Events>,
   map: MapboxGl.Map
 ) => {
   const toListenOff = Object.keys(events).filter(
-    eventKey => listeners[eventKey] && typeof nextProps[eventKey] !== 'function'
+    eventKey => listeners[eventKey] && typeof currentProps[eventKey] !== 'function'
   );
 
   toListenOff.forEach(key => {
@@ -144,10 +144,10 @@ export const updateEvents = (
   });
 
   const toListenOn = Object.keys(events)
-    .filter(key => !listeners[key] && typeof nextProps[key] === 'function')
+    .filter(key => !listeners[key] && typeof currentProps[key] === 'function')
     .reduce((acc, next) => ((acc[next] = events[next]), acc), {});
 
-  const newListeners = listenEvents(toListenOn, nextProps, map);
+  const newListeners = listenEvents(toListenOn, currentProps, map);
 
   return { ...listeners, ...newListeners };
 };
