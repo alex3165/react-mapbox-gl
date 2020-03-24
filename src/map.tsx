@@ -100,6 +100,7 @@ export interface FactoryParameters {
   injectCSS?: boolean;
   transformRequest?: RequestTransformFunction;
   antialias?: boolean;
+  mapInstance?: MapboxGl.Map;
 }
 
 // Satisfy typescript pitfall with defaultProps
@@ -143,6 +144,7 @@ const ReactMapboxFactory = ({
   bearingSnap = 7,
   injectCSS = true,
   antialias = false,
+  mapInstance,
   transformRequest
 }: FactoryParameters) => {
   if (injectCSS) {
@@ -165,7 +167,7 @@ const ReactMapboxFactory = ({
     };
 
     public state: State = {
-      map: undefined,
+      map: mapInstance,
       ready: false
     };
 
@@ -261,8 +263,15 @@ const ReactMapboxFactory = ({
         opts.pitch = pitch[0];
       }
 
-      const map = new MapboxGl.Map(opts);
-      this.setState({ map });
+      // This is a hack to allow injecting the map instance, which assists
+      // in testing and theoretically provides a means for users to inject
+      // their own map instance.
+      let map = this.state.map;
+
+      if (!map) {
+        map = new MapboxGl.Map(opts);
+        this.setState({ map });
+      }
 
       if (fitBounds) {
         map.fitBounds(fitBounds, fitBoundsOptions, { fitboundUpdate: true });
@@ -275,7 +284,7 @@ const ReactMapboxFactory = ({
         }
 
         if (onStyleLoad) {
-          onStyleLoad(map, evt);
+          onStyleLoad(map!, evt);
         }
       });
 
