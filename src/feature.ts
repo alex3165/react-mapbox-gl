@@ -7,6 +7,7 @@ export interface Props {
   // tslint:disable-next-line:no-any
   properties?: any;
   onClick?: React.MouseEventHandler<HTMLElement>;
+  onTouchEnd?: React.TouchEventHandler<HTMLElement>;
   onMouseEnter?: React.MouseEventHandler<HTMLElement>;
   onMouseLeave?: React.MouseEventHandler<HTMLElement>;
   draggable?: boolean;

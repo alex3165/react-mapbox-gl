@@ -22,7 +22,9 @@ const eventToHandler = {
   mouseleave: 'OnMouseLeave',
   mousedown: 'OnMouseDown',
   mouseup: 'OnMouseUp',
-  click: 'OnClick'
+  click: 'OnClick',
+  touchstart: 'OnTouchStart',
+  touchend: 'OnTouchEnd'
 };
 
 // tslint:disable-next-line:no-any
@@ -37,6 +39,8 @@ export interface LineProps {
   lineOnMouseDown?: MouseEvent;
   lineOnMouseUp?: MouseEvent;
   lineOnClick?: MouseEvent;
+  lineOnTouchStart?: MouseEvent;
+  lineOnTouchEnd?: MouseEvent;
 }
 
 export interface CircleProps {
@@ -48,6 +52,8 @@ export interface CircleProps {
   circleOnMouseDown?: MouseEvent;
   circleOnMouseUp?: MouseEvent;
   circleOnClick?: MouseEvent;
+  circleOnTouchStart?: MouseEvent;
+  circleOnTouchEnd?: MouseEvent;
 }
 
 export interface SymbolProps {
@@ -59,6 +65,8 @@ export interface SymbolProps {
   symbolOnMouseDown?: MouseEvent;
   symbolOnMouseUp?: MouseEvent;
   symbolOnClick?: MouseEvent;
+  symbolOnTouchStart?: MouseEvent;
+  symbolOnTouchEnd?: MouseEvent;
 }
 
 export interface FillProps {
@@ -70,6 +78,8 @@ export interface FillProps {
   fillOnMouseDown?: MouseEvent;
   fillOnMouseUp?: MouseEvent;
   fillOnClick?: MouseEvent;
+  fillOnTouchStart?: MouseEvent;
+  fillOnTouchEnd?: MouseEvent;
 }
 
 export interface FillExtrusionProps {
@@ -81,6 +91,8 @@ export interface FillExtrusionProps {
   fillExtrusionOnMouseDown?: MouseEvent;
   fillExtrusionOnMouseUp?: MouseEvent;
   fillExtrusionOnClick?: MouseEvent;
+  fillExtrusionOnTouchStart?: MouseEvent;
+  fillExtrusionOnTouchEnd?: MouseEvent;
 }
 
 export interface Props

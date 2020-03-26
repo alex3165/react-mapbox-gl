@@ -198,6 +198,8 @@ import { Layer } from "react-mapbox-gl";
 * **onMouseDown** `function` Mouse down handler. [mapbox map mouse event](https://www.mapbox.com/mapbox-gl-js/api/#mapmouseevent)
 * **onMouseUp** `function` Mouse up handler. [mapbox map mouse event](https://www.mapbox.com/mapbox-gl-js/api/#mapmouseevent)
 * **onClick** `function` Mouse click handler. [mapbox map mouse event](https://www.mapbox.com/mapbox-gl-js/api/#mapmouseevent)
+* **onTouchStart** `function` Touch start handler. [mapbox map touch event](https://www.mapbox.com/mapbox-gl-js/api/#maptouchevent)
+* **onTouchEnd** `function` Touch end handler. [mapbox map touch event](https://www.mapbox.com/mapbox-gl-js/api/#maptouchevent)
 
 ---
 
@@ -269,6 +271,8 @@ import { GeoJSONLayer } from "react-mapbox-gl";
 * **lineOnMouseEnter** | **symbolOnMouseEnter** | **circleOnMouseEnter** | **fillOnMouseEnter** | **fillExtrusionOnMouseEnter**: `function` Mouse enter handler. [mapbox map mouse event](https://www.mapbox.com/mapbox-gl-js/api/#mapmouseevent)
 * **lineOnMouseLeave** | **symbolOnMouseLeave** | **circleOnMouseLeave** | **fillOnMouseLeave** | **fillExtrusionOnMouseLeave**: `function` Mouse leave handler. [mapbox map api](https://www.mapbox.com/mapbox-gl-js/api/#mapmouseevent)
 * **lineOnClick** | **symbolOnClick** | **circleOnClick** | **fillOnClick** | **fillExtrusionOnClick**: `function` Mouse click handler. [mapbox map mouse event](https://www.mapbox.com/mapbox-gl-js/api/#mapmouseevent)
+* **lineOnTouchStart** | **symbolOnTouchStart** | **circleOnTouchStart** | **fillOnTouchStart** | **fillExtrusionOnTouchStart**: `function` Touch start handler. [mapbox map touch event](https://www.mapbox.com/mapbox-gl-js/api/#maptouchevent)
+* **lineOnTouchEnd** | **symbolOnTouchEnd** | **circleOnTouchEnd** | **fillOnTouchEnd** | **fillExtrusionOnTouchEnd**: `function` Touch end handler. [mapbox map touch event](https://www.mapbox.com/mapbox-gl-js/api/#maptouchevent)
 * **sourceOptions**: `object` Options object merged to the object used when calling `GeoJSONSource` method
 * **layerOptions**: `object` Passed down to the layer object when setting it out.
 * **before**: `string` Pass the id of a layer, it will display the current layer before the layer defined by the id. [mapbox api](https://www.mapbox.com/mapbox-gl-js/api/#Map#addLayer)
@@ -303,6 +307,8 @@ import { Feature } from "react-mapbox-gl";
 * **onDragStart** : `(mapWithEvt: object) => void` Triggered when the user start dragging the feature.
 * **onDrag** : `(mapWithEvt: object) => void` Triggered when the user continue dragging the feature (ie. move).
 * **onDragEnd** : `(mapWithEvt: object) => void` Triggered when the user stop dragging the feature.
+* **onTouchStart** : `(mapWithEvt: object) => void` Triggered when user starts touching the feature on a touch device.
+* **onTouchEnd** : `(mapWithEvt: object) => void` Triggered when user finishes touching the feature on a touch device.
 
 ---
 

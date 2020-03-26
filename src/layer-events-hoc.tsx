@@ -127,6 +127,30 @@ export function layerMouseTouchEvents(
     };
 
     // tslint:disable-next-line:no-any
+    public onTouchEnd = (evt: any) => {
+      const features = evt.features as Array<
+        GeoJSON.Feature<GeoJSON.GeometryObject, { id: number }>
+      >;
+      const children = this.getChildren();
+
+      const { map } = this.props;
+
+      if (features) {
+        features.forEach(feature => {
+          const { id } = feature.properties;
+          if (children) {
+            const child = this.getChildFromId(children, id);
+
+            const onTouchEnd = child && child.props.onTouchEnd;
+            if (onTouchEnd) {
+              onTouchEnd({ ...evt, feature, map });
+            }
+          }
+        });
+      }
+    };
+
+    // tslint:disable-next-line:no-any
     public onTouchStart = (evt: any) => {
       // tslint:disable-next-line:no-any
       this.hover = evt.features.map((feature: any) => feature.properties.id);
@@ -223,6 +247,7 @@ export function layerMouseTouchEvents(
       map.on('mouseleave', this.id, this.onMouseLeave);
       map.on('mousedown', this.id, this.onMouseDown);
       map.on('touchstart', this.id, this.onTouchStart);
+      map.on('touchend', this.id, this.onTouchEnd);
     }
 
     public componentWillUnmount() {
@@ -233,6 +258,7 @@ export function layerMouseTouchEvents(
       map.off('mouseleave', this.onMouseLeave);
       map.off('mousedown', this.onMouseDown);
       map.off('touchstart', this.onTouchStart);
+      map.off('touchend', this.onTouchEnd);
     }
 
     public render() {
