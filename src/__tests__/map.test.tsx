@@ -7,13 +7,23 @@ const mockMap = jest.fn(() => ({
   getCenter: jest.fn()
 }));
 
+const mockLngLatBoundsGetCenter = jest.fn();
+const mockLngLatBoundsToArray = jest.fn();
+
+class MockLngLatBounds {
+  public getCenter = mockLngLatBoundsGetCenter;
+  public toArray = mockLngLatBoundsToArray;
+}
+
 jest.mock('mapbox-gl', () => ({
-  Map: mockMap
+  Map: mockMap,
+  LngLatBounds: MockLngLatBounds
 }));
 
 import * as React from 'react';
 import ReactMapboxGl, { FitBounds } from '../map';
 import { mount } from 'enzyme';
+import { LngLatBounds } from 'mapbox-gl';
 
 describe('Map', () => {
   // tslint:disable-next-line:no-any
@@ -21,6 +31,11 @@ describe('Map', () => {
   beforeEach(() => {
     mockfitBounds = jest.fn();
     mockon = jest.fn();
+
+    mockLngLatBoundsGetCenter.mockReset();
+    mockLngLatBoundsToArray.mockReset();
+    mockLngLatBoundsGetCenter.mockReturnValue({ lat: 1, lng: 6 });
+    mockLngLatBoundsToArray.mockReturnValue([[0, 1], [2, 3]]);
 
     mapState = {
       getCenter: jest.fn(() => ({ lng: 1, lat: 2 })),
@@ -33,62 +48,6 @@ describe('Map', () => {
   it('Should render the map correctly', () => {
     const MapboxMap = ReactMapboxGl({ accessToken: '', injectCSS: false });
     mount(<MapboxMap style="" />);
-  });
-
-  it('Should call fitBounds with the right parameters', () => {
-    const fitBoundsValues: FitBounds = [[0, 1], [2, 3]];
-    const fitBoundsOptions = { linear: true };
-    const MapboxMap = ReactMapboxGl({ accessToken: '', injectCSS: false });
-
-    mount(
-      <MapboxMap
-        style=""
-        fitBounds={fitBoundsValues}
-        fitBoundsOptions={fitBoundsOptions}
-      />
-    );
-
-    expect(mockfitBounds).toBeCalledWith(fitBoundsValues, fitBoundsOptions, {
-      fitboundUpdate: true
-    });
-  });
-
-  it('Should update fitBounds if fitBoundsOptions changes', () => {
-    const flyTo = jest.fn();
-    const fitBoundsValues: FitBounds = [[0, 1], [2, 3]];
-    const fitBoundsOptions = { offset: [150, 0] as [number, number] };
-    const newFitBoundsOptions = { offset: [0, 0] };
-    const MapboxMap = ReactMapboxGl({ accessToken: '', injectCSS: false });
-
-    const wrapper = mount(
-      <MapboxMap
-        style=""
-        fitBounds={fitBoundsValues}
-        fitBoundsOptions={fitBoundsOptions}
-      />
-    );
-    wrapper.setState({
-      map: {
-        ...mapState,
-        flyTo,
-        fitBounds: mockfitBounds
-      }
-    });
-
-    wrapper.setProps({ fitBoundsOptions: newFitBoundsOptions });
-
-    expect(mockfitBounds.mock.calls[1][1]).toBe(newFitBoundsOptions);
-  });
-
-  it('Should calc the center from fitbounds if center is not given', () => {
-    const fitBoundsValues: FitBounds = [[0, 3], [2, 9]];
-    const MapboxMap = ReactMapboxGl({ accessToken: '', injectCSS: false });
-
-    mount(<MapboxMap style="" fitBounds={fitBoundsValues} />);
-
-    // tslint:disable-next-line:no-any
-    const lastCall: any = mockMap.mock.calls[mockMap.mock.calls.length - 1];
-    expect(lastCall[0].center).toEqual([1, 6]);
   });
 
   it('Should listen onStyleLoad event', () => {
@@ -282,6 +241,171 @@ describe('Map', () => {
       center: { lat: 2, lng: 1 },
       pitch: undefined,
       zoom: 1
+    });
+  });
+
+  // Testing fitBounds
+  describe('fitBounds', () => {
+    // with type: [[number, number], [[number, number]]
+    describe('with number array', () => {
+      it('Should call fitBounds with the right parameters', () => {
+        const fitBoundsValues: FitBounds = [[0, 1], [2, 3]];
+        const fitBoundsOptions = { linear: true };
+        const MapboxMap = ReactMapboxGl({ accessToken: '', injectCSS: false });
+
+        mount(
+          <MapboxMap
+            style=""
+            fitBounds={fitBoundsValues}
+            fitBoundsOptions={fitBoundsOptions}
+          />
+        );
+
+        expect(mockfitBounds).toBeCalledWith(
+          fitBoundsValues,
+          fitBoundsOptions,
+          {
+            fitboundUpdate: true
+          }
+        );
+      });
+
+      it('Should update fitBounds if fitBoundsOptions changes', () => {
+        const flyTo = jest.fn();
+        const fitBoundsValues: FitBounds = [[0, 1], [2, 3]];
+        const fitBoundsOptions = { offset: [150, 0] as [number, number] };
+        const newFitBoundsOptions = { offset: [0, 0] };
+        const MapboxMap = ReactMapboxGl({ accessToken: '', injectCSS: false });
+
+        const wrapper = mount(
+          <MapboxMap
+            style=""
+            fitBounds={fitBoundsValues}
+            fitBoundsOptions={fitBoundsOptions}
+          />
+        );
+
+        wrapper.setState({
+          map: {
+            ...mapState,
+            flyTo,
+            fitBounds: mockfitBounds
+          }
+        });
+
+        wrapper.setProps({ fitBoundsOptions: newFitBoundsOptions });
+
+        expect(mockfitBounds.mock.calls[1][1]).toBe(newFitBoundsOptions);
+      });
+
+      it('Should calc the center from fitbounds if center is not given', () => {
+        const fitBoundsValues: FitBounds = [[0, 3], [2, 9]];
+        const MapboxMap = ReactMapboxGl({ accessToken: '', injectCSS: false });
+
+        mount(<MapboxMap style="" fitBounds={fitBoundsValues} />);
+
+        // tslint:disable-next-line:no-any
+        const lastCall: any = mockMap.mock.calls[mockMap.mock.calls.length - 1];
+        expect(lastCall[0].center).toEqual([1, 6]);
+      });
+    });
+
+    // with type: LngLatBounds
+    describe('with LngLatBounds', () => {
+      it('Should call fitBounds with the right parameters', () => {
+        const fitBoundsValues = new LngLatBounds([[0, 1], [2, 3]]);
+        const fitBoundsOptions = { linear: true };
+        const MapboxMap = ReactMapboxGl({ accessToken: '', injectCSS: false });
+
+        mount(
+          <MapboxMap
+            style=""
+            fitBounds={fitBoundsValues}
+            fitBoundsOptions={fitBoundsOptions}
+          />
+        );
+
+        expect(mockfitBounds).toBeCalledWith(
+          fitBoundsValues,
+          fitBoundsOptions,
+          {
+            fitboundUpdate: true
+          }
+        );
+      });
+
+      it('Should update fitBounds if fitBoundsOptions changes', () => {
+        const flyTo = jest.fn();
+        const fitBoundsValues = new LngLatBounds([[0, 1], [2, 3]]);
+        const fitBoundsOptions = { offset: [150, 0] as [number, number] };
+        const newFitBoundsOptions = { offset: [0, 0] };
+        const MapboxMap = ReactMapboxGl({ accessToken: '', injectCSS: false });
+
+        const wrapper = mount(
+          <MapboxMap
+            style=""
+            fitBounds={fitBoundsValues}
+            fitBoundsOptions={fitBoundsOptions}
+          />
+        );
+
+        wrapper.setState({
+          map: {
+            ...mapState,
+            flyTo,
+            fitBounds: mockfitBounds
+          }
+        });
+
+        wrapper.setProps({ fitBoundsOptions: newFitBoundsOptions });
+
+        expect(mockfitBounds.mock.calls[1][1]).toBe(newFitBoundsOptions);
+      });
+
+      it('Should update fitBounds if fitBoundsOptions changes', () => {
+        const flyTo = jest.fn();
+        const fitBoundsValues = new LngLatBounds([[0, 1], [2, 3]]);
+        const fitBoundsOptions = { offset: [150, 0] as [number, number] };
+        const newFitBoundsOptions = { offset: [0, 0] };
+        const MapboxMap = ReactMapboxGl({ accessToken: '', injectCSS: false });
+
+        const wrapper = mount(
+          <MapboxMap
+            style=""
+            fitBounds={fitBoundsValues}
+            fitBoundsOptions={fitBoundsOptions}
+          />
+        );
+
+        wrapper.setState({
+          map: {
+            ...mapState,
+            flyTo,
+            fitBounds: mockfitBounds
+          }
+        });
+
+        wrapper.setProps({ fitBoundsOptions: newFitBoundsOptions });
+
+        expect(mockfitBounds.mock.calls[1][1]).toBe(newFitBoundsOptions);
+      });
+
+      it('Should calc the center from fitbounds if center is not given', () => {
+        const fitBoundsValues = new LngLatBounds([[0, 3], [2, 9]]);
+
+        mockLngLatBoundsGetCenter.mockReturnValue({
+          lng: 1,
+          lat: 6
+        });
+
+        const MapboxMap = ReactMapboxGl({ accessToken: '', injectCSS: false });
+
+        mount(<MapboxMap style="" fitBounds={fitBoundsValues} />);
+
+        // tslint:disable-next-line:no-any
+        const lastCall: any = mockMap.mock.calls[mockMap.mock.calls.length - 1];
+        expect(lastCall[0].center).toEqual([1, 6]);
+      });
     });
   });
 });
