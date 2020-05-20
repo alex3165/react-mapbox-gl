@@ -19,7 +19,8 @@
     "postversion": "git push && git push --tags",
     "prettify": "prettier --write src/*.ts src/*.tsx src/**/*.ts src/**/*.tsx example/src/**/*.ts example/src/**/*.tsx",
     "precommit": "npm run prettify && cd example && node generateRaws.js",
-    "prepush": "npm run build"
+    "prepush": "npm run build",
+    "prepare": "echo \"preparing\" && npm run build"
   },
   "jest": {
     "transform": {
