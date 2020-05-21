@@ -286,7 +286,7 @@ export class GeoJSONLayer extends React.Component<Props> {
       const layerId = this.buildLayerId(type);
 
       if (props.layerOptions && layerFilterChanged) {
-        map.setFilter(layerId, props.layerOptions.filter || []);
+        map.setFilter(layerId, props.layerOptions.filter);
       }
 
       const paintProp = toCamelCase(type) + 'Paint';
