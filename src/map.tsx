@@ -2,14 +2,14 @@ import * as MapboxGl from 'mapbox-gl';
 import * as React from 'react';
 import {
   Events,
-  listenEvents,
   events,
   Listeners,
+  listenEvents,
   updateEvents
 } from './map-events';
 import { MapContext } from './context';
 import { createPortal } from 'react-dom';
-const isEqual = require('deep-equal'); //tslint:disable-line
+import isEqual from 'deep-equal';
 
 export interface PaddingOptions {
   top: number;
@@ -27,7 +27,9 @@ export interface FitBoundsOptions {
   duration?: number;
 }
 
-export type FitBounds = [[number, number], [number, number]];
+export type FitBounds =
+  | [[number, number], [number, number]]
+  | MapboxGl.LngLatBounds;
 
 export interface AnimationOptions {
   duration: number;
@@ -176,10 +178,48 @@ const ReactMapboxFactory = ({
 
     public container?: HTMLElement;
 
-    public calcCenter = (bounds: FitBounds): [number, number] => [
-      (bounds[0][0] + bounds[1][0]) / 2,
-      (bounds[0][1] + bounds[1][1]) / 2
-    ];
+    public calcCenter = (bounds: FitBounds): [number, number] => {
+      // If fitBounds is LngLatBounds, use it's getCenter method
+      if (!Array.isArray(bounds)) {
+        const { lng, lat } = bounds.getCenter();
+        return [lng, lat];
+      }
+
+      // Otherwise, calculate the center be getting the average of lng and lat
+      return [
+        (bounds[0][0] + bounds[1][0]) / 2,
+        (bounds[0][1] + bounds[1][1]) / 2
+      ];
+    };
+
+    public fitBoundsDidUpdate = (nextProps: Props): boolean => {
+      const currentFitBounds = this.props.fitBounds;
+      const nextFitBounds = nextProps.fitBounds;
+
+      // If they're not equal by reference
+      if (currentFitBounds !== nextFitBounds) {
+        return true;
+      }
+
+      // If either (meaning both) are falsy, nothing has changed
+      if (!currentFitBounds || !nextFitBounds) {
+        return false;
+      }
+
+      // Ideally we'd use `currentFitBounds instanceof MapBoxGl.LngLatBounds`
+      // here but we'd have to mess with peer dependencies.
+      // If one is LngLatBounds, they both must be
+      if (!Array.isArray(currentFitBounds)) {
+        const currentCoordinates = (currentFitBounds as MapboxGl.LngLatBounds).toArray();
+        const nextCoordinates = (nextFitBounds as MapboxGl.LngLatBounds).toArray();
+
+        // If they're different, or any children are different
+        return !isEqual(currentCoordinates, nextCoordinates);
+      }
+
+      // If they're not LngLatBounds, they're just an array of numbers
+      return !isEqual(currentFitBounds, nextFitBounds);
+    };
 
     public componentDidMount() {
       const {
@@ -331,21 +371,13 @@ const ReactMapboxFactory = ({
       }
 
       if (nextProps.fitBounds) {
-        const { fitBounds } = this.props;
+        const didFitBoundsUpdate = this.fitBoundsDidUpdate(nextProps);
+        const didFitBoundsOptionsUpdate = !isEqual(
+          this.props.fitBoundsOptions,
+          nextProps.fitBoundsOptions
+        );
 
-        const didFitBoundsUpdate =
-          fitBounds !== nextProps.fitBounds || // Check for reference equality
-          nextProps.fitBounds.length !== (fitBounds && fitBounds.length) || // Added element
-          !!fitBounds.filter((c, i) => {
-            // Check for equality
-            const nc = nextProps.fitBounds && nextProps.fitBounds[i];
-            return c[0] !== (nc && nc[0]) || c[1] !== (nc && nc[1]);
-          })[0];
-
-        if (
-          didFitBoundsUpdate ||
-          !isEqual(this.props.fitBoundsOptions, nextProps.fitBoundsOptions)
-        ) {
+        if (didFitBoundsUpdate || didFitBoundsOptionsUpdate) {
           map.fitBounds(nextProps.fitBounds, nextProps.fitBoundsOptions, {
             fitboundUpdate: true
           });
