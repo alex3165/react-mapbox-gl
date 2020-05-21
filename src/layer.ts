@@ -161,7 +161,8 @@ export default class Layer extends React.Component<Props> {
   ): GeoJSON.Feature<GeoJSON.Geometry, GeoJSON.GeoJsonProperties> => ({
     type: 'Feature',
     geometry: this.geometry(props.coordinates),
-    properties: { ...props.properties, id }
+    properties: { ...props.properties, id },
+    id
   });
 
   private initialize = () => {

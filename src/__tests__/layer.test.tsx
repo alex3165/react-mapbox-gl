@@ -137,7 +137,8 @@ describe('Layer', () => {
           {
             geometry: { ...feature, type: 'Point' },
             properties: { id: 0 },
-            type: 'Feature'
+            type: 'Feature',
+            id: 0
           }
         ]
       }
