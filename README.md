@@ -13,31 +13,36 @@
 <br/><br/>
 ![London cycle example gif](docs/london-cycle-example.gif 'London cycle example gif')
 
+React-mapbox-gl is being sponsored by the following tool; please help to support us by taking a look and signing up to a free trial
+
+<a href="https://tracking.gitads.io/?repo=react-mapbox-gl">
+ <img src="https://images.gitads.io/react-mapbox-gl" alt="GitAds"/> </a>
+
 ## Components
 
 ### Proxy components (proxy between React and Mapbox API)
 
-* ReactMapboxGL
-* Layer & Feature
-  * property `symbol` displays a mapbox symbol.
-  * property `line` displays a lineString.
-  * property `fill` displays a polygon.
-  * property `circle` displays a mapbox circle.
-  * property `raster` displays a mapbox raster tiles.
-  * property `fill-extrusion` displays a layer with extruded buildings.
-  * property `background` displays a mapbox background layer.
-  * property `heatmap` displays a mapbox heatmap layer.
-* Source
-* GeoJSONLayer
+- ReactMapboxGL
+- Layer & Feature
+  - property `symbol` displays a mapbox symbol.
+  - property `line` displays a lineString.
+  - property `fill` displays a polygon.
+  - property `circle` displays a mapbox circle.
+  - property `raster` displays a mapbox raster tiles.
+  - property `fill-extrusion` displays a layer with extruded buildings.
+  - property `background` displays a mapbox background layer.
+  - property `heatmap` displays a mapbox heatmap layer.
+- Source
+- GeoJSONLayer
 
 ### DOM components (normal React components)
 
-* ZoomControl
-* ScaleControl
-* RotationControl
-* Marker (Projected component)
-* Popup (Projected component)
-* Cluster
+- ZoomControl
+- ScaleControl
+- RotationControl
+- Marker (Projected component)
+- Popup (Projected component)
+- Cluster
 
 ## Getting Started
 
