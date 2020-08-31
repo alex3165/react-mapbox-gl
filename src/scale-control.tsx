@@ -3,6 +3,8 @@ import { Map } from 'mapbox-gl';
 import { AnchorLimits } from './util/types';
 import { withMap } from './context';
 
+const triggerEvents = ['moveend', 'touchend', 'zoomend'];
+
 const scales = [
   0.01,
   0.02,
@@ -94,12 +96,16 @@ export class ScaleControl extends React.Component<Props, State> {
   public UNSAFE_componentWillMount() {
     this.setScale();
 
-    this.props.map.on('zoomend', this.setScale);
+    triggerEvents.forEach(event => {
+      this.props.map.on(event, this.setScale);
+    });
   }
 
   public componentWillUnmount() {
     if (this.props.map) {
-      this.props.map.off('zoomend', this.setScale);
+      triggerEvents.forEach(event => {
+        this.props.map.off(event, this.setScale);
+      });
     }
   }
 
