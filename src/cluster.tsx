@@ -210,14 +210,11 @@ export default class Cluster extends React.Component<Props, State> {
     );
   };
 
-  private findMarkerElement(
-    target: HTMLElement,
-    element: HTMLElement
-  ): HTMLElement {
-    if (element.parentElement === target) {
+  private findMarkerElement(target: Node, element: Node): Node {
+    if (element.parentNode === target) {
       return element;
     }
-    return this.findMarkerElement(target, element.parentElement!);
+    return this.findMarkerElement(target, element.parentNode!);
   }
 
   public render() {
