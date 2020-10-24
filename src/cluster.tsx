@@ -14,7 +14,7 @@ export interface Props {
     getLeaves: (
       limit?: number,
       offset?: number
-    ) => Array<React.ReactElement<MarkerProps>>
+    ) => Array<React.ReactElement<MarkerProps> | undefined>
   ): React.ReactElement<MarkerProps>;
   radius?: number;
   maxZoom?: number;
