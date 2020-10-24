@@ -30,14 +30,23 @@ describe('Map', () => {
   });
 
   it('Should render the map correctly', () => {
-    const MapboxMap = ReactMapboxGl({ accessToken: '', mapInstance: getMock() as any });
+    const MapboxMap = ReactMapboxGl({
+      accessToken: '',
+      mapInstance: getMock() as any
+    });
     mount(<MapboxMap style="" />);
   });
 
   it('Should call fitBounds with the right parameters', () => {
-    const fitBoundsValues: FitBounds = [[0, 1], [2, 3]];
+    const fitBoundsValues: FitBounds = [
+      [0, 1],
+      [2, 3]
+    ];
     const fitBoundsOptions = { linear: true };
-    const MapboxMap = ReactMapboxGl({ accessToken: '', mapInstance: getMock() as any });
+    const MapboxMap = ReactMapboxGl({
+      accessToken: '',
+      mapInstance: getMock() as any
+    });
 
     mount(
       <MapboxMap
@@ -54,17 +63,20 @@ describe('Map', () => {
 
   it('Should update fitBounds if fitBoundsOptions changes', () => {
     const flyTo = jest.fn();
-    const fitBoundsValues: FitBounds = [[0, 1], [2, 3]];
+    const fitBoundsValues: FitBounds = [
+      [0, 1],
+      [2, 3]
+    ];
     const fitBoundsOptions = { offset: [150, 0] as [number, number] };
     const newFitBoundsOptions = { offset: [0, 0] };
 
     const MapboxMap = ReactMapboxGl({
-        accessToken: '',
-        mapInstance: getMock({
-          flyTo,
-          fitBounds: mockfitBounds
-        }) as any
-     });
+      accessToken: '',
+      mapInstance: getMock({
+        flyTo,
+        fitBounds: mockfitBounds
+      }) as any
+    });
 
     const wrapper = mount(
       <MapboxMap
@@ -80,9 +92,12 @@ describe('Map', () => {
   });
 
   it.skip('Should calc the center from fitbounds if center is not given', () => {
-    const fitBoundsValues: FitBounds = [[0, 3], [2, 9]];
-
-    const MapboxMap = ReactMapboxGl({ accessToken: '', mapInstance: getMock() as any });
+    const fitBoundsValues: FitBounds = [
+      [0, 3],
+      [2, 9]
+    ];
+    const mockMap = getMock() as any;
+    const MapboxMap = ReactMapboxGl({ accessToken: '', mapInstance: mockMap });
 
     mount(<MapboxMap style="" fitBounds={fitBoundsValues} />);
 
@@ -92,7 +107,10 @@ describe('Map', () => {
   });
 
   it('Should listen onStyleLoad event', () => {
-    const MapboxMap = ReactMapboxGl({ accessToken: '', mapInstance: getMock() as any });
+    const MapboxMap = ReactMapboxGl({
+      accessToken: '',
+      mapInstance: getMock() as any
+    });
 
     mount(<MapboxMap style="" onStyleLoad={jest.fn()} />);
 
@@ -118,7 +136,10 @@ describe('Map', () => {
 
   it('Should update maxBounds', () => {
     const flyTo = jest.fn();
-    const maxBoundsProps = [[1, 0], [0, 1]];
+    const maxBoundsProps = [
+      [1, 0],
+      [0, 1]
+    ];
     const mockMaxBounds = jest.fn();
 
     const MapboxMap = ReactMapboxGl({
