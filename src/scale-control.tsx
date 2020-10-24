@@ -93,7 +93,7 @@ export class ScaleControl extends React.Component<Props, State> {
     scaleWidth: MIN_WIDTH_SCALE
   };
 
-  public UNSAFE_componentWillMount() {
+  public componentDidMount() {
     this.setScale();
 
     triggerEvents.forEach(event => {

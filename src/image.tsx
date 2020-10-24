@@ -24,7 +24,7 @@ export interface Props {
 }
 
 class Image extends React.Component<Props> {
-  public UNSAFE_componentWillMount() {
+  public componentDidMount() {
     this.loadImage(this.props);
   }
 
@@ -32,17 +32,17 @@ class Image extends React.Component<Props> {
     Image.removeImage(this.props);
   }
 
-  public UNSAFE_componentWillReceiveProps(nextProps: Props) {
-    const { id } = this.props;
+  public componentDidUpdate(prevProps: Props) {
+    const { id } = prevProps;
 
-    if (nextProps.map !== this.props.map) {
+    if (prevProps.map !== this.props.map) {
       // Remove image from old map
       Image.removeImage(this.props);
     }
 
-    if (nextProps.map && !nextProps.map.hasImage(id)) {
+    if (this.props.map && !this.props.map.hasImage(id)) {
       // Add missing image to map
-      this.loadImage(nextProps);
+      this.loadImage(this.props);
     }
   }
 

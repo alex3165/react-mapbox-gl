@@ -59,18 +59,18 @@ export class ProjectedLayer extends React.Component<Props, OverlayParams> {
     this.handleMapMove();
   }
 
-  private havePropsChanged(props: Props, nextProps: Props) {
+  private havePropsChanged(props: Props, prevProps: Props) {
     return (
-      props.coordinates[0] !== nextProps.coordinates[0] ||
-      props.coordinates[1] !== nextProps.coordinates[1] ||
-      props.offset !== nextProps.offset ||
-      props.anchor !== nextProps.anchor
+      props.coordinates[0] !== prevProps.coordinates[0] ||
+      props.coordinates[1] !== prevProps.coordinates[1] ||
+      props.offset !== prevProps.offset ||
+      props.anchor !== prevProps.anchor
     );
   }
 
-  public UNSAFE_componentWillReceiveProps(nextProps: Props) {
-    if (this.havePropsChanged(this.props, nextProps)) {
-      this.setState(overlayState(nextProps, this.props.map, this.container!));
+  public componentDidUpdate(prevProps: Props) {
+    if (this.havePropsChanged(this.props, prevProps)) {
+      this.setState(overlayState(this.props, this.props.map, this.container!));
     }
   }
 
