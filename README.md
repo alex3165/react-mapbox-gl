@@ -17,27 +17,27 @@
 
 ### Proxy components (proxy between React and Mapbox API)
 
-* ReactMapboxGL
-* Layer & Feature
-  * property `symbol` displays a mapbox symbol.
-  * property `line` displays a lineString.
-  * property `fill` displays a polygon.
-  * property `circle` displays a mapbox circle.
-  * property `raster` displays a mapbox raster tiles.
-  * property `fill-extrusion` displays a layer with extruded buildings.
-  * property `background` displays a mapbox background layer.
-  * property `heatmap` displays a mapbox heatmap layer.
-* Source
-* GeoJSONLayer
+- ReactMapboxGL
+- Layer & Feature
+  - property `symbol` displays a mapbox symbol.
+  - property `line` displays a lineString.
+  - property `fill` displays a polygon.
+  - property `circle` displays a mapbox circle.
+  - property `raster` displays a mapbox raster tiles.
+  - property `fill-extrusion` displays a layer with extruded buildings.
+  - property `background` displays a mapbox background layer.
+  - property `heatmap` displays a mapbox heatmap layer.
+- Source
+- GeoJSONLayer
 
 ### DOM components (normal React components)
 
-* ZoomControl
-* ScaleControl
-* RotationControl
-* Marker (Projected component)
-* Popup (Projected component)
-* Cluster
+- ZoomControl
+- ScaleControl
+- RotationControl
+- Marker (Projected component)
+- Popup (Projected component)
+- Cluster
 
 ## Getting Started
 
@@ -46,6 +46,20 @@ npm install react-mapbox-gl mapbox-gl --save
 ```
 
 Example:
+
+Adding the css in your index.html:
+
+```html
+<html>
+  <head>
+    ...
+    <link
+      href="https://api.mapbox.com/mapbox-gl-js/v1.10.1/mapbox-gl.css"
+      rel="stylesheet"
+    />
+  </head>
+</html>
+```
 
 ```jsx
 // ES6
