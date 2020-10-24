@@ -44,6 +44,9 @@ export interface LayerEvents {
   onMouseDown?: MouseEvent;
   onMouseUp?: MouseEvent;
   onClick?: MouseEvent;
+  onTouchStart?: MouseEvent;
+  onTouchEnd?: MouseEvent;
+  onTouchCancel?: MouseEvent;
 }
 
 export interface LayerCommonProps {
@@ -89,6 +92,9 @@ type EventToHandlersType = {
 };
 
 const eventToHandler: EventToHandlersType = {
+  touchstart: 'onTouchStart',
+  touchend: 'onTouchEnd',
+  touchcancel: 'onTouchCancel',
   mousemove: 'onMouseMove',
   mouseenter: 'onMouseEnter',
   mouseleave: 'onMouseLeave',
