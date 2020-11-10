@@ -53,7 +53,7 @@ export interface Props {
   fitBoundsOptions?: FitBoundsOptions;
   bearing?: [number];
   pitch?: [number];
-  containerStyle?: React.CSSProperties;
+  style?: React.CSSProperties;
   className?: string;
   movingMethod?: 'jumpTo' | 'easeTo' | 'flyTo';
   animationOptions?: Partial<AnimationOptions>;
@@ -154,7 +154,7 @@ const ReactMapboxFactory = ({
       bearing: 0,
       movingMethod: defaultMovingMethod,
       pitch: 0,
-      containerStyle: {
+      style: {
         textAlign: 'left'
       }
     };
@@ -386,7 +386,7 @@ const ReactMapboxFactory = ({
 
     public render() {
       const {
-        containerStyle,
+        style,
         className,
         children,
         renderChildrenInPortal
@@ -405,7 +405,7 @@ const ReactMapboxFactory = ({
             <div
               ref={this.setRef}
               className={className}
-              style={{ ...containerStyle }}
+              style={{ ...style }}
             >
               {ready && container && createPortal(children, container)}
             </div>
@@ -418,7 +418,7 @@ const ReactMapboxFactory = ({
           <div
             ref={this.setRef}
             className={className}
-            style={{ ...containerStyle }}
+            style={{ ...style }}
           >
             {ready && children}
           </div>

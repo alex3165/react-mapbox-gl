@@ -29,7 +29,7 @@ const mappedRoute = route.points.map(
 
 const Map = ReactMapboxGl({ accessToken: token });
 
-const mapStyle = {
+const mapContainerStyle = {
   flex: 1
 };
 
@@ -117,8 +117,8 @@ class AllShapes extends React.Component<Props, State> {
   public render() {
     return (
       <Map
-        style={mapData}
-        containerStyle={mapStyle}
+        mapStyle={mapData}
+        style={mapContainerStyle}
         // tslint:disable-next-line:jsx-no-lambda
         onStyleLoad={this.onStyleLoad}
         center={this.state.center}
