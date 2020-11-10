@@ -9,7 +9,7 @@ const geojson = require('./geojson.json');
 
 const Map = ReactMapboxGl({ accessToken: token });
 
-const mapStyle = {
+const mapContainerStyle = {
   flex: 1
 };
 
@@ -50,9 +50,9 @@ class GeoJsonLayer extends React.Component<Props> {
   public render() {
     return (
       <Map
-        style={styles.dark}
+        mapStyle={styles.dark}
         center={this.center}
-        containerStyle={mapStyle}
+        style={mapContainerStyle}
         onStyleLoad={this.onStyleLoad}
       >
         <GeoJSONLayer

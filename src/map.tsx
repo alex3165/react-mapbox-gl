@@ -385,12 +385,7 @@ const ReactMapboxFactory = ({
     };
 
     public render() {
-      const {
-        style,
-        className,
-        children,
-        renderChildrenInPortal
-      } = this.props;
+      const { style, className, children, renderChildrenInPortal } = this.props;
 
       const { ready, map } = this.state;
 
@@ -402,11 +397,7 @@ const ReactMapboxFactory = ({
 
         return (
           <MapContext.Provider value={map}>
-            <div
-              ref={this.setRef}
-              className={className}
-              style={{ ...style }}
-            >
+            <div ref={this.setRef} className={className} style={{ ...style }}>
               {ready && container && createPortal(children, container)}
             </div>
           </MapContext.Provider>
@@ -415,11 +406,7 @@ const ReactMapboxFactory = ({
 
       return (
         <MapContext.Provider value={map}>
-          <div
-            ref={this.setRef}
-            className={className}
-            style={{ ...style }}
-          >
+          <div ref={this.setRef} className={className} style={{ ...style }}>
             {ready && children}
           </div>
         </MapContext.Provider>

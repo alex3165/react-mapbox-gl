@@ -45,7 +45,7 @@ const BottomBar = styled.div`
   align-items: center;
 `;
 
-const mapStyle = {
+const mapContainerStyle = {
   height: '100%',
   width: '100%'
 };
@@ -165,8 +165,8 @@ class StyleUpdate extends React.Component<Props, State> {
     return (
       <Container>
         <Map
-          style={styles[styleKey]}
-          containerStyle={mapStyle}
+          mapStyle={styles[styleKey]}
+          style={mapContainerStyle}
           center={mapCenter}
           onStyleLoad={this.onStyleLoad}
         >
