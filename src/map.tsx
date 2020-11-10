@@ -45,7 +45,7 @@ export interface FlyToOptions {
 
 // React Props updated between re-render
 export interface Props {
-  style: string | MapboxGl.Style;
+  mapStyle: string | MapboxGl.Style;
   center?: [number, number];
   zoom?: [number];
   maxBounds?: MapboxGl.LngLatBounds | FitBounds;
@@ -178,7 +178,7 @@ const ReactMapboxFactory = ({
 
     public componentDidMount() {
       const {
-        style,
+        mapStyle,
         onStyleLoad,
         center,
         pitch,
@@ -214,7 +214,7 @@ const ReactMapboxFactory = ({
           fitBounds && center === defaultCenter
             ? this.calcCenter(fitBounds)
             : center,
-        style,
+        mapStyle,
         scrollZoom,
         attributionControl,
         customAttribution,
@@ -373,8 +373,8 @@ const ReactMapboxFactory = ({
         });
       }
 
-      if (!isEqual(prevProps.style, this.props.style)) {
-        map.setStyle(this.props.style);
+      if (!isEqual(prevProps.mapStyle, this.props.mapStyle)) {
+        map.setStyle(this.props.mapStyle);
       }
 
       return null;

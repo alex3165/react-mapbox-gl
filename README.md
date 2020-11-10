@@ -79,7 +79,7 @@ const Map = ReactMapboxGl({
 
 // in render()
 <Map
-  style="mapbox://styles/mapbox/streets-v9"
+  mapStyle="mapbox://styles/mapbox/streets-v9"
   containerStyle={{
     height: '100vh',
     width: '100vw'
