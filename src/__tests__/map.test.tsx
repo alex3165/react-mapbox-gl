@@ -1,16 +1,21 @@
+import {
+  MapboxConfiguration,
+  MapboxProvider
+} from '../providers/mapbox-provider';
+import * as React from 'react';
+import Map, { FitBounds } from '../map';
+import { mount } from 'enzyme';
+import { getMapMock } from '../jest/util';
+
 jest.mock('mapbox-gl', () => ({
   Map: jest.fn()
 }));
 
-import * as React from 'react';
-import ReactMapboxGl, { FitBounds } from '../map';
-import { mount } from 'enzyme';
-import { getMapMock } from '../jest/util';
-
 let mockfitBounds = jest.fn();
 let mockon = jest.fn();
 
-const getMock = (override = {}) =>
+// tslint:disable-next-line:no-any
+const getMock = (override = {}): any =>
   getMapMock({
     fitBounds: mockfitBounds,
     on: mockon,
@@ -22,6 +27,21 @@ const getMock = (override = {}) =>
     flyTo: jest.fn(),
     ...override
   });
+
+const mountWithProvider = (
+  component: JSX.Element,
+  providerProps?: Partial<MapboxConfiguration>
+) => {
+  return mount(component, {
+    wrappingComponent: MapboxProvider,
+    wrappingComponentProps: {
+      accessToken: '',
+      mapInstance: getMock(),
+      ...providerProps
+    }
+  });
+};
+
 describe('Map', () => {
   // tslint:disable-next-line:no-any
   beforeEach(() => {
@@ -30,23 +50,15 @@ describe('Map', () => {
   });
 
   it('Should render the map correctly', () => {
-    const MapboxMap = ReactMapboxGl({
-      accessToken: '',
-      mapInstance: getMock() as any
-    });
-    mount(<MapboxMap style="" />);
+    mountWithProvider(<Map style="" />);
   });
 
   it('Should call fitBounds with the right parameters', () => {
     const fitBoundsValues: FitBounds = [[0, 1], [2, 3]];
     const fitBoundsOptions = { linear: true };
-    const MapboxMap = ReactMapboxGl({
-      accessToken: '',
-      mapInstance: getMock() as any
-    });
 
-    mount(
-      <MapboxMap
+    mountWithProvider(
+      <Map
         style=""
         fitBounds={fitBoundsValues}
         fitBoundsOptions={fitBoundsOptions}
@@ -64,20 +76,18 @@ describe('Map', () => {
     const fitBoundsOptions = { offset: [150, 0] as [number, number] };
     const newFitBoundsOptions = { offset: [0, 0] };
 
-    const MapboxMap = ReactMapboxGl({
-      accessToken: '',
-      mapInstance: getMock({
-        flyTo,
-        fitBounds: mockfitBounds
-      }) as any
+    const mapInstance = getMock({
+      flyTo,
+      fitBounds: mockfitBounds
     });
 
-    const wrapper = mount(
-      <MapboxMap
+    const wrapper = mountWithProvider(
+      <Map
         style=""
         fitBounds={fitBoundsValues}
         fitBoundsOptions={fitBoundsOptions}
-      />
+      />,
+      { mapInstance }
     );
 
     wrapper.setProps({ fitBoundsOptions: newFitBoundsOptions });
@@ -87,23 +97,20 @@ describe('Map', () => {
 
   it.skip('Should calc the center from fitbounds if center is not given', () => {
     const fitBoundsValues: FitBounds = [[0, 3], [2, 9]];
-    const mockMap = getMock() as any;
-    const MapboxMap = ReactMapboxGl({ accessToken: '', mapInstance: mockMap });
+    const mapInstance = getMock();
 
-    mount(<MapboxMap style="" fitBounds={fitBoundsValues} />);
+    mountWithProvider(<Map style="" fitBounds={fitBoundsValues} />, {
+      mapInstance
+    });
 
     // tslint:disable-next-line:no-any
-    const lastCall: any = mockMap.mock.calls[mockMap.mock.calls.length - 1];
+    const lastCall: any =
+      mapInstance.mock.calls[mapInstance.mock.calls.length - 1];
     expect(lastCall[0].center).toEqual([1, 6]);
   });
 
   it('Should listen onStyleLoad event', () => {
-    const MapboxMap = ReactMapboxGl({
-      accessToken: '',
-      mapInstance: getMock() as any
-    });
-
-    mount(<MapboxMap style="" onStyleLoad={jest.fn()} />);
+    mountWithProvider(<Map style="" onStyleLoad={jest.fn()} />);
 
     expect(mockon).toBeCalledWith('load', jasmine.any(Function));
   });
@@ -111,14 +118,13 @@ describe('Map', () => {
   it('Should update the map center position', () => {
     const flyTo = jest.fn();
     const center = [3, 4];
-    const MapboxMap = ReactMapboxGl({
-      accessToken: '',
-      mapInstance: getMock({
-        flyTo
-      }) as any
+    const mapInstance = getMock({
+      flyTo
     });
 
-    const wrapper = mount(<MapboxMap style="" center={[1, 2]} />);
+    const wrapper = mountWithProvider(<Map style="" center={[1, 2]} />, {
+      mapInstance
+    });
 
     wrapper.setProps({ center });
 
@@ -130,15 +136,13 @@ describe('Map', () => {
     const maxBoundsProps = [[1, 0], [0, 1]];
     const mockMaxBounds = jest.fn();
 
-    const MapboxMap = ReactMapboxGl({
-      accessToken: '',
-      mapInstance: getMock({
-        setMaxBounds: mockMaxBounds,
-        flyTo
-      }) as any
+    const mapInstance = getMock({
+      setMaxBounds: mockMaxBounds,
+      flyTo
     });
 
-    const wrapper = mount(<MapboxMap style="" />);
+    const wrapper = mountWithProvider(<Map style="" />, { mapInstance });
+
     wrapper.setProps({ maxBounds: maxBoundsProps });
 
     expect(mockMaxBounds).toBeCalledWith(maxBoundsProps);
@@ -147,16 +151,16 @@ describe('Map', () => {
   // Handling zoom prop
   it('Should not update zoom when using same reference equality', () => {
     const flyTo = jest.fn();
-    const MapboxMap = ReactMapboxGl({
-      accessToken: '',
-      mapInstance: getMock({
-        flyTo
-      }) as any
+
+    const mapInstance = getMock({
+      flyTo
     });
 
     const zoom: [number] = [3];
 
-    const wrapper = mount(<MapboxMap style="" zoom={zoom} />);
+    const wrapper = mountWithProvider(<Map style="" zoom={zoom} />, {
+      mapInstance
+    });
 
     wrapper.setProps({ zoom });
 
@@ -165,14 +169,13 @@ describe('Map', () => {
 
   it('Should update the zoom on broken reference equality', () => {
     const flyTo = jest.fn();
-    const MapboxMap = ReactMapboxGl({
-      accessToken: '',
-      mapInstance: getMock({
-        flyTo
-      }) as any
+    const mapInstance = getMock({
+      flyTo
     });
 
-    const wrapper = mount(<MapboxMap style="" zoom={[1]} />);
+    const wrapper = mountWithProvider(<Map style="" zoom={[1]} />, {
+      mapInstance
+    });
 
     wrapper.setProps({ zoom: [1] });
 
@@ -182,15 +185,16 @@ describe('Map', () => {
   // Handling bearing prop
   it('Should not update bearing when using same reference equality', () => {
     const flyTo = jest.fn();
-    const MapboxMap = ReactMapboxGl({
-      accessToken: '',
-      mapInstance: getMock({
-        flyTo
-      }) as any
+
+    const mapInstance = getMock({
+      flyTo
     });
+
     const bearing: [number] = [3];
 
-    const wrapper = mount(<MapboxMap style="" bearing={bearing} />);
+    const wrapper = mountWithProvider(<Map style="" bearing={bearing} />, {
+      mapInstance
+    });
 
     wrapper.setProps({ bearing });
 
@@ -199,14 +203,13 @@ describe('Map', () => {
 
   it('Should update the bearing on broken reference equality', () => {
     const flyTo = jest.fn();
-    const MapboxMap = ReactMapboxGl({
-      accessToken: '',
-      mapInstance: getMock({
-        flyTo
-      }) as any
+    const mapInstance = getMock({
+      flyTo
     });
 
-    const wrapper = mount(<MapboxMap style="" bearing={[1]} />);
+    const wrapper = mountWithProvider(<Map style="" bearing={[1]} />, {
+      mapInstance
+    });
 
     wrapper.setProps({ bearing: [1] });
 
@@ -216,15 +219,14 @@ describe('Map', () => {
   // Handling pitch prop
   it('Should not update pitch when using same reference equality', () => {
     const flyTo = jest.fn();
-    const MapboxMap = ReactMapboxGl({
-      accessToken: '',
-      mapInstance: getMock({
-        flyTo
-      }) as any
+    const mapInstance = getMock({
+      flyTo
     });
     const pitch: [number] = [3];
 
-    const wrapper = mount(<MapboxMap style="" pitch={pitch} />);
+    const wrapper = mountWithProvider(<Map style="" pitch={pitch} />, {
+      mapInstance
+    });
 
     wrapper.setProps({ pitch });
 
@@ -233,14 +235,13 @@ describe('Map', () => {
 
   it('Should update the pitch on broken reference equality', () => {
     const flyTo = jest.fn();
-    const MapboxMap = ReactMapboxGl({
-      accessToken: '',
-      mapInstance: getMock({
-        flyTo
-      }) as any
+    const mapInstance = getMock({
+      flyTo
     });
 
-    const wrapper = mount(<MapboxMap style="" pitch={[1]} />);
+    const wrapper = mountWithProvider(<Map style="" pitch={[1]} />, {
+      mapInstance
+    });
 
     wrapper.setProps({ pitch: [1] });
 
@@ -249,12 +250,11 @@ describe('Map', () => {
 
   it('Should pass animation options and flyTo options', () => {
     const flyTo = jest.fn();
-    const MapboxMap = ReactMapboxGl({
-      accessToken: '',
-      mapInstance: getMock({
-        flyTo
-      }) as any
+
+    const mapInstance = getMock({
+      flyTo
     });
+
     const zoom: [number] = [3];
     const flyToOptions = {
       speed: 0.1,
@@ -264,13 +264,14 @@ describe('Map', () => {
       offset: [20, 60]
     };
 
-    const wrapper = mount(
-      <MapboxMap
+    const wrapper = mountWithProvider(
+      <Map
         style=""
         zoom={zoom}
         flyToOptions={flyToOptions}
         animationOptions={animationOptions}
-      />
+      />,
+      { mapInstance }
     );
 
     wrapper.setProps({ zoom: [1] });
