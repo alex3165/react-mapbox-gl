@@ -96,6 +96,7 @@ export interface FactoryParameters {
   boxZoom?: boolean;
   refreshExpiredTiles?: boolean;
   failIfMajorPerformanceCaveat?: boolean;
+  localIdeographFontFamily?: string | boolean;
   bearingSnap?: number;
   transformRequest?: RequestTransformFunction;
   antialias?: boolean;
@@ -112,6 +113,7 @@ declare global {
   namespace mapboxgl {
     export interface MapboxOptions {
       failIfMajorPerformanceCaveat?: boolean;
+      localIdeographFontFamily?: string | boolean;
       transformRequest?: MapboxGl.TransformRequestFunction;
     }
   }
@@ -140,6 +142,7 @@ const ReactMapboxFactory = ({
   boxZoom = true,
   refreshExpiredTiles = true,
   failIfMajorPerformanceCaveat = false,
+  localIdeographFontFamily = 'sans-serif',
   bearingSnap = 7,
   antialias = false,
   mapInstance,
@@ -233,7 +236,8 @@ const ReactMapboxFactory = ({
         bearingSnap,
         failIfMajorPerformanceCaveat,
         antialias,
-        transformRequest
+        transformRequest,
+        localIdeographFontFamily
       };
 
       if (bearing) {
