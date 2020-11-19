@@ -106,13 +106,37 @@ export class Source extends React.Component<Props> {
 
   public componentDidUpdate(prevProps: Props) {
     const { geoJsonSource, tileJsonSource, map } = prevProps;
+    const source = map.getSource(this.id);
 
     // Update tilesJsonSource
     if (tileJsonSource && this.props.tileJsonSource) {
+      let urlUpdated = false;
+      let tilesUpdated = false;
+
+      if (source && source.type === 'vector') {
+        const hasNewSourceUrl =
+          tileJsonSource.url !== this.props.tileJsonSource.url;
+
+        if (hasNewSourceUrl && this.props.tileJsonSource.url) {
+          source.setUrl(this.props.tileJsonSource.url);
+          urlUpdated = true;
+        }
+
+        const hasNewSourceTiles =
+          tileJsonSource.tiles !== this.props.tileJsonSource.tiles;
+        if (hasNewSourceTiles && this.props.tileJsonSource.tiles) {
+          source.setTiles(this.props.tileJsonSource.tiles);
+          tilesUpdated = true;
+        }
+      }
+
+      // Prefer the more targetted updates, but fallback to swapping out the entire source
+      // This applies to raster tile sources, for example
       const hasNewTilesSource =
-        tileJsonSource.url !== this.props.tileJsonSource.url ||
+        (!urlUpdated && tileJsonSource.url !== this.props.tileJsonSource.url) ||
         // Check for reference equality on tiles array
-        tileJsonSource.tiles !== this.props.tileJsonSource.tiles ||
+        (!tilesUpdated &&
+          tileJsonSource.tiles !== this.props.tileJsonSource.tiles) ||
         tileJsonSource.minzoom !== this.props.tileJsonSource.minzoom ||
         tileJsonSource.maxzoom !== this.props.tileJsonSource.maxzoom;
 
@@ -130,9 +154,9 @@ export class Source extends React.Component<Props> {
       this.props.geoJsonSource &&
       this.props.geoJsonSource.data !== geoJsonSource.data &&
       this.props.geoJsonSource.data &&
-      map.getSource(this.id)
+      source &&
+      source.type === 'geojson'
     ) {
-      const source = map.getSource(this.id) as GeoJSONSource;
       source.setData(this.props.geoJsonSource.data);
     }
   }
