@@ -12,9 +12,7 @@ export interface Props {
   onSourceLoaded?: (source: GeoJSONSource | TilesJson) => void;
 }
 
-export interface LayerWithBefore extends Layer {
-  before?: string;
-}
+export type LayerWithBefore = Layer & { before?: string };
 
 export class Source extends React.Component<Props> {
   private id = this.props.id;
@@ -79,7 +77,7 @@ export class Source extends React.Component<Props> {
       let { layers = [] } = map.getStyle();
 
       layers = layers
-        .map((layer, idx) => {
+        .map((layer, idx): LayerWithBefore => {
           const { id: before } = layers[idx + 1] || { id: undefined };
           return { ...layer, before };
         })
