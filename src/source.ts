@@ -124,7 +124,11 @@ export class Source extends React.Component<Props> {
 
         const hasNewSourceTiles =
           tileJsonSource.tiles !== this.props.tileJsonSource.tiles;
-        if (hasNewSourceTiles && this.props.tileJsonSource.tiles !== undefined) {
+
+        if (
+          hasNewSourceTiles &&
+          this.props.tileJsonSource.tiles !== undefined
+        ) {
           source.setTiles(this.props.tileJsonSource.tiles);
           tilesUpdated = true;
         }
