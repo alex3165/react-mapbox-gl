@@ -117,14 +117,14 @@ export class Source extends React.Component<Props> {
         const hasNewSourceUrl =
           tileJsonSource.url !== this.props.tileJsonSource.url;
 
-        if (hasNewSourceUrl && this.props.tileJsonSource.url) {
+        if (hasNewSourceUrl && this.props.tileJsonSource.url !== undefined) {
           source.setUrl(this.props.tileJsonSource.url);
           urlUpdated = true;
         }
 
         const hasNewSourceTiles =
           tileJsonSource.tiles !== this.props.tileJsonSource.tiles;
-        if (hasNewSourceTiles && this.props.tileJsonSource.tiles) {
+        if (hasNewSourceTiles && this.props.tileJsonSource.tiles !== undefined) {
           source.setTiles(this.props.tileJsonSource.tiles);
           tilesUpdated = true;
         }
