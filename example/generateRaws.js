@@ -8,7 +8,8 @@ const files = [
   'htmlCluster.tsx',
   'switchStyle.tsx',
   'geojsonLayer.tsx',
-  'heatmap.tsx'
+  'heatmap.tsx',
+  'vectorLayer.tsx'
 ];
 
 files.forEach((file) => {

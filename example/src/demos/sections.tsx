@@ -6,6 +6,7 @@ import ThreeDMap from './threeDMap';
 import HtmlCluster from './htmlCluster';
 import SwitchStyle from './switchStyle';
 import GeoJsonLayer from './geojsonLayer';
+import VectorLayer from './vectorLayer';
 import Heatmap from './heatmap';
 import { Live } from '../live';
 import raw from 'raw.macro';
@@ -18,6 +19,7 @@ const HtmlClusterRaw = raw('./raws/htmlCluster.raw');
 const SwitchStyleRaw = raw('./raws/switchStyle.raw');
 const GeoJsonLayerRaw = raw('./raws/geojsonLayer.raw');
 const HeatmapRaw = raw('./raws/heatmap.raw');
+const VectorLayerRaw = raw('./raws/vectorLayer.raw');
 
 export const sections = [
   {
@@ -82,5 +84,12 @@ export const sections = [
     components: ['ReactMapboxGl', 'GeoJsonLayer'],
     DemoComponent: GeoJsonLayer,
     reactLive: <Live full={true} raw={GeoJsonLayerRaw} />
+  },
+  {
+    shortTitle: 'vector-source',
+    title: 'Display data from vector tile',
+    components: ['ReactMapboxGl', 'Source', 'Layer'],
+    DemoComponent: VectorLayer,
+    reactLive: <Live full={true} raw={VectorLayerRaw} />
   }
 ];
