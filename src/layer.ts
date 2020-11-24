@@ -188,7 +188,9 @@ export default class Layer extends React.Component<Props> {
       // tslint:disable-next-line:no-any
       type: type as any,
       layout,
-      paint,
+      // TODO: Fix mapbox-gl types
+      // tslint:disable-next-line:no-any
+      paint: paint as any,
       metadata
     };
 

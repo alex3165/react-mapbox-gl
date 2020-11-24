@@ -148,17 +148,20 @@ export class GeoJSONLayer extends React.Component<Props> {
       visibility
     };
 
-    map.addLayer(
-      {
-        id: layerId,
-        source: this.id,
-        type,
-        paint,
-        layout,
-        ...layerOptions
-      },
-      before
-    );
+    const layer: MapboxGL.Layer = {
+      id: layerId,
+      source: this.id,
+      // TODO: Fix mapbox-gl types
+      // tslint:disable-next-line:no-any
+      type: type as any,
+      // TODO: Fix mapbox-gl types
+      // tslint:disable-next-line:no-any
+      paint: paint as any,
+      layout,
+      ...layerOptions
+    };
+
+    map.addLayer(layer, before);
 
     this.mapLayerMouseHandlers(type);
   };
