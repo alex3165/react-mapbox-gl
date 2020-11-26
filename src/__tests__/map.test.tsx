@@ -34,7 +34,7 @@ describe('Map', () => {
       accessToken: '',
       mapInstance: getMock() as any
     });
-    mount(<MapboxMap style="" />);
+    mount(<MapboxMap mapStyle="" />);
   });
 
   it('Should call fitBounds with the right parameters', () => {
@@ -47,7 +47,7 @@ describe('Map', () => {
 
     mount(
       <MapboxMap
-        style=""
+        mapStyle=""
         fitBounds={fitBoundsValues}
         fitBoundsOptions={fitBoundsOptions}
       />
@@ -74,7 +74,7 @@ describe('Map', () => {
 
     const wrapper = mount(
       <MapboxMap
-        style=""
+        mapStyle=""
         fitBounds={fitBoundsValues}
         fitBoundsOptions={fitBoundsOptions}
       />
@@ -90,7 +90,7 @@ describe('Map', () => {
     const mockMap = getMock() as any;
     const MapboxMap = ReactMapboxGl({ accessToken: '', mapInstance: mockMap });
 
-    mount(<MapboxMap style="" fitBounds={fitBoundsValues} />);
+    mount(<MapboxMap mapStyle="" fitBounds={fitBoundsValues} />);
 
     // tslint:disable-next-line:no-any
     const lastCall: any = mockMap.mock.calls[mockMap.mock.calls.length - 1];
@@ -103,7 +103,7 @@ describe('Map', () => {
       mapInstance: getMock() as any
     });
 
-    mount(<MapboxMap style="" onStyleLoad={jest.fn()} />);
+    mount(<MapboxMap mapStyle="" onStyleLoad={jest.fn()} />);
 
     expect(mockon).toBeCalledWith('load', jasmine.any(Function));
   });
@@ -118,7 +118,7 @@ describe('Map', () => {
       }) as any
     });
 
-    const wrapper = mount(<MapboxMap style="" center={[1, 2]} />);
+    const wrapper = mount(<MapboxMap mapStyle="" center={[1, 2]} />);
 
     wrapper.setProps({ center });
 
@@ -138,7 +138,7 @@ describe('Map', () => {
       }) as any
     });
 
-    const wrapper = mount(<MapboxMap style="" />);
+    const wrapper = mount(<MapboxMap mapStyle="" />);
     wrapper.setProps({ maxBounds: maxBoundsProps });
 
     expect(mockMaxBounds).toBeCalledWith(maxBoundsProps);
@@ -156,7 +156,7 @@ describe('Map', () => {
 
     const zoom: [number] = [3];
 
-    const wrapper = mount(<MapboxMap style="" zoom={zoom} />);
+    const wrapper = mount(<MapboxMap mapStyle="" zoom={zoom} />);
 
     wrapper.setProps({ zoom });
 
@@ -172,7 +172,7 @@ describe('Map', () => {
       }) as any
     });
 
-    const wrapper = mount(<MapboxMap style="" zoom={[1]} />);
+    const wrapper = mount(<MapboxMap mapStyle="" zoom={[1]} />);
 
     wrapper.setProps({ zoom: [1] });
 
@@ -190,7 +190,7 @@ describe('Map', () => {
     });
     const bearing: [number] = [3];
 
-    const wrapper = mount(<MapboxMap style="" bearing={bearing} />);
+    const wrapper = mount(<MapboxMap mapStyle="" bearing={bearing} />);
 
     wrapper.setProps({ bearing });
 
@@ -206,7 +206,7 @@ describe('Map', () => {
       }) as any
     });
 
-    const wrapper = mount(<MapboxMap style="" bearing={[1]} />);
+    const wrapper = mount(<MapboxMap mapStyle="" bearing={[1]} />);
 
     wrapper.setProps({ bearing: [1] });
 
@@ -224,7 +224,7 @@ describe('Map', () => {
     });
     const pitch: [number] = [3];
 
-    const wrapper = mount(<MapboxMap style="" pitch={pitch} />);
+    const wrapper = mount(<MapboxMap mapStyle="" pitch={pitch} />);
 
     wrapper.setProps({ pitch });
 
@@ -240,7 +240,7 @@ describe('Map', () => {
       }) as any
     });
 
-    const wrapper = mount(<MapboxMap style="" pitch={[1]} />);
+    const wrapper = mount(<MapboxMap mapStyle="" pitch={[1]} />);
 
     wrapper.setProps({ pitch: [1] });
 
@@ -266,7 +266,7 @@ describe('Map', () => {
 
     const wrapper = mount(
       <MapboxMap
-        style=""
+        mapStyle=""
         zoom={zoom}
         flyToOptions={flyToOptions}
         animationOptions={animationOptions}

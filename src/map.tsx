@@ -45,7 +45,7 @@ export interface FlyToOptions {
 
 // React Props updated between re-render
 export interface Props {
-  style: string | MapboxGl.Style;
+  mapStyle: string | MapboxGl.Style;
   center?: [number, number];
   zoom?: [number];
   maxBounds?: MapboxGl.LngLatBounds | FitBounds;
@@ -53,7 +53,7 @@ export interface Props {
   fitBoundsOptions?: FitBoundsOptions;
   bearing?: [number];
   pitch?: [number];
-  containerStyle?: React.CSSProperties;
+  style?: React.CSSProperties;
   className?: string;
   movingMethod?: 'jumpTo' | 'easeTo' | 'flyTo';
   animationOptions?: Partial<AnimationOptions>;
@@ -154,7 +154,7 @@ const ReactMapboxFactory = ({
       bearing: 0,
       movingMethod: defaultMovingMethod,
       pitch: 0,
-      containerStyle: {
+      style: {
         textAlign: 'left'
       }
     };
@@ -178,7 +178,7 @@ const ReactMapboxFactory = ({
 
     public componentDidMount() {
       const {
-        style,
+        mapStyle,
         onStyleLoad,
         center,
         pitch,
@@ -214,7 +214,7 @@ const ReactMapboxFactory = ({
           fitBounds && center === defaultCenter
             ? this.calcCenter(fitBounds)
             : center,
-        style,
+        mapStyle,
         scrollZoom,
         attributionControl,
         customAttribution,
@@ -373,8 +373,8 @@ const ReactMapboxFactory = ({
         });
       }
 
-      if (!isEqual(prevProps.style, this.props.style)) {
-        map.setStyle(this.props.style);
+      if (!isEqual(prevProps.mapStyle, this.props.mapStyle)) {
+        map.setStyle(this.props.mapStyle);
       }
 
       return null;
@@ -385,12 +385,7 @@ const ReactMapboxFactory = ({
     };
 
     public render() {
-      const {
-        containerStyle,
-        className,
-        children,
-        renderChildrenInPortal
-      } = this.props;
+      const { style, className, children, renderChildrenInPortal } = this.props;
 
       const { ready, map } = this.state;
 
@@ -402,11 +397,7 @@ const ReactMapboxFactory = ({
 
         return (
           <MapContext.Provider value={map}>
-            <div
-              ref={this.setRef}
-              className={className}
-              style={{ ...containerStyle }}
-            >
+            <div ref={this.setRef} className={className} style={{ ...style }}>
               {ready && container && createPortal(children, container)}
             </div>
           </MapContext.Provider>
@@ -415,11 +406,7 @@ const ReactMapboxFactory = ({
 
       return (
         <MapContext.Provider value={map}>
-          <div
-            ref={this.setRef}
-            className={className}
-            style={{ ...containerStyle }}
-          >
+          <div ref={this.setRef} className={className} style={{ ...style }}>
             {ready && children}
           </div>
         </MapContext.Provider>
