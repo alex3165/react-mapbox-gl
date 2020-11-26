@@ -269,7 +269,7 @@ export class GeoJSONLayer extends React.Component<Props> {
       return;
     }
 
-    if (prevProps.data !== data) {
+    if (this.props.data !== data) {
       source.setData(this.props.data);
 
       this.source = {
