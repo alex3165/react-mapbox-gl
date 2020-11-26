@@ -54,7 +54,8 @@ class Image extends React.Component<Props> {
     const { map, id, url, data, options, onError } = props;
 
     if (data) {
-      map.addImage(id, data, options);
+      // map.addImage(id, data, options);
+      this.addOrUpdateImage(map, id, data, options);
       this.loaded();
     } else if (url) {
       map.loadImage(url, (error: Error | undefined, image: ImageDataType) => {
@@ -65,9 +66,28 @@ class Image extends React.Component<Props> {
 
           return;
         }
-        map.addImage(id, image, options);
+        this.addOrUpdateImage(map, id, image, options);
+        // map.addImage(id, image, options);
         this.loaded();
       });
+    }
+  }
+
+  private addOrUpdateImage(
+    map: Map,
+    id: string,
+    image: ImageDataType,
+    options?: ImageOptionsType
+  ) {
+    if (map.hasImage(id)) {
+      // updateImage is not a part of mapbox typings, but is a part of the libary
+      // https://docs.mapbox.com/mapbox-gl-js/api/#map#updateimage
+      if ('updateImage' in map) {
+        // @ts-ignore
+        map.updateImage(id, image);
+      }
+    } else {
+      map.addImage(id, image, options);
     }
   }
 
