@@ -128,7 +128,8 @@ const events = {
   onBoxZoomCancel: 'boxzoomcancel',
   onRotateStart: 'rotatestart',
   onRotate: 'rotate',
-  onRotateEnd: 'rotateend'
+  onRotateEnd: 'rotateend',
+  onIdle: 'idle',
 };
 ```
 
