@@ -50,6 +50,7 @@ export interface Events {
   onRotateStart?: MapEvent;
   onRotate?: MapEvent;
   onRotateEnd?: MapEvent;
+  onIdle?: MapEvent;
 }
 
 export type EventMapping = { [T in keyof Events]: string };
@@ -96,7 +97,8 @@ export const events: EventMapping = {
   onBoxZoomCancel: 'boxzoomcancel',
   onRotateStart: 'rotatestart',
   onRotate: 'rotate',
-  onRotateEnd: 'rotateend'
+  onRotateEnd: 'rotateend',
+  onIdle: 'idle',
 };
 
 export type Listeners = {
