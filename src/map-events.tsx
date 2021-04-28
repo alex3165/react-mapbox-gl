@@ -105,7 +105,7 @@ export type Listeners = {
 
 export const listenEvents = (
   partialEvents: EventMapping,
-  props: Partial<Events>,
+  props: Partial<Events> & { memoizedEvents?: boolean },
   map: MapboxGl.Map
 ) =>
   Object.keys(partialEvents).reduce(
@@ -114,9 +114,11 @@ export const listenEvents = (
 
       if (propEvent) {
         // tslint:disable-next-line:no-any
-        const listener = (evt: React.SyntheticEvent<any>) => {
-          propEvent(map, evt);
-        };
+        const listener = props.memoizedEvents
+          ? (evt: React.SyntheticEvent<any>) => {
+              propEvent(map, evt);
+            }
+          : propEvent;
 
         map.on(partialEvents[event], listener);
 
@@ -132,11 +134,13 @@ export const listenEvents = (
 export const updateEvents = (
   listeners: Listeners,
   currentProps: Partial<Events>,
+  prevProps: Partial<Events>,
   map: MapboxGl.Map
 ) => {
   const toListenOff = Object.keys(events).filter(
     eventKey =>
-      listeners[eventKey] && typeof currentProps[eventKey] !== 'function'
+      (listeners[eventKey] && typeof currentProps[eventKey] !== 'function') ||
+      prevProps[eventKey] !== currentProps[eventKey]
   );
 
   toListenOff.forEach(key => {
@@ -149,6 +153,6 @@ export const updateEvents = (
     .reduce((acc, next) => ((acc[next] = events[next]), acc), {});
 
   const newListeners = listenEvents(toListenOn, currentProps, map);
-
+  ``;
   return { ...listeners, ...newListeners };
 };

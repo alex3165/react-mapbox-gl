@@ -108,6 +108,32 @@ describe('Map', () => {
     expect(mockon).toBeCalledWith('load', jasmine.any(Function));
   });
 
+  it('Should rebind events when a new handler is passed to Map with MemoizedEvents: true', () => {
+    const mockMap = getMock() as any;
+
+    const MapboxMap = ReactMapboxGl({
+      accessToken: '',
+      mapInstance: mockMap,
+      memoizedEvents: true
+    });
+
+    const fn1 = jest.fn();
+    const fn2 = jest.fn();
+
+    const wrapper = mount(<MapboxMap style="" onClick={fn1} />);
+
+    wrapper.setProps({ onClick: fn2 });
+
+    expect(mockMap.on.mock.calls[1][0]).toEqual('click');
+    expect(mockMap.on.mock.calls[1][1]).toEqual(fn1);
+
+    expect(mockMap.off.mock.calls[0][0]).toEqual('click');
+    expect(mockMap.off.mock.calls[0][1]).toEqual(fn1);
+
+    expect(mockMap.on.mock.calls[2][0]).toEqual('click');
+    expect(mockMap.on.mock.calls[2][1]).toEqual(fn2);
+  });
+
   it('Should update the map center position', () => {
     const flyTo = jest.fn();
     const center = [3, 4];
