@@ -96,7 +96,6 @@ export interface FactoryParameters {
   boxZoom?: boolean;
   refreshExpiredTiles?: boolean;
   failIfMajorPerformanceCaveat?: boolean;
-  memoizedEvents?: boolean;
   bearingSnap?: number;
   transformRequest?: RequestTransformFunction;
   antialias?: boolean;
@@ -282,7 +281,7 @@ const ReactMapboxFactory = ({
         }
       });
 
-      this.listeners = listenEvents(events, this.props, map);
+      this.listeners = listenEvents(events, this, map);
     }
 
     public componentWillUnmount() {
@@ -301,7 +300,7 @@ const ReactMapboxFactory = ({
       }
 
       // Update event listeners
-      this.listeners = updateEvents(this.listeners, this.props, prevProps, map);
+      this.listeners = updateEvents(this.listeners, this, map);
 
       const center = map.getCenter();
       const zoom = map.getZoom();

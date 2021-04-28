@@ -1,4 +1,5 @@
 import * as MapboxGl from 'mapbox-gl';
+import * as React from 'react';
 
 export type MapEvent = (
   map: MapboxGl.Map,
@@ -105,20 +106,15 @@ export type Listeners = {
 
 export const listenEvents = (
   partialEvents: EventMapping,
-  props: Partial<Events> & { memoizedEvents?: boolean },
+  parent: React.Component,
   map: MapboxGl.Map
 ) =>
   Object.keys(partialEvents).reduce(
     (listeners, event) => {
-      const propEvent = props[event];
-
-      if (propEvent) {
-        // tslint:disable-next-line:no-any
-        const listener = props.memoizedEvents
-          ? (evt: React.SyntheticEvent<any>) => {
-              propEvent(map, evt);
-            }
-          : propEvent;
+      if (parent.props[event]) {
+        const listener = (evt: React.SyntheticEvent<any>) => {
+          parent.props[event](map, evt);
+        };
 
         map.on(partialEvents[event], listener);
 
@@ -133,14 +129,12 @@ export const listenEvents = (
 
 export const updateEvents = (
   listeners: Listeners,
-  currentProps: Partial<Events>,
-  prevProps: Partial<Events>,
+  parent: React.Component,
   map: MapboxGl.Map
 ) => {
   const toListenOff = Object.keys(events).filter(
     eventKey =>
-      (listeners[eventKey] && typeof currentProps[eventKey] !== 'function') ||
-      prevProps[eventKey] !== currentProps[eventKey]
+      listeners[eventKey] && typeof parent.props[eventKey] !== 'function'
   );
 
   toListenOff.forEach(key => {
@@ -149,10 +143,10 @@ export const updateEvents = (
   });
 
   const toListenOn = Object.keys(events)
-    .filter(key => !listeners[key] && typeof currentProps[key] === 'function')
+    .filter(key => !listeners[key] && typeof parent.props[key] === 'function')
     .reduce((acc, next) => ((acc[next] = events[next]), acc), {});
 
-  const newListeners = listenEvents(toListenOn, currentProps, map);
-  ``;
+  const newListeners = listenEvents(toListenOn, parent, map);
+
   return { ...listeners, ...newListeners };
 };

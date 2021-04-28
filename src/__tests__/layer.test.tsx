@@ -275,7 +275,7 @@ describe('Layer', () => {
     expect(mockMap.on.mock.calls[0][1]).toEqual(id);
   });
 
-  it.skip('Should rebind events when a new handler is passed to Layer', () => {
+  it('Should rebind events when a new handler is passed to Layer', () => {
     const mockMap = getMapMock();
     const id = 'layer-test';
 
