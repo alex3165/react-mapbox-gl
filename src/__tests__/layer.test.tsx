@@ -274,4 +274,29 @@ describe('Layer', () => {
     expect(mockMap.on.mock.calls[0][0]).toEqual('click');
     expect(mockMap.on.mock.calls[0][1]).toEqual(id);
   });
+
+  it('Should rebind events when a new handler is passed to Layer', () => {
+    const mockMap = getMapMock();
+    const id = 'layer-test';
+
+    const fn1 = jest.fn();
+    const fn2 = jest.fn();
+
+    const wrapper = mount(
+      // tslint:disable-next-line:no-any
+      <Layer id={id} map={mockMap as any} onClick={fn1} />
+    );
+
+    wrapper.setProps({ onClick: fn2 });
+
+    expect(mockMap.on.mock.calls[0][0]).toEqual('click');
+    expect(mockMap.on.mock.calls[0][1]).toEqual(id);
+    expect(mockMap.on.mock.calls[0][2]).toEqual(fn1);
+
+    expect(mockMap.off.mock.calls[0][0]).toEqual('click');
+    expect(mockMap.off.mock.calls[0][1]).toEqual(id);
+    expect(mockMap.off.mock.calls[0][2]).toEqual(fn1);
+
+    expect(mockMap.on.mock.calls[0][2]).toEqual(fn2);
+  });
 });

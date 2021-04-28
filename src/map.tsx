@@ -281,7 +281,7 @@ const ReactMapboxFactory = ({
         }
       });
 
-      this.listeners = listenEvents(events, this.props, map);
+      this.listeners = listenEvents(events, this, map);
     }
 
     public componentWillUnmount() {
@@ -300,7 +300,7 @@ const ReactMapboxFactory = ({
       }
 
       // Update event listeners
-      this.listeners = updateEvents(this.listeners, this.props, map);
+      this.listeners = updateEvents(this.listeners, this, map);
 
       const center = map.getCenter();
       const zoom = map.getZoom();
