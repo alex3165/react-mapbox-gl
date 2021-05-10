@@ -2,13 +2,13 @@ import * as React from 'react';
 import ProjectedLayer from './projected-layer';
 import * as GeoJSON from 'geojson';
 import { getClassName } from './util/classname';
-import { Point } from 'mapbox-gl';
+import { PointLike } from 'mapbox-gl';
 import { Anchor } from './util/types';
 
 export interface Props {
   coordinates: GeoJSON.Position;
   anchor?: Anchor;
-  offset?: number | number[] | Point;
+  offset?: number | PointLike | Record<string, PointLike>;
   onClick?: React.MouseEventHandler<HTMLDivElement>;
   onDoubleClick?: React.MouseEventHandler<HTMLDivElement>;
   onMouseEnter?: React.MouseEventHandler<HTMLDivElement>;
