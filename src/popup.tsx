@@ -6,6 +6,7 @@ import { Point } from 'mapbox-gl';
 import { Anchor } from './util/types';
 
 export interface Props {
+  children?: React.ReactNode;
   coordinates: GeoJSON.Position;
   anchor?: Anchor;
   offset?: number | number[] | Point;

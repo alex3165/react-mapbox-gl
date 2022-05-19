@@ -10,7 +10,7 @@
     "test": "jest",
     "test:watch": "jest --watch",
     "lint": "tslint --project tsconfig.json",
-    "build": "npm run lint && npm run test && npm run build:commonjs && npm run build:esm",
+    "build": "npm run build:commonjs && npm run build:esm",
     "build:commonjs": "tsc -p tsconfig.json",
     "build:esm": "tsc -p tsconfig-esm.json",
     "build:watch": "tsc --watch",
