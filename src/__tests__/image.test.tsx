@@ -1,7 +1,8 @@
 import * as React from 'react';
-import Image from '../image';
+import Image, { Props } from '../image';
 import { getMapMock } from '../jest/util';
 import { mount } from 'enzyme';
+import * as MapboxGl from 'mapbox-gl';
 
 describe('Image', () => {
   it('Should add image on mount', () => {
@@ -10,13 +11,13 @@ describe('Image', () => {
     const onError = jest.fn();
 
     const imageId = 'image';
-    const imageData = {};
+    const imageData = {} as Props['data'];
     const imageOptions = {};
 
     mount(
       <Image
         id={imageId}
-        map={mapMock}
+        map={(mapMock as unknown) as MapboxGl.Map}
         data={imageData}
         options={imageOptions}
         onError={onError}
@@ -42,13 +43,13 @@ describe('Image', () => {
     const onError = jest.fn();
 
     const imageId = 'image';
-    const imageData = {};
+    const imageData = {} as Props['data'];
     const imageOptions = {};
 
     const component = mount(
       <Image
         id={imageId}
-        map={mapMock}
+        map={(mapMock as unknown) as MapboxGl.Map}
         data={imageData}
         options={imageOptions}
         onError={onError}
@@ -72,13 +73,13 @@ describe('Image', () => {
     const onError = jest.fn();
 
     const imageId = 'image';
-    const imageData = {};
+    const imageData = {} as Props['data'];
     const imageOptions = {};
 
     const component = mount(
       <Image
         id={imageId}
-        map={mapMock}
+        map={(mapMock as unknown) as MapboxGl.Map}
         data={imageData}
         options={imageOptions}
         onError={onError}

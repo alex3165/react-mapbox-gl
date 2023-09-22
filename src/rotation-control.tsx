@@ -58,7 +58,7 @@ const compassSpan = {
 };
 
 const [COMPASS] = [0];
-const POSITIONS = Object.keys(positions);
+const POSITIONS = Object.keys(positions) as AnchorLimits[];
 
 export interface Props {
   position?: AnchorLimits;

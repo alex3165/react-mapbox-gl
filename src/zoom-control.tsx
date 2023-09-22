@@ -51,7 +51,7 @@ const buttonStyleMinus = {
 };
 
 const [PLUS, MINUS] = [0, 1];
-const POSITIONS = Object.keys(positions);
+const POSITIONS = Object.keys(positions) as AnchorLimits[];
 
 export interface Props {
   zoomDiff?: number;

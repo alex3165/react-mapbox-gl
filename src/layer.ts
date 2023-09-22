@@ -357,7 +357,7 @@ export default class Layer extends React.Component<Props> {
     }
 
     if (Array.isArray(children)) {
-      return (children as JSX.Element[][]).reduce(
+      return children.reduce(
         (arr, next) => arr.concat(next),
         [] as JSX.Element[]
       );

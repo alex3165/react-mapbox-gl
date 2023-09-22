@@ -13,7 +13,7 @@ import Cluster from '../cluster';
 import Marker from '../marker';
 import { mountWithMap, getMapMock } from '../jest/util';
 
-const coordinates = [
+const coordinates: Array<[number, number]> = [
   [-12.408741828510017, 58.16339752811908],
   [-5.668629523822517, 50.06970856327533],
   [-9.26996282865152, 42.92873605781255],
