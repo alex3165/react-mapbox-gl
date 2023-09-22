@@ -11,7 +11,8 @@ export type Paint =
   | MapboxGL.SymbolPaint
   | MapboxGL.LinePaint
   | MapboxGL.RasterPaint
-  | MapboxGL.CirclePaint;
+  | MapboxGL.CirclePaint
+  | MapboxGL.HeatmapPaint;
 
 export type Layout =
   | MapboxGL.BackgroundLayout

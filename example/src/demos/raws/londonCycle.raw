@@ -113,9 +113,24 @@ export default class LondonCycle extends React.Component<Props, State> {
           {Object.keys(stations).map((stationK, index) => (
             <Feature
               key={stationK}
-              onMouseEnter={this.onToggleHover.bind(this, 'pointer')}
-              onMouseLeave={this.onToggleHover.bind(this, '')}
-              onClick={this.markerClick.bind(this, stations[stationK])}
+              onMouseEnter={
+                (this.onToggleHover.bind(
+                  this,
+                  'pointer'
+                ) as unknown) as React.MouseEventHandler<HTMLElement>
+              }
+              onMouseLeave={
+                (this.onToggleHover.bind(
+                  this,
+                  ''
+                ) as unknown) as React.MouseEventHandler<HTMLElement>
+              }
+              onClick={
+                (this.markerClick.bind(
+                  this,
+                  stations[stationK]
+                ) as unknown) as React.MouseEventHandler<HTMLElement>
+              }
               coordinates={stations[stationK].position}
             />
           ))}

@@ -48,7 +48,7 @@ const StyledPopup = styled.div`
 
 export interface State {
   popup?: {
-    coordinates: GeoJSON.Position;
+    coordinates: [number, number];
     total: number;
     leaves: Array<React.ReactElement<any>>;
   };
@@ -67,7 +67,7 @@ class HtmlCluster extends React.Component<Props, State> {
   private zoom: [number] = [4];
 
   private clusterMarker = (
-    coordinates: GeoJSON.Position,
+    coordinates: [number, number],
     pointCount: number,
     getLeaves: (
       limit?: number,
@@ -91,7 +91,7 @@ class HtmlCluster extends React.Component<Props, State> {
   };
 
   private clusterClick = (
-    coordinates: GeoJSON.Position,
+    coordinates: [number, number],
     total: number,
     getLeaves: (
       limit?: number,

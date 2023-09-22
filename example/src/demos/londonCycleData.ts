@@ -3,7 +3,7 @@ import promisify from 'es6-promisify';
 export interface Station {
   id: string;
   name: string;
-  position: number[];
+  position: [number, number];
   bikes: number;
   slots: number;
 }
