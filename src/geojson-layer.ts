@@ -94,7 +94,7 @@ export interface Props
     | GeoJSON.Feature<GeoJSON.Geometry, GeoJSON.GeoJsonProperties>
     | GeoJSON.FeatureCollection<GeoJSON.Geometry>
     | string;
-  layerOptions?: MapboxGL.Layer;
+  layerOptions?: Partial<MapboxGL.Layer>;
   sourceOptions?:
     | MapboxGL.VectorSource
     | MapboxGL.RasterSource

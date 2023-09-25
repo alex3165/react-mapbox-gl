@@ -8,7 +8,7 @@ import { Anchor } from './util/types';
 export interface Props {
   coordinates: GeoJSON.Position;
   anchor?: Anchor;
-  offset?: number | number[] | Point;
+  offset?: number | [number, number] | Point;
   children?: JSX.Element;
   onClick?: React.MouseEventHandler<HTMLDivElement>;
   onMouseEnter?: React.MouseEventHandler<HTMLDivElement>;
@@ -22,7 +22,7 @@ const defaultClassName = ['mapboxgl-marker'];
 
 export const Marker: React.StatelessComponent<Props> = props => (
   <ProjectedLayer
-    {...{ ...props }}
+    {...props}
     type="marker"
     className={getClassName(defaultClassName, props.className)}
   />

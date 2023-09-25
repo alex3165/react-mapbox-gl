@@ -4,23 +4,9 @@ const isEqual = require('deep-equal'); //tslint:disable-line
 import diff from './util/diff';
 import { Props as FeatureProps } from './feature';
 
-export type Paint =
-  | MapboxGL.BackgroundPaint
-  | MapboxGL.FillPaint
-  | MapboxGL.FillExtrusionPaint
-  | MapboxGL.SymbolPaint
-  | MapboxGL.LinePaint
-  | MapboxGL.RasterPaint
-  | MapboxGL.CirclePaint;
+export type Paint = MapboxGL.AnyPaint;
 
-export type Layout =
-  | MapboxGL.BackgroundLayout
-  | MapboxGL.FillLayout
-  | MapboxGL.FillExtrusionLayout
-  | MapboxGL.LineLayout
-  | MapboxGL.SymbolLayout
-  | MapboxGL.RasterLayout
-  | MapboxGL.CircleLayout;
+export type Layout = MapboxGL.AnyLayout;
 
 export interface ImageOptions {
   width?: number;
@@ -357,7 +343,7 @@ export default class Layer extends React.Component<Props> {
     }
 
     if (Array.isArray(children)) {
-      return (children as JSX.Element[][]).reduce(
+      return children.reduce(
         (arr, next) => arr.concat(next),
         [] as JSX.Element[]
       );

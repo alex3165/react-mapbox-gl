@@ -1,9 +1,10 @@
 import * as React from 'react';
 import Source from '../source';
 import { mountWithMap, getMapMock } from '../jest/util';
+import { GeoJSONSourceRaw } from 'mapbox-gl';
 
 describe('Source', () => {
-  const EMPTY_GEOJSON_SRC = {
+  const EMPTY_GEOJSON_SRC: GeoJSONSourceRaw = {
     type: 'geojson',
     data: {
       type: 'FeatureCollection',

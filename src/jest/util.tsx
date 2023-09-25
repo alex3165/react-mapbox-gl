@@ -31,6 +31,7 @@ export const mountWithMap = (comp: JSX.Element, mapValue: any) => {
 export class MockComponent extends React.Component<{
   id: string;
   map: MapboxGl.Map;
+  children?: JSX.Element | JSX.Element[];
 }> {
   public render() {
     return <h1>{this.props.id}</h1>;

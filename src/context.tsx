@@ -1,16 +1,19 @@
 import * as React from 'react';
 import * as MapboxGl from 'mapbox-gl';
 
-export const MapContext = React.createContext(undefined) as React.Context<
-  MapboxGl.Map | undefined
->;
+export const MapContext = React.createContext<MapboxGl.Map | undefined>(
+  undefined
+);
 
-// tslint:disable-next-line:no-any
-export function withMap(Component: React.ComponentClass<any>) {
-  return function MappedComponent<T>(props: T) {
+export function withMap<T extends { map: MapboxGl.Map | undefined }>(
+  Component: React.ComponentType<T>
+) {
+  return function MappedComponent(
+    props: Omit<T, 'map'> & { map?: MapboxGl.Map | undefined }
+  ) {
     return (
       <MapContext.Consumer>
-        {map => <Component map={map} {...props} />}
+        {map => <Component map={map} {...props as T} />}
       </MapContext.Consumer>
     );
   };

@@ -104,7 +104,7 @@ export default class VectorLayer extends React.Component<Props> {
           <Layer
             id="mapillary"
             type="line"
-            source="mapillary"
+            sourceId="mapillary"
             sourceLayer="mapillary-sequences"
             layout={lineLayout}
             paint={linePaint}

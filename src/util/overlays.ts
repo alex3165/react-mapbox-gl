@@ -1,4 +1,5 @@
 import { LngLat, Point, Map } from 'mapbox-gl';
+import * as GeoJSON from 'geojson';
 import { Props } from '../projected-layer';
 import { Anchor, AnchorsOffset } from './types';
 
@@ -41,8 +42,8 @@ export const anchorTranslates = {
 const defaultElement = { offsetWidth: 0, offsetHeight: 0 };
 const defaultPoint = [0, 0];
 
-const projectCoordinates = (map: Map, coordinates: [number, number]) =>
-  map.project(LngLat.convert(coordinates));
+const projectCoordinates = (map: Map, coordinates: GeoJSON.Position) =>
+  map.project(LngLat.convert(coordinates as [number, number]));
 
 const calculateAnchor = (
   map: Map,

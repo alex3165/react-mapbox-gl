@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { HeatmapPaint } from 'mapbox-gl';
 import ReactMapboxGl, { Layer, Feature } from '../../../';
 
 // tslint:disable-next-line:no-var-requires
@@ -17,7 +18,7 @@ export interface Props {
   onStyleLoad?: (map: any) => any;
 }
 
-const layerPaint = {
+const layerPaint: HeatmapPaint = {
   'heatmap-weight': {
     property: 'priceIndicator',
     type: 'exponential',

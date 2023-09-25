@@ -4,7 +4,10 @@ import { getMapMock, mountWithMap } from '../jest/util';
 
 describe('GeoJSONLayer', () => {
   const fillPaint = { 'fill-color': '#001122' };
-  const data = { type: 'FeatureCollection', features: [] };
+  const data: GeoJSON.FeatureCollection = {
+    type: 'FeatureCollection',
+    features: []
+  };
 
   it('Should call addLayer with provided layerOptions', () => {
     const mapMock = getMapMock();

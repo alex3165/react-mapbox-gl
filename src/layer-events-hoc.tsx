@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Props as FeatureProps } from './feature';
 import { generateID } from './util/uid';
-import { LayerCommonProps, Props as LayerProps } from './layer';
+import { LayerCommonProps, LayerEvents, Props as LayerProps } from './layer';
 import { Map } from 'mapbox-gl';
 
 export interface EnhancedLayerProps {
@@ -9,7 +9,7 @@ export interface EnhancedLayerProps {
   map: Map;
 }
 
-export type OwnProps = EnhancedLayerProps & LayerCommonProps;
+export type OwnProps = EnhancedLayerProps & LayerCommonProps & LayerEvents;
 
 type LayerChildren = React.ReactElement<FeatureProps> | undefined;
 
